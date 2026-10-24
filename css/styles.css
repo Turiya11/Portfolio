@@ -999,32 +999,11 @@ button {
 }
 .jt-bf {
     position: absolute;
-    left: 8px;
-    top: -44px;
-    width: 26px;
-    height: 20px;
-    perspective: 80px;
+    left: 6px;
+    top: -46px;
+    width: 30px;
+    height: 23px;
     animation: bob 1.8s ease-in-out infinite alternate;
-}
-.jt-bf span {
-    position: absolute;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    background: radial-gradient(ellipse at 100% 45%, #6fdcff 0%, #1e90ff 55%, #0a1228 75%);
-    border-radius: 70% 20% 60% 40%;
-}
-.jt-bf span:first-child {
-    left: 0;
-    transform-origin: 100% 50%;
-    animation: bfFlapL 0.9s ease-in-out infinite;
-}
-.jt-bf span:last-child {
-    left: 50%;
-    transform-origin: 0% 50%;
-    border-radius: 20% 70% 40% 60%;
-    background: radial-gradient(ellipse at 0% 45%, #6fdcff 0%, #1e90ff 55%, #0a1228 75%);
-    animation: bfFlapR 0.9s ease-in-out infinite;
 }
 
 .jt-intro {
@@ -1233,6 +1212,14 @@ button {
     font-size: 12px;
     font-weight: 500;
 }
+.jt-card.is-compact .jt-tags {
+    margin-top: 8px;
+    gap: 5px;
+}
+.jt-card.is-compact .jt-tags span {
+    padding: 3px 8px;
+    font-size: 11px;
+}
 .jt-link,
 .jt-cta {
     display: inline-flex;
@@ -1382,4 +1369,49 @@ button {
     .jt-glass {
         padding: 0 4px;
     }
+}
+
+/* ------------------------------ googly-eyes cursor ------------------------------ */
+
+html.has-eyes,
+html.has-eyes * {
+    cursor: none !important;
+}
+.eyes {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    gap: 2px;
+    margin: -11px 0 0 -21px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, scale 0.25s ease;
+}
+.eyes.is-on {
+    opacity: 1;
+}
+.eyes.is-link {
+    scale: 1.3;
+}
+.eye {
+    position: relative;
+    width: 20px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1.5px solid #1d1932;
+    box-shadow: 0 2px 6px rgba(29, 25, 50, 0.25);
+}
+.eye i {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    margin: -4.5px 0 0 -4.5px;
+    border-radius: 50%;
+    background: #1d1932;
+    box-shadow: inset 2px 2px 0 -1px #fff;
 }
