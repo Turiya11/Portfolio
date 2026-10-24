@@ -1383,8 +1383,8 @@ html.has-eyes * {
     top: 0;
     z-index: 1000;
     display: flex;
-    gap: 2px;
-    margin: -11px 0 0 -21px;
+    gap: 3px;
+    margin: -15px 0 0 -25px;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.2s ease, scale 0.25s ease;
@@ -1393,25 +1393,35 @@ html.has-eyes * {
     opacity: 1;
 }
 .eyes.is-link {
-    scale: 1.3;
+    scale: 1.25;
 }
+/* tall white ovals with big black pupils and a little glint (like the Framer eyes cursor) */
 .eye {
     position: relative;
-    width: 20px;
-    height: 22px;
+    width: 23px;
+    height: 30px;
     border-radius: 50%;
     background: #fff;
-    border: 1.5px solid #1d1932;
-    box-shadow: 0 2px 6px rgba(29, 25, 50, 0.25);
+    box-shadow: 0 3px 8px rgba(29, 25, 50, 0.18);
 }
 .eye i {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 9px;
-    height: 9px;
-    margin: -4.5px 0 0 -4.5px;
+    width: 15px;
+    height: 19px;
+    margin: -9.5px 0 0 -7.5px;
     border-radius: 50%;
-    background: #1d1932;
-    box-shadow: inset 2px 2px 0 -1px #fff;
+    background: #0b0b0b;
+}
+.eye i::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 3px;
+    width: 3.5px;
+    height: 3.5px;
+    margin-left: -1.75px;
+    border-radius: 50%;
+    background: #fff;
 }
