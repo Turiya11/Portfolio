@@ -1,7 +1,7 @@
 // "My design journey": one screen, pinned while you scroll; the track slides sideways,
 // a line draws itself, glass cards rise as the pen passes, and a sunset wipes in for 2026.
 // Port of the Framer JourneyTimeline. Edit the content below.
-import { butterflyArt } from "./butterflies.js"
+import { butterflyArt, mountButterflies } from "./butterflies.js"
 
 const CONTENT = {
     eyebrow: "2023 → 2026",
@@ -17,6 +17,19 @@ const CONTENT = {
         { year: "2025", period: "Studio project · 2025", kicker: "thinking in systems", title: "Dentigo", org: "B2B platform for dental clinics & labs", text: "Brought restorations, supplies and clinic–lab communication into one transparent flow to cut remakes, delays and staff workload.", tags: ["B2B", "Service design", "Web app"], link: ["Read the case study", "#work"] },
         { year: "2026", period: "March 2026 — now", kicker: "going end-to-end", title: "Product Design Intern", org: "SSK Technologies · 3TFlow", text: "End-to-end flows across 2000+ ITSM screens for 5 user roles — ticket assignment cut from 6 steps to 3, a Reports module, SLA tracking and a design system of 4000+ components.", tags: ["ITSM", "Design systems", "Enterprise"], link: ["Read the case study", "#work"] },
     ],
+    // three hoverable butterflies drifting over the timeline (same as the hero ones)
+    butterflies: {
+        layout: "scattered",
+        seed: 11,
+        minSize: 20,
+        maxSize: 34,
+        padding: 90,
+        details: [
+            { tag: "Studying", title: "B.Des UX, MIT-WPU", detail: "Class of 2027 · CGPA 8.7." },
+            { tag: "Biggest system", title: "4000+ components", detail: "A design system behind 2000+ ITSM screens at 3TFlow." },
+            { tag: "Off screen", title: "Film lover", detail: "The Truman Show is a forever favourite." },
+        ],
+    },
     finale: { label: "Today", year: "2026", connector: "and now I'm an", title: "End-to-end product & interaction designer", text: "Research to release — systems, flows, data and the small moments that make them feel alive.", cta: ["See my work", "#work"] },
 }
 
@@ -129,7 +142,9 @@ function render() {
           </div>
         </div>
         <div class="jt-progress" aria-hidden="true"><span class="jt-progress__year">${esc(CONTENT.eyebrow.split(" ")[0])}</span>${'<i></i>'.repeat(CONTENT.milestones.length + 2)}</div>
+        <div class="butterflies jt-butterflies"></div>
       </div>`
+    mountButterflies(root.querySelector(".jt-butterflies"), { ...CONTENT.butterflies, count: CONTENT.butterflies.details.length })
 
     els = {
         track: root.querySelector(".jt-track"),
