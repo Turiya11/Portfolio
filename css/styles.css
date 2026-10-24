@@ -699,10 +699,11 @@ html.sky-on .nav__logo {
         background 0.3s ease,
         color 0.3s ease;
 }
+/* on: a solid light chip with dark text, readable on paper and on every sky */
 .timebar__auto[aria-pressed="true"] {
-    background: var(--hero-ink);
-    color: var(--paper);
-    border-color: transparent;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1d1932;
+    border-color: rgba(29, 25, 50, 0.2);
 }
 .timebar__rail {
     position: relative;
