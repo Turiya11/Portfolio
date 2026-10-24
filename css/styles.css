@@ -1373,10 +1373,6 @@ button {
 
 /* ------------------------------ googly-eyes cursor ------------------------------ */
 
-html.has-eyes,
-html.has-eyes * {
-    cursor: none !important;
-}
 .eyes {
     position: fixed;
     left: 0;
@@ -1384,7 +1380,8 @@ html.has-eyes * {
     z-index: 1000;
     display: flex;
     gap: 3px;
-    margin: -15px 0 0 -25px;
+    /* sits just below-right of the normal arrow, which still does the clicking */
+    margin: 20px 0 0 12px;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.2s ease, scale 0.25s ease;
