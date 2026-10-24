@@ -62,54 +62,64 @@ button {
 
 .nav {
     position: fixed;
-    inset: 0 0 auto 0;
-    z-index: 20;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 22px var(--gutter);
-    pointer-events: none;
+    top: 18px;
+    left: 50%;
+    z-index: 30;
+    translate: -50% 0;
 }
-.nav > * {
-    pointer-events: auto;
-}
-.nav__logo {
-    font-family: var(--hand);
-    font-weight: 600;
-    font-size: 30px;
-    line-height: 1;
-    text-decoration: none;
-    color: var(--ink);
-    transition: color 1.4s ease;
-}
-/* the logo sits outside the hero, so the script hands it the sky's ink */
-html.sky-on .nav__logo {
-    color: var(--logo-ink, var(--ink));
-}
-.nav__links {
+.nav__bar {
+    position: relative;
     display: flex;
     gap: 4px;
-    padding: 5px;
+    padding: 4px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.45);
-    backdrop-filter: blur(14px) saturate(160%);
-    -webkit-backdrop-filter: blur(14px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 8px 24px -16px rgba(40, 30, 95, 0.35);
+    background: rgb(240, 240, 240);
+    box-shadow: 0 10px 30px -18px rgba(29, 25, 50, 0.45);
 }
-.nav__links a {
-    padding: 8px 16px;
+.nav__goo {
+    position: absolute;
+    inset: 0;
+    filter: url(#goo);
+    pointer-events: none;
+}
+.nav__pill {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 0;
+    width: var(--w, 0px);
+    translate: var(--x, 0px) 0;
     border-radius: 999px;
-    font-size: 14px;
+    background: rgb(218, 222, 245);
+    transition:
+        translate 0.45s cubic-bezier(0.3, 1.35, 0.5, 1),
+        width 0.45s cubic-bezier(0.3, 1.35, 0.5, 1);
+}
+.nav__bar a {
+    position: relative;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 15px;
     font-weight: 500;
+    color: rgb(51, 51, 51);
     text-decoration: none;
-    color: var(--ink);
-    transition: background 0.25s ease;
-}
-.nav__links a:hover,
-.nav__links a:focus-visible {
-    background: rgba(255, 255, 255, 0.75);
     outline: none;
+    transition: color 0.25s ease;
+}
+.nav__bar a[aria-current="page"] {
+    color: rgb(37, 37, 37);
+}
+.nav__bar a:focus-visible {
+    box-shadow: 0 0 0 2px var(--accent);
+}
+@media (max-width: 480px) {
+    .nav {
+        top: 12px;
+    }
+    .nav__bar a {
+        padding: 9px 14px;
+        font-size: 14px;
+    }
 }
 
 /* ------------------------------ hero ------------------------------ */
