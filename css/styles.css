@@ -1006,6 +1006,9 @@ button {
     animation: bob 1.8s ease-in-out infinite alternate;
 }
 
+.jt-butterflies {
+    z-index: 3; /* above the track, under the 2026 finale */
+}
 .jt-intro {
     position: absolute;
 }
