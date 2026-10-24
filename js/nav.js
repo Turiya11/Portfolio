@@ -4,7 +4,7 @@ const pill = bar.querySelector(".nav__pill")
 const links = [...bar.querySelectorAll("a")]
 
 const moveTo = (a) => {
-    pill.style.setProperty("--x", `${a.offsetLeft - 4}px`)
+    pill.style.setProperty("--x", `${a.offsetLeft}px`)
     pill.style.setProperty("--w", `${a.offsetWidth}px`)
 }
 const current = () => links.find((a) => a.getAttribute("aria-current") === "page") || links[0]
