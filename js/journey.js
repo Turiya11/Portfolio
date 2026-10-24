@@ -1,6 +1,7 @@
 // "My design journey": one screen, pinned while you scroll; the track slides sideways,
 // a line draws itself, glass cards rise as the pen passes, and a sunset wipes in for 2026.
 // Port of the Framer JourneyTimeline. Edit the content below.
+import { butterflyArt } from "./butterflies.js"
 
 const CONTENT = {
     eyebrow: "2023 → 2026",
@@ -87,7 +88,7 @@ function render() {
                 <h3>${esc(m.title)}</h3>
                 <p class="jt-org">${esc(m.org)}</p>
                 <p class="jt-text"${clampText}>${esc(m.text)}</p>
-                ${vh >= 720 ? `<div class="jt-tags">${m.tags.map((t) => `<span style="border-color:${color}">${esc(t)}</span>`).join("")}</div>` : ""}
+                <div class="jt-tags">${m.tags.map((t) => `<span style="border-color:${color}">${esc(t)}</span>`).join("")}</div>
                 ${m.link ? `<a class="jt-link" href="${m.link[1]}">${esc(m.link[0])} <span aria-hidden="true">→</span></a>` : ""}
               </article></div>`
         })
@@ -103,7 +104,7 @@ function render() {
         <div class="jt-track" style="width:${T}px">
           <svg class="jt-line" width="${T}" height="${vh}" aria-hidden="true"><path class="jt-guide" d="${d}"/></svg>
           <div class="jt-drawn"><svg width="${T}" height="${vh}" aria-hidden="true"><path class="jt-glow" d="${d}"/><path class="jt-ink" d="${d}"/></svg></div>
-          <div class="jt-tip" aria-hidden="true"><i></i><b></b><span class="jt-bf"><span></span><span></span></span></div>
+          <div class="jt-tip" aria-hidden="true"><i></i><b></b><span class="jt-bf">${butterflyArt(30, 20)}</span></div>
           <header class="jt-intro" style="left:${x0}px;top:${vh * 0.11}px;width:${introW}px">
             <p class="jt-eyebrow">${esc(CONTENT.eyebrow)}</p>
             <h2>${esc(CONTENT.heading)}</h2>

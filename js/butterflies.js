@@ -60,6 +60,17 @@ const bodyArt = (o) => `
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c])
 
+// A single butterfly (same art as the hero ones) for decoration elsewhere, e.g. the timeline pen tip.
+export function butterflyArt(size, rot = 15, options = {}) {
+    const o = { ...DEFAULTS, ...options }
+    return `<span class="bf__scale"><span class="bf__persp" style="perspective:${size * 3.2}px">
+      <span class="bf__tilt" style="transform:rotateZ(${rot}deg) rotateX(24deg)">
+        <span class="bf__wing bf__wing--l" style="--flap:2s">${wingArt(false, o)}</span>
+        <span class="bf__wing bf__wing--r" style="--flap:2s">${wingArt(true, o)}</span>
+        ${bodyArt(o)}
+      </span></span></span>`
+}
+
 export function mountButterflies(container, options = {}) {
     const o = { ...DEFAULTS, ...options }
     const pad = Math.max(0, o.padding)
