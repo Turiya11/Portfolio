@@ -1,6 +1,6 @@
 # Turiya Joshi — Portfolio
 
-Hand-built portfolio site (plain HTML, CSS and JavaScript — no build step).
+Hand-built portfolio site 
 
 ```
 index.html          the page
