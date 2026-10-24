@@ -8,8 +8,9 @@ if (matchMedia("(pointer: fine)").matches && !matchMedia("(prefers-reduced-motio
     document.body.append(eyes)
     const pupils = [...eyes.querySelectorAll("i")]
 
-    const MAX = 5 // how far a pupil can roll from the centre (px)
+    const MAX = 4 // how far a pupil can roll sideways (px); it travels 1.6x that up and down
     let mx = -100, my = -100, px = mx, py = my
+    let ex = mx, ey = my // the eyes trail the arrow a touch, like a Framer cursor spring
     let ox = 0, oy = 0, vx = 0, vy = 0 // pupil offset + velocity (springy, so they jiggle)
     let running = false
 
@@ -17,7 +18,9 @@ if (matchMedia("(pointer: fine)").matches && !matchMedia("(prefers-reduced-motio
         const dx = mx - px, dy = my - py
         px = mx
         py = my
-        eyes.style.translate = `${mx}px ${my}px`
+        ex += (mx - ex) * 0.35
+        ey += (my - ey) * 0.35
+        eyes.style.translate = `${ex.toFixed(1)}px ${ey.toFixed(1)}px`
 
         // look where the cursor is going; drift back to centre when it stops
         const speed = Math.hypot(dx, dy)
@@ -28,9 +31,9 @@ if (matchMedia("(pointer: fine)").matches && !matchMedia("(prefers-reduced-motio
         oy += vy
         const r = Math.hypot(ox, oy)
         if (r > MAX) (ox *= MAX / r), (oy *= MAX / r)
-        for (const p of pupils) p.style.translate = `${ox}px ${oy}px`
+        for (const p of pupils) p.style.translate = `${ox}px ${oy * 1.6}px`
 
-        running = speed > 0.1 || Math.abs(vx) + Math.abs(vy) + Math.abs(ox) + Math.abs(oy) > 0.05
+        running = speed > 0.1 || Math.abs(mx - ex) + Math.abs(my - ey) > 0.2 || Math.abs(vx) + Math.abs(vy) + Math.abs(ox) + Math.abs(oy) > 0.05
         if (running) requestAnimationFrame(tick)
     }
     const wake = () => {
@@ -39,7 +42,7 @@ if (matchMedia("(pointer: fine)").matches && !matchMedia("(prefers-reduced-motio
 
     addEventListener("pointermove", (e) => {
         if (e.pointerType !== "mouse") return
-        if (!eyes.classList.contains("is-on")) (px = e.clientX), (py = e.clientY)
+        if (!eyes.classList.contains("is-on")) (px = ex = e.clientX), (py = ey = e.clientY)
         mx = e.clientX
         my = e.clientY
         eyes.classList.add("is-on")

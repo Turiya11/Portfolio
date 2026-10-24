@@ -1,7 +1,7 @@
 // "My design journey": one screen, pinned while you scroll; the track slides sideways,
 // a line draws itself, glass cards rise as the pen passes, and a sunset wipes in for 2026.
 // Port of the Framer JourneyTimeline. Edit the content below.
-import { butterflyArt, mountButterflies } from "./butterflies.js"
+import { butterflyArt } from "./butterflies.js"
 
 const CONTENT = {
     eyebrow: "2023 → 2026",
@@ -17,23 +17,12 @@ const CONTENT = {
         { year: "2025", period: "Studio project · 2025", kicker: "thinking in systems", title: "Dentigo", org: "B2B platform for dental clinics & labs", text: "Brought restorations, supplies and clinic–lab communication into one transparent flow to cut remakes, delays and staff workload.", tags: ["B2B", "Service design", "Web app"], link: ["Read the case study", "#work"] },
         { year: "2026", period: "March 2026 — now", kicker: "going end-to-end", title: "Product Design Intern", org: "SSK Technologies · 3TFlow", text: "End-to-end flows across 2000+ ITSM screens for 5 user roles — ticket assignment cut from 6 steps to 3, a Reports module, SLA tracking and a design system of 4000+ components.", tags: ["ITSM", "Design systems", "Enterprise"], link: ["Read the case study", "#work"] },
     ],
-    // three hoverable butterflies drifting over the timeline (same as the hero ones)
-    butterflies: {
-        layout: "scattered",
-        seed: 11,
-        minSize: 20,
-        maxSize: 34,
-        padding: 90,
-        details: [
-            { tag: "Studying", title: "B.Des UX, MIT-WPU", detail: "Class of 2027 · CGPA 8.7." },
-            { tag: "Biggest system", title: "4000+ components", detail: "A design system behind 2000+ ITSM screens at 3TFlow." },
-            { tag: "Off screen", title: "Film lover", detail: "The Truman Show is a forever favourite." },
-        ],
-    },
     finale: { label: "Today", year: "2026", connector: "and now I'm an", title: "End-to-end product & interaction designer", text: "Research to release — systems, flows, data and the small moments that make them feel alive.", cta: ["See my work", "#work"] },
 }
 
 const NODE_COLORS = ["#B9A8FF", "#FF9EB5", "#7CC2F6", "#F5C518", "#C4E727", "#FFB27A", "#8F7BEA"]
+// three butterflies flutter along the line: blue scouts ahead of the pen, pink + yellow trail (Framer DesignerTimeline)
+const FLOCK = ["#1E90FF", "#FF9EB5", "#F5C518"]
 const TRACK_END = 0.86 // the last 14% of the scroll is the sunset finale
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
 const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
@@ -117,7 +106,14 @@ function render() {
         <div class="jt-track" style="width:${T}px">
           <svg class="jt-line" width="${T}" height="${vh}" aria-hidden="true"><path class="jt-guide" d="${d}"/></svg>
           <div class="jt-drawn"><svg width="${T}" height="${vh}" aria-hidden="true"><path class="jt-glow" d="${d}"/><path class="jt-ink" d="${d}"/></svg></div>
-          <div class="jt-tip" aria-hidden="true"><i></i><b></b><span class="jt-bf">${butterflyArt(30, 20)}</span></div>
+          <div class="jt-tip" aria-hidden="true"><i></i><b></b></div>
+          <div class="jt-flock" aria-hidden="true">
+            <svg width="0" height="0" style="position:absolute"><defs>${FLOCK.map((c, j) => `<radialGradient id="jt-bf-${j}" cx="1" cy="0.5" r="1"><stop offset="0%" style="stop-color:color-mix(in srgb, ${c} 42%, white)"/><stop offset="45%" stop-color="${c}"/><stop offset="100%" stop-color="${c}"/></radialGradient>`).join("")}</defs></svg>
+            ${FLOCK.map((c, j) => {
+                const w = (40 - j * 4) * kk
+                return `<span style="width:${w}px;height:${w * 0.75}px">${butterflyArt(w, 0, { gradId: `jt-bf-${j}`, flap: 1.1 + j * 0.17 })}</span>`
+            }).join("")}
+          </div>
           <header class="jt-intro" style="left:${x0}px;top:${vh * 0.11}px;width:${introW}px">
             <p class="jt-eyebrow">${esc(CONTENT.eyebrow)}</p>
             <h2>${esc(CONTENT.heading)}</h2>
@@ -142,9 +138,7 @@ function render() {
           </div>
         </div>
         <div class="jt-progress" aria-hidden="true"><span class="jt-progress__year">${esc(CONTENT.eyebrow.split(" ")[0])}</span>${'<i></i>'.repeat(CONTENT.milestones.length + 2)}</div>
-        <div class="butterflies jt-butterflies"></div>
       </div>`
-    mountButterflies(root.querySelector(".jt-butterflies"), { ...CONTENT.butterflies, count: CONTENT.butterflies.details.length })
 
     els = {
         track: root.querySelector(".jt-track"),
@@ -157,8 +151,45 @@ function render() {
         doodles: [...root.querySelectorAll(".jt-doodle")],
         dots: [...root.querySelectorAll(".jt-progress i")],
         year: root.querySelector(".jt-progress__year"),
+        flock: root.querySelector(".jt-flock"),
+        birds: [...root.querySelectorAll(".jt-flock > span")].map((el) => ({ el, tilt: el.querySelector(".bf__tilt") })),
     }
+    flock.st = []
+    flock.last = 0
 }
+
+// the flock: each butterfly chases a point near the pen tip, bobbing above / below the line
+// and turning with its motion (same maths as the Framer DesignerTimeline)
+const flock = { st: [], last: 0, raf: 0, tipX: 0 }
+function flutter(now) {
+    const dt = Math.min(0.05, (now - flock.last) / 1000)
+    const snap = !flock.last || reduced
+    flock.last = now
+    const t = now / 1000
+    const { yFn, kk } = geo
+    els.birds.forEach((b, j) => {
+        const w = (40 - j * 4) * kk
+        const lag = (j === 0 ? -30 : 60 + (j - 1) * 105) * kk
+        const ph = j * 2.1
+        const side = j % 2 === 0 ? -1 : 1
+        const tx = flock.tipX - lag + Math.sin(t * 0.8 + ph) * 24 * kk
+        const s = (flock.st[j] ||= { x: tx, y: yFn(tx) + side * 44 * kk, h: 0 })
+        const px = s.x, py = s.y
+        s.x += (tx - s.x) * (snap ? 1 : Math.min(1, dt * 2.4))
+        const ty = yFn(s.x) + side * (44 + 22 * Math.sin(t * 1.1 + ph * 1.7)) * kk + 14 * Math.sin(t * 2.3 + ph) * kk
+        s.y += (ty - s.y) * (snap ? 1 : Math.min(1, dt * 3))
+        const head = clamp(Math.atan2(s.y - py, Math.abs(s.x - px) + 0.35), -0.9, 0.9)
+        s.h += (head - s.h) * (snap ? 1 : Math.min(1, dt * 3))
+        b.el.style.transform = `translate3d(${(s.x - w / 2).toFixed(1)}px,${(s.y - w * 0.375).toFixed(1)}px,0)`
+        b.tilt.style.transform = `rotateZ(${(s.h * 57.3 + 90).toFixed(1)}deg) rotateX(24deg)`
+    })
+    flock.raf = reduced ? 0 : requestAnimationFrame(flutter)
+}
+new IntersectionObserver(([e]) => {
+    cancelAnimationFrame(flock.raf)
+    flock.raf = 0
+    if (e.isIntersecting) (flock.last = 0), (flock.raf = requestAnimationFrame(flutter))
+}).observe(root)
 
 function apply(p) {
     const { vw, T, travel, xs, exX, yFn, tipFrac, lead } = geo
@@ -169,7 +200,9 @@ function apply(p) {
     els.clouds.style.transform = `translate3d(${-cam * 0.18}px,0,0)`
     els.drawn.style.clipPath = `inset(-40px ${Math.max(0, T - tipX)}px -40px 0)`
     els.tip.style.transform = `translate3d(${tipX}px,${yFn(tipX)}px,0)`
-    els.tip.style.opacity = 1 - clamp(wp * 3, 0, 1)
+    els.tip.style.opacity = els.flock.style.opacity = 1 - clamp(wp * 3, 0, 1)
+    flock.tipX = tipX
+    if (reduced) flutter(performance.now())
     let passed = -1
     xs.forEach((x, i) => {
         if (tipX >= x - 6) passed = i

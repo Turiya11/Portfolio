@@ -44,8 +44,8 @@ const wingArt = (mirrored, o) => `
 <svg viewBox="0 0 60 90" width="100%" height="100%" aria-hidden="true" style="display:block;overflow:visible${mirrored ? ";transform:scaleX(-1)" : ""}">
   <path d="M60 40 C 58 22, 48 6, 34 2 C 24 0, 15 8, 13 20 C 11 33, 22 45, 60 47 Z" fill="${o.edgeColor}"/>
   <path d="M60 46 C 40 44, 12 50, 7 66 C 3 80, 20 89, 35 85 C 49 81, 59 67, 60 52 Z" fill="${o.edgeColor}"/>
-  <path d="M58 40 C 56 26, 47 12, 36 8.5 C 29 6.5, 22 12, 21 22 C 20 32, 28 41, 58 43 Z" fill="url(#bf-grad)"/>
-  <path d="M58 49 C 42 47, 20 52, 15 66 C 12 76, 22 81, 32 78 C 44 74, 55 64, 58 54 Z" fill="url(#bf-grad)"/>
+  <path d="M58 40 C 56 26, 47 12, 36 8.5 C 29 6.5, 22 12, 21 22 C 20 32, 28 41, 58 43 Z" fill="url(#${o.gradId || "bf-grad"})"/>
+  <path d="M58 49 C 42 47, 20 52, 15 66 C 12 76, 22 81, 32 78 C 44 74, 55 64, 58 54 Z" fill="url(#${o.gradId || "bf-grad"})"/>
   <path d="M58 42 L25 21 M58 42 L35 10 M58 42 L21 31 M58 42 L28 38 M58 50 L18 62 M58 50 L24 74 M58 50 L38 77 M58 50 L16 70" stroke="${o.edgeColor}" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.85"/>
   ${[...FORE_DOTS, ...HIND_DOTS].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${o.dotColor}"/>`).join("")}
 </svg>`
@@ -60,13 +60,14 @@ const bodyArt = (o) => `
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c])
 
-// A single butterfly (same art as the hero ones) for decoration elsewhere, e.g. the timeline pen tip.
+// A single butterfly (same art as the hero ones) for decoration elsewhere, e.g. the timeline flock.
+// options.gradId picks a wing gradient defined by the caller; options.flap is the flap duration (s).
 export function butterflyArt(size, rot = 15, options = {}) {
     const o = { ...DEFAULTS, ...options }
     return `<span class="bf__scale"><span class="bf__persp" style="perspective:${size * 3.2}px">
       <span class="bf__tilt" style="transform:rotateZ(${rot}deg) rotateX(24deg)">
-        <span class="bf__wing bf__wing--l" style="--flap:2s">${wingArt(false, o)}</span>
-        <span class="bf__wing bf__wing--r" style="--flap:2s">${wingArt(true, o)}</span>
+        <span class="bf__wing bf__wing--l" style="--flap:${o.flap || 2}s">${wingArt(false, o)}</span>
+        <span class="bf__wing bf__wing--r" style="--flap:${o.flap || 2}s">${wingArt(true, o)}</span>
         ${bodyArt(o)}
       </span></span></span>`
 }
