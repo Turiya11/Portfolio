@@ -16,7 +16,7 @@ const CONTENT = {
         { year: "2025", period: "Studio project · 2025", kicker: "thinking in systems", title: "Dentigo", org: "B2B platform for dental clinics & labs", text: "Brought restorations, supplies and clinic–lab communication into one transparent flow to cut remakes, delays and staff workload.", tags: ["B2B", "Service design", "Web app"], link: ["Read the case study", "#work"] },
         { year: "2026", period: "March 2026 — now", kicker: "going end-to-end", title: "Product Design Intern", org: "SSK Technologies · 3TFlow", text: "End-to-end flows across 2000+ ITSM screens for 5 user roles — ticket assignment cut from 6 steps to 3, a Reports module, SLA tracking and a design system of 4000+ components.", tags: ["ITSM", "Design systems", "Enterprise"], link: ["Read the case study", "#work"] },
     ],
-    finale: { year: "2026", connector: "and now I'm an", title: "End-to-end product & interaction designer", text: "Research to release — systems, flows, data and the small moments that make them feel alive.", cta: ["See my work", "#work"] },
+    finale: { label: "Today", year: "2026", connector: "and now I'm an", title: "End-to-end product & interaction designer", text: "Research to release — systems, flows, data and the small moments that make them feel alive.", cta: ["See my work", "#work"] },
 }
 
 const NODE_COLORS = ["#B9A8FF", "#FF9EB5", "#7CC2F6", "#F5C518", "#C4E727", "#FFB27A", "#8F7BEA"]
@@ -37,8 +37,8 @@ function layout() {
     const compact = vh < 760 || mobile
     const kk = clamp(Math.min(vw / 1440, vh / 860), 0.62, 1.1)
     const n = CONTENT.milestones.length
-    const cardW = mobile ? Math.min(vw * 0.82, 360) : clamp(vw * 0.25, 300, 380)
-    const step = mobile ? vw * 0.9 : cardW * 0.8
+    const cardW = mobile ? Math.min(vw * 0.86, 380) : clamp(vw * 0.31, 360, 470)
+    const step = mobile ? vw * 0.92 : cardW * 0.78
     const tipFrac = mobile ? 0.5 : 0.58
     const lead = mobile ? vw * 0.42 : 6 // phones reveal a card as its node approaches
     const x0 = mobile ? 22 : vw * 0.06
@@ -113,11 +113,12 @@ function render() {
         </div>
         <div class="jt-finale">
           <svg class="jt-wave" viewBox="0 0 100 1000" preserveAspectRatio="none" style="width:${Math.round(vw * 0.08)}px" aria-hidden="true">
-            <defs><linearGradient id="jt-sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4D56A5"/><stop offset=".55" stop-color="#C579AD"/><stop offset="1" stop-color="#FF9E7C"/></linearGradient></defs>
+            <defs><linearGradient id="jt-sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BBDAFE"/><stop offset="1" stop-color="#BBDAFE"/></linearGradient></defs>
             <path d="M100 0 L100 1000 L60 1000 C20 930 90 860 50 790 S20 650 60 580 S90 440 40 370 S25 230 65 160 S85 70 55 0 Z" fill="url(#jt-sg)"/>
           </svg>
           <div class="jt-sunset">
             <div class="jt-glass">
+              <p class="jt-label">${esc(f.label)}</p>
               <p class="jt-year">${esc(f.year)}</p>
               <p class="jt-connector">${esc(f.connector)}</p>
               <h3>${esc(f.title)}</h3>
