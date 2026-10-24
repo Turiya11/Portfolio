@@ -1,0 +1,217 @@
+<!doctype html>
+<!--
+  One-off asset builder (dev only). Open in headless Chrome; it writes the
+  generated images as data URLs into #out, which tools/build-assets.mjs saves.
+  - window.webp : the window illustration with the paper around it and the
+                  window panes made transparent, linework + figure kept
+  - cloud-N.webp: soft cumulus sprites (white + alpha) for the floating clouds
+  - stars.webp  : night sky stars
+-->
+<meta charset="utf-8" />
+<pre id="out">pending</pre>
+<script>
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
+function mulberry32(a) {
+    return function () {
+        a |= 0
+        a = (a + 0x6d2b79f5) | 0
+        let t = Math.imul(a ^ (a >>> 15), 1 | a)
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+    }
+}
+
+/* ---------------- window illustration ---------------- */
+
+// fractions of the source image (2000 x 1531)
+const PANE_LEFT = [0.064, 0.162, 0.504, 0.838] // the sunset photo pane
+const PANE_RIGHT_SEED = [0.55, 0.26] // inside the right pane, behind the figure
+
+async function buildWindow() {
+    const img = new Image()
+    img.src = "window-source.webp"
+    await img.decode()
+    const W = 1400
+    const H = Math.round((img.naturalHeight / img.naturalWidth) * W)
+    const c = document.createElement("canvas")
+    c.width = W
+    c.height = H
+    const ctx = c.getContext("2d")
+    ctx.drawImage(img, 0, 0, W, H)
+    const data = ctx.getImageData(0, 0, W, H)
+    const d = data.data
+    const lum = new Float32Array(W * H)
+    for (let i = 0; i < W * H; i++) lum[i] = (0.2126 * d[i * 4] + 0.7152 * d[i * 4 + 1] + 0.0722 * d[i * 4 + 2]) / 255
+    const clear = new Uint8Array(W * H) // 1 = becomes sky
+
+    // 1) the photo pane: clear the glass (flood from its centre, stopping at the ink frame),
+    //    and paint the photo's overhang on the frame bars back to white
+    const [px0, py0, px1, py1] = [PANE_LEFT[0] * W, PANE_LEFT[1] * H, PANE_LEFT[2] * W, PANE_LEFT[3] * H].map(Math.round)
+    const inPane = (x, y) => x >= px0 && x < px1 && y >= py0 && y < py1
+    {
+        const q = new Int32Array(W * H)
+        let head = 0
+        let tail = 0
+        const seed = Math.round((py0 + py1) / 2) * W + Math.round((px0 + px1) / 2)
+        clear[seed] = 1
+        q[tail++] = seed
+        while (head < tail) {
+            const i = q[head++]
+            const x = i % W
+            const y = (i / W) | 0
+            for (const [nx, ny] of [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]]) {
+                if (!inPane(nx, ny)) continue
+                const n = ny * W + nx
+                if (!clear[n] && lum[n] > 0.3) {
+                    clear[n] = 1
+                    q[tail++] = n
+                }
+            }
+        }
+        for (let y = py0; y < py1; y++)
+            for (let x = px0; x < px1; x++) {
+                const i = y * W + x
+                if (!clear[i] && lum[i] > 0.3) {
+                    d[i * 4] = d[i * 4 + 1] = d[i * 4 + 2] = 255
+                    lum[i] = 1
+                }
+            }
+    }
+
+    // 2) flood fill paper (from the borders) and the right pane (from a seed)
+    const fill = (seeds, thresh) => {
+        const q = new Int32Array(W * H)
+        let head = 0
+        let tail = 0
+        for (const s of seeds) if (!clear[s] && lum[s] > thresh) { clear[s] = 2; q[tail++] = s }
+        while (head < tail) {
+            const i = q[head++]
+            const x = i % W
+            const y = (i / W) | 0
+            const nb = [x > 0 ? i - 1 : -1, x < W - 1 ? i + 1 : -1, y > 0 ? i - W : -1, y < H - 1 ? i + W : -1]
+            for (const n of nb) if (n >= 0 && !clear[n] && lum[n] > thresh) { clear[n] = 2; q[tail++] = n }
+        }
+    }
+    const border = []
+    for (let x = 0; x < W; x++) border.push(x, (H - 1) * W + x)
+    for (let y = 0; y < H; y++) border.push(y * W, y * W + W - 1)
+    fill(border, 0.82)
+    fill([Math.round(PANE_RIGHT_SEED[1] * H) * W + Math.round(PANE_RIGHT_SEED[0] * W)], 0.86)
+
+    // 3) write alpha; soften the ink edge next to cleared areas (no white halo)
+    for (let i = 0; i < W * H; i++) {
+        if (clear[i]) {
+            d[i * 4 + 3] = 0
+            continue
+        }
+        const x = i % W
+        const y = (i / W) | 0
+        const edge =
+            (x > 0 && clear[i - 1]) || (x < W - 1 && clear[i + 1]) || (y > 0 && clear[i - W]) || (y < H - 1 && clear[i + W])
+        if (edge) {
+            const a = clamp((0.95 - lum[i]) / 0.65, 0, 1)
+            d[i * 4] = 28
+            d[i * 4 + 1] = 24
+            d[i * 4 + 2] = 40
+            d[i * 4 + 3] = Math.round(a * 255)
+        }
+    }
+    ctx.putImageData(data, 0, 0)
+    return { url: c.toDataURL("image/webp", 0.92), w: W, h: H }
+}
+
+/* ---------------- clouds ---------------- */
+
+function makeNoise(seed) {
+    const rand = mulberry32(seed)
+    const G = 64
+    const lat = new Float32Array(G * G).map(() => rand())
+    const val = (x, y) => lat[((x % G) + G) % G + (((y % G) + G) % G) * G]
+    return (x, y) => {
+        const xi = Math.floor(x)
+        const yi = Math.floor(y)
+        const fx = x - xi
+        const fy = y - yi
+        const sx = fx * fx * (3 - 2 * fx)
+        const sy = fy * fy * (3 - 2 * fy)
+        const a = val(xi, yi), b = val(xi + 1, yi), c = val(xi, yi + 1), e = val(xi + 1, yi + 1)
+        return a + (b - a) * sx + (c - a) * sy + (a - b - c + e) * sx * sy
+    }
+}
+
+function buildCloud(seed) {
+    const rand = mulberry32(seed * 97 + 3)
+    const noise = makeNoise(seed)
+    const W = 640
+    const H = 300
+    const base = H * 0.74
+    // puffs along a soft baseline, taller in the middle
+    const n = 6 + Math.floor(rand() * 4)
+    const puffs = []
+    for (let k = 0; k < n; k++) {
+        const t = (k + 0.5) / n
+        const cx = W * (0.14 + 0.72 * t + (rand() - 0.5) * 0.06)
+        const r = H * (0.16 + 0.22 * Math.sin(Math.PI * t) * (0.7 + rand() * 0.6))
+        puffs.push([cx, base - r * (0.45 + rand() * 0.35), r])
+    }
+    const c = document.createElement("canvas")
+    c.width = W
+    c.height = H
+    const ctx = c.getContext("2d")
+    const img = ctx.createImageData(W, H)
+    for (let y = 0; y < H; y++)
+        for (let x = 0; x < W; x++) {
+            let dens = 0
+            for (const [px, py, r] of puffs) {
+                const dx = (x - px) / r
+                const dy = (y - py) / r
+                dens = Math.max(dens, Math.exp(-(dx * dx + dy * dy) * 1.6))
+            }
+            let f = 0
+            let amp = 0.5
+            let fr = 1 / 56
+            for (let o = 0; o < 5; o++) {
+                f += amp * noise(x * fr, y * fr)
+                amp *= 0.5
+                fr *= 2
+            }
+            const flat = clamp((base + 16 - y) / 40, 0, 1) // soft, flat-ish underside
+            // strong noise breaks the puffs into wispy, irregular edges
+            const v = dens * (0.35 + 1.15 * f) * flat
+            const a = clamp((v - 0.36) / 0.34, 0, 1)
+            const i = (y * W + x) * 4
+            img.data[i] = img.data[i + 1] = img.data[i + 2] = 255
+            img.data[i + 3] = Math.round(a * a * (3 - 2 * a) * 255)
+        }
+    ctx.putImageData(img, 0, 0)
+    return c.toDataURL("image/webp", 0.9)
+}
+
+/* ---------------- stars ---------------- */
+
+function buildStars() {
+    const rand = mulberry32(5)
+    const c = document.createElement("canvas")
+    c.width = 1400
+    c.height = 800
+    const ctx = c.getContext("2d")
+    for (let i = 0; i < 320; i++) {
+        const r = rand() < 0.07 ? 1.6 : 0.5 + rand() * 0.8
+        ctx.fillStyle = `rgba(255,255,255,${(0.35 + rand() * 0.65).toFixed(2)})`
+        ctx.beginPath()
+        ctx.arc(rand() * 1400, rand() * 800 * 0.85, r, 0, Math.PI * 2)
+        ctx.fill()
+    }
+    return c.toDataURL("image/webp", 0.9)
+}
+
+;(async () => {
+    const out = {}
+    const w = await buildWindow()
+    out["window.webp"] = w.url
+    out.windowSize = [w.w, w.h]
+    for (let k = 1; k <= 5; k++) out[`cloud-${k}.webp`] = buildCloud(k)
+    out["stars.webp"] = buildStars()
+    document.getElementById("out").textContent = JSON.stringify(out)
+})()
+</script>
