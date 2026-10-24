@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Turiya Joshi — Product Designer</title>
+        <meta name="description" content="Turiya Joshi — a product designer with an artist's eye. UX, interaction and visual design from Pune, India." />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Shadows+Into+Light+Two&family=Mona+Sans:wght@400;500;600;700&display=swap"
+        />
+        <link rel="preload" as="image" href="assets/images/window.webp" />
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body>
+        <header class="nav">
+            <a class="nav__logo" href="#top">turiya</a>
+            <nav class="nav__links" aria-label="Main">
+                <a href="#work">Work</a>
+                <a href="#journey">Journey</a>
+                <a href="#about">About</a>
+                <a href="mailto:itsturiyajoshi11@gmail.com">Contact</a>
+            </nav>
+        </header>
+
+        <main id="top">
+            <section class="hero" id="hero" aria-label="Introduction">
+                <!-- the sky: hidden until you look out of the window -->
+                <div class="sky" aria-hidden="true">
+                    <div class="sky__stars"></div>
+                    <div class="sky__haze"></div>
+                    <div class="sky__sun"></div>
+                    <div class="sky__moon"></div>
+                    <div class="clouds">
+                        <span class="cloud" style="--img: url(../assets/images/cloud-1.webp); --y: 9%; --w: 440px; --dur: 150s; --delay: -20s; --o: 0.9"></span>
+                        <span class="cloud" style="--img: url(../assets/images/cloud-2.webp); --y: 26%; --w: 300px; --dur: 190s; --delay: -120s; --o: 0.7"></span>
+                        <span class="cloud" style="--img: url(../assets/images/cloud-3.webp); --y: 48%; --w: 520px; --dur: 170s; --delay: -75s; --o: 0.85"></span>
+                        <span class="cloud" style="--img: url(../assets/images/cloud-4.webp); --y: 66%; --w: 380px; --dur: 210s; --delay: -150s; --o: 0.75"></span>
+                        <span class="cloud" style="--img: url(../assets/images/cloud-5.webp); --y: 16%; --w: 260px; --dur: 230s; --delay: -40s; --o: 0.6"></span>
+                        <span class="cloud" style="--img: url(../assets/images/cloud-2.webp); --y: 78%; --w: 460px; --dur: 180s; --delay: -100s; --o: 0.8"></span>
+                        <span class="cloud" style="--img: url(../assets/images/cloud-4.webp); --y: 38%; --w: 220px; --dur: 250s; --delay: -190s; --o: 0.55"></span>
+                    </div>
+                </div>
+                <div class="grain" aria-hidden="true"></div>
+
+                <div class="hero__inner">
+                    <div class="hero__copy">
+                        <p class="hello">hi, I'm Turiya</p>
+                        <h1 class="headline">
+                            a <span class="hl"><span class="hl__box" aria-hidden="true"></span>Product Designer</span><br />
+                            with an
+                            <span class="scribble"
+                                >artist's eye<svg class="scribble__wave" viewBox="0 0 184 19" preserveAspectRatio="none" aria-hidden="true">
+                                    <path
+                                        pathLength="1"
+                                        transform="translate(4 5)"
+                                        d="M0 8C0 8 10.698 0 22.776 0C34.855 0 35.373 8 48.314 8C61.255 8 61.082 0 74.541 0C88 0 88 8 102.149 8C116.298 8 116.816 0 131.137 0C145.459 0 148.22 8 159.435 8C170.651 8 176 0 176 0"
+                                    /></svg
+                                ><svg class="scribble__spark" viewBox="0 0 66 55" aria-hidden="true">
+                                    <path pathLength="1" transform="translate(12 7.5)" d="M0 25.5L7.5 0" />
+                                    <path pathLength="1" transform="translate(20 27.5)" d="M0 11.5L18.5 0" />
+                                    <path pathLength="1" transform="translate(23.5 49.5)" d="M0 0L26 1.5" /></svg
+                            ></span>
+                        </h1>
+                        <p class="tagline">Not just visuals — I make digital things look alive.</p>
+                        <p class="meta">
+                            <span class="status"><i aria-hidden="true"></i>Available for work</span>
+                            <span class="place">Pune, India</span>
+                        </p>
+                    </div>
+
+                    <figure class="window">
+                        <button class="window__button" type="button" aria-label="Look out of the window: show the sky" aria-pressed="false">
+                            <img
+                                src="assets/images/window.webp"
+                                width="1400"
+                                height="1072"
+                                alt="Illustration of me at a window, chin in hand, looking out"
+                            />
+                        </button>
+                        <figcaption class="window__hint"><span class="hint--hover">hover the window</span><span class="hint--tap">tap the window</span></figcaption>
+                    </figure>
+                </div>
+
+                <!-- hoverable butterflies (butterflies.js) -->
+                <div class="butterflies"></div>
+
+                <!-- time of day: thin bar on the right -->
+                <aside class="timebar" aria-label="Time of day">
+                    <button class="timebar__auto" type="button" aria-pressed="true" title="Follow your local time">auto</button>
+                    <div class="timebar__rail">
+                        <div
+                            class="timebar__track"
+                            role="slider"
+                            tabindex="0"
+                            aria-label="Time of day"
+                            aria-orientation="vertical"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                            aria-valuenow="22"
+                        >
+                            <span class="timebar__thumb"></span>
+                        </div>
+                        <ol class="timebar__stops"></ol>
+                    </div>
+                    <p class="timebar__readout" aria-live="polite"><span class="timebar__clock"></span><span class="timebar__name"></span></p>
+                </aside>
+            </section>
+
+            <!-- My design journey (js/journey.js builds it) -->
+            <section class="journey" id="journey" aria-label="My design journey"></section>
+        </main>
+
+        <script src="js/hero.js" type="module"></script>
+        <script src="js/journey.js" type="module"></script>
+    </body>
+</html>
