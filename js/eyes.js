@@ -1,4 +1,4 @@
-// Googly-eyes cursor: two eyes follow the mouse and their pupils wobble towards where it's heading.
+// Googly-eyes cursor: two eyes ride beside the normal arrow and their pupils wobble towards where it's heading.
 // Mouse / trackpad only — touch screens keep the normal behaviour.
 if (matchMedia("(pointer: fine)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const eyes = document.createElement("div")
@@ -6,7 +6,6 @@ if (matchMedia("(pointer: fine)").matches && !matchMedia("(prefers-reduced-motio
     eyes.setAttribute("aria-hidden", "true")
     eyes.innerHTML = `<span class="eye"><i></i></span><span class="eye"><i></i></span>`
     document.body.append(eyes)
-    document.documentElement.classList.add("has-eyes")
     const pupils = [...eyes.querySelectorAll("i")]
 
     const MAX = 5 // how far a pupil can roll from the centre (px)
