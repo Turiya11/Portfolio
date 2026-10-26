@@ -1133,7 +1133,7 @@ button {
     padding: 18px 20px 20px;
     border-radius: 24px;
     opacity: 0;
-    transform: translateY(var(--from)) scale(0.97);
+    transform: translateY(var(--from)) scale(calc(var(--fit, 1) * 0.97));
     transition:
         opacity 0.7s ease 0.15s,
         transform 0.9s cubic-bezier(0.2, 0.9, 0.25, 1) 0.15s;
@@ -1143,7 +1143,7 @@ button {
 }
 .jt-mark.on .jt-card {
     opacity: 1;
-    transform: none;
+    transform: scale(var(--fit, 1)); /* --fit < 1 only when a card wouldn't fit the screen (journey.js) */
 }
 .jt-card__top {
     display: flex;
@@ -1185,31 +1185,41 @@ button {
     color: var(--soft);
 }
 .jt-text {
-    margin: 10px 0 0;
+    margin: 8px 0 0;
     font-size: 14.5px;
-    line-height: 1.5;
+    line-height: 1.45;
     color: var(--soft);
 }
 .jt-card.is-compact .jt-text {
     margin-top: 8px;
     font-size: 13.5px;
 }
-.jt-tags {
+/* tags and the case-study link share one row */
+.jt-card__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 14px;
     margin-top: 12px;
+}
+.jt-card.is-compact .jt-card__foot {
+    margin-top: 8px;
+}
+.jt-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
 }
 .jt-tags span {
-    padding: 4px 10px;
+    padding: 3px 9px;
     border-radius: 999px;
     border: 1px solid;
     background: rgba(255, 255, 255, 0.4);
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 500;
 }
 .jt-card.is-compact .jt-tags {
-    margin-top: 8px;
     gap: 5px;
 }
 .jt-card.is-compact .jt-tags span {
@@ -1226,8 +1236,8 @@ button {
     transition: gap 0.3s ease;
 }
 .jt-link {
-    margin-top: 12px;
-    font-size: 14px;
+    font-size: 13.5px;
+    white-space: nowrap;
     color: var(--accent);
 }
 .jt-link:hover,
