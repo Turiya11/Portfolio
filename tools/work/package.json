@@ -1,0 +1,8 @@
+{
+  "name": "work-pages",
+  "private": true,
+  "type": "module",
+  "description": "Builds the case-study pages from the Framer code components (src/*.tsx) into ../../work/",
+  "scripts": { "build": "node build.mjs" },
+  "devDependencies": { "esbuild": "0.23.1", "react": "18.3.1", "react-dom": "18.3.1" }
+}
