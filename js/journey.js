@@ -63,7 +63,6 @@ function render() {
     geo = layout()
     const { vw, vh, kk, cardW, compact, x0, introW, xs, T, yFn, d, exX } = geo
     const gap = compact ? 28 : 44 * kk
-    const clampText = compact ? ` style="-webkit-line-clamp:${vh < 700 ? 3 : 4}"` : ""
 
     const doodles = CONTENT.doodles
         .map((label, k) => {
@@ -89,7 +88,7 @@ function render() {
                 <div class="jt-card__top"><span class="jt-kicker">${esc(m.kicker)}</span><span class="jt-period">${esc(m.period)}</span></div>
                 <h3>${esc(m.title)}</h3>
                 <p class="jt-org">${esc(m.org)}</p>
-                <p class="jt-text"${clampText}>${esc(m.text)}</p>
+                <p class="jt-text">${esc(m.text)}</p>
                 <div class="jt-tags">${m.tags.map((t) => `<span style="border-color:${color}">${esc(t)}</span>`).join("")}</div>
                 ${m.link ? `<a class="jt-link" href="${m.link[1]}">${esc(m.link[0])} <span aria-hidden="true">→</span></a>` : ""}
               </article></div>`
