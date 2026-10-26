@@ -40,7 +40,7 @@ function layout() {
     const compact = vh < 760 || mobile
     const kk = clamp(Math.min(vw / 1440, vh / 860), 0.62, 1.1)
     const n = CONTENT.milestones.length
-    const cardW = mobile ? Math.min(vw * 0.86, 380) : clamp(vw * 0.31, 360, 470)
+    const cardW = mobile ? Math.min(vw * 0.86, 380) : clamp(vw * 0.34, 380, 520) // wide cards = fewer lines = shorter cards
     const step = mobile ? vw * 0.92 : cardW * 0.78
     const tipFrac = mobile ? 0.5 : 0.58
     const lead = mobile ? vw * 0.42 : 6 // phones reveal a card as its node approaches
@@ -89,8 +89,10 @@ function render() {
                 <h3>${esc(m.title)}</h3>
                 <p class="jt-org">${esc(m.org)}</p>
                 <p class="jt-text">${esc(m.text)}</p>
-                <div class="jt-tags">${m.tags.map((t) => `<span style="border-color:${color}">${esc(t)}</span>`).join("")}</div>
-                ${m.link ? `<a class="jt-link" href="${m.link[1]}">${esc(m.link[0])} <span aria-hidden="true">→</span></a>` : ""}
+                <div class="jt-card__foot">
+                  <div class="jt-tags">${m.tags.map((t) => `<span style="border-color:${color}">${esc(t)}</span>`).join("")}</div>
+                  ${m.link ? `<a class="jt-link" href="${m.link[1]}">${esc(m.link[0])} <span aria-hidden="true">→</span></a>` : ""}
+                </div>
               </article></div>`
         })
         .join("")
@@ -155,6 +157,23 @@ function render() {
     }
     flock.st = []
     flock.last = 0
+    fitCards()
+}
+
+// keep every card on screen: between the nav (top) and the bottom edge; a card that's still too tall
+// after the wide layout is scaled down a touch, anchored at its stem
+const NAV_CLEAR = 76
+function fitCards() {
+    const { vh, xs, yFn, compact, kk } = geo
+    const gap = compact ? 28 : 44 * kk
+    els.marks.forEach((mark, i) => {
+        const card = mark.querySelector(".jt-card")
+        const above = i % 2 === 1
+        const y = yFn(xs[i])
+        const room = above ? y - 24 - gap - NAV_CLEAR : vh - 16 - (y + 24 + gap)
+        card.style.transformOrigin = above ? "50% 100%" : "50% 0%"
+        card.style.setProperty("--fit", Math.min(1, room / card.offsetHeight).toFixed(3))
+    })
 }
 
 // the flock: each butterfly chases a point near the pen tip, bobbing above / below the line
@@ -252,3 +271,6 @@ addEventListener("resize", () => {
     render()
     apply((cur = goal = progress()))
 })
+
+// card heights depend on the web fonts: fit again once they have loaded
+document.fonts?.ready.then(() => geo && fitCards())
