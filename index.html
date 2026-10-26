@@ -12,7 +12,7 @@
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Caveat:wght@500;600&family=Shadows+Into+Light+Two&family=Mona+Sans:wght@400;500;600;700&display=swap"
         />
         <link rel="preload" as="image" href="assets/images/window.webp" />
-        <link rel="stylesheet" href="css/styles.css?v=8" />
+        <link rel="stylesheet" href="css/styles.css?v=9" />
     </head>
     <body>
         <!-- top nav: centred, fixed; a gooey pill follows the hovered tab (port of the Framer Liquid Gooey nav) -->
@@ -84,6 +84,26 @@
                                 alt="Illustration of me at a window, chin in hand, looking out"
                             />
                         </button>
+                        <!-- time of day: thin bar under the window (inside the hover area, so the sky stays while you use it) -->
+                        <aside class="timebar" aria-label="Time of day">
+                            <button class="timebar__auto" type="button" aria-pressed="true" title="Follow your local time">auto</button>
+                            <div class="timebar__rail">
+                                <div
+                                    class="timebar__track"
+                                    role="slider"
+                                    tabindex="0"
+                                    aria-label="Time of day"
+                                    aria-orientation="horizontal"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                    aria-valuenow="22"
+                                >
+                                    <span class="timebar__thumb"></span>
+                                </div>
+                                <ol class="timebar__stops"></ol>
+                            </div>
+                            <p class="timebar__readout" aria-live="polite"><span class="timebar__clock"></span><span class="timebar__name"></span></p>
+                        </aside>
                         <figcaption class="window__hint"><span class="hint--hover">hover the window</span><span class="hint--tap">tap the window</span></figcaption>
                     </figure>
                 </div>
@@ -91,35 +111,15 @@
                 <!-- hoverable butterflies (butterflies.js) -->
                 <div class="butterflies"></div>
 
-                <!-- time of day: thin bar on the right -->
-                <aside class="timebar" aria-label="Time of day">
-                    <button class="timebar__auto" type="button" aria-pressed="true" title="Follow your local time">auto</button>
-                    <div class="timebar__rail">
-                        <div
-                            class="timebar__track"
-                            role="slider"
-                            tabindex="0"
-                            aria-label="Time of day"
-                            aria-orientation="vertical"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                            aria-valuenow="22"
-                        >
-                            <span class="timebar__thumb"></span>
-                        </div>
-                        <ol class="timebar__stops"></ol>
-                    </div>
-                    <p class="timebar__readout" aria-live="polite"><span class="timebar__clock"></span><span class="timebar__name"></span></p>
-                </aside>
             </section>
 
             <!-- My design journey (js/journey.js builds it) -->
             <section class="journey" id="journey" aria-label="My design journey"></section>
         </main>
 
-        <script src="js/hero.js?v=8" type="module"></script>
-        <script src="js/journey.js?v=8" type="module"></script>
-        <script src="js/nav.js?v=8" type="module"></script>
-        <script src="js/eyes.js?v=8" type="module"></script>
+        <script src="js/hero.js?v=9" type="module"></script>
+        <script src="js/journey.js?v=9" type="module"></script>
+        <script src="js/nav.js?v=9" type="module"></script>
+        <script src="js/eyes.js?v=9" type="module"></script>
     </body>
 </html>
