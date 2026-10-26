@@ -684,20 +684,17 @@ button {
 /* ------------------------------ time bar ------------------------------ */
 
 .timebar {
-    position: absolute;
+    position: relative;
     z-index: 5;
-    right: clamp(14px, 2vw, 32px);
-    top: 50%;
-    translate: 0 -50%;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
+    margin: 18px 6% 0;
+    padding-top: 26px; /* room for the stop labels above the track */
     opacity: 0.55;
     transition: opacity 0.5s ease;
 }
 .hero.is-awake .timebar,
-.timebar:hover,
 .timebar:focus-within {
     opacity: 1;
 }
@@ -725,8 +722,8 @@ button {
 }
 .timebar__rail {
     position: relative;
-    height: clamp(160px, 30vh, 260px);
-    width: 8px;
+    flex: 1;
+    height: 8px;
 }
 .timebar__track {
     position: absolute;
@@ -741,7 +738,7 @@ button {
 .timebar__track::before {
     content: "";
     position: absolute;
-    inset: -8px -14px;
+    inset: -14px -8px;
 }
 .timebar__track:focus-visible {
     outline: 2px solid var(--hero-accent);
@@ -749,8 +746,8 @@ button {
 }
 .timebar__thumb {
     position: absolute;
-    left: 50%;
-    top: calc(var(--pos, 0.22) * 100%);
+    top: 50%;
+    left: calc(var(--pos, 0.22) * 100%);
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -759,7 +756,7 @@ button {
     box-shadow:
         0 0 0 1px rgba(29, 25, 50, 0.12),
         0 4px 12px -2px rgba(40, 30, 95, 0.35);
-    transition: top 0.5s var(--ease);
+    transition: left 0.5s var(--ease);
     pointer-events: none;
 }
 .hero.is-dragging .timebar__thumb {
@@ -772,9 +769,9 @@ button {
 }
 .timebar__stops li {
     position: absolute;
-    right: calc(100% + 12px);
-    top: calc(var(--t) * 100%);
-    translate: 0 -50%;
+    bottom: calc(100% + 8px);
+    left: calc(var(--t) * 100%);
+    translate: -50% 0;
 }
 .timebar__stops button {
     padding: 1px 8px 2px;
@@ -789,7 +786,7 @@ button {
     color: var(--hero-ink);
     cursor: pointer;
     opacity: 0;
-    translate: 6px 0;
+    translate: 0 4px;
     pointer-events: none;
     transition:
         opacity 0.25s ease,
@@ -798,7 +795,7 @@ button {
 .timebar__stops button:hover {
     color: var(--hero-accent);
 }
-.timebar:hover .timebar__stops button,
+.hero.is-awake .timebar__stops button,
 .timebar:focus-within .timebar__stops button {
     opacity: 1;
     translate: 0 0;
@@ -808,8 +805,8 @@ button {
     /* tiny tick on the track */
     content: "";
     position: absolute;
-    right: -16px;
-    top: 50%;
+    left: 50%;
+    top: calc(100% + 11px);
     width: 2px;
     height: 2px;
     border-radius: 50%;
@@ -818,7 +815,8 @@ button {
 }
 .timebar__readout {
     margin: 0;
-    text-align: center;
+    min-width: 76px;
+    text-align: left;
     font-size: 11.5px;
     font-weight: 600;
     letter-spacing: 0.02em;
@@ -844,7 +842,7 @@ button {
         flex-direction: column;
         justify-content: center;
         height: 100%;
-        padding: 88px 52px 28px 20px;
+        padding: 88px 20px 28px;
         gap: 20px;
     }
     .headline {
@@ -871,10 +869,7 @@ button {
         object-fit: contain;
     }
     .timebar {
-        right: 12px;
-    }
-    .timebar__rail {
-        height: 180px;
+        margin: 12px 2% 0;
     }
 }
 
