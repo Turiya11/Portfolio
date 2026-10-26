@@ -167,18 +167,19 @@ function sleep() {
 
 const canHover = matchMedia("(hover: hover)").matches
 
-// looking out of the window opens the sky; it stays while you're in the hero
-windowBtn.addEventListener("pointerenter", (e) => {
+// the sky opens while the mouse is over the window (or the time bar under it) and fades back to paper when it leaves
+const windowEl = hero.querySelector(".window")
+windowEl.addEventListener("pointerenter", (e) => {
     if (e.pointerType === "mouse") wake()
 })
-hero.addEventListener("pointerleave", (e) => {
-    if (e.pointerType !== "mouse") return
-    sleepTimer = setTimeout(sleep, 250)
+windowEl.addEventListener("pointerleave", (e) => {
+    if (e.pointerType !== "mouse" || hero.classList.contains("is-dragging")) return
+    sleepTimer = setTimeout(sleep, 200)
 })
-hero.addEventListener("pointerenter", () => clearTimeout(sleepTimer))
 
-// tap / click / keyboard toggles it
-windowBtn.addEventListener("click", () => {
+// tap / keyboard toggles it (a mouse click does nothing extra: with a mouse the sky just follows hover)
+windowBtn.addEventListener("click", (e) => {
+    if (canHover && e.detail > 0) return
     if (hero.classList.contains("is-awake") && (pinned || !canHover)) {
         pinned = false
         sleep()
@@ -192,7 +193,7 @@ windowBtn.addEventListener("click", () => {
 
 const tFromPointer = (e) => {
     const r = track.getBoundingClientRect()
-    return (e.clientY - r.top) / r.height
+    return (e.clientX - r.left) / r.width
 }
 track.addEventListener("pointerdown", (e) => {
     e.preventDefault()
@@ -204,7 +205,11 @@ track.addEventListener("pointermove", (e) => {
     if (!track.hasPointerCapture(e.pointerId)) return
     setT(tFromPointer(e), { manual: true })
 })
-const endDrag = () => hero.classList.remove("is-dragging")
+const endDrag = () => {
+    hero.classList.remove("is-dragging")
+    // let go outside the window: close the sky like a normal mouse-out
+    if (!windowEl.matches(":hover")) sleepTimer = setTimeout(sleep, 200)
+}
 track.addEventListener("pointerup", endDrag)
 track.addEventListener("pointercancel", endDrag)
 
