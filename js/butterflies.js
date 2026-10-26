@@ -11,7 +11,7 @@ const DEFAULTS = {
         { tag: "Home base", title: "Pune, India", detail: "Designing from Pune." },
     ],
     padding: 48,
-    layout: "trail", // "trail" | "scattered"
+    layout: "trail", // "trail" | "scattered" (ignored for butterflies given a fixed spot in options.spots)
     count: 5,
     minSize: 14,
     maxSize: 42,
@@ -94,7 +94,9 @@ export function mountButterflies(container, options = {}) {
     const items = Array.from({ length: n }, (_, i) => {
         const t = n === 1 ? 0.5 : i / (n - 1)
         let ox, oy, size
-        if (o.layout === "trail") {
+        if (o.spots?.[i]) {
+            ;({ ox, oy, size } = o.spots[i]) // fixed spots (% of the container), e.g. the garden footer
+        } else if (o.layout === "trail") {
             ox = 12 + 70 * t + (rand() - 0.5) * 5
             oy = 24 + 46 * t + 6 * Math.sin(t * 3) + (rand() - 0.5) * 6
             size = lo + (hi - lo) * Math.pow(t, 1.5)
