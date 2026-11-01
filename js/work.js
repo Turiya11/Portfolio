@@ -9,6 +9,16 @@ const OCEAN = {
 
 const SELECTED = [
     {
+        meta: "2026 - Academic research",
+        title: "Pip",
+        text: "An AR companion that helps design students park their thoughts and come back to them at the right moment. Built on a survey of 46 students, 18 interviews and a recall experiment; prototyped for the web and Meta Quest.",
+        tags: ["AR", "Research", "Prototype"],
+        href: "work/pip/",
+        wide: true,
+        video: "assets/video/pip-walkthrough.mp4",
+        poster: "assets/images/pip/orbit.jpg",
+    },
+    {
         meta: "2026 - Academic project",
         title: "Lumi",
         text: "Lumi is a mental health support platform designed to help mothers navigate postpartum emotional challenges through gentle self-awareness, guided emotional expression, and family-centered support systems.",
@@ -22,7 +32,7 @@ const SELECTED = [
         text: "Interactive biomedical data visualisations for clinical decision-making — 5 concepts across 4 data types, tested with 6 users.",
         tags: ["Data viz", "Healthcare", "Testing"],
         href: "work/encora/",
-        ...OCEAN,
+        image: "https://framerusercontent.com/images/j8G1tbbsbdbsYuFjpUMpW6bUFFU.png",
     },
     {
         meta: "2025 - Academic project",
@@ -30,7 +40,7 @@ const SELECTED = [
         text: "A B2B platform concept connecting dental clinics and labs — restorations, supplies and clinic–lab communication in one transparent flow.",
         tags: ["B2B", "Service design", "Web app"],
         href: "work/dentigo/",
-        ...OCEAN,
+        image: "https://framerusercontent.com/images/UwgOKoXM3WWjXfm27Hwe0NUoTd0.png",
     },
     {
         meta: "2026 - Internship · SSK Technologies",
@@ -38,6 +48,7 @@ const SELECTED = [
         text: "End-to-end flows across 2000+ ITSM screens for 5 user roles — ticket assignment cut from 6 steps to 3, a Reports module, SLA tracking and a design system of 4000+ components.",
         tags: ["ITSM", "Design systems", "Enterprise"],
         href: "work/3tflow/",
+        nda: true,
         ...OCEAN,
     },
 ]
@@ -72,17 +83,19 @@ const PASSION = [
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c])
 const media = (p) =>
-    `<div class="pj-media"><video muted loop playsinline preload="none" poster="${esc(p.poster)}" aria-hidden="true"><source src="${esc(p.video)}" type="video/mp4" /></video></div>`
+    p.image
+        ? `<div class="pj-media"><img src="${esc(p.image)}" alt="" loading="lazy" /></div>`
+        : `<div class="pj-media"><video muted loop playsinline preload="none" poster="${esc(p.poster)}" aria-hidden="true"><source src="${esc(p.video)}" type="video/mp4" /></video></div>`
 const tags = (p) => `<ul class="pj-tags">${p.tags.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`
-const body = (p) => `<div class="pj-body"><p class="pj-meta">${esc(p.meta)}</p><h3 class="pj-title">${esc(p.title)}</h3><p class="pj-text">${esc(p.text)}</p>${tags(p)}</div>`
+const body = (p) => `<div class="pj-body"><p class="pj-meta">${esc(p.meta)}${p.nda ? ` <span class="pj-nda">NDA</span>` : ""}</p><h3 class="pj-title">${esc(p.title)}</h3><p class="pj-text">${esc(p.text)}</p>${tags(p)}</div>`
 
-/* ------------------------------ selected work: wide, two halves, wide … ------------------------------ */
+/* ------------------------------ selected work: `wide` cards span the row, the rest pair up ------------------------------ */
 
 const work = document.getElementById("work")
-work.querySelector(".pj-grid").innerHTML = SELECTED.map((p, i) => {
-    const wide = i % 3 === 0
-    return `<a class="pj-card${wide ? " is-wide" : ""}" href="${esc(p.href)}" aria-label="${esc(p.title)} — read the case study">${media(p)}${body(p)}</a>`
-}).join("")
+work.querySelector(".pj-grid").innerHTML = SELECTED.map(
+    (p) =>
+        `<a class="pj-card${p.wide ? " is-wide" : ""}" href="${esc(p.href)}" aria-label="${esc(p.title)}${p.nda ? " — under NDA" : " — read the case study"}">${media(p)}${body(p)}</a>`
+).join("")
 
 /* ------------------------------ passion projects: open a detail view ------------------------------ */
 
@@ -127,8 +140,8 @@ const io = new IntersectionObserver(
             const v = card.querySelector("video")
             if (e.isIntersecting) {
                 card.classList.add("is-in")
-                if (!reduced) v.play().catch(() => {})
-            } else v.pause()
+                if (v && !reduced) v.play().catch(() => {})
+            } else v?.pause()
         }
     },
     { threshold: 0.2 }
