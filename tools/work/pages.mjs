@@ -12,7 +12,6 @@ export const pages = [
         file: "LumiCaseStudy",
         title: "Lumi — case study · Turiya Joshi",
         bg: "rgb(245, 243, 234)",
-        css: ".cs-vh-media{object-fit:contain!important;background:#e2798d}", // square cover, shown whole
         props: {
             ...home,
             title: "Lumi.",
@@ -32,8 +31,7 @@ export const pages = [
             showTodos: true,
             showVideoHero: true,
             ...lumiStickies,
-            // no Lumi walkthrough video yet: the hero shows the Lumi cover; screens come from the earlier Lumi case study
-            heroPoster: { src: "../../assets/images/lumi-cover.jpg" },
+            // the hero is a blank video frame until the Lumi video is added; screens come from the earlier Lumi case study
             screen1: { src: "https://framerusercontent.com/images/d5JRuA4R17m4ML9ky0Szoltf00.png" },
             screen2: { src: "https://framerusercontent.com/images/fLjlXF6wH4pwFW4EvhjNjKLzd4I.png" },
             screen3: { src: "https://framerusercontent.com/images/zEPiYBCxECi75KbJMM8tLgP2x3w.png" },

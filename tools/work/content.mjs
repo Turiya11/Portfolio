@@ -15,7 +15,6 @@ export const dentigo = {
     ovChallenge:
         "Dental clinics and specialised labs in India coordinate restorations and supplies through calls, paper slips, WhatsApp and email. Instructions arrive incomplete, nobody can see where a case is, and every remake costs chair time and patient trust.",
     ovNote: "Dentigo is an academic UX project and platform concept, not a launched product. Labs, ratings, prices and orders in the screens are sample data.",
-    heroPoster: fr("UwgOKoXM3WWjXfm27Hwe0NUoTd0.png"),
     ovImage: fr("SVD6qNv1XzfymXUBWWUg8bi7yWs.png"),
 
     ctxIntro:
@@ -149,7 +148,6 @@ export const encora = {
     ovChallenge:
         "Clinical researchers struggle to integrate complex biomedical data. Current tools lack automation, visualisation and one cohesive platform, which slows translational research and delays personalised therapies.",
     ovNote: "Shared under a confidentiality agreement with Encora: proprietary names are changed, sensitive details are left out and some visuals are blurred. Happy to walk through the work at itsturiyajoshi11@gmail.com.",
-    heroPoster: fr("j8G1tbbsbdbsYuFjpUMpW6bUFFU.png"),
     ovImage: fr("c3OFiHP4Ds0TxBmkE1mSSpoU9hA.png"),
 
     ctxHeading: "How biomedical data supports clinical insight",
@@ -261,8 +259,8 @@ export const pip = {
     ovChallenge:
         "College students aged 18 to 25 in India struggle to remember and act on everyday intentions at the right time, as competing responsibilities and fragmented storage make retrieval difficult. Existing reminders can add to the overload instead of bringing back what matters.",
     ovNote: "Academic research project. Study samples are small and the findings are preliminary; the prototypes have not been tested with users yet.",
-    heroVideo: "../../assets/video/pip-walkthrough.mp4",
-    heroPoster: local("pip/orbit.jpg"),
+    heroVideo: "../../assets/video/pip-focus.mp4", // Pip Focus Mode on Meta Quest
+    heroPoster: local("pip/ar-pip.jpg"),
     heroAutoplay: true,
     ovImage: local("pip/ar-pip.jpg"),
 
@@ -271,8 +269,9 @@ export const pip = {
         "Prospective memory is remembering to do something at the right future moment, and diary studies suggest 50 to 70% of everyday memory failures are of this kind. Design students juggle two to four projects alongside internships, businesses and coursework, switching contexts many times a day.",
     ctxPartLabel: "Where intentions live today",
     participants: ["Memory alone", "WhatsApp messages to self", "Notes apps", "Lists and notebooks", "Alarms", "Family and friends who check in"],
-    ctxMapLabel: "",
-    ctxMapNote: "",
+    ctxMapLabel: "Design process: Double Diamond",
+    ctxMap: local("pip/slide-03.jpg"),
+    ctxMapNote: "Discover (literature, survey, interviews, experiment) → Define (themes, archetypes, personas, journey) → Develop (six concepts) → Deliver (two AR prototypes).",
     handoffs: [],
 
     probQuote: "Students don't lack places to store intentions. They lack *a way to bring the right one back* when they can act on it.",
@@ -303,8 +302,17 @@ export const pip = {
         { evidence: "Colour became a task-level cue for 3 of 4 participants, but times and details faded.", insight: "A visual anchor carries the gist; text has to carry the detail.", opportunity: "Each thought is a distinct orb with a title, opening into context and a next step.", source: "User-reported" },
         { evidence: "Reddit posters described “list blindness” and called snoozing “the killer”.", insight: "A tool you have to remember to open has already failed.", opportunity: "Resurface a thought when it can be acted on, and treat “Not now” as “later, when I can”.", source: "Secondary research" },
     ],
-    artifactsLabel: "",
-    artifacts: [],
+    artifactsLabel: "From the research deck",
+    artifacts: [
+        { title: "Three methods", note: "A survey of 46 students, 18 interviews and an experiment with 4 participants.", image: local("pip/slide-07.jpg") },
+        { title: "What participants told me", note: "Survey results and quotes from the open responses and interviews.", image: local("pip/slide-08.jpg") },
+        { title: "Seven themes", note: "Synthesis of the survey and interviews into themes A to G.", image: local("pip/slide-09.jpg") },
+        { title: "Three ways of losing a thought", note: "Archetypes: the multi-project juggler, the rapid ideator and the forgotten collector.", image: local("pip/slide-11.jpg") },
+        { title: "Personas", note: "Three composites built from the research.", image: local("pip/slide-12.jpg") },
+        { title: "Intention journey", note: "From an idea to action, and where it gets lost.", image: local("pip/slide-13.jpg") },
+        { title: "Insights and opportunity areas", note: "Each insight paired with where a design could help.", image: local("pip/slide-14.jpg") },
+        { title: "Six directions, Pip compared", note: "Concepts scored on evidence, capture effort, reminder load and ease of testing.", image: local("pip/slide-15.jpg") },
+    ],
 
     usrHeading: "Eight design requirements",
     usrIntro: "The findings became requirements: one cue, not a list · a check-in, not an alarm · anchor to something in view · visual identity, gist first · capture in seconds · protect the middle · done or not now, without judgement · surface what students already trust.",
@@ -322,13 +330,17 @@ export const pip = {
     ],
     deferred: "",
 
-    flHeading: "",
-    flIntro: "",
+    flHeading: "How the experience is organised",
+    flIntro: "Four parts: onboarding, capture and park, find and revisit, and Pip in AR. The scope lists 42 features across eight capabilities, from capture to resolve.",
+    flSitemapLabel: "Experience architecture and user flow",
+    flSitemap: local("pip/slide-17.jpg"),
     flows: [],
 
     exHeading: "Pip, and Pip Focus Mode",
     exIntro: "The first prototype (Three.js + WebXR) parks thoughts as orbs around Pip. Focus Mode, built with Meta's Immersive Web SDK, runs in passthrough AR on Meta Quest with hand tracking and moves from storing a thought to working on it.",
     screens: [
+        { title: "Lo-fi wireframes", state: "Prototyped", need: "Test the structure before the visuals.", decision: "Capture, the orbit, the card and the AR check-in, sketched as mobile flows.", notes: "", image: local("pip/slide-19.jpg") },
+        { title: "The final experience", state: "Prototyped", need: "From opening Pip to offloading a thought.", decision: "Deep-space visuals, purple glass panels, pink glowing orbs and a white astronaut.", notes: "", image: local("pip/slide-22.jpg") },
         { title: "Capture in seconds", state: "Prototyped", need: "Park a thought before it slips, without organising it.", decision: "Type a thought and press Park; context and a next step are optional.", notes: "", image: local("pip/capture.jpg") },
         { title: "Step into the space", state: "Prototyped", need: "Give thoughts a place in the room.", decision: "Pip appears about 85 cm in front of you with your thoughts orbiting as glowing orbs.", notes: "", image: local("pip/step-in.jpg") },
         { title: "The card brings it back", state: "Prototyped", need: "Remember why the thought mattered.", decision: "Point or pinch an orb to open its card: the thought, what you were doing and the smallest next step.", notes: "", image: local("pip/card.jpg") },
@@ -353,7 +365,7 @@ export const pip = {
     rfCLabel: "The prototype",
     rfC: "Voice capture, search, more than three active thoughts and surface placement in the web build.",
     rfNext: "",
-    hiddenSections: "details, flows",
+    hiddenSections: "details",
 }
 
 /* ------------------------------ research walls (sticky notes in the research section) ------------------------------ */
