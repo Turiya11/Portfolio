@@ -1,6 +1,9 @@
 // One entry per case-study page: the component file and the props set on its Framer page instance.
 // Content not listed here comes from the component's own defaults (as in Framer).
 // Links are relative to /work/<slug>/ so they work under GitHub Pages' /Portfolio/ path.
+// The written case-study content lives in content.mjs. 3TFlow is parked under NDA: work/3tflow/index.html is a static page.
+import { dentigo, encora, pip } from "./content.mjs"
+
 const home = { backLink: "../../#journey", menuLink: "../../", backLabel: "Back to work", menuLabel: "menu", navStyle: "glass" }
 
 export const pages = [
@@ -27,32 +30,15 @@ export const pages = [
             nextLink: "../encora/",
             showTodos: true,
             showVideoHero: true,
+            // no Lumi walkthrough video yet: the hero shows the storyboard opener; screens come from the earlier Lumi case study
+            heroPoster: { src: "https://framerusercontent.com/images/RtBHy475FWRwisQWQLgLNhsSkqU.png" },
+            screen1: { src: "https://framerusercontent.com/images/d5JRuA4R17m4ML9ky0Szoltf00.png" },
+            screen2: { src: "https://framerusercontent.com/images/fLjlXF6wH4pwFW4EvhjNjKLzd4I.png" },
+            screen3: { src: "https://framerusercontent.com/images/zEPiYBCxECi75KbJMM8tLgP2x3w.png" },
+            screen4: { src: "https://framerusercontent.com/images/0IkBaKVwzSahEso74S7EydqBJqU.png" },
+            screen5: { src: "https://framerusercontent.com/images/wijwbxWPIqKdDPTgOe1iqki4vg.png" },
             videoHeroInNav: false,
             accent: "rgb(226, 121, 141)",
-            muted: "rgb(43, 47, 143)",
-        },
-    },
-    {
-        slug: "3tflow",
-        file: "ThreeTFlowCaseStudy",
-        title: "3TFlow — case study · Turiya Joshi",
-        bg: "rgb(245, 243, 234)",
-        props: {
-            ...home,
-            title: "3TFlow",
-            role: "UX design intern",
-            roleNote: "SSK Technologies",
-            projectType: "Enterprise product design · internship",
-            domain: "IT service management (ITSM)",
-            nextLabel: "Next project",
-            nextTitle: "Dentigo",
-            nextLink: "../dentigo/",
-            showHero: true,
-            heroAutoplay: false,
-            accent: "rgb(79, 82, 214)",
-            accentInk: "rgb(58, 61, 170)",
-            tint: "rgb(221, 226, 255)",
-            dark: "rgb(31, 35, 71)",
             muted: "rgb(43, 47, 143)",
         },
     },
@@ -69,9 +55,10 @@ export const pages = [
             timeline: "12 weeks",
             projectType: "Academic UX project",
             domain: "Healthcare · B2B dental services",
+            ...dentigo,
             nextLabel: "Next project",
-            nextTitle: "Encora",
-            nextLink: "../encora/",
+            nextTitle: "Lumi",
+            nextLink: "../lumi/",
             showHero: true,
             heroAutoplay: false,
             accent: "rgb(54, 109, 73)",
@@ -89,9 +76,10 @@ export const pages = [
         props: {
             ...home,
             title: "Encora",
-            nextLabel: "Keep exploring",
-            nextTitle: "Back to home",
-            nextLink: "../../",
+            ...encora,
+            nextLabel: "Next project",
+            nextTitle: "Pip",
+            nextLink: "../pip/",
             showHero: true,
             heroAutoplay: false,
             accent: "rgb(79, 82, 214)",
@@ -99,6 +87,25 @@ export const pages = [
             tint: "rgb(226, 220, 253)",
             dark: "rgb(36, 41, 47)",
             muted: "rgb(74, 90, 134)",
+        },
+    },
+    {
+        slug: "pip",
+        file: "EncoraCaseStudy", // same case-study layout as Encora
+        title: "Pip — case study · Turiya Joshi",
+        bg: "rgb(245, 243, 234)",
+        props: {
+            ...home,
+            ...pip,
+            nextLabel: "Next project",
+            nextTitle: "Dentigo",
+            nextLink: "../dentigo/",
+            showHero: true,
+            accent: "rgb(124, 77, 230)",
+            accentInk: "rgb(94, 52, 190)",
+            tint: "rgb(234, 224, 255)",
+            dark: "rgb(28, 20, 56)",
+            muted: "rgb(78, 66, 140)",
         },
     },
 ]
