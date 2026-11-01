@@ -84,12 +84,9 @@ function CaseStudyVideoHero(p: { src?: string; poster?: any; title?: string; tra
                         onLoadedMetadata={() => setReady(true)} onError={() => setFailed(true)} />
                 ) : p.poster?.src ? (
                     <img src={p.poster.src} srcSet={p.poster.srcSet} alt={p.poster.alt || ""} />
-                ) : (
-                    <div className="pc-phbox" role="status">
-                        <b>{failed ? "This video couldn’t be loaded." : "Video placeholder"}</b>
-                        <small>Supply a recording of the real Dentigo prototype or screens (for example lab discovery → new order → tracking) in “Hero · Video file”. Do not use a static mockup as a stand-in for a working prototype.</small>
-                    </div>
-                )}
+                ) : failed ? (
+                    <div className="pc-phbox" role="status"><b>This video couldn’t be loaded.</b></div>
+                ) : null /* portfolio site: a blank video frame until the video is added */}
                 {has_v && !ready && <div className="pc-load" role="status"><i />Loading video…</div>}
                 {has(p.title) && <div className="pc-vt">{p.title}</div>}
             </div>
@@ -845,7 +842,7 @@ function DentigoCaseStudy(props: any) {
                                 <h3 className="pc-h3" style={{ marginBottom: 14 }}>{v("artifactsLabel")}</h3>
                                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                                     {artifacts.map((a: any, i: number) => (
-                                        <details className="pc-det" key={i}>
+                                        <details className="pc-det" key={i} open /* portfolio site: research shown open */>
                                             <summary className={ph(a.title).trim()}>{a.title}</summary>
                                             <div className="in">
                                                 <Tx t={a.note} className="pc-small" />

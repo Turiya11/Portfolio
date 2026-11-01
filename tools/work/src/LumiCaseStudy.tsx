@@ -396,8 +396,8 @@ function CaseStudyVideoHero(p: {
                     />
                 ) : null}
 
-                {/* portfolio site: with a poster image and no video, show just the image */}
-                {!hasVideo && !posterSrc && (
+                {/* portfolio site: a blank video frame until the video is added (text only if a video fails) */}
+                {!hasVideo && failed && (
                     <div className="cs-vh-ph" role="status">
                         <span>
                             {failed
