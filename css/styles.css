@@ -2114,6 +2114,18 @@ button {
 .projects--passion .pj-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
+/* a labelled row of cards: Internships, Academic projects & research */
+.pj-group {
+    grid-column: 1 / -1;
+    margin: 18px 0 -10px;
+    font-family: var(--hand);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--accent);
+}
+.pj-group:first-child {
+    margin-top: 0;
+}
 /* the card: soft radial glass, 20px corners, 20px padding */
 .pj-card {
     display: flex;
