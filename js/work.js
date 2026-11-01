@@ -15,7 +15,7 @@ const SELECTED = [
         tags: ["AR", "Research", "Prototype"],
         href: "work/pip/",
         wide: true,
-        video: "assets/video/pip-focus.mp4",
+        video: "assets/video/pip-focus-grab.mp4",
         poster: "assets/images/pip/ar-pip.jpg",
     },
     {
