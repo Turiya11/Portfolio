@@ -29,8 +29,9 @@ const SELECTED = [
     },
     {
         meta: "2025 - Internship · Encora",
-        title: "Encora",
-        text: "Interactive biomedical data visualisations for clinical decision-making — 5 concepts across 4 data types, tested with 6 users.",
+        title: "KG Hub",
+        text: "Knowledge-graph visualisations of biomedical data for clinical decision-making — 5 concepts across 4 data types, tested with 6 users. Shared in a modified form due to an NDA.",
+        nda: true,
         tags: ["Data viz", "Healthcare", "Testing"],
         href: "work/encora/",
         image: "https://framerusercontent.com/images/j8G1tbbsbdbsYuFjpUMpW6bUFFU.png",
@@ -95,7 +96,7 @@ const body = (p) => `<div class="pj-body"><p class="pj-meta">${esc(p.meta)}${p.n
 const work = document.getElementById("work")
 work.querySelector(".pj-grid").innerHTML = SELECTED.map(
     (p) =>
-        `<a class="pj-card${p.wide ? " is-wide" : ""}" href="${esc(p.href)}" aria-label="${esc(p.title)}${p.nda ? " — under NDA" : " — read the case study"}">${media(p)}${body(p)}</a>`
+        `<a class="pj-card${p.wide ? " is-wide" : ""}" href="${esc(p.href)}" aria-label="${esc(p.title)}${p.nda ? " — under NDA" : ""}: read more">${media(p)}${body(p)}</a>`
 ).join("")
 
 /* ------------------------------ passion projects: open a detail view ------------------------------ */
