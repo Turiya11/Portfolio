@@ -47,7 +47,7 @@ for (const p of pages) {
         <title>${p.title}</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700;800&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700;800&family=Caveat:wght@500&display=swap" />
         <style>html,body{margin:0;background:${p.bg}}*,*::before,*::after{box-sizing:border-box}.pc-stimg:empty,.pc-img:empty{display:none}${p.css || ""}</style>
     </head>
     <body>

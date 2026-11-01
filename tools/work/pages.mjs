@@ -2,7 +2,7 @@
 // Content not listed here comes from the component's own defaults (as in Framer).
 // Links are relative to /work/<slug>/ so they work under GitHub Pages' /Portfolio/ path.
 // The written case-study content lives in content.mjs. 3TFlow is parked under NDA: work/3tflow/index.html is a static page.
-import { dentigo, encora, pip } from "./content.mjs"
+import { dentigo, encora, pip, lumiStickies } from "./content.mjs"
 
 const home = { backLink: "../../#journey", menuLink: "../../", backLabel: "Back to work", menuLabel: "menu", navStyle: "glass" }
 
@@ -27,10 +27,11 @@ export const pages = [
             prototypeLink:
                 "https://www.figma.com/proto/ej8YddthuaGL8rEengyDms/UX-Studio-Sem6?node-id=56-4650&viewport=-53%2C-1621%2C0.29&t=1dSYAobHJgRg7rOF-1&scaling=contain&content-scaling=fixed&starting-point-node-id=56%3A4650&page-id=45%3A16",
             nextLabel: "Next project",
-            nextTitle: "Encora Internship",
+            nextTitle: "KG Hub",
             nextLink: "../encora/",
             showTodos: true,
             showVideoHero: true,
+            ...lumiStickies,
             // no Lumi walkthrough video yet: the hero shows the Lumi cover; screens come from the earlier Lumi case study
             heroPoster: { src: "../../assets/images/lumi-cover.jpg" },
             screen1: { src: "https://framerusercontent.com/images/d5JRuA4R17m4ML9ky0Szoltf00.png" },
@@ -72,12 +73,11 @@ export const pages = [
     {
         slug: "encora",
         file: "EncoraCaseStudy",
-        title: "Encora — case study · Turiya Joshi",
+        title: "KG Hub (Encora) — case study · Turiya Joshi",
         bg: "rgb(245, 243, 234)",
         props: {
             ...home,
-            title: "Encora",
-            ...encora,
+            ...encora, // title: "KG Hub"
             nextLabel: "Next project",
             nextTitle: "Pip",
             nextLink: "../pip/",

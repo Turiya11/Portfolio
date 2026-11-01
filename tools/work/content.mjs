@@ -355,3 +355,48 @@ export const pip = {
     rfNext: "",
     hiddenSections: "details, flows",
 }
+
+/* ------------------------------ research walls (sticky notes in the research section) ------------------------------ */
+
+dentigo.stickiesTitle = "Affinity mapping: what the research surfaced"
+dentigo.stickies = [
+    { label: "Clinic pain points", notes: ["Patients rescheduled because of lab delays and remakes", "Pickups don't happen on time", "Cases stall when the one lab contact is unavailable", "Shade or fit misunderstood → repeat work"] },
+    { label: "Dentist workflow", notes: ["Different technicians for different restorations", "New dentists have no network of technicians", "Time-consuming chairside adjustments", "No standard way to track an order's progress"] },
+    { label: "Vendors & supply", notes: ["Hidden costs and unclear pricing", "Unpredictable delivery schedules", "Poor communication about delays", "Materials bought through reps, expos and traders"] },
+    { label: "Empathy maps: says", notes: ["“Dentists often send unclear instructions and rush orders.”", "“Matching shades and shapes without photos is difficult.”", "“Just tell my assistant to call the lab and ask where Mr. Singh's case is.”", "“Every remake costs me chair time and patient trust.”"] },
+    { label: "Trust & transparency", notes: ["Clear vendor rates would help", "Ratings, reviews and quality checks for labs", "Cloud-based records", "No fixed procurement process"] },
+]
+
+encora.stickiesTitle = "Pain points and dot voting"
+encora.stickies = [
+    { label: "Pre-clinical phase", notes: ["Turning large datasets into clear hypotheses", "No integrated platform for visualisation and analysis", "Identifying and validating biomarkers", "Saving searches and sessions to come back to"] },
+    { label: "Clinical phase", notes: ["Research, admin and collaboration all at once", "Integrating the latest scientific literature", "Summarising results and data outputs"] },
+    { label: "Competitive gaps", notes: ["General graph tools miss semantic integration and curation", "No uploads or onboarding in several tools", "Few visual exports or notifications"] },
+    { label: "Dot-voted features", notes: ["Data integration & unification", "Query search & filtering", "Compare knowledge graphs", "Timeline / history navigation", "Collaboration for scientific discussion", "AI insight mapping"] },
+]
+
+pip.stickiesTitle = "From the research wall"
+pip.stickies = [
+    { label: "Survey · n = 46", notes: ["93%: intentions slip anyway", "83% are reminded by seeing something related", "“i don't like 35,000 reminders also popping on my phone”", "“A long list gives me anxiety. Reduce it.”"] },
+    { label: "Interviews", notes: ["Without her notebook it feels like she “lost one of my organs”", "“someone who is actually checking in, have you done it”", "“too many things going on, no time to write or jot down”", "Mid-importance tasks get “I'll do it later”"] },
+    { label: "Experiment", notes: ["“very cluttered, didn't understand what to focus on”", "“visuals were the things which made me recall”", "Gist survives; times and details fade", "Colour became a task cue for 3 of 4"] },
+    { label: "Reddit scan", notes: ["“List blindness”: forgetting the list exists", "Snoozing is “the killer”", "New tools stop working after a few weeks", "Sticky notes where you always look"] },
+]
+
+export const lumiStickies = {
+    stickiesTitle: "Card sorting: the people around the mother",
+    stickies: [
+        { label: "Mother · Silent Struggler", notes: ["“Something is wrong… but I can't say it.”", "Minimises and feels dismissed", "Shares little, for fear of judgement", "Avoids or delays screening"] },
+        { label: "Father · Hyper-Responsible Fixer", notes: ["“I need to fix this for her.”", "Wants to fix, can't express", "Observes changes, tries to understand"] },
+        { label: "Family · Well-Meaning Minimizer", notes: ["“We've all gone through this. She'll be fine.”", "Believes this phase is temporary", "Shows indifference in behaviour"] },
+        { label: "Themes", notes: ["Mothers hesitate to express distress", "Families miss emotional warning signs", "Emotional support often comes too late", "~80% get the baby blues; PPD doesn't go away on its own"] },
+    ],
+}
+
+/* ------------------------------ Encora → KG Hub (renamed under NDA) ------------------------------ */
+
+encora.title = "KG Hub"
+encora.roleNote = "Encora Inc. · internship"
+encora.ovHeadline = "KG Hub: from data to discovery, with biomedical visualisation powered by a knowledge graph."
+encora.ovNote =
+    "**This project has been modified due to an NDA.** The product is presented as KG Hub: proprietary names are changed, sensitive details are left out and some visuals are blurred. Happy to walk through the work at itsturiyajoshi11@gmail.com."
