@@ -1,5 +1,6 @@
 import * as React from "react"
 import { addPropertyControls, ControlType, RenderTarget } from "framer"
+import StickyWall from "./StickyWall" // portfolio site: research shown as sticky notes
 
 /**
  * Encora · Case study (same glass shell and same contents list as the Lumi, 3TFlow and Dentigo case studies)
@@ -787,6 +788,7 @@ function EncoraCaseStudy(props: any) {
                         <Eye grp="research" />
                         <Tx t={v("resHeading")} as="h2" className="pc-h2" />
                         <Tx t={v("resIntro")} className="pc-lead" />
+                        <StickyWall groups={props.stickies} title={props.stickiesTitle} />
                         {findings.length > 0 && (
                             <div>
                                 <h3 className="pc-h3" style={{ marginBottom: 14 }}>{v("findingsLabel")}</h3>

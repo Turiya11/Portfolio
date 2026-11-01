@@ -1,5 +1,6 @@
 import * as React from "react"
 import { addPropertyControls, ControlType, RenderTarget } from "framer"
+import StickyWall from "./StickyWall" // portfolio site: research shown as sticky notes
 
 /**
  * Lumi · Case study
@@ -1281,6 +1282,7 @@ function LumiCaseStudy(props: any) {
                             the three themes that carried through to the design.
                         </p>
 
+                        <StickyWall groups={props.stickies} title={props.stickiesTitle} />
                         <div className="lm-eio" role="list" aria-label="Evidence, insight and design opportunity">
                             <div className="lm-eio-h" aria-hidden="true">
                                 <span>Evidence</span><span /><span>Insight</span><span /><span>Design opportunity</span>
