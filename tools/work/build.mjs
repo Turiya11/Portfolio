@@ -5,6 +5,12 @@ import { mkdirSync, writeFileSync, rmSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import { pages } from "./pages.mjs"
 
+// every block fills its container: no line-length caps on text, images scale up to fill their frames (never cropped)
+const FILL =
+    ".pc-h1,.pc-h2,.pc-lead,.pc-p,.pc-ps,.pc-disc,.lm-h1,.lm-h2,.lm-lead,.lm-p,.lm-prob-s,.lm-disc,.lm-small,.lm-step p{max-width:none!important}" +
+    ".pc-img img{width:100%!important;max-height:none!important;height:auto!important}" +
+    ".pc-stimg img,.pc-stagebox img,.lm-stagebox img{width:100%!important;height:100%!important;object-fit:contain}"
+
 const here = (p) => fileURLToPath(new URL(p, import.meta.url))
 const out = here("../../work/")
 rmSync(out + "js", { recursive: true, force: true })
@@ -48,7 +54,7 @@ for (const p of pages) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700;800&family=Caveat:wght@500&display=swap" />
-        <style>html,body{margin:0;background:${p.bg}}*,*::before,*::after{box-sizing:border-box}.pc-stimg:empty,.pc-img:empty{display:none}${p.css || ""}</style>
+        <style>html,body{margin:0;background:${p.bg}}*,*::before,*::after{box-sizing:border-box}.pc-stimg:empty,.pc-img:empty{display:none}${FILL}${p.css || ""}</style>
     </head>
     <body>
         <!-- built by tools/work/build.mjs from the Framer component ${p.file}.tsx — edit there, then rebuild -->
