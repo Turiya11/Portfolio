@@ -7,8 +7,29 @@ const OCEAN = {
     poster: "https://framerusercontent.com/images/5ILRvlYXf72kHSVHqpa3snGzjU.jpg",
 }
 
+// in order; a new `group` starts a labelled row of cards
 const SELECTED = [
     {
+        group: "Internships",
+        meta: "2026 - Internship · SSK Technologies",
+        title: "3TFlow",
+        text: "End-to-end flows across 2000+ ITSM screens for 5 user roles — ticket assignment cut from 6 steps to 3, a Reports module, SLA tracking and a design system of 4000+ components.",
+        tags: ["ITSM", "Design systems", "Enterprise"],
+        href: "work/3tflow/",
+        nda: true,
+        image: "assets/images/3tflow-tickets.jpg", // from 3tflow.com
+    },
+    {
+        meta: "2025 - Internship · Encora",
+        title: "KG Hub",
+        text: "Knowledge-graph visualisations of biomedical data for clinical decision-making — 5 concepts across 4 data types, tested with 6 users. Shared in a modified form due to an NDA.",
+        nda: true,
+        tags: ["Data viz", "Healthcare", "Testing"],
+        href: "work/encora/",
+        image: "https://framerusercontent.com/images/j8G1tbbsbdbsYuFjpUMpW6bUFFU.png",
+    },
+    {
+        group: "Academic projects & research",
         meta: "2026 - Academic research",
         title: "Pip",
         text: "An AR companion that helps design students park their thoughts and come back to them at the right moment. Built on a survey of 46 students, 18 interviews and a recall experiment; prototyped for the web and Meta Quest.",
@@ -28,30 +49,12 @@ const SELECTED = [
         fit: "#e2798d", // square cover: shown whole on its own pink
     },
     {
-        meta: "2025 - Internship · Encora",
-        title: "KG Hub",
-        text: "Knowledge-graph visualisations of biomedical data for clinical decision-making — 5 concepts across 4 data types, tested with 6 users. Shared in a modified form due to an NDA.",
-        nda: true,
-        tags: ["Data viz", "Healthcare", "Testing"],
-        href: "work/encora/",
-        image: "https://framerusercontent.com/images/j8G1tbbsbdbsYuFjpUMpW6bUFFU.png",
-    },
-    {
         meta: "2025 - Academic project",
         title: "Dentigo",
         text: "A B2B platform concept connecting dental clinics and labs — restorations, supplies and clinic–lab communication in one transparent flow.",
         tags: ["B2B", "Service design", "Web app"],
         href: "work/dentigo/",
         image: "https://framerusercontent.com/images/UwgOKoXM3WWjXfm27Hwe0NUoTd0.png",
-    },
-    {
-        meta: "2026 - Internship · SSK Technologies",
-        title: "3TFlow",
-        text: "End-to-end flows across 2000+ ITSM screens for 5 user roles — ticket assignment cut from 6 steps to 3, a Reports module, SLA tracking and a design system of 4000+ components.",
-        tags: ["ITSM", "Design systems", "Enterprise"],
-        href: "work/3tflow/",
-        nda: true,
-        ...OCEAN,
     },
 ]
 
@@ -96,6 +99,7 @@ const body = (p) => `<div class="pj-body"><p class="pj-meta">${esc(p.meta)}${p.n
 const work = document.getElementById("work")
 work.querySelector(".pj-grid").innerHTML = SELECTED.map(
     (p) =>
+        (p.group ? `<h3 class="pj-group">${esc(p.group)}</h3>` : "") +
         `<a class="pj-card${p.wide ? " is-wide" : ""}" href="${esc(p.href)}" aria-label="${esc(p.title)}${p.nda ? " — under NDA" : ""}: read more">${media(p)}${body(p)}</a>`
 ).join("")
 
