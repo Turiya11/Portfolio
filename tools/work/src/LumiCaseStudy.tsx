@@ -395,7 +395,8 @@ function CaseStudyVideoHero(p: {
                     />
                 ) : null}
 
-                {!hasVideo && (
+                {/* portfolio site: with a poster image and no video, show just the image */}
+                {!hasVideo && !posterSrc && (
                     <div className="cs-vh-ph" role="status">
                         <span>
                             {failed

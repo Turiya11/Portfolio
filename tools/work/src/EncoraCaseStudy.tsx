@@ -59,9 +59,7 @@ const Row = ({ k, t }: any) =>
 const Img = ({ src, label }: any) =>
     src && src.src ? (
         <img src={src.src} srcSet={src.srcSet} alt={src.alt || label} loading="lazy" />
-    ) : (
-        <div className="pc-phbox"><b>Image placeholder</b><small>{label}</small></div>
-    )
+    ) : null // portfolio site: no image, no box (in Framer this showed an "Image placeholder" box)
 /* source / status badge: "Not labelled yet" and "Not set" show as an unfinished marker */
 const Badge = ({ t }: { t: string }) => {
     const unset = !t || /^not (labelled|set)/i.test(t)
