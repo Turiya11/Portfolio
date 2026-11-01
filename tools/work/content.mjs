@@ -259,7 +259,7 @@ export const pip = {
     ovChallenge:
         "College students aged 18 to 25 in India struggle to remember and act on everyday intentions at the right time, as competing responsibilities and fragmented storage make retrieval difficult. Existing reminders can add to the overload instead of bringing back what matters.",
     ovNote: "Academic research project. Study samples are small and the findings are preliminary; the prototypes have not been tested with users yet.",
-    heroVideo: "../../assets/video/pip-focus.mp4", // Pip Focus Mode on Meta Quest
+    heroVideo: "../../assets/video/pip-focus-grab.mp4", // Pip Focus Mode on Meta Quest, from grabbing an orb
     heroPoster: local("pip/ar-pip.jpg"),
     heroAutoplay: true,
     ovImage: local("pip/ar-pip.jpg"),
