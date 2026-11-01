@@ -24,7 +24,8 @@ const SELECTED = [
         text: "Lumi is a mental health support platform designed to help mothers navigate postpartum emotional challenges through gentle self-awareness, guided emotional expression, and family-centered support systems.",
         tags: ["Mobile", "D2C", "Healthcare"],
         href: "work/lumi/",
-        ...OCEAN,
+        image: "assets/images/lumi-cover.jpg",
+        fit: "#e2798d", // square cover: shown whole on its own pink
     },
     {
         meta: "2025 - Internship · Encora",
@@ -84,7 +85,7 @@ const PASSION = [
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c])
 const media = (p) =>
     p.image
-        ? `<div class="pj-media"><img src="${esc(p.image)}" alt="" loading="lazy" /></div>`
+        ? `<div class="pj-media"${p.fit ? ` style="background:${esc(p.fit)}"` : ""}><img src="${esc(p.image)}" alt="" loading="lazy"${p.fit ? ` style="object-fit:contain"` : ""} /></div>`
         : `<div class="pj-media"><video muted loop playsinline preload="none" poster="${esc(p.poster)}" aria-hidden="true"><source src="${esc(p.video)}" type="video/mp4" /></video></div>`
 const tags = (p) => `<ul class="pj-tags">${p.tags.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`
 const body = (p) => `<div class="pj-body"><p class="pj-meta">${esc(p.meta)}${p.nda ? ` <span class="pj-nda">NDA</span>` : ""}</p><h3 class="pj-title">${esc(p.title)}</h3><p class="pj-text">${esc(p.text)}</p>${tags(p)}</div>`
