@@ -11,6 +11,14 @@ const FILL =
     ".pc-img img{width:100%!important;max-height:none!important;height:auto!important}" +
     ".pc-stimg img,.pc-stagebox img,.lm-stagebox img{width:100%!important;height:100%!important;object-fit:contain}"
 
+// the "Next project" band: blue glass, grey text, yellow arrow circle with a grey arrow
+const NEXT =
+    ".pc-next,.cs-next{background:linear-gradient(135deg,rgba(187,218,254,.85),rgba(187,218,254,.55))!important;" +
+    "backdrop-filter:blur(22px) saturate(170%);-webkit-backdrop-filter:blur(22px) saturate(170%);border:1px solid rgba(255,255,255,.7);" +
+    "box-shadow:inset 0 1.5px 0 rgba(255,255,255,.85),inset 0 -1px 0 rgba(255,255,255,.3),0 24px 48px -20px rgba(70,90,170,.3);color:#4b5563!important}" +
+    ".pc-next small,.pc-next b,.cs-next small,.cs-next b{color:#4b5563!important;opacity:1!important}" +
+    ".pc-next span,.cs-next span{background:rgb(243,234,154)!important;color:#4b5563!important}"
+
 const here = (p) => fileURLToPath(new URL(p, import.meta.url))
 const out = here("../../work/")
 rmSync(out + "js", { recursive: true, force: true })
@@ -54,7 +62,7 @@ for (const p of pages) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700;800&family=Caveat:wght@500&display=swap" />
-        <style>html,body{margin:0;background:${p.bg}}*,*::before,*::after{box-sizing:border-box}.pc-stimg:empty,.pc-img:empty{display:none}${FILL}${p.css || ""}</style>
+        <style>html,body{margin:0;background:${p.bg}}*,*::before,*::after{box-sizing:border-box}.pc-stimg:empty,.pc-img:empty{display:none}${FILL}${NEXT}${p.css || ""}</style>
     </head>
     <body>
         <!-- built by tools/work/build.mjs from the Framer component ${p.file}.tsx — edit there, then rebuild -->

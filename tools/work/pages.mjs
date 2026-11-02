@@ -4,7 +4,7 @@
 // The written case-study content lives in content.mjs. 3TFlow is parked under NDA: work/3tflow/index.html is a static page.
 import { dentigo, encora, pip, lumiStickies } from "./content.mjs"
 
-const home = { backLink: "../../#journey", menuLink: "../../", backLabel: "Back to work", menuLabel: "menu", navStyle: "glass" }
+const home = { backLink: "../../#work", menuLink: "../../", backLabel: "Back to work", menuLabel: "menu", navStyle: "glass" }
 
 export const pages = [
     {
