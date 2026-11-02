@@ -1,0 +1,367 @@
+// The one case-study layout: Brief (context, background, impact) → Understanding → What I did → Process → Reflection.
+// Very visual on purpose: one line of text per block, and the interface gets the width of the page.
+// Only Understanding, the research, carries sticky notes and text. Every screen is a video (tools/work/video/).
+import * as React from "react"
+import StickyWall, { type StickyGroup } from "./StickyWall"
+
+type ClipData = { src: string; poster?: string; label?: string; sound?: boolean }
+type Did = { lead: string; text: string; clips: ClipData[]; phones?: boolean }
+type Props = {
+    backLink: string
+    menuLink: string
+    title: string
+    meta: string
+    headline: string
+    accent: string
+    note?: string
+    link?: { href: string; label: string }
+    ratio?: number // width ÷ height of the wide videos
+    hero: ClipData & { phone?: boolean; ratio?: number }
+    brief: { context: string; background: string; impact: { n: string; l: string }[]; impactNote?: string }
+    understanding: { quote: string; method: string; stickiesTitle?: string; stickies: StickyGroup[] }
+    didNote?: string
+    did: Did[]
+    process: { label: string; image: string }[]
+    reflection: { label: string; text: string }[]
+    next: { title: string; link: string }
+}
+
+const SECTIONS = [
+    ["brief", "Brief"],
+    ["understanding", "Understanding"],
+    ["did", "What I did"],
+    ["process", "Process"],
+    ["reflection", "Reflection"],
+]
+
+const CSS = `
+.cs{--ink:#20252b;--soft:#46505a;--quiet:#66717c;--edge:rgba(255,255,255,.72);--rail:188px;--gut:clamp(16px,2.6vw,40px);
+  min-height:100vh;color:var(--ink);font-family:'Mona Sans',Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.45;
+  background:radial-gradient(circle at 88% 120px,rgba(255,217,163,.55) 0,rgba(255,217,163,0) 260px),linear-gradient(180deg,#BFD9FF 0,#EAF3FF 900px,#DAD8FF 45%,#F8E9F2 75%,#F3EEE2 100%)}
+.cs a{color:inherit;text-decoration:none}
+.cs :focus-visible{outline:2px solid var(--ai);outline-offset:3px;border-radius:6px}
+.cs-rail{position:fixed;left:0;top:0;bottom:0;width:var(--rail);padding:34px 18px 28px 30px;display:flex;flex-direction:column;justify-content:center;z-index:4}
+.cs-back{position:absolute;top:36px;left:30px;font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);transition:color .2s}
+.cs-back:hover{color:var(--ink)}
+.cs-rail nav{display:flex;flex-direction:column;gap:6px}
+.cs-rail nav a{position:relative;padding:7px 0 7px 16px;font-size:15px;color:var(--quiet);transition:color .2s}
+.cs-rail nav a:hover{color:var(--ink)}
+.cs-rail nav a.on{color:var(--ai);font-weight:600}
+.cs-rail nav a.on:before{content:'';position:absolute;left:0;top:7px;bottom:7px;width:3px;border-radius:2px;background:var(--a)}
+.cs-menu{position:fixed;top:24px;right:var(--gut);z-index:5;display:inline-flex;align-items:center;gap:12px;height:42px;padding:0 22px;border-radius:999px;border:1px solid var(--edge);
+  background:rgba(255,255,255,.5);backdrop-filter:blur(18px) saturate(170%);-webkit-backdrop-filter:blur(18px) saturate(170%);box-shadow:inset 0 1px 0 #fff,0 12px 28px -16px rgba(50,60,120,.4);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.cs-menu i{display:block;width:17px;height:7px;border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink)}
+.cs-main{margin-left:var(--rail);padding:92px var(--gut) 40px;display:flex;flex-direction:column;gap:clamp(72px,9vw,128px)}
+.cs-top{display:flex;flex-direction:column;gap:clamp(24px,3vw,36px)}
+.cs-top h1{margin:0;font-size:clamp(52px,8vw,112px);font-weight:800;letter-spacing:-.045em;line-height:.95}
+.cs-top .cs-head{margin:14px 0 0;font-size:clamp(22px,2.5vw,34px);font-weight:600;letter-spacing:-.02em;line-height:1.2}
+.cs-meta{margin:0 0 14px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ai)}
+.cs-top.phone{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,5vw,72px);align-items:center}
+.cs-sec{display:flex;flex-direction:column;gap:clamp(22px,2.6vw,34px);scroll-margin-top:32px}
+.cs-eye{margin:0;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--quiet)}
+.cs-state{margin:0;padding-right:clamp(0px,10vw,150px);font-size:clamp(23px,2.5vw,34px);font-weight:600;letter-spacing:-.02em;line-height:1.22}
+.cs-state b{color:var(--ai);font-weight:600}
+.cs-small{margin:0;font-size:14px;line-height:1.5;color:var(--soft)}
+.cs-small a{text-decoration:underline;text-underline-offset:3px}
+.cs-brief{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:16px}
+.cs-card{padding:clamp(20px,2vw,28px);border-radius:22px;border:1px solid var(--edge);background:linear-gradient(145deg,rgba(255,255,255,.66),rgba(255,255,255,.34));box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 18px 36px -24px rgba(60,70,170,.3);display:flex;flex-direction:column;gap:12px}
+.cs-card p{margin:0;font-size:17px;line-height:1.42}
+.cs-card .cs-eye{font-size:11px}
+.cs-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cs-stats b{display:block;font-size:clamp(28px,2.9vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05;color:var(--ai)}
+.cs-stats span{display:block;margin-top:6px;font-size:13px;line-height:1.3;color:var(--soft)}
+.cs-did{display:flex;flex-direction:column;gap:clamp(64px,7vw,104px)}
+.cs-item{display:flex;flex-direction:column;gap:clamp(16px,1.8vw,24px)}
+.cs-clip{position:relative;width:100%;margin:0;border-radius:clamp(12px,1.4vw,20px);overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(40,50,90,.08),0 32px 64px -32px rgba(40,50,110,.5);line-height:0;cursor:pointer}
+.cs-clip video{display:block;width:100%;height:auto;object-fit:cover}
+.cs-clip.wide{max-width:calc(100vh * var(--ar))}
+.cs-clip.wide video{aspect-ratio:var(--ar)}
+.cs-clip.phone{border-radius:clamp(18px,2.2vw,30px)}
+.cs-clip.phone video{aspect-ratio:618/1376}
+.cs-ctrl{position:absolute;right:12px;bottom:12px;display:flex;gap:6px;line-height:1}
+.cs-ctrl button{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;padding:0 10px;border:0;border-radius:999px;background:rgba(20,24,40,.62);color:#fff;font:600 12px/1 'Mona Sans',system-ui,sans-serif;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.cs-phones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.8vw,24px)}
+.cs-phones figure{margin:0;display:flex;flex-direction:column;gap:10px;min-width:0}
+.cs-phones .cs-clip{max-width:calc(92vh * 0.449);margin:0 auto}
+.cs-phones figcaption{text-align:center;font-size:14px;font-weight:500;color:var(--soft)}
+.cs-top.phone .cs-clip{width:min(29vw,calc(84vh * 0.449));min-width:250px}
+.cs-proc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.cs-proc a{display:flex;flex-direction:column;gap:10px;min-width:0}
+.cs-proc span.cs-thumb{display:block;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px rgba(40,50,90,.07),0 20px 40px -28px rgba(40,50,110,.5)}
+.cs-proc img{display:block;width:100%;height:100%;padding:8px;object-fit:contain;transition:transform .5s cubic-bezier(.2,.8,.25,1)}
+.cs-proc a:hover img{transform:scale(1.04)}
+.cs-proc small{font-size:14px;font-weight:500;color:var(--soft)}
+.cs-refl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.cs-next{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:clamp(24px,3vw,40px) clamp(24px,3.4vw,48px);border-radius:28px}
+.cs-next small{display:block;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+.cs-next b{display:block;margin-top:6px;font-size:clamp(30px,4.4vw,60px);font-weight:700;letter-spacing:-.03em;line-height:1}
+.cs-next span{flex:none;display:inline-flex;align-items:center;justify-content:center;width:clamp(48px,6vw,72px);height:clamp(48px,6vw,72px);border-radius:50%;font-size:24px}
+@media (max-width:1040px){
+  .cs{--rail:0px}
+  .cs-rail nav{display:none}
+  .cs-rail{position:static;width:auto;padding:0;display:block}
+  .cs-back{position:fixed;top:24px;left:var(--gut);z-index:5;display:inline-flex;align-items:center;height:42px;padding:0 18px;border-radius:999px;border:1px solid var(--edge);background:rgba(255,255,255,.5);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+  .cs-brief{grid-template-columns:1fr}
+  .cs-proc{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:680px){
+  .cs-top.phone{grid-template-columns:1fr}
+  .cs-top.phone .cs-clip{width:min(100%,340px);margin:0 auto}
+  .cs-back{font-size:10.5px;letter-spacing:.12em;padding:0 14px}
+  .cs-menu{padding:0 14px;font-size:10.5px}
+  .cs-phones{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--gut) * -1);padding:0 var(--gut) 8px;gap:12px}
+  .cs-phones figure{flex:0 0 74vw;scroll-snap-align:center}
+  .cs-proc,.cs-refl{grid-template-columns:1fr}
+}
+`
+
+/* Plays while on screen and pauses when it scrolls away. Nothing downloads until it is close to the viewport. */
+function Clip({ clip, cls, ratio }: { clip: ClipData; cls: string; ratio?: number }) {
+    const box = React.useRef<HTMLElement | null>(null)
+    const video = React.useRef<HTMLVideoElement | null>(null)
+    const [paused, setPaused] = React.useState(false)
+    const [muted, setMuted] = React.useState(true)
+    const manual = React.useRef(false)
+
+    React.useEffect(() => {
+        const v = video.current
+        if (!v) return
+        v.muted = true
+        const calm = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+        if (calm) {
+            manual.current = true
+            setPaused(true)
+        }
+        // setting src cancels a pending play(), so it always happens first
+        const fetchIt = () => {
+            if (!v.getAttribute("src")) v.setAttribute("src", clip.src)
+        }
+        const near = new IntersectionObserver(
+            ([e]) => {
+                if (!e.isIntersecting) return
+                fetchIt()
+                near.disconnect()
+            },
+            { rootMargin: "900px 0px" }
+        )
+        const seen = new IntersectionObserver(
+            ([e]) => {
+                if (manual.current) return
+                if (e.isIntersecting) {
+                    fetchIt()
+                    v.play().catch(() => setPaused(true))
+                } else v.pause()
+            },
+            { threshold: 0.35 }
+        )
+        near.observe(v)
+        seen.observe(v)
+        return () => {
+            near.disconnect()
+            seen.disconnect()
+        }
+    }, [clip.src])
+
+    const toggle = () => {
+        const v = video.current
+        if (!v) return
+        manual.current = true
+        if (v.paused) {
+            if (!v.getAttribute("src")) v.setAttribute("src", clip.src)
+            v.play()
+            setPaused(false)
+        } else {
+            v.pause()
+            setPaused(true)
+        }
+    }
+
+    return (
+        <figure className={`cs-clip ${cls}`} ref={box} style={ratio ? ({ "--ar": ratio } as React.CSSProperties) : undefined} onClick={toggle}>
+            <video ref={video} poster={clip.poster} muted loop playsInline preload="none" aria-label={clip.label} onPause={() => setPaused(true)} onPlay={() => setPaused(false)} />
+            <div className="cs-ctrl" onClick={(e) => e.stopPropagation()}>
+                {clip.sound ? (
+                    <button
+                        type="button"
+                        aria-pressed={!muted}
+                        onClick={() => {
+                            const v = video.current
+                            if (!v) return
+                            v.muted = !v.muted
+                            setMuted(v.muted)
+                        }}
+                    >
+                        {muted ? "Sound on" : "Sound off"}
+                    </button>
+                ) : null}
+                <button type="button" aria-label={paused ? "Play video" : "Pause video"} onClick={toggle}>
+                    {paused ? "▶" : "❚❚"}
+                </button>
+            </div>
+        </figure>
+    )
+}
+
+export default function CaseStudy(p: Props) {
+    const [on, setOn] = React.useState("")
+
+    React.useEffect(() => {
+        const secs = SECTIONS.map(([id]) => document.getElementById(id)).filter(Boolean) as HTMLElement[]
+        const onScroll = () => {
+            let cur = ""
+            for (const s of secs) if (s.getBoundingClientRect().top < window.innerHeight * 0.4) cur = s.id
+            setOn(cur)
+        }
+        onScroll()
+        window.addEventListener("scroll", onScroll, { passive: true })
+        return () => window.removeEventListener("scroll", onScroll)
+    }, [])
+
+    const heading = (
+        <div>
+            <p className="cs-meta">{p.meta}</p>
+            <h1>{p.title}</h1>
+            <p className="cs-head">{p.headline}</p>
+        </div>
+    )
+    const theme = { "--a": p.accent, "--ai": p.accent } as React.CSSProperties
+
+    return (
+        <div className="cs" style={theme}>
+            <style>{CSS}</style>
+            <aside className="cs-rail">
+                <a className="cs-back" href={p.backLink}>
+                    ← Back to work
+                </a>
+                <nav aria-label="Contents">
+                    {SECTIONS.map(([id, label]) => (
+                        <a key={id} href={`#${id}`} className={on === id ? "on" : ""} aria-current={on === id ? "true" : undefined}>
+                            {label}
+                        </a>
+                    ))}
+                </nav>
+            </aside>
+            <a className="cs-menu" href={p.menuLink}>
+                menu
+                <i />
+            </a>
+
+            <main className="cs-main">
+                {p.hero.phone ? (
+                    <header className="cs-top phone">
+                        {heading}
+                        <Clip clip={p.hero} cls="phone" />
+                    </header>
+                ) : (
+                    <header className="cs-top">
+                        {heading}
+                        <Clip clip={p.hero} cls="wide" ratio={p.hero.ratio || p.ratio} />
+                    </header>
+                )}
+
+                <section className="cs-sec" id="brief">
+                    <div className="cs-brief">
+                        <div className="cs-card">
+                            <p className="cs-eye">Context</p>
+                            <p>{p.brief.context}</p>
+                        </div>
+                        <div className="cs-card">
+                            <p className="cs-eye">Background</p>
+                            <p>{p.brief.background}</p>
+                        </div>
+                        <div className="cs-card">
+                            <p className="cs-eye">Impact</p>
+                            <div className="cs-stats">
+                                {p.brief.impact.map((s) => (
+                                    <div key={s.l}>
+                                        <b>{s.n}</b>
+                                        <span>{s.l}</span>
+                                    </div>
+                                ))}
+                            </div>
+                            {p.brief.impactNote ? <p className="cs-small">{p.brief.impactNote}</p> : null}
+                        </div>
+                    </div>
+                    {p.note || p.link ? (
+                        <p className="cs-small">
+                            {p.note}{" "}
+                            {p.link ? (
+                                <a href={p.link.href} target="_blank" rel="noreferrer">
+                                    {p.link.label}
+                                </a>
+                            ) : null}
+                        </p>
+                    ) : null}
+                </section>
+
+                <section className="cs-sec" id="understanding">
+                    <p className="cs-eye">Understanding the pain point</p>
+                    <p className="cs-state">{p.understanding.quote}</p>
+                    <p className="cs-small">{p.understanding.method}</p>
+                    <StickyWall groups={p.understanding.stickies} title={p.understanding.stickiesTitle} />
+                </section>
+
+                <section className="cs-sec" id="did">
+                    <p className="cs-eye">What I did</p>
+                    {p.didNote ? <p className="cs-small">{p.didNote}</p> : null}
+                    <div className="cs-did">
+                        {p.did.map((d) => (
+                            <article className="cs-item" key={d.lead}>
+                                <p className="cs-state">
+                                    <b>{d.lead}</b> {d.text}
+                                </p>
+                                {d.phones ? (
+                                    <div className="cs-phones">
+                                        {d.clips.map((c) => (
+                                            <figure key={c.src}>
+                                                <Clip clip={c} cls="phone" />
+                                                {c.label ? <figcaption>{c.label}</figcaption> : null}
+                                            </figure>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <Clip clip={d.clips[0]} cls="wide" ratio={p.ratio} />
+                                )}
+                            </article>
+                        ))}
+                    </div>
+                </section>
+
+                <section className="cs-sec" id="process">
+                    <p className="cs-eye">Process</p>
+                    <div className="cs-proc">
+                        {p.process.map((s) => (
+                            <a key={s.label} href={s.image} target="_blank" rel="noreferrer">
+                                <span className="cs-thumb">
+                                    {/* Framer serves a small copy for the thumbnail; the link opens the full image */}
+                                    <img src={s.image.includes("framerusercontent") ? s.image + "?scale-down-to=1024" : s.image} alt={s.label} loading="lazy" decoding="async" />
+                                </span>
+                                <small>{s.label}</small>
+                            </a>
+                        ))}
+                    </div>
+                </section>
+
+                <section className="cs-sec" id="reflection">
+                    <p className="cs-eye">Reflection</p>
+                    <div className="cs-refl">
+                        {p.reflection.map((r) => (
+                            <div className="cs-card" key={r.label}>
+                                <p className="cs-eye">{r.label}</p>
+                                <p>{r.text}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                <a className="cs-next" href={p.next.link}>
+                    <div>
+                        <small>Next project</small>
+                        <b>{p.next.title}</b>
+                    </div>
+                    <span aria-hidden="true">→</span>
+                </a>
+            </main>
+        </div>
+    )
+}
