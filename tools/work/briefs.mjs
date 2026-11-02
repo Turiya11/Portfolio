@@ -1,6 +1,7 @@
 // What each case-study page says. Keep it short: the videos carry the story.
 // Research sticky notes come from content.mjs. Numbers are only the ones the projects actually produced.
 import { dentigo as dentigoSource, encora as kgSource, pip as pipSource, lumiStickies } from "./content.mjs"
+import { lumiResearch, lumiEcosystem } from "./research-lumi.mjs"
 
 const clip = (id, label) => ({ src: `../../assets/video/work/${id}.mp4`, poster: `../../assets/video/work/${id}.jpg`, label })
 const fr = (id, ext = "png") => `https://framerusercontent.com/images/${id}.${ext}`
@@ -29,11 +30,13 @@ export const lumi = {
         ],
         impactNote: "A concept prototype. Effects on wellbeing have not been measured.",
     },
+    research: { statement: "What the research found.", folders: lumiResearch },
     understanding: {
         quote: "The problem isn't absence of support. It's absence of emotional understanding.",
         method: "Interviews with mothers, fathers and caregivers, plus doctors, psychiatrists and research papers, grouped by card sorting.",
         ...{ stickiesTitle: lumiStickies.stickiesTitle, stickies: lumiStickies.stickies },
     },
+    ecosystem: lumiEcosystem,
     didNote: WALKTHROUGH,
     did: [
         {
@@ -56,12 +59,12 @@ export const lumi = {
         },
     ],
     process: [
-        { label: "Persona: the silent struggler", image: fr("MSrWLnItMvvUOAk2hFNjsQ7NVVk") },
-        { label: "Persona: the hyper-responsible fixer", image: fr("rwT14cOeezON1u91oCwXmVk5GA") },
-        { label: "Persona: the well-meaning minimizer", image: fr("QVwbSs0yhqbKAkgDLoCskZX7RM") },
+        { label: "MVP features", image: site("lumi/research/mvp.png") },
         { label: "Storyboard: 3AM, alone", image: fr("RtBHy475FWRwisQWQLgLNhsSkqU") },
         { label: "Storyboard: Lumi notices the pattern", image: fr("fLjlXF6wH4pwFW4EvhjNjKLzd4I") },
         { label: "Storyboard: family understanding begins", image: fr("wijwbxWPIqKdDPTgOe1iqki4vg") },
+        { label: "Information architecture", image: site("lumi/research/ia.png") },
+        { label: "Lo-fi wireframes", image: site("lumi/research/lofi.png") },
     ],
     reflection: [
         { label: "What shaped it", text: "A private journal beside opt-in check-ins, and a pattern notice that points to people, not a condition." },

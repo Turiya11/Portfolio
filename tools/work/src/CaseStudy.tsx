@@ -4,6 +4,7 @@
 import * as React from "react"
 import StickyWall, { type StickyGroup } from "./StickyWall"
 import JourneyMap, { type Persona } from "./JourneyMap"
+import ResearchFolders, { type Folder } from "./ResearchFolders"
 
 type ClipData = { src: string; poster?: string; label?: string; sound?: boolean }
 type Did = { lead: string; text: string; clips: ClipData[]; phones?: boolean }
@@ -20,7 +21,8 @@ type Props = {
     hero: ClipData & { phone?: boolean; ratio?: number }
     brief: { context: string; background: string; impact: { n: string; l: string }[]; impactNote?: string }
     understanding: { quote: string; method: string; stickiesTitle?: string; stickies: StickyGroup[] }
-    ecosystem?: { statement: string; personas: Persona[] }
+    research?: { statement: string; folders: Folder[] }
+    ecosystem?: { statement: string; hubLabel?: string; personas: Persona[] }
     didNote?: string
     did: Did[]
     process: { label: string; image: string }[]
@@ -30,8 +32,9 @@ type Props = {
 
 const SECTIONS = [
     ["brief", "Brief"],
+    ["research", "Research"], // research and ecosystem: only on pages that have them
     ["understanding", "Understanding"],
-    ["ecosystem", "Ecosystem"], // only on pages that have one
+    ["ecosystem", "Ecosystem"],
     ["did", "What I did"],
     ["process", "Process"],
     ["reflection", "Reflection"],
@@ -237,7 +240,7 @@ export default function CaseStudy(p: Props) {
                     ← Back to work
                 </a>
                 <nav aria-label="Contents">
-                    {SECTIONS.filter(([id]) => id !== "ecosystem" || p.ecosystem).map(([id, label]) => (
+                    {SECTIONS.filter(([id]) => (id !== "ecosystem" || p.ecosystem) && (id !== "research" || p.research)).map(([id, label]) => (
                         <a key={id} href={`#${id}`} className={on === id ? "on" : ""} aria-current={on === id ? "true" : undefined}>
                             {label}
                         </a>
@@ -297,6 +300,14 @@ export default function CaseStudy(p: Props) {
                     ) : null}
                 </section>
 
+                {p.research ? (
+                    <section className="cs-sec" id="research">
+                        <p className="cs-eye">Research</p>
+                        <p className="cs-state">{p.research.statement}</p>
+                        <ResearchFolders folders={p.research.folders} />
+                    </section>
+                ) : null}
+
                 <section className="cs-sec" id="understanding">
                     <p className="cs-eye">Understanding the pain point</p>
                     <p className="cs-state">{p.understanding.quote}</p>
@@ -308,7 +319,7 @@ export default function CaseStudy(p: Props) {
                     <section className="cs-sec" id="ecosystem">
                         <p className="cs-eye">Ecosystem</p>
                         <p className="cs-state">{p.ecosystem.statement}</p>
-                        <JourneyMap personas={p.ecosystem.personas} />
+                        <JourneyMap personas={p.ecosystem.personas} hubLabel={p.ecosystem.hubLabel} />
                     </section>
                 ) : null}
 
