@@ -1,0 +1,230 @@
+<!doctype html>
+<!-- Dev-only: plays one interaction scene over the real screens, frame by frame, for render.mjs to capture. -->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <style>
+            html, body { margin: 0; overflow: hidden; background: #fff; }
+            #view { position: relative; overflow: hidden; }
+            #world { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+            .shot { position: absolute; left: 0; top: 0; overflow: hidden; background: #fff; }
+            .shot img { position: absolute; display: block; }
+            .ring, .ripple { position: absolute; pointer-events: none; }
+            .ring { border-radius: 14px; border: 2px solid var(--accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 22%, transparent); }
+            .ripple { border-radius: 50%; border: 3px solid var(--accent); }
+            #cursor { position: absolute; left: 0; top: 0; transform-origin: 0 0; pointer-events: none; }
+            #touch { position: absolute; left: 0; top: 0; border-radius: 50%; background: rgba(30, 30, 40, 0.26); border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25); pointer-events: none; }
+        </style>
+    </head>
+    <body>
+        <div id="view">
+            <div id="world"></div>
+            <svg id="cursor" width="30" height="30" viewBox="0 0 24 24"><path d="M4 2.5 19.5 13l-7 1.2-3.6 6.3L4 2.5Z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round" /></svg>
+            <div id="touch"></div>
+        </div>
+        <script>
+            const ease = (p) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2)
+            const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
+            const lerp = (a, b, p) => a + (b - a) * p
+            let S, TL
+
+            // where the camera rests: the whole screen, unless the scene sets a closer view
+            const homeOf = (scene) => scene.home || { x: scene.fw / 2, y: scene.fh / 2, z: 1 }
+
+            // the steps of a scene become plain tracks, so any moment can be drawn on its own
+            function compile(scene) {
+                const { fw, fh, steps } = scene
+                const touch = scene.kind === "phone"
+                const tl = { cursor: [], cam: [], clicks: [], rings: [], shots: [{ t: 0, key: scene.first, fx: "none" }], presence: [] }
+                let t = 0.45
+                let cur = { x: scene.start?.[0] ?? fw * 0.62, y: scene.start?.[1] ?? fh * 0.72 }
+                const home = homeOf(scene)
+                let cam = { ...home }
+                const seg = (track, t0, t1, a, b) => track.push({ t0, t1, a: { ...a }, b: { ...b } })
+                tl.startCursor = { ...cur }
+
+                for (const st of steps) {
+                    const target = st.move || st.click || st.tap
+                    if (st.swipe) {
+                        const [x0, y0, x1, y1] = st.swipe
+                        seg(tl.cursor, t, t + 0.3, cur, { x: x0, y: y0 })
+                        cur = { x: x0, y: y0 }
+                        tl.presence.push([t, t + 1.6])
+                        t += 0.45
+                        seg(tl.cursor, t, t + 0.75, cur, { x: x1, y: y1 })
+                        cur = { x: x1, y: y1 }
+                        t += 0.75
+                        tl.shots.push({ t: t - 0.35, key: st.to, fx: "fade" })
+                        t += 0.5
+                        continue
+                    } else if (target) {
+                        const dist = Math.hypot(target[0] - cur.x, target[1] - cur.y)
+                        const dur = st.t ?? clamp(0.55 + dist / (fw * 1.1), 0.6, 1.15)
+                        const nextCam = st.z === undefined ? cam : { z: st.z, x: st.at ? st.at[0] : target[0], y: st.at ? st.at[1] : target[1] }
+                        if (touch) tl.presence.push([t + dur - 0.35, t + dur + 0.45])
+                        seg(tl.cursor, t, t + dur, cur, { x: target[0], y: target[1] })
+                        if (nextCam !== cam) seg(tl.cam, t, t + dur, cam, nextCam)
+                        cam = nextCam
+                        cur = { x: target[0], y: target[1] }
+                        t += dur
+                    }
+                    if (st.ring) {
+                        const hold = st.hold ?? 0.75
+                        tl.rings.push({ t0: t - 0.2, t1: t + hold, r: st.ring, round: st.round })
+                        t += hold
+                    } else if (st.hold) t += st.hold
+                    if (st.click || st.tap) {
+                        tl.clicks.push({ t: t + 0.08, x: cur.x, y: cur.y })
+                        t += 0.32
+                    }
+                    if (st.to) {
+                        tl.shots.push({ t, key: st.to, fx: st.fx || (touch ? "slide" : "fade") })
+                        if (st.zoomOut) {
+                            seg(tl.cam, t, t + 0.55, cam, home)
+                            cam = home
+                        }
+                        t += 0.6
+                    }
+                    if (st.wait) t += st.wait
+                }
+                t += scene.tail ?? 0.9
+                // back to the first frame, so the loop has no visible jump
+                seg(tl.cam, t, t + 0.5, cam, home)
+                seg(tl.cursor, t, t + 0.5, cur, tl.startCursor)
+                tl.shots.push({ t, key: scene.first, fx: "fade" })
+                tl.duration = t + 0.55
+                return tl
+            }
+
+            const track = (segs, t, first) => {
+                let v = first
+                for (const s of segs) {
+                    if (t < s.t0) break
+                    const p = t >= s.t1 ? 1 : ease((t - s.t0) / (s.t1 - s.t0))
+                    v = { x: lerp(s.a.x, s.b.x, p), y: lerp(s.a.y, s.b.y, p), z: s.a.z === undefined ? undefined : lerp(s.a.z, s.b.z, p) }
+                }
+                return v
+            }
+
+            window.loadScene = async (scene) => {
+                S = scene
+                const { fw, fh, W, H } = scene
+                document.documentElement.style.setProperty("--accent", scene.accent)
+                view.style.width = W + "px"
+                view.style.height = H + "px"
+                world.style.width = fw + "px"
+                world.style.height = fh + "px"
+                world.innerHTML = ""
+                const crop = scene.crop || [0, 0, fw, fh]
+                const imgs = []
+                for (const [key, src] of Object.entries(scene.shots)) {
+                    const d = document.createElement("div")
+                    d.className = "shot"
+                    d.dataset.key = key
+                    d.style.width = fw + "px"
+                    d.style.height = fh + "px"
+                    const im = new Image()
+                    im.src = src
+                    im.style.left = -crop[0] + "px"
+                    im.style.top = -crop[1] + "px"
+                    im.style.width = (scene.imgW || fw) + "px"
+                    d.appendChild(im)
+                    world.appendChild(d)
+                    imgs.push(im.decode())
+                }
+                await Promise.all(imgs)
+                TL = compile(scene)
+                TL.ringEls = TL.rings.map((r) => {
+                    const el = document.createElement("div")
+                    el.className = "ring"
+                    Object.assign(el.style, { left: r.r[0] + "px", top: r.r[1] + "px", width: r.r[2] + "px", height: r.r[3] + "px" })
+                    if (r.round) el.style.borderRadius = "50%"
+                    world.appendChild(el)
+                    return el
+                })
+                TL.rippleEls = TL.clicks.map(() => {
+                    const el = document.createElement("div")
+                    el.className = "ripple"
+                    world.appendChild(el)
+                    return el
+                })
+                cursor.style.display = scene.kind === "phone" ? "none" : "block"
+                touch.style.display = scene.kind === "phone" ? "block" : "none"
+                const ts = 40 * (W / fw)
+                touch.style.width = touch.style.height = ts + "px"
+                seek(0)
+                return TL.duration
+            }
+
+            window.seek = (t) => {
+                const { fw, fh, W, H } = S
+                const bs = W / fw
+                const c = track(TL.cam, t, homeOf(S))
+                const z = c.z ?? 1
+                const vw = fw / z
+                const vh = fh / z
+                const cx = clamp(c.x, vw / 2, fw - vw / 2)
+                const cy = clamp(c.y, vh / 2, fh - vh / 2)
+                const sc = bs * z
+                const ox = -(cx - vw / 2) * sc
+                const oy = -(cy - vh / 2) * sc
+                world.style.transform = `translate(${ox}px,${oy}px) scale(${sc})`
+
+                // screens
+                let i = 0
+                while (i + 1 < TL.shots.length && TL.shots[i + 1].t <= t) i++
+                const now = TL.shots[i]
+                const prev = TL.shots[i - 1]
+                const p = prev ? clamp((t - now.t) / (now.fx === "slide" ? 0.42 : 0.38), 0, 1) : 1
+                const e = ease(p)
+                for (const el of world.querySelectorAll(".shot")) {
+                    const k = el.dataset.key
+                    el.style.visibility = "hidden"
+                    el.style.transform = ""
+                    el.style.opacity = 1
+                    el.style.zIndex = 0
+                    if (prev && p < 1 && k === prev.key) {
+                        el.style.visibility = "visible"
+                        el.style.zIndex = 1
+                        if (now.fx === "slide") el.style.transform = `translateX(${-e * fw * 0.28}px)`
+                    }
+                }
+                const nowEl = world.querySelector(`.shot[data-key="${now.key}"]`)
+                nowEl.style.visibility = "visible"
+                nowEl.style.zIndex = 2
+                if (p < 1 && now.fx === "slide") nowEl.style.transform = `translateX(${(1 - e) * fw}px)`
+                if (p < 1 && now.fx === "fade") nowEl.style.opacity = e
+
+                // hover rings and click ripples sit on top of the screens
+                TL.rings.forEach((r, n) => {
+                    const a = clamp((t - r.t0) / 0.2, 0, 1) * clamp((r.t1 - t) / 0.2, 0, 1)
+                    TL.ringEls[n].style.opacity = a
+                    TL.ringEls[n].style.zIndex = 5
+                })
+                TL.clicks.forEach((c, n) => {
+                    const d = (t - c.t) / 0.5
+                    const el = TL.rippleEls[n]
+                    el.style.zIndex = 5
+                    if (d < 0 || d > 1) return (el.style.opacity = 0)
+                    const size = 14 + ease(d) * 58
+                    Object.assign(el.style, { opacity: 1 - d, left: c.x - size / 2 + "px", top: c.y - size / 2 + "px", width: size + "px", height: size + "px" })
+                })
+
+                // the pointer stays one size while the camera moves
+                const pos = track(TL.cursor, t, TL.startCursor)
+                const sx = pos.x * sc + ox
+                const sy = pos.y * sc + oy
+                const pressed = TL.clicks.some((c) => t >= c.t - 0.06 && t < c.t + 0.14)
+                if (S.kind === "phone") {
+                    const size = parseFloat(touch.style.width)
+                    const on = TL.presence.reduce((v, [a, b]) => Math.max(v, clamp((t - a) / 0.15, 0, 1) * clamp((b - t) / 0.15, 0, 1)), 0)
+                    touch.style.opacity = on
+                    touch.style.transform = `translate(${sx - size / 2}px,${sy - size / 2}px) scale(${pressed ? 0.84 : 1})`
+                } else {
+                    const u = (W / 1440) * 1.05
+                    cursor.style.transform = `translate(${sx - 4 * u}px,${sy - 3 * u}px) scale(${u * (pressed ? 0.88 : 1)})`
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -21,6 +21,7 @@ const NEXT =
 
 const here = (p) => fileURLToPath(new URL(p, import.meta.url))
 const out = here("../../work/")
+const stamp = Date.now().toString(36) // the entry files keep their names, so browsers would otherwise reuse an old build
 rmSync(out + "js", { recursive: true, force: true })
 mkdirSync(here(".entries/"), { recursive: true })
 
@@ -67,7 +68,7 @@ for (const p of pages) {
     <body>
         <!-- built by tools/work/build.mjs from the Framer component ${p.file}.tsx — edit there, then rebuild -->
         <div id="root"></div>
-        <script type="module" src="../js/${p.slug}.js"></script>
+        <script type="module" src="../js/${p.slug}.js?v=${stamp}"></script>
     </body>
 </html>
 `
