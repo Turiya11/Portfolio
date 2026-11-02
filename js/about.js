@@ -8,7 +8,7 @@ import { butterflyArt } from "./butterflies.js"
 const CONTENT = {
     eyebrow: "about me",
     heading: "The archive",
-    intro: "I'm Turiya, a product designer in Pune. The case studies are up there. This is the rest of it: the days I kept, the song on repeat, the films I rewatch and the paintings I'd steal.",
+    intro: "I'm Turiya, a product designer in Pune. The case studies are up there. This is the rest of it: the song on repeat, the films I rewatch and the paintings I'd steal.",
     hint: "scroll to flip through",
     card: [
         ["Collection", "Turiya Joshi"],
@@ -16,6 +16,17 @@ const CONTENT = {
         ["Fuelled by", "chai"],
         ["Condition", "slightly sentimental"],
     ],
+    // {words} get a highlighter stroke; {words|sunset} also make that sticker jump when you point at them
+    hello: {
+        title: "Hello world!",
+        photo: "assets/images/about/turiya.webp",
+        alt: "Turiya, smiling, in a pink sleeveless top",
+        lead: "I'm a User Experience Design student with a passion for understanding people and solving meaningful problems through thoughtful design.",
+        work: "My work spans the UX process—from {research} and {ideation} to {prototyping} and {usability testing}—with a focus on creating intuitive digital experiences that truly connect with users.",
+        beyond: "Beyond design, you'll often find me chasing {sunsets|sunset}, {starry skies|stars}, getting my hands messy with {pottery|pot}, or {painting|palette} whenever inspiration strikes.",
+        belief: "I believe creativity isn't confined to a screen—it's something that shapes the way I observe, empathize, and design.",
+    },
+    // parked until the real moments are ready (see FOLDERS).
     // date is yyyy-mm-dd. sticker: heart | star | sun | flower. `link` (optional) makes the note a door to somewhere
     moments: [
         { date: "2023-06-01", sticker: "star", title: "My first real brief", text: "Playful posters for the Texol canteen. They're still up in the factory.", note: "someone still reads these!", link: ["Where it started", "#journey"] },
@@ -44,8 +55,10 @@ const CONTENT = {
     ],
 }
 
+// to bring the calendar back, add this folder to the list (and renumber the TJ·00n labels):
+// { id: "ab-moments", tab: "moments", no: "TJ·001", title: "Days I kept", hint: "tap a circled day", tint: "#ffb9c9" },
 const FOLDERS = [
-    { id: "ab-moments", tab: "moments", no: "TJ·001", title: "Days I kept", hint: "tap a circled day", tint: "#ffb9c9" },
+    { id: "ab-hello", tab: "hello", no: "TJ·001", title: CONTENT.hello.title, hint: "nice to meet you", tint: "#ffb9c9", titleInBody: true },
     { id: "ab-repeat", tab: "on repeat", no: "TJ·002", title: "On repeat", hint: "drop the needle", tint: "#8f7bea" },
     { id: "ab-films", tab: "films", no: "TJ·003", title: "Films I rewatch", hint: "drag the strip", tint: "#7cc2f6" },
     { id: "ab-wall", tab: "the wall", no: "TJ·004", title: "On my wall", hint: "step closer to any of them", tint: "#ffd2a8" },
@@ -115,12 +128,47 @@ const tally = (n) => {
 
 const tape = (i, rot = -4) => `<span class="ab-tape" style="--tape:${TAPE[i % TAPE.length]};--rot:${rot}deg" aria-hidden="true"></span>`
 
+// the cut-outs stuck around the photo in Hello world!
+const CUTOUT = {
+    wireframe: `<svg viewBox="0 0 130 150"><rect x="14" y="6" width="78" height="138" rx="13" fill="#1d1932"/><rect x="20" y="13" width="66" height="124" rx="8" fill="#fff"/><rect x="28" y="23" width="50" height="34" rx="4" fill="#d7cff3"/><path d="m28 57 15-17 11 11 9-8 15 14" fill="#8f7bea"/><circle cx="66" cy="33" r="4" fill="#fff"/><path d="M28 68h50M28 77h34" stroke="#b9b5cc" stroke-width="4" stroke-linecap="round"/><rect x="28" y="88" width="23" height="23" rx="4" fill="#ff9eb5"/><rect x="55" y="88" width="23" height="23" rx="4" fill="#bbdafe"/><rect x="28" y="118" width="50" height="11" rx="5.500" fill="#5a46c6"/><g transform="rotate(9 96 92)"><path d="M70 66h52v46l-11 11H70Z" fill="#f5c518"/><path d="M122 112h-11v11Z" fill="#c99c05"/><path d="M78 78c9-3 19 3 34-1M78 90c9-3 16 3 30-1M78 102c6-2 10 1 18 0" fill="none" stroke="#6b5206" stroke-width="2.200" stroke-linecap="round"/></g></svg>`,
+    sunset: `<svg viewBox="0 0 120 150"><defs><linearGradient id="ab-dusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a46c6"/><stop offset=".42" stop-color="#ff7fa3"/><stop offset=".72" stop-color="#ffb27a"/></linearGradient></defs><path d="M8 142V60a52 52 0 0 1 104 0v82Z" fill="url(#ab-dusk)"/><circle cx="60" cy="92" r="23" fill="#fff0b8"/><path d="M8 94h104v48H8Z" fill="#3a2f8f"/><path d="M36 104h48M44 114h32M28 124h30M72 126h22" stroke="#ffc48a" stroke-width="4" stroke-linecap="round"/><path d="M26 44c5-5 9-5 13-1 4-4 8-4 12 0M72 30c4-4 7-4 10-1 3-3 6-3 9 0" fill="none" stroke="#1d1932" stroke-width="2.400" stroke-linecap="round"/></svg>`,
+    stars: `<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="#27306f"/><path d="M78 26a30 30 0 1 0 18 44 25 25 0 0 1-18-44Z" fill="#f5c518"/><g fill="#fff0b8"><path d="m28 22 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z"/><path d="m92 80 2.500 6 6 2.500-6 2.500-2.500 6-2.500-6-6-2.500 6-2.500Z"/><path d="m34 80 2 5 5 2-5 2-2 5-2-5-5-2 5-2Z"/></g><g fill="#fff"><circle cx="58" cy="18" r="1.800"/><circle cx="96" cy="50" r="1.800"/><circle cx="16" cy="58" r="1.600"/><circle cx="62" cy="100" r="2"/><circle cx="44" cy="44" r="1.500"/></g></svg>`,
+    pot: `<svg viewBox="0 0 130 140"><ellipse cx="65" cy="124" rx="56" ry="13" fill="#8a86a8"/><ellipse cx="65" cy="120" rx="56" ry="13" fill="#c9c6dc"/><path d="M46 22h38c-2 9 1 15 8 24 11 15 13 32 6 48-4 10-11 18-17 24H49c-6-6-13-14-17-24-7-16-5-33 6-48 7-9 10-15 8-24Z" fill="#d9825b"/><path d="M33 66c11-7 20 6 32 0s21-7 32 0c2 9 2 18-1 27-11-6-20 6-31 1s-21-7-31-1c-3-9-3-18-1-27Z" fill="#fff0b8"/><path d="M41 72l5 8M56 72l5 8M71 70l5 8M85 72l5 8" stroke="#d9825b" stroke-width="3" stroke-linecap="round"/><ellipse cx="65" cy="22" rx="19" ry="5" fill="#a85a39"/><path d="M84 40c5 8 13 14 15 28 1 8-5 8-6 1-2-11-8-17-13-25Z" fill="#a85a39" opacity=".55"/></svg>`,
+    palette: `<svg viewBox="0 0 150 120"><path fill-rule="evenodd" d="M70 8c38-3 72 18 72 50 0 22-20 26-35 25-13-1-20 5-17 15 3 11-9 17-24 15C32 109 6 88 8 58 10 30 36 11 70 8Zm-34 62a11 9 0 1 0 0 18 11 9 0 1 0 0-18Z" fill="#edcfa6"/><circle cx="46" cy="42" r="10" fill="#ff7fa3"/><circle cx="76" cy="28" r="10" fill="#f5c518"/><circle cx="107" cy="36" r="10" fill="#7cc2f6"/><circle cx="122" cy="62" r="9" fill="#5a46c6"/><circle cx="72" cy="66" r="9" fill="#9ccf3b"/><g transform="rotate(38 80 70)"><rect x="76" y="-4" width="8" height="74" rx="4" fill="#1d1932"/><rect x="75" y="70" width="10" height="11" fill="#b9b5cc"/><path d="M75 81h10c2 11-1 19-5 25-4-6-7-14-5-25Z" fill="#ff7fa3"/></g></svg>`,
+}
+const cutout = (k, r, d) => `<span class="ab-cut ab-cut--${k}" data-cut="${k}" style="--r:${r}deg;--d:${d}s" aria-hidden="true">${CUTOUT[k]}</span>`
+const said = (s) => esc(s).replace(/\{([^}|]+)(?:\|([^}]+))?\}/g, (_, words, k) => `<span class="ab-said${k ? ` ab-said--${k}` : ""}"${k ? ` data-for="${k}"` : ""}>${words}</span>`)
+
 /* ------------------------------ the folders ------------------------------ */
 
 const DAYS = ["M", "T", "W", "T", "F", "S", "S"]
 const parse = (s) => {
     const [y, m, d] = s.split("-").map(Number)
     return { y, m: m - 1, d, month: new Date(y, m - 1, d).toLocaleDateString("en-GB", { month: "long" }), full: new Date(y, m - 1, d).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) }
+}
+
+const hello = () => {
+    const h = CONTENT.hello
+    return `
+  <div class="ab-hello">
+    <h3 class="ab-hello__title" id="ab-hello-t">${esc(h.title)}</h3>
+    <div class="ab-hello__frame">
+      <span class="ab-hello__sky" aria-hidden="true"></span>
+      <i class="ab-hello__line ab-hello__line--t"></i><i class="ab-hello__line ab-hello__line--b"></i><i class="ab-hello__line ab-hello__line--l"></i><i class="ab-hello__line ab-hello__line--r"></i>
+      <span class="ab-hello__me"><img src="${esc(h.photo)}" alt="${esc(h.alt)}" width="1100" height="1061" /></span>
+      ${cutout("wireframe", -9, 0.15)}
+      ${cutout("pot", 5, 0.75)}
+    </div>
+    <div class="ab-hello__cell ab-hello__cell--lead"><span class="ab-hello__no" aria-hidden="true">(01)</span><p>${said(h.lead)}</p></div>
+    <div class="ab-hello__cell ab-hello__cell--work"><span class="ab-hello__no" aria-hidden="true">(02)</span><p>${said(h.work)}</p></div>
+    <div class="ab-hello__cell ab-hello__cell--beyond"><span class="ab-hello__no" aria-hidden="true">(03)</span><p>${said(h.beyond)}</p></div>
+    <div class="ab-hello__loves">
+      ${cutout("sunset", -7, 0.3)}
+      ${cutout("stars", 9, 0.45)}
+      ${cutout("palette", -5, 0.6)}
+    </div>
+    <div class="ab-hello__cell ab-hello__cell--belief"><span class="ab-hello__no" aria-hidden="true">(04)</span><p>${said(h.belief)}</p></div>
+  </div>`
 }
 
 const moments = () => `
@@ -228,7 +276,7 @@ const wall = () => `
     <span class="ab-floor" aria-hidden="true"></span>
   </div>`
 
-const BODIES = [moments, repeat, films, wall]
+const BODIES = { hello, moments, repeat, films, wall }
 
 function render() {
     root.innerHTML = `
@@ -257,22 +305,23 @@ function render() {
         </dl>
       </header>
       <div class="ab-drawer">
-        ${FOLDERS.map(
-            (f, i) => `<span class="ab-anchor" id="${f.id}"></span>
-          <article class="ab-folder" style="--i:${i};--tint:${f.tint};--n:${FOLDERS.length}" aria-labelledby="${f.id}-t">
+        ${FOLDERS.map((f, i) => {
+            const key = f.id.slice(3)
+            return `<span class="ab-anchor" id="${f.id}"></span>
+          <article class="ab-folder ab-folder--${key}" style="--i:${i};--tint:${f.tint};--n:${FOLDERS.length}" aria-labelledby="${f.id}-t">
             <div class="ab-folder__glass"></div>
             <svg class="ab-folder__pencil" aria-hidden="true"><path class="ab-edge"/><path class="ab-ink"/></svg>
-            <a class="ab-tab" href="#${f.id}"><span class="ab-mono">0${i + 1}</span> ${esc(f.tab)}${i === 1 ? `<span class="ab-tab__eq" aria-hidden="true"><i></i><i></i><i></i></span>` : ""}</a>
+            <a class="ab-tab" href="#${f.id}"><span class="ab-mono">0${i + 1}</span> ${esc(f.tab)}${key === "repeat" ? `<span class="ab-tab__eq" aria-hidden="true"><i></i><i></i><i></i></span>` : ""}</a>
             <div class="ab-folder__in">
               <header class="ab-folder__head">
                 <p class="ab-mono">${esc(f.no)}</p>
-                <h3 id="${f.id}-t">${esc(f.title)}</h3>
+                ${f.titleInBody ? "" : `<h3 id="${f.id}-t">${esc(f.title)}</h3>`}
                 <p class="ab-hand">${esc(f.hint)}</p>
               </header>
-              <div class="ab-body ab-body--${i}">${BODIES[i]()}</div>
+              <div class="ab-body ab-body--${key}">${BODIES[key]()}</div>
             </div>
           </article>`
-        ).join("")}
+        }).join("")}
       </div>
       <dialog class="pj-dialog ab-lightbox" aria-labelledby="ab-lightbox-t">
         <button class="pj-dialog__close" type="button" aria-label="Close">×</button>
@@ -367,7 +416,17 @@ root.addEventListener("click", (e) => {
     document.querySelector(tab.getAttribute("href")).scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" })
 })
 
-/* ------------------------------ 01: the calendar ------------------------------ */
+/* ------------------------------ hello: point at a word and its sticker jumps ------------------------------ */
+
+const helloEl = root.querySelector(".ab-hello")
+const jump = (e, on) => {
+    const k = e.target.closest?.("[data-for]")?.dataset.for
+    if (k) helloEl.querySelector(`[data-cut="${k}"]`).classList.toggle("is-said", on)
+}
+helloEl.addEventListener("pointerover", (e) => jump(e, true))
+helloEl.addEventListener("pointerout", (e) => jump(e, false))
+
+/* ------------------------------ the calendar (parked: only runs while its folder is in FOLDERS) ------------------------------ */
 
 const calPage = root.querySelector(".ab-cal__page")
 const note = root.querySelector(".ab-note")
@@ -443,6 +502,7 @@ function setMoment(i, instant) {
 
 // a dashed pencil line from the circled day to the polaroid
 function drawThread() {
+    if (!calPage) return
     const day = calPage.querySelector(`.ab-day[data-i="${at}"]`)
     const pic = note.querySelector(".ab-polaroid")
     if (!day || !pic || innerWidth < 900) return thread.classList.remove("is-on")
@@ -460,15 +520,17 @@ function drawThread() {
     thread.classList.add("is-on")
 }
 
-root.querySelector(".ab-body--0").addEventListener("click", (e) => {
-    const day = e.target.closest(".ab-day.is-kept")
-    if (day) return setMoment(+day.dataset.i)
-    const btn = e.target.closest(".ab-arrow")
-    if (btn) setMoment(at + +btn.dataset.step)
-})
-setMoment(at, true)
+if (calPage) {
+    root.querySelector(".ab-body--moments").addEventListener("click", (e) => {
+        const day = e.target.closest(".ab-day.is-kept")
+        if (day) return setMoment(+day.dataset.i)
+        const btn = e.target.closest(".ab-arrow")
+        if (btn) setMoment(at + +btn.dataset.step)
+    })
+    setMoment(at, true)
+}
 
-/* ------------------------------ 02: the record player ------------------------------ */
+/* ------------------------------ the record player ------------------------------ */
 
 const disc = root.querySelector(".ab-vinyl__disc")
 const vinyl = root.querySelector(".ab-vinyl")
@@ -618,7 +680,7 @@ playBtn.addEventListener("click", () => setPlaying(!playing))
 // the song keeps going while you flip through the other folders; it stops when you leave the archive
 new IntersectionObserver(([e]) => !e.isIntersecting && setPlaying(false)).observe(root.querySelector(".ab-drawer"))
 
-/* ------------------------------ 03: the film strip ------------------------------ */
+/* ------------------------------ the film strip ------------------------------ */
 
 const strip = root.querySelector(".ab-strip")
 const reel = root.querySelector(".ab-strip__reel")
@@ -702,7 +764,7 @@ strip.addEventListener(
     { passive: true }
 )
 
-/* ------------------------------ 04: the wall ------------------------------ */
+/* ------------------------------ the wall ------------------------------ */
 
 const lightbox = root.querySelector(".ab-lightbox")
 const lightboxBody = lightbox.querySelector(".ab-lightbox__body")
