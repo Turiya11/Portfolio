@@ -1022,7 +1022,7 @@ function LumiCaseStudy(props: any) {
         ["Role", [v("role"), v("roleNote")].filter(Boolean).join(" · ")],
         [
             "Team",
-            v("team") || <Todo on={todos}>team members, or note solo work</Todo>,
+            v("team") || (todos ? <Todo on={todos}>team members, or note solo work</Todo> : ""),
         ],
         ["Tools", v("tools")],
         ["Scope", v("scope"), true],
@@ -1134,7 +1134,7 @@ function LumiCaseStudy(props: any) {
                     <div className="lm-ov">
                         <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
                             <dl className="lm-meta">
-                                {metaRows.map((r, i) => (
+                                {metaRows.filter((r) => r[1]).map((r, i) => (
                                     <div key={i} className={r[2] ? "wide" : ""}>
                                         <dt>{r[0]}</dt>
                                         <dd>{r[1]}</dd>
@@ -1700,6 +1700,7 @@ function LumiCaseStudy(props: any) {
                                 need clinical review and ethics oversight.
                             </p>
                         </div>
+                        {(v("reflectionPersonal") || todos) && (
                         <div className="lm-glass" style={{ gap: 10, display: "flex", flexDirection: "column" }}>
                             <h3 className="lm-h3">How Lumi shaped my UX and HCI thinking</h3>
                             {v("reflectionPersonal") ? (
@@ -1710,6 +1711,7 @@ function LumiCaseStudy(props: any) {
                                 </Todo>
                             )}
                         </div>
+                        )}
                     </section>
                 )}
 
