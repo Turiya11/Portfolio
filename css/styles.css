@@ -2414,13 +2414,6 @@ button {
     box-shadow: none;
     filter: drop-shadow(0 26px 30px rgba(40, 40, 60, 0.22));
 }
-.cs-win {
-    position: absolute;
-    overflow: hidden;
-    border-radius: 16px;
-    background: #fff;
-    box-shadow: 0 30px 60px -28px rgba(40, 30, 110, 0.45);
-}
 /* things that appear during the story */
 .cs-pop {
     position: absolute;
@@ -2559,6 +2552,11 @@ button {
     font-weight: 600;
     white-space: nowrap;
 }
+.cs-cur.flip span {
+    position: absolute;
+    right: 100%;
+    top: 0;
+}
 .cs-tflow .cs-cur span { background: #3b5bdb; }
 .cs-kg .cs-cur span { background: #5c3bff; }
 .cs-lumi .cs-cur span { background: #d9627a; }
@@ -2570,121 +2568,29 @@ button {
         transform: scale(0.8);
     }
 }
-/* KG Hub window + graph */
-.cs-kgbar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    height: 52px;
-    padding: 0 14px;
-    border-bottom: 1px solid #eeecf6;
+/* KG Hub: real screens crossfading in one window */
+.cs-kgwin {
+    position: absolute;
+    width: 600px;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 30px 60px -26px rgba(40, 30, 110, 0.55);
 }
-.cs-kgbar b {
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    color: #5c3bff;
-}
-.cs-kgsearch {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    height: 32px;
-    padding: 0 12px;
-    border: 1px solid #e3e0f1;
-    border-radius: 9px;
-    color: #8a87a3;
-    transition: all 0.25s ease;
-}
-.cs-kgsearch u {
-    text-decoration: none;
-}
-.cs-kgsearch.on {
-    border-color: #5c3bff;
-    box-shadow: 0 0 0 3px rgba(92, 59, 255, 0.15);
-    color: #1d1932;
-}
-.cs-kgsearch i {
-    width: 1px;
-    height: 15px;
-    margin-left: 1px;
-    background: transparent;
-}
-.cs-kgsearch.on i {
-    background: #1d1932;
-}
-.cs-chip {
-    padding: 7px 12px;
-    border-radius: 9px;
-    border: 1px solid #e3e0f1;
-    font-weight: 500;
-    transition: all 0.25s ease;
-}
-.cs-chip.on {
-    border-color: #5c3bff;
-    background: #5c3bff;
-    color: #fff;
-}
-.cs-graph {
-    display: block;
+.cs-stage .cs-kgwin img {
+    left: 0;
+    top: 0;
     width: 100%;
-}
-.cs-edge {
-    fill: none;
-    stroke: #d7d2ec;
-    stroke-width: 1.6;
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    transition: stroke-dashoffset 0.7s ease;
-}
-.cs-edge.on {
-    stroke-dashoffset: 0;
-}
-.cs-node {
+    height: 100%;
     opacity: 0;
-    transform: scale(0.3);
-    transition:
-        opacity 0.3s ease 0.25s,
-        transform 0.5s cubic-bezier(0.3, 1.6, 0.5, 1) 0.25s;
+    transition: opacity 0.45s ease;
 }
-.cs-node.on {
+.cs-stage .cs-kgwin img.on {
     opacity: 1;
-    transform: none;
 }
-.cs-node text {
-    font-size: 11px;
-    text-anchor: middle;
-    fill: #6a6685;
-}
-.cs-node.main text {
-    font-weight: 600;
-    fill: #1d1932;
-}
-.cs-node circle { fill: #7cc2f6; }
-.cs-node.main circle { fill: #5c3bff; }
-.cs-node.main.two circle { fill: #e2798d; }
-.cs-node.drug circle { fill: #4fcf8a; }
-.cs-node.side circle { fill: #f59e8b; }
-.cs-node.path circle { fill: #c4a6ff; }
-.cs-pulse {
-    fill: none;
-    stroke: #5c3bff;
-    stroke-width: 2;
-    opacity: 0;
-}
-.cs-pulse.on {
-    opacity: 1;
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: csPulse 1.4s ease-out infinite;
-}
-@keyframes csPulse {
-    to {
-        transform: scale(2.1);
-        opacity: 0;
-    }
-}
-.cs-note {
-    font-size: 12.5px;
+.cs-kg .cs-ring {
+    box-shadow: 0 0 0 2px #5c3bff, 0 0 0 6px rgba(92, 59, 255, 0.25);
 }
 /* Lumi: real screens that arrive one by one */
 .cs-lphone {
