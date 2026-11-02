@@ -28,7 +28,7 @@ export const pages = [
             nextLabel: "Next project",
             nextTitle: "Dentigo",
             nextLink: "../dentigo/",
-            showTodos: true,
+            showTodos: false, // hide the "To add" reminders from visitors
             showVideoHero: true,
             ...lumiStickies,
             // the hero is a blank video frame until the Lumi video is added; screens are exported from the Lumi Figma file (wireframes page)
