@@ -1,5 +1,6 @@
 // "Selected work" (case-study cards, same style as the Framer project cards) and "Passion projects"
-// (smaller cards that open a detail view). Edit the content here; swap `video` / `poster` for each project's own.
+// (smaller cards that open a detail view). Edit the content here. `scene` is a looping demo from card-scenes.js.
+import { mountScene } from "./card-scenes.js?v=22"
 
 // placeholder clip from the Framer project cards, until each project has its own
 const OCEAN = {
@@ -17,7 +18,7 @@ const SELECTED = [
         tags: ["ITSM", "Design systems", "Enterprise"],
         href: "work/3tflow/",
         nda: true,
-        image: "assets/images/3tflow-tickets.jpg", // from 3tflow.com
+        scene: "tflow",
     },
     {
         meta: "2025 - Internship · Encora",
@@ -26,7 +27,7 @@ const SELECTED = [
         nda: true,
         tags: ["Data viz", "Healthcare", "Testing"],
         href: "work/encora/",
-        image: "https://framerusercontent.com/images/j8G1tbbsbdbsYuFjpUMpW6bUFFU.png",
+        scene: "kg",
     },
     {
         group: "Academic projects & research",
@@ -36,8 +37,7 @@ const SELECTED = [
         tags: ["AR", "Research", "Prototype"],
         href: "work/pip/",
         wide: true,
-        video: "assets/video/pip-focus-grab.mp4",
-        poster: "assets/images/pip/ar-pip.jpg",
+        scene: "pip",
     },
     {
         meta: "2026 - Academic project",
@@ -45,8 +45,7 @@ const SELECTED = [
         text: "Lumi is a mental health support platform designed to help mothers navigate postpartum emotional challenges through gentle self-awareness, guided emotional expression, and family-centered support systems.",
         tags: ["Mobile", "D2C", "Healthcare"],
         href: "work/lumi/",
-        image: "assets/images/lumi-cover.jpg",
-        fit: "#e2798d", // square cover: shown whole on its own pink
+        scene: "lumi",
     },
     {
         meta: "2025 - Academic project",
@@ -54,7 +53,7 @@ const SELECTED = [
         text: "A B2B platform concept connecting dental clinics and labs — restorations, supplies and clinic–lab communication in one transparent flow.",
         tags: ["B2B", "Service design", "Web app"],
         href: "work/dentigo/",
-        image: "https://framerusercontent.com/images/UwgOKoXM3WWjXfm27Hwe0NUoTd0.png",
+        scene: "dentigo",
     },
 ]
 
@@ -88,8 +87,8 @@ const PASSION = [
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c])
 const media = (p) =>
-    p.image
-        ? `<div class="pj-media"${p.fit ? ` style="background:${esc(p.fit)}"` : ""}><img src="${esc(p.image)}" alt="" loading="lazy"${p.fit ? ` style="object-fit:contain"` : ""} /></div>`
+    p.scene
+        ? `<div class="pj-media" data-scene="${esc(p.scene)}"></div>`
         : `<div class="pj-media"><video muted loop playsinline preload="none" poster="${esc(p.poster)}" aria-hidden="true"><source src="${esc(p.video)}" type="video/mp4" /></video></div>`
 const tags = (p) => `<ul class="pj-tags">${p.tags.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>`
 const body = (p) => `<div class="pj-body"><p class="pj-meta">${esc(p.meta)}${p.nda ? ` <span class="pj-nda">NDA</span>` : ""}</p><h3 class="pj-title">${esc(p.title)}</h3><p class="pj-text">${esc(p.text)}</p>${tags(p)}</div>`
@@ -136,18 +135,26 @@ dialog.addEventListener("close", () => {
     opener?.focus()
 })
 
-/* ------------------------------ videos play only while on screen; cards rise in ------------------------------ */
+/* ------------------------------ videos and scenes play only while on screen; cards rise in ------------------------------ */
 
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches
+const scenes = new Map()
+document.querySelectorAll("[data-scene]").forEach((box) => scenes.set(box.closest(".pj-card"), mountScene(box, box.dataset.scene)))
+
 const io = new IntersectionObserver(
     (entries) => {
         for (const e of entries) {
             const card = e.target
-            const v = card.querySelector("video")
+            const v = card.querySelector(":scope > .pj-media > video")
+            const scene = scenes.get(card)
             if (e.isIntersecting) {
                 card.classList.add("is-in")
+                scene?.play()
                 if (v && !reduced) v.play().catch(() => {})
-            } else v?.pause()
+            } else {
+                scene?.stop()
+                v?.pause()
+            }
         }
     },
     { threshold: 0.2 }
