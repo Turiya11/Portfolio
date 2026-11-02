@@ -412,3 +412,40 @@ encora.roleNote = "Encora Inc. · internship"
 encora.ovHeadline = "KG Hub: from data to discovery, with biomedical visualisation powered by a knowledge graph."
 encora.ovNote =
     "**This project has been modified due to an NDA.** The product is presented as KG Hub: proprietary names are changed, sensitive details are left out and some visuals are blurred. Happy to walk through the work at itsturiyajoshi11@gmail.com."
+
+/* ------------------------------ KG Hub 2026 hi-fi screens (Figma: KG 2026, page "KG Hub 2026 · Hi-fi") ------------------------------ */
+
+encora.status = "Original prototypes designed during the internship and tested with 6 users. The screens shown here are the KG Hub 2026 hi-fi designs."
+encora.ovNote =
+    "**This project has been modified due to an NDA.** The product is presented as KG Hub: proprietary names are changed, sensitive details are left out, and the screens are redesigned with sample data. Happy to walk through the work at itsturiyajoshi11@gmail.com."
+encora.ovImage = local("kg/a2-results.jpg")
+encora.ctxMapLabel = "Mapping how entities connect"
+encora.ctxMap = local("kg/b1-map.jpg")
+encora.ctxMapNote = "A knowledge graph links genes, drugs, diseases and side effects, so researchers can follow a path such as EGFR → Gefitinib → Rash, with evidence for each relation."
+encora.artifacts = [
+    { title: "Research trends → design implications", note: "What is changing in biomarker and drug discovery work, and what KG Hub does about it.", image: local("kg/research.jpg") },
+    ...encora.artifacts,
+]
+encora.flIntro = "One core journey: query → map and compare → save insight → project → collaborate."
+encora.flSitemapLabel = "Flow map: the core journey"
+encora.flSitemap = local("kg/flow.jpg")
+encora.exIntro =
+    "The KG Hub hi-fi designs follow one investigation from a research question to a shared project. Evidence sits at the point of investigation, data in the screens is labelled sample data, and nothing makes a clinical recommendation."
+encora.screens = [
+    { title: "Advanced query builder", state: "Designed", need: "Start with a research question.", decision: "Ask in plain language, then tighten it with structured clauses. Every relationship in the result links back to its sources.", notes: "", image: local("kg/a1-query.jpg") },
+    { title: "Query results", state: "Designed", need: "See what the query found, and how it connects.", decision: "Graph, table and evidence views, with filters, top relationships and Map relation on each one.", notes: "", image: local("kg/a2-results.jpg") },
+    { title: "Map relations", state: "Designed", need: "Find how two entities connect.", decision: "A path finder with hop limits and evidence per relation, such as EGFR → Gefitinib → Rash.", notes: "", image: local("kg/b1-map.jpg") },
+    { title: "Compare knowledge graphs", state: "Designed", need: "See how two sources of knowledge differ.", decision: "Shared and unique entities with relation-level differences. It shows what each graph contains, not whether one is clinically better.", notes: "", image: local("kg/b2-compare.jpg") },
+    { title: "Save as insight", state: "Designed", need: "Capture a finding without losing its context.", decision: "An insight stores a graph snapshot with its linked evidence, tags and project.", notes: "", image: local("kg/c1-insight.jpg") },
+    { title: "Projects", state: "Designed", need: "Keep work organised around a research question.", decision: "Queries, graphs and insights live together, with recent activity alongside.", notes: "", image: local("kg/d1-projects.jpg") },
+    { title: "Create project", state: "Designed", need: "Start a shared investigation quickly.", decision: "Set the research question, pick a starting point, add the current query result and invite members.", notes: "", image: local("kg/d2-create.jpg") },
+    { title: "Project insights", state: "Designed", need: "Review what the team has found.", decision: "Paths, comparisons and relations with review status and source counts. No invented confidence scores.", notes: "", image: local("kg/d3-insights.jpg") },
+    { title: "Project graph with collaboration", state: "Designed", need: "Discuss a finding where it lives.", decision: "Threaded comments attached to entities and relations, with team presence on the graph.", notes: "", image: local("kg/d4-collab.jpg") },
+    { title: "Share project", state: "Designed", need: "Bring others in safely.", decision: "Invite people by role, or turn on link access so the organisation can view insights.", notes: "", image: local("kg/d5-share.jpg") },
+]
+encora.evProposed =
+    "Research-question-first queries, with source and evidence thresholds\nPath finding between two entities, with evidence per relation\nComparing graphs: shared and unique entities\nInsights saved with a graph snapshot and linked sources\nProjects with roles, threaded comments and sharing"
+encora.evPrototyped = "5 visualisation concepts across 4 complex data types, during the internship"
+encora.evTested = "The internship prototypes, with 6 users"
+encora.evMethod = "Usability testing of the internship prototypes with 6 users, with outcomes presented to 10+ stakeholders."
+encora.hiddenSections = "details, reflection"

@@ -73,6 +73,7 @@ export const pages = [
         file: "EncoraCaseStudy",
         title: "KG Hub (Encora) — case study · Turiya Joshi",
         bg: "rgb(245, 243, 234)",
+        css: ".pc-story{grid-template-columns:1.9fr 1fr!important}.pc-stagebox{height:auto!important;aspect-ratio:3/2;padding:10px!important}", // wide desktop screens: a wide stage
         props: {
             ...home,
             ...encora, // title: "KG Hub"
