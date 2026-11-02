@@ -1,6 +1,6 @@
 // "Selected work" (case-study cards, same style as the Framer project cards) and "Passion projects"
 // (smaller cards that open a detail view). Edit the content here. `scene` is a looping demo from card-scenes.js.
-import { mountScene } from "./card-scenes.js?v=22"
+import { mountScene } from "./card-scenes.js?v=23"
 
 // placeholder clip from the Framer project cards, until each project has its own
 const OCEAN = {

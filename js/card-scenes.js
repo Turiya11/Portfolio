@@ -124,41 +124,35 @@ function kg(el) {
     }
 }
 
-/* ------------------------------ Lumi: a check-in, a gentle nudge, the partner brought along ------------------------------ */
+/* ------------------------------ Lumi: the real screens, from the mother's check-in to the partner's guidance ------------------------------ */
 
 function lumi(el) {
-    const moods = [["Stress", "#a9d3f2"], ["Anxious", "#f9c78e"], ["Numb", "#cdb8f1"], ["Sad", "#f7a8bc"], ["Okay", "#a5dfb4"]]
+    const shot = (name, cls = "") => `<img class="${cls}" src="assets/images/lumi/${name}.jpg" alt="" />`
     el.innerHTML = `
-      <img class="cs-phone" src="assets/images/cards/lumi-phone.png" alt="" style="left:74px;top:18px;height:414px" />
-      <div class="cs-panel cs-pop cs-c1" style="left:318px;top:34px;width:346px">
-        <b>How are you feeling today?</b>
-        <div class="cs-moods">${moods.map(([m, c], i) => `<span class="m${i}"><i style="background:${c}"></i>${m}</span>`).join("")}</div>
-      </div>
-      <div class="cs-panel cs-pop cs-c2" style="left:318px;top:158px;width:346px">
-        <b>You've been carrying a lot this week.</b>
-        <div class="cs-opts"><span>Drink water</span><span class="ask">Ask for help</span><span>Rest for 10 mins</span></div>
-      </div>
-      <div class="cs-panel cs-pop cs-c3" style="left:318px;top:278px;width:346px">
-        <small>Companion mode · Partner</small>
-        <b>Neha may be feeling a little overwhelmed today.</b>
-        <p>Try listening, not solving.</p>
-      </div>
+      <div class="cs-lphone p1" style="left:64px">${shot("home")}${shot("journal", "next n1")}</div>
+      <div class="cs-lphone p2" style="left:268px">${shot("patterns")}</div>
+      <div class="cs-lphone p3" style="left:472px">${shot("partner")}${shot("partner-guide", "next n3")}</div>
+      <i class="cs-ring r1" style="left:172px;top:290px;width:58px;height:20px"></i>
+      <i class="cs-ring r2" style="left:280px;top:226px;width:160px;height:86px"></i>
+      <i class="cs-ring r3" style="left:480px;top:66px;width:168px;height:70px"></i>
       ${cursor("Mother")}`
     const t = tools(el)
     const label = t.$(".cs-cur span")
     return {
-        reset: () => (t.clear([690, 420]), (label.textContent = "Mother")),
-        dur: 11000,
+        reset: () => (t.clear([230, 440]), t.on(".p1"), (label.textContent = "Mother")),
+        dur: 12000,
         steps: [
-            [300, () => t.on(".cs-c1")],
-            [700, () => t.move(424, 104)],
-            [1700, () => (t.tap(), t.on(".m1"))],
-            [2400, () => t.on(".cs-c2")],
-            [3000, () => t.move(490, 214)],
-            [4000, () => (t.tap(), t.on(".ask"))],
-            [4800, () => t.on(".cs-c3")],
-            [5200, () => (label.textContent = "Partner")],
-            [5300, () => t.move(600, 392)],
+            [500, () => t.move(198, 300)],
+            [1500, () => (t.on(".r1"), t.tap())],
+            [1900, () => (t.$(".r1").classList.remove("on"), t.on(".n1"))],
+            [2900, () => t.on(".p2")],
+            [3300, () => t.move(360, 300)],
+            [4300, () => (t.on(".r2"), t.tap())],
+            [5400, () => (t.$(".r2").classList.remove("on"), t.on(".p3"))],
+            [5800, () => (label.textContent = "Partner")],
+            [5900, () => t.move(562, 124)],
+            [6900, () => (t.on(".r3"), t.tap())],
+            [7300, () => (t.$(".r3").classList.remove("on"), t.on(".n3"))],
         ],
     }
 }
@@ -195,42 +189,28 @@ function dentigo(el) {
     }
 }
 
-/* ------------------------------ Pip: a VR headset, through the visor, into the real footage ------------------------------ */
-
-const HEADSET = `<svg class="cs-headset" viewBox="0 0 360 230" aria-hidden="true">
-  <defs>
-    <linearGradient id="hsShell" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbfaff"/><stop offset="1" stop-color="#bdb8d6"/></linearGradient>
-    <linearGradient id="hsVisor" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2d1f73"/><stop offset=".55" stop-color="#150e3f"/><stop offset="1" stop-color="#3b2496"/></linearGradient>
-    <radialGradient id="hsOrb"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#f0d6ff"/><stop offset="1" stop-color="#b57bff" stop-opacity="0"/></radialGradient>
-  </defs>
-  <path d="M46 112C14 112 6 96 6 78s16-34 44-38M314 112c32 0 40-16 40-34s-16-34-44-38" fill="none" stroke="#3a3560" stroke-width="15" stroke-linecap="round"/>
-  <rect x="34" y="34" width="292" height="150" rx="62" fill="url(#hsShell)"/>
-  <path d="M146 184c8-22 60-22 68 0z" fill="#8f8ab0"/>
-  <rect x="52" y="50" width="256" height="112" rx="48" fill="url(#hsVisor)"/>
-  <circle class="cs-orb o1" cx="118" cy="106" r="24" fill="url(#hsOrb)"/>
-  <circle class="cs-orb o2" cx="186" cy="90" r="16" fill="url(#hsOrb)"/>
-  <circle class="cs-orb o3" cx="246" cy="116" r="20" fill="url(#hsOrb)"/>
-  <path d="M84 72c20-12 54-16 84-14" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-linecap="round"/>
-  <g fill="#262140"><circle cx="60" cy="44" r="5"/><circle cx="300" cy="44" r="5"/><circle cx="50" cy="168" r="5"/><circle cx="310" cy="168" r="5"/></g>
-</svg>`
+/* ------------------------------ Pip: a VR headset, through its lens, into the real footage ------------------------------ */
 
 function pip(el) {
     el.innerHTML = `
-      <div class="cs-pipstars"></div>
       <video class="cs-pipvideo" muted playsinline preload="none" poster="assets/images/pip/ar-pip.jpg"><source src="assets/video/pip-focus-grab.mp4" type="video/mp4" /></video>
-      <div class="cs-pipintro">${HEADSET}</div>`
+      <div class="cs-pipintro"><img src="assets/images/cards/pip-headset.jpg" alt="" /></div>`
     const video = el.querySelector("video")
     const intro = el.querySelector(".cs-pipintro")
     const CLIP = 16000 // length of pip-focus-grab.mp4
     return {
         reset: () => {
-            intro.classList.remove("dive", "gone")
+            intro.style.transition = "none" // snap back without playing the dive in reverse
+            intro.classList.remove("dive", "gone", "push")
+            void intro.offsetWidth
+            intro.style.transition = ""
             video.classList.remove("on")
             video.pause()
             if (video.readyState) video.currentTime = 0
         },
         dur: 3000 + CLIP,
         steps: [
+            [0, () => intro.classList.add("push")],
             [2200, () => intro.classList.add("dive")],
             [2700, () => (video.classList.add("on"), video.play().catch(() => {}))],
             [3300, () => intro.classList.add("gone")],
