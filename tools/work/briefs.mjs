@@ -2,6 +2,7 @@
 // Research sticky notes come from content.mjs. Numbers are only the ones the projects actually produced.
 import { dentigo as dentigoSource, encora as kgSource, pip as pipSource, lumiStickies } from "./content.mjs"
 import { lumiResearch, lumiEcosystem } from "./research-lumi.mjs"
+import { dentigoResearch, kgResearch, pipResearch } from "./research-projects.mjs"
 
 const clip = (id, label) => ({ src: `../../assets/video/work/${id}.mp4`, poster: `../../assets/video/work/${id}.jpg`, label })
 const fr = (id, ext = "png") => `https://framerusercontent.com/images/${id}.${ext}`
@@ -91,6 +92,7 @@ export const dentigo = {
         ],
         impactNote: "A concept. Whether it reduces remakes is still untested.",
     },
+    research: { statement: "What the research found.", folders: dentigoResearch },
     understanding: {
         quote: "Clinics and labs run on fragmented, manual workflows, and small miscommunications turn into remakes and delays.",
         method: "User interviews and surveys, secondary research and a competitive analysis, affinity-mapped.",
@@ -139,6 +141,7 @@ export const kg = {
         ],
         impactNote: "Measured on the internship prototypes and presented to 10+ stakeholders.",
     },
+    research: { statement: "What the research found.", folders: kgResearch },
     understanding: {
         quote: "Researchers have the data, but no single place to see how it connects.",
         method: "Secondary research, a competitive analysis of ten platforms, two personas with journey maps, and team dot voting.",
@@ -220,6 +223,7 @@ export const pip = {
         ],
         impactNote: "Not yet tested with users.",
     },
+    research: { statement: "What the research found.", folders: pipResearch },
     understanding: {
         quote: "Students don't lack places to store intentions. They lack a way to bring the right one back when they can act on it.",
         method: "A survey of 46 students, 18 interviews, a clutter experiment with 4 participants and a scan of eight Reddit threads.",

@@ -2,7 +2,18 @@
 // A folder's content is a list of blocks; see the Block type for what each one draws.
 import * as React from "react"
 
-type Persona = { name: string; role: string; meta: string; quote: string; traits: string[]; background: string[]; pain: string[]; goals: string[]; needs: string[] }
+type Persona = {
+    name: string
+    role: string
+    meta?: string
+    quote?: string
+    traits?: string[]
+    background?: string[]
+    pain?: string[]
+    goals?: string[]
+    needs?: string[]
+    columns?: { t: string; items: string[] }[] // any other headings, such as an empathy map
+}
 export type Block = {
     h?: string // sub-heading
     p?: string // one short paragraph
@@ -36,6 +47,7 @@ const CSS = `
 .rf-x{flex:none;width:40px;height:40px;border:0;border-radius:50%;background:rgba(30,35,60,.08);color:var(--ink);font-size:19px;line-height:1;cursor:pointer}
 .rf-x:hover{background:rgba(30,35,60,.15)}
 .rf-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:clamp(18px,3vw,32px);display:flex;flex-direction:column;gap:18px}
+.rf-body > *{flex-shrink:0}
 .rf-body h4{margin:12px 0 -6px;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ai)}
 .rf-body > h4:first-child{margin-top:0}
 .rf-p{margin:0;font-size:16.5px;line-height:1.5;color:var(--soft)}
@@ -76,34 +88,38 @@ const CSS = `
 `
 
 function PersonaCard({ p }: { p: Persona }) {
-    const col = (t: string, items: string[]) => (
-        <div className="rf-p-col">
-            <p>{t}</p>
-            <ul>
-                {items.map((x) => (
-                    <li key={x}>{x}</li>
-                ))}
-            </ul>
-        </div>
-    )
+    const col = (t: string, items?: string[]) =>
+        items?.length ? (
+            <div className="rf-p-col" key={t}>
+                <p>{t}</p>
+                <ul>
+                    {items.map((x) => (
+                        <li key={x}>{x}</li>
+                    ))}
+                </ul>
+            </div>
+        ) : null
     return (
         <article className="rf-person">
             <b>
                 {p.name}
                 <small>{p.role}</small>
             </b>
-            <span>{p.meta}</span>
-            <blockquote>{p.quote}</blockquote>
-            <div className="rf-traits">
-                {p.traits.map((t) => (
-                    <i key={t}>{t}</i>
-                ))}
-            </div>
+            {p.meta ? <span>{p.meta}</span> : null}
+            {p.quote ? <blockquote>{p.quote}</blockquote> : null}
+            {p.traits?.length ? (
+                <div className="rf-traits">
+                    {p.traits.map((t) => (
+                        <i key={t}>{t}</i>
+                    ))}
+                </div>
+            ) : null}
             <div className="rf-cols">
                 {col("Family background", p.background)}
                 {col("Pain points", p.pain)}
                 {col("Goals", p.goals)}
                 {col("Needs", p.needs)}
+                {p.columns?.map((c) => col(c.t, c.items))}
             </div>
         </article>
     )
