@@ -79,7 +79,7 @@ const STORYBOARD = [
     {
         t: "Lumi Notices the Pattern",
         d: "After days of emotional tracking, Lumi gently identifies that Neha’s feelings may be lasting longer than typical baby blues.",
-        src: img("fLjlXF4wH4pwFW4EvhjNjKLzd4I"),
+        src: img("fLjlXF6wH4pwFW4EvhjNjKLzd4I"),
     },
     {
         t: "Rohan Gets a Signal",
