@@ -142,6 +142,39 @@ export const kg = {
         stickiesTitle: kgSource.stickiesTitle,
         stickies: kgSource.stickies,
     },
+    // persona wording is new; the phases, actions and pain points are condensed from the project's two journey maps
+    ecosystem: {
+        statement: "Two research roles, one question: how does this connect?",
+        personas: [
+            {
+                role: "Clinical researcher",
+                tagline: "Starts at a target, ends at a go/no-go call.",
+                wants: "To see how targets, biomarkers and drugs connect across every dataset.",
+                stuck: "Preclinical and clinical data that don't line up when a decision is due.",
+                phases: [
+                    { name: "Discovery", does: "Validates targets, analyses multi-omics data, reviews literature.", pain: "Accessing and integrating diverse datasets", hub: "Query builder" },
+                    { name: "Preclinical research", does: "Builds the biomarker strategy and bridges findings to human biology.", pain: "Finding biomarkers with clinical relevance", hub: "Results graph" },
+                    { name: "Translational research", does: "Guides first-in-human trial design using preclinical data.", pain: "Biomarkers vary across populations", hub: "Map relations" },
+                    { name: "Clinical operations", does: "Validates assays and keeps preclinical and clinical data continuous.", pain: "Disconnected data slows real-time decisions", hub: "Compare graphs" },
+                    { name: "Clinical execution", does: "Runs Phase 0/I trials and analyses patient and biomarker data.", pain: "Real-time integration creates data silos", hub: "Project comments" },
+                    { name: "Data-driven insights", does: "Spots trends, shares findings, makes go/no-go decisions.", pain: "Multi-modal data slows decision-making", hub: "Save as insight" },
+                ],
+            },
+            {
+                role: "Translational scientist",
+                tagline: "Turns a clinical question into a research program.",
+                wants: "Clinical relevance early, with literature, targets and trial data in one view.",
+                stuck: "Too many compounds, and animal models that don't translate to patients.",
+                phases: [
+                    { name: "Awareness and research", does: "Reviews literature and early data, and gives a clinical perspective.", pain: "Too little clinical data behind a hypothesis", hub: "Query builder" },
+                    { name: "Target and program validation", does: "Defines clinical relevance and refines patient selection.", pain: "An overwhelming number of compounds", hub: "Results graph" },
+                    { name: "Preclinical investigation", does: "Co-develops trial protocols and picks biomarkers and endpoints.", pain: "Aggressive timelines against rigorous design", hub: "Map relations" },
+                    { name: "Trial execution", does: "Interprets interim data and works with investigators and site staff.", pain: "Unexpected safety signals", hub: "Project comments" },
+                    { name: "Interpretation and decisions", does: "Reads early human data, makes go/no-go calls, presents findings.", pain: "Conflicting or inconclusive biomarker data", hub: "Save as insight" },
+                ],
+            },
+        ],
+    },
     didNote: WALKTHROUGH,
     did: [
         { lead: "Ask in plain language:", text: "start from a research question, then tighten it with clauses.", clips: [clip("kg-query", "Building a query and running it")] },
@@ -154,9 +187,9 @@ export const kg = {
     process: [
         { label: "Research trends", image: site("kg/research.jpg") },
         { label: "Competitive analysis", image: fr("0kE3ZMhLpUn3pFdl20XnA53LSsE") },
-        { label: "Personas", image: fr("atZX13o6Os8KOxRgUnWJoeySSPQ") },
-        { label: "Journey map", image: fr("Ubw2vjh1bItWdlQQA7rULzOAVSg") },
         { label: "Dot voting", image: fr("WCL7cM5MbJxZChXgeW6QGnFC9c") },
+        { label: "Knowledge graph", image: fr("C2GzI43bQ1qPDtSYKoWgWzxfaQQ") },
+        { label: "Information architecture", image: fr("8J9dvoXJdUEIx0PFRbvU8jg4Zo") },
         { label: "Flow map", image: site("kg/flow.jpg") },
     ],
     reflection: [

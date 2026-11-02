@@ -3,6 +3,7 @@
 // Only Understanding, the research, carries sticky notes and text. Every screen is a video (tools/work/video/).
 import * as React from "react"
 import StickyWall, { type StickyGroup } from "./StickyWall"
+import JourneyMap, { type Persona } from "./JourneyMap"
 
 type ClipData = { src: string; poster?: string; label?: string; sound?: boolean }
 type Did = { lead: string; text: string; clips: ClipData[]; phones?: boolean }
@@ -19,6 +20,7 @@ type Props = {
     hero: ClipData & { phone?: boolean; ratio?: number }
     brief: { context: string; background: string; impact: { n: string; l: string }[]; impactNote?: string }
     understanding: { quote: string; method: string; stickiesTitle?: string; stickies: StickyGroup[] }
+    ecosystem?: { statement: string; personas: Persona[] }
     didNote?: string
     did: Did[]
     process: { label: string; image: string }[]
@@ -29,6 +31,7 @@ type Props = {
 const SECTIONS = [
     ["brief", "Brief"],
     ["understanding", "Understanding"],
+    ["ecosystem", "Ecosystem"], // only on pages that have one
     ["did", "What I did"],
     ["process", "Process"],
     ["reflection", "Reflection"],
@@ -234,7 +237,7 @@ export default function CaseStudy(p: Props) {
                     ← Back to work
                 </a>
                 <nav aria-label="Contents">
-                    {SECTIONS.map(([id, label]) => (
+                    {SECTIONS.filter(([id]) => id !== "ecosystem" || p.ecosystem).map(([id, label]) => (
                         <a key={id} href={`#${id}`} className={on === id ? "on" : ""} aria-current={on === id ? "true" : undefined}>
                             {label}
                         </a>
@@ -300,6 +303,14 @@ export default function CaseStudy(p: Props) {
                     <p className="cs-small">{p.understanding.method}</p>
                     <StickyWall groups={p.understanding.stickies} title={p.understanding.stickiesTitle} />
                 </section>
+
+                {p.ecosystem ? (
+                    <section className="cs-sec" id="ecosystem">
+                        <p className="cs-eye">Ecosystem</p>
+                        <p className="cs-state">{p.ecosystem.statement}</p>
+                        <JourneyMap personas={p.ecosystem.personas} />
+                    </section>
+                ) : null}
 
                 <section className="cs-sec" id="did">
                     <p className="cs-eye">What I did</p>
