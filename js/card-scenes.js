@@ -16,7 +16,10 @@ const tools = (el) => {
         $,
         $$,
         on: (s) => $$(s).forEach((n) => n.classList.add("on")),
-        move: (x, y) => (cur.style.transform = `translate(${x}px,${y}px)`),
+        move: (x, y) => {
+            cur.style.transform = `translate(${x}px,${y}px)`
+            cur.classList.toggle("flip", x > 560) // near the right edge, the label sits left of the arrow
+        },
         tap: () => {
             cur.classList.remove("tap")
             void cur.offsetWidth
@@ -64,62 +67,53 @@ function tflow(el) {
     }
 }
 
-/* ------------------------------ KG Hub: search, a graph grows, compare, comment ------------------------------ */
+/* ------------------------------ KG Hub: the real journey, query → results → map → compare → save → collaborate ------------------------------ */
 
 function kg(el) {
-    const A = [190, 165]
-    const B = [430, 165]
-    const S = [310, 92] // the node both diseases share
-    const kids = [
-        [A, [92, 92], "gene", "Gene"],
-        [A, [70, 190], "drug", "Drug"],
-        [A, [118, 268], "side", "Side effect"],
-        [A, [250, 262], "path", "Pathway"],
-        [A, S, "gene", "Gene"],
-    ]
-    const kidsB = [
-        [B, [528, 92], "drug", "Drug"],
-        [B, [552, 196], "gene", "Gene"],
-        [B, [470, 268], "side", "Side effect"],
-        [B, S, "gene", ""],
-    ]
-    const line = ([a, b], [c, d], cls) => `<path class="cs-edge ${cls}" pathLength="1" d="M${a} ${b}L${c} ${d}"/>`
-    const node = ([x, y], kind, label, cls, r = 13) =>
-        `<g class="cs-node ${kind} ${cls}" style="transform-origin:${x}px ${y}px"><circle cx="${x}" cy="${y}" r="${r}"/><text x="${x}" y="${y + r + 13}">${label}</text></g>`
+    const SHOT = { left: 60, top: 25, scale: 600 / 1440 } // screens are 1440×960 in Figma
+    const at = (x, y) => [SHOT.left + x * SHOT.scale, SHOT.top + y * SHOT.scale]
+    const screens = ["a1-query", "a2-results", "b1-map", "b2-compare", "c1-insight", "d4-collab"]
     el.innerHTML = `
-      <div class="cs-win" style="left:58px;top:24px;width:604px;height:402px">
-        <div class="cs-kgbar"><b>KG Hub</b><span class="cs-kgsearch"><u></u><i></i></span><span class="cs-chip cs-cmp">Compare</span></div>
-        <svg class="cs-graph" viewBox="0 0 604 350" aria-hidden="true">
-          ${kids.map((k) => line(k[0], k[1], "a")).join("")}
-          ${kidsB.map((k) => line(k[0], k[1], "b")).join("")}
-          ${node(A, "main", "Lung cancer", "c0", 20)}
-          ${kids.map((k) => node(k[1], k[2], k[3], "a")).join("")}
-          ${node(B, "main two", "Blood cancer", "c1", 20)}
-          ${kidsB.slice(0, 3).map((k) => node(k[1], k[2], k[3], "b")).join("")}
-          <circle class="cs-pulse" cx="${S[0]}" cy="${S[1]}" r="13"/>
-        </svg>
+      <div class="cs-kgwin" style="left:${SHOT.left}px;top:${SHOT.top}px">
+        ${screens.map((n, i) => `<img class="k${i}" src="assets/images/kg/${n}.jpg" alt="" loading="lazy" />`).join("")}
       </div>
-      <div class="cs-panel cs-pop cs-note" style="left:402px;top:78px;width:190px"><small>Comment</small>Both graphs share this gene. Worth a look?</div>
+      <i class="cs-ring"></i>
+      <div class="cs-toast cs-pop" style="left:216px;top:396px"><i></i>Saved to EGFR-TKI toxicity review</div>
       ${cursor("Clinical researcher")}`
     const t = tools(el)
-    const typed = t.$(".cs-kgsearch u")
-    const word = "Lung cancer"
+    const ring = t.$(".cs-ring")
+    const press = (x, y, w, h) => {
+        const [cx, cy] = at(x, y)
+        ring.style.cssText = `left:${cx - (w * SHOT.scale) / 2}px;top:${cy - (h * SHOT.scale) / 2}px;width:${w * SHOT.scale}px;height:${h * SHOT.scale}px`
+        ring.classList.add("on")
+        t.tap()
+    }
+    const go = (x, y) => t.move(...at(x, y))
+    const show = (i) => {
+        ring.classList.remove("on")
+        t.on(`.k${i}`)
+    }
     return {
-        reset: () => (t.clear([640, 400]), (typed.textContent = "Search your query")),
-        dur: 12000,
+        reset: () => (t.clear([660, 430]), t.on(".k0")),
+        dur: 14500,
         steps: [
-            [400, () => t.move(280, 44)],
-            [1300, () => (t.tap(), t.on(".cs-kgsearch"), (typed.textContent = ""))],
-            ...[...word].map((_, i) => [1500 + i * 70, () => (typed.textContent = word.slice(0, i + 1))]),
-            [2500, () => t.on(".c0")],
-            [2800, () => t.on(".cs-edge.a, .cs-node.a")],
-            [3000, () => t.move(590, 44)],
-            [5000, () => (t.tap(), t.on(".cs-cmp"))],
-            [5300, () => t.on(".c1")],
-            [5600, () => t.on(".cs-edge.b, .cs-node.b")],
-            [6100, () => t.move(372, 150)],
-            [7100, () => (t.tap(), t.on(".cs-pulse"))],
-            [7400, () => t.on(".cs-note")],
+            [400, () => go(1221, 866)], // Run query
+            [1400, () => press(1221, 862, 300, 44)],
+            [1800, () => show(1)],
+            [2400, () => go(1355, 227)], // Map relation
+            [3400, () => press(1355, 223, 100, 28)],
+            [3800, () => show(2)],
+            [4400, () => go(849, 94)], // Compare graphs
+            [5400, () => press(849, 90, 120, 34)],
+            [5800, () => show(3)],
+            [6400, () => go(1271, 870)], // Save difference as insight
+            [7400, () => press(1271, 866, 240, 40)],
+            [7800, () => show(4)],
+            [8400, () => go(973, 878)], // Save insight
+            [9400, () => press(973, 874, 110, 36)],
+            [9800, () => show(5)],
+            [10100, () => t.on(".cs-toast")],
+            [10600, () => go(1160, 300)],
         ],
     }
 }
