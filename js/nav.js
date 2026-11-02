@@ -21,24 +21,25 @@ links.forEach((a) => {
 })
 bar.addEventListener("pointerleave", () => moveTo(current()))
 
-// keep the highlight on the section in view
+// keep the highlight on the section in view: the last one whose top has passed the middle of the screen
+// (#top wraps the whole page, so it only wins above #work; Passion and the garden keep the tab before them)
 const sections = links
     .map((a) => [a, document.querySelector(a.getAttribute("href").startsWith("#") ? a.getAttribute("href") : null)])
     .filter(([, el]) => el)
-const io = new IntersectionObserver(
-    (entries) => {
-        for (const e of entries) {
-            if (!e.isIntersecting) continue
-            const hit = sections.find(([, el]) => el === e.target)
-            if (!hit) continue
-            links.forEach((l) => l.removeAttribute("aria-current"))
-            hit[0].setAttribute("aria-current", "page")
-            if (!bar.matches(":hover")) moveTo(hit[0])
-        }
-    },
-    { rootMargin: "-45% 0px -45% 0px" }
-)
-sections.forEach(([, el]) => io.observe(el))
+let active = null
+const sync = () => {
+    const mid = innerHeight / 2
+    const hit = sections.filter(([, el]) => el.getBoundingClientRect().top <= mid).pop()
+    if (!hit || hit === active) return
+    active = hit
+    links.forEach((l) => l.removeAttribute("aria-current"))
+    hit[0].setAttribute("aria-current", "page")
+    if (!bar.matches(":hover")) moveTo(hit[0])
+}
+addEventListener("scroll", sync, { passive: true })
+addEventListener("resize", sync)
+addEventListener("load", sync)
+sync()
 
 // place it once fonts have settled
 moveTo(current())
