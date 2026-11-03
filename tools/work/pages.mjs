@@ -9,9 +9,9 @@ const bg = "rgb(245, 243, 234)"
 const FILE = "CaseStudy"
 
 export const pages = [
-    { slug: "lumi", file: FILE, title: "Lumi — case study · Turiya Joshi", bg, props: { ...home, ...lumi, next: { title: "Adaptive Emotional AI Co-Pilot", link: "../copilot/" } } },
-    { slug: "copilot", file: FILE, title: "Adaptive Emotional AI Co-Pilot — case study · Turiya Joshi", bg, props: { ...home, ...copilot, next: { title: "Dentigo", link: "../dentigo/" } } },
+    { slug: "lumi", file: FILE, title: "Lumi — case study · Turiya Joshi", bg, props: { ...home, ...lumi, next: { title: "Dentigo", link: "../dentigo/" } } },
+    { slug: "copilot", file: FILE, title: "Adaptive Emotional AI Co-Pilot — case study · Turiya Joshi", bg, props: { ...home, ...copilot, next: { title: "Pip", link: "../pip/" } } },
     { slug: "dentigo", file: FILE, title: "Dentigo — case study · Turiya Joshi", bg, props: { ...home, ...dentigo, next: { title: "3TFlow", link: "../3tflow/" } } },
-    { slug: "encora", file: FILE, title: "KG Hub (Encora) — case study · Turiya Joshi", bg, props: { ...home, ...kg, next: { title: "Pip", link: "../pip/" } } },
+    { slug: "encora", file: FILE, title: "KG Hub (Encora) — case study · Turiya Joshi", bg, props: { ...home, ...kg, next: { title: "Adaptive Emotional AI Co-Pilot", link: "../copilot/" } } },
     { slug: "pip", file: FILE, title: "Pip — case study · Turiya Joshi", bg, props: { ...home, ...pip, next: { title: "Lumi", link: "../lumi/" } } },
 ]

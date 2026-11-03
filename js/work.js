@@ -31,12 +31,21 @@ const SELECTED = [
     },
     {
         group: "Academic projects & research",
+        meta: "Independent concept · Automotive",
+        title: "Adaptive Emotional AI Co-Pilot",
+        text: "A driver-monitoring experience that notices fatigue and stress early, and answers with calm instead of alarms.",
+        tags: ["Automotive", "HMI", "AI"],
+        href: "work/copilot/",
+        wide: true,
+        video: "assets/video/work/cp-centre.mp4", // the centre display fits this card's shape without cropping the UI
+        poster: "assets/video/work/cp-centre.jpg",
+    },
+    {
         meta: "2026 - Academic research",
         title: "Pip",
         text: "An AR companion that helps design students park their thoughts and come back to them at the right moment. Built on a survey of 46 students, 18 interviews and a recall experiment; prototyped for the web and Meta Quest.",
         tags: ["AR", "Research", "Prototype"],
         href: "work/pip/",
-        wide: true,
         scene: "pip",
     },
     {
@@ -48,21 +57,12 @@ const SELECTED = [
         scene: "lumi",
     },
     {
-        meta: "Independent concept · Automotive",
-        title: "Adaptive Emotional AI Co-Pilot",
-        text: "A driver-monitoring experience that notices fatigue and stress early, and answers with calm instead of alarms.",
-        tags: ["Automotive", "HMI", "AI"],
-        href: "work/copilot/",
-        video: "assets/video/work/cp-hero.mp4",
-        poster: "assets/video/work/cp-hero.jpg",
-    },
-    {
         meta: "2025 - Academic project",
         title: "Dentigo",
         text: "A B2B platform concept connecting dental clinics and labs — restorations, supplies and clinic–lab communication in one transparent flow.",
         tags: ["B2B", "Service design", "Web app"],
         href: "work/dentigo/",
-        wide: true, // the row's odd card, now that Co-Pilot pairs with Lumi
+        wide: true, // the odd card out, after Pip and Lumi pair up
         scene: "dentigo",
     },
 ]

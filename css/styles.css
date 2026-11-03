@@ -2300,6 +2300,7 @@ button {
     line-height: 1.24;
     letter-spacing: -0.012em;
     color: #252525;
+    text-wrap: balance; /* long titles break evenly, not at a hyphen */
 }
 .pj-text {
     margin: 0;
