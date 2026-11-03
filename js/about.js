@@ -8,7 +8,7 @@ import { butterflyArt } from "./butterflies.js"
 const CONTENT = {
     eyebrow: "about me",
     heading: "The archive",
-    intro: "I'm Turiya, a product designer in Pune. The case studies are up there. This is the rest of it: the song on repeat, the films I rewatch and the paintings I'd steal.",
+    intro: "I'm Turiya, a product designer in Pune. The case studies are up there. This is the rest of it: the song on repeat, the films and shows I rewatch and the paintings I'd steal.",
     hint: "scroll to flip through",
     card: [
         ["Collection", "Turiya Joshi"],
@@ -35,16 +35,25 @@ const CONTENT = {
         { date: "2025-08-21", sticker: "flower", title: "[Another top moment]", text: "[A trip, a person, a win, a very good chai.]", note: "[a little note to yourself]" },
         { date: "2026-03-02", sticker: "star", title: "Joined SSK Technologies", text: "2000+ ITSM screens for 3TFlow, end to end. The biggest thing I've worked on so far.", note: "2000 screens!!", link: ["See 3TFlow", "work/3tflow/"] },
     ],
-    // src: your song file. Without one, a little stand-in tune plays so the record still works
-    song: { title: "[Your favourite song]", artist: "[Artist]", year: "[Year]", note: "[why this one, in one line]", src: "", cover: "" },
+    // src plays Apple's 30-second preview, and `link` goes to the whole song. Without a src, a little stand-in tune plays so the record still works
+    song: {
+        title: "Fool",
+        artist: "Djo",
+        year: "2022",
+        note: "I love the quirky vibe of it",
+        src: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a5/dc/20/a5dc2035-8ef5-de2c-12d7-ae34fcfe8130/mzaf_838732338826686117.plus.aac.p.m4a",
+        cover: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9d/58/bb/9d58bb3a-c6b5-4c3d-fbba-50872d2712f4/5056494917336.jpg/600x600bb.jpg",
+        link: ["Hear the whole song", "https://music.apple.com/us/album/fool/1632447652?i=1632447908"],
+    },
+    // `seen` (a number, drawn as tally marks) and `note` are optional, and so is `poster`: without one, a drawn stand-in shows
     films: [
-        { title: "[Film one]", by: "[Director]", year: "[Year]", seen: 7, note: "[why you keep going back]", art: "moon", tint: ["#27306f", "#8f7bea"] },
-        { title: "[Film two]", by: "[Director]", year: "[Year]", seen: 4, note: "[the scene you'd frame]", art: "sun", tint: ["#ff9eb5", "#ffd9a8"] },
-        { title: "[Film three]", by: "[Director]", year: "[Year]", seen: 12, note: "[who you watched it with]", art: "rain", tint: ["#3f6fb5", "#bbdafe"] },
-        { title: "[Film four]", by: "[Director]", year: "[Year]", seen: 3, note: "[what it changed]", art: "hills", tint: ["#c4e727", "#7cc2f6"] },
-        { title: "[Film five]", by: "[Director]", year: "[Year]", seen: 9, note: "[the line you quote]", art: "door", tint: ["#5a46c6", "#ff9eb5"] },
-        { title: "[Film six]", by: "[Director]", year: "[Year]", seen: 6, note: "[why it's a comfort]", art: "rings", tint: ["#f5c518", "#fff0b8"] },
-        { title: "[Film seven]", by: "[Director]", year: "[Year]", seen: 2, note: "[worth the second watch?]", art: "waves", tint: ["#1e90ff", "#d7cff3"] },
+        { title: "The Office", kind: "Show", by: "Greg Daniels", year: "2005–2013", art: "office" },
+        { title: "The Big Bang Theory", kind: "Show", by: "Chuck Lorre & Bill Prady", year: "2007–2019", art: "atom" },
+        { title: "Jerry Maguire", kind: "Film", by: "Cameron Crowe", year: "1996", art: "football" },
+        { title: "The Holiday", kind: "Film", by: "Nancy Meyers", year: "2006", art: "cottage" },
+        { title: "The Truman Show", kind: "Film", by: "Peter Weir", year: "1998", art: "sky" },
+        { title: "People We Meet on Vacation", kind: "Film", by: "Brett Haley", year: "2026", art: "beach" },
+        { title: "La La Land", kind: "Film", by: "Damien Chazelle", year: "2016", art: "dusk" },
     ],
     paintings: [
         { title: "[Painting one]", by: "[Artist]", year: "[Year]", note: "[what you see in it]", art: "night", size: "tall" },
@@ -60,7 +69,7 @@ const CONTENT = {
 const FOLDERS = [
     { id: "ab-hello", tab: "hello", no: "TJ·001", title: CONTENT.hello.title, hint: "nice to meet you", tint: "#ffb9c9", titleInBody: true },
     { id: "ab-repeat", tab: "on repeat", no: "TJ·002", title: "On repeat", hint: "drop the needle", tint: "#8f7bea" },
-    { id: "ab-films", tab: "films", no: "TJ·003", title: "Films I rewatch", hint: "drag the strip", tint: "#7cc2f6" },
+    { id: "ab-films", tab: "on rewatch", no: "TJ·003", title: "Films and shows I rewatch", hint: "drag the strip", tint: "#7cc2f6" },
     { id: "ab-wall", tab: "the wall", no: "TJ·004", title: "On my wall", hint: "step closer to any of them", tint: "#ffd2a8" },
 ]
 
@@ -83,18 +92,21 @@ const sticker = (k) => `<svg class="ab-sticker" viewBox="0 0 24 24" aria-hidden=
 // a wobbly hand-drawn ring; pathLength lets CSS draw it in
 const RING = `<svg class="ab-ring" viewBox="0 0 48 48" aria-hidden="true"><path pathLength="1" d="M26 5C15 3.500 5 10.500 4.500 23c-.5 12 9 20.500 20.500 20 11-.5 19-9 18.500-20C43 12 35 4.500 22 6"/></svg>`
 
-// film posters: flat shapes on a two-colour gradient
-const poster = ([a, b], k) => {
-    const shapes = {
-        moon: `<circle cx="96" cy="62" r="26" fill="#fff" opacity=".92"/><circle cx="107" cy="55" r="23" fill="${a}"/><path d="M0 170 40 124l26 26 34-44 50 64v50H0Z" fill="#fff" opacity=".2"/>`,
-        sun: `<circle cx="75" cy="112" r="42" fill="#fff" opacity=".85"/><path d="M0 128h150v92H0Z" fill="${a}" opacity=".75"/><path d="M14 148h60M84 162h52M28 178h84" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".7"/>`,
-        rain: `<path d="M24 20 12 66M62 8 46 70M104 24 90 74M136 10l-14 56M36 92l-12 48M80 86l-14 56M124 92l-14 48M50 156l-10 42M100 150l-12 50" stroke="#fff" stroke-width="2.600" stroke-linecap="round" opacity=".75"/>`,
-        hills: `<path d="M0 118c30-30 60-30 90-4s44 18 60 6v100H0Z" fill="#fff" opacity=".42"/><path d="M0 156c36-22 58-20 88 0s42 12 62 2v62H0Z" fill="${a}" opacity=".7"/><circle cx="112" cy="50" r="15" fill="#fff" opacity=".85"/>`,
-        door: `<path d="M44 196V84a31 31 0 0 1 62 0v112Z" fill="#fff" opacity=".88"/><path d="M54 196V90a21 21 0 0 1 42 0v106Z" fill="${a}" opacity=".85"/><circle cx="87" cy="136" r="3" fill="#fff"/>`,
-        rings: [58, 44, 30, 16].map((r, i) => `<circle cx="75" cy="104" r="${r}" fill="${a}" opacity="${0.28 + i * 0.16}"/>`).join(""),
-        waves: [70, 104, 138, 172].map((y, i) => `<path d="M-6 ${y}c26-22 50-22 80 0s54 22 82 0v${220 - y}H-6Z" fill="#fff" opacity="${0.16 + i * 0.09}"/>`).join(""),
+// drawn stand-in posters: one flat little scene per title (the bottom third sits under the title strip)
+const poster = (k) => {
+    const art = {
+        // the stapler in jelly
+        office: `<rect width="150" height="220" fill="#dfe6f0"/><rect y="132" width="150" height="88" fill="#7b5a43"/><rect x="24" y="68" width="102" height="70" rx="12" fill="#f5c518" opacity=".9"/><path d="M42 118h66v9H42Z" fill="#1d1932"/><path d="M46 118 96 92l10 6-2 20Z" fill="#3a3560"/><path d="M34 80c10-4 20-4 30-2" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none" opacity=".8"/>`,
+        atom: `<rect width="150" height="220" fill="#1f2a6b"/><g fill="#fff"><circle cx="24" cy="26" r="1.800"/><circle cx="128" cy="34" r="1.600"/><circle cx="118" cy="148" r="1.800"/><circle cx="20" cy="140" r="1.500"/></g><g fill="none" stroke="#fff" stroke-width="3.200"><ellipse cx="75" cy="86" rx="58" ry="21"/><ellipse cx="75" cy="86" rx="58" ry="21" transform="rotate(60 75 86)"/><ellipse cx="75" cy="86" rx="58" ry="21" transform="rotate(120 75 86)"/></g><circle cx="75" cy="86" r="11" fill="#f5c518"/><circle cx="133" cy="86" r="5" fill="#ff9eb5"/><circle cx="46" cy="36" r="5" fill="#7cc2f6"/>`,
+        // a football, and the money it's meant to show you
+        football: `<rect width="150" height="220" fill="#bfe3ff"/><rect y="118" width="150" height="102" fill="#2f8f5b"/><path d="M0 138h150M0 164h150" stroke="#fff" stroke-width="2.500" opacity=".7"/><g transform="rotate(-24 75 90)"><path d="M23 90c16-30 88-30 104 0-16 30-88 30-104 0Z" fill="#8a4b2a"/><path d="M57 90h36M63 84v12M72 84v12M81 84v12M90 84v12" stroke="#fff" stroke-width="2.800" stroke-linecap="round"/></g><g transform="rotate(14 120 34)"><rect x="102" y="24" width="36" height="20" rx="2" fill="#7fc98c" stroke="#2f7a44" stroke-width="1.500"/><circle cx="120" cy="34" r="5" fill="#2f7a44"/></g><g transform="rotate(-16 28 44)"><rect x="12" y="34" width="32" height="18" rx="2" fill="#7fc98c" stroke="#2f7a44" stroke-width="1.500"/><circle cx="28" cy="43" r="4.500" fill="#2f7a44"/></g>`,
+        cottage: `<rect width="150" height="220" fill="#3f5c94"/><path d="M0 140c40-20 100-22 150-4v84H0Z" fill="#f4f6fc"/><path d="M38 96h74v50H38Z" fill="#e9d6b8"/><path d="M28 100 75 58l47 42Z" fill="#fff"/><path d="M96 56h13v30l-13-12Z" fill="#8a5d48"/><rect x="48" y="110" width="20" height="18" fill="#f5c518"/><path d="M58 110v18M48 119h20" stroke="#8a5d48" stroke-width="1.800"/><path d="M82 146v-34h18v34Z" fill="#8a5d48"/><g fill="#fff">${[[18, 24], [44, 42], [70, 18], [112, 30], [134, 58], [20, 74], [126, 92], [92, 44], [10, 112]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.400"/>`).join("")}</g>`,
+        // the door in the painted sky
+        sky: `<rect width="150" height="220" fill="#8fcaf5"/><g fill="#fff"><ellipse cx="34" cy="44" rx="24" ry="9"/><ellipse cx="50" cy="38" rx="16" ry="9"/><ellipse cx="120" cy="82" rx="22" ry="8"/></g><path d="M0 134h150v86H0Z" fill="#3f6fb5"/><path d="M58 134h46l-4-8H66l-4-8H78l-4-8h26v32Z" fill="#fff"/><rect x="84" y="62" width="24" height="48" fill="#1d1932"/><path d="M12 150h40M84 160h44" stroke="#bbdafe" stroke-width="2.500" stroke-linecap="round"/>`,
+        beach: `<rect width="150" height="220" fill="#ffe0b0"/><circle cx="112" cy="40" r="20" fill="#ff9d5c"/><rect y="84" width="150" height="34" fill="#4fb6c4"/><path d="M0 118h150v102H0Z" fill="#f6d59b"/><path d="M50 146 72 62" stroke="#5e4630" stroke-width="3.500" stroke-linecap="round"/><path d="M26 66c8-30 62-34 84-6Z" fill="#ff7fa3"/><path d="M50 62c2-18 12-28 20-30 4 8 8 18 10 29M26 66c6-20 22-32 44-34" fill="#fff" opacity=".7"/><rect x="88" y="122" width="34" height="26" rx="4" fill="#5a46c6"/><path d="M98 122v-6h14v6" fill="none" stroke="#1d1932" stroke-width="2.500"/><circle cx="105" cy="135" r="5" fill="#f5c518"/>`,
+        dusk: `<defs><linearGradient id="ab-lalaland" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#27246e"/><stop offset=".65" stop-color="#7a5fd1"/><stop offset=".85" stop-color="#ff9eb5"/></linearGradient></defs><rect width="150" height="220" fill="url(#ab-lalaland)"/><g fill="#fff">${[[20, 24], [58, 14], [96, 30], [132, 18], [38, 56], [116, 60], [76, 62]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.700"/>`).join("")}</g><path d="M0 146c40-18 100-20 150-4v78H0Z" fill="#1c1a54"/><path d="M122 138V82" stroke="#14123d" stroke-width="2.500"/><circle cx="122" cy="78" r="5" fill="#f5c518"/><circle cx="122" cy="78" r="13" fill="#f5c518" opacity=".25"/><circle cx="58" cy="94" r="5" fill="#e8b48f"/><path d="M57 100 44 138h28Z" fill="#f5c518"/><path d="M58 106 34 92" stroke="#e8b48f" stroke-width="2.400" stroke-linecap="round"/><circle cx="80" cy="92" r="5" fill="#e8b48f"/><path d="M75 99h10l1 22h-12Z" fill="#14123d"/><path d="M76 120l-4 20M84 120l3 20" stroke="#14123d" stroke-width="3.500" stroke-linecap="round"/><path d="M76 104 62 108" stroke="#14123d" stroke-width="2.800" stroke-linecap="round"/>`,
     }
-    return `<svg viewBox="0 0 150 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="150" height="220" fill="${b}"/>${shapes[k] || ""}</svg>`
+    return `<svg viewBox="0 0 150 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${art[k] || ""}</svg>`
 }
 
 // paintings: the same idea, roughened with a paint filter (#ab-paint) so they read as brushwork
@@ -233,17 +245,18 @@ const repeat = () => {
       <div class="ab-track__bar" aria-hidden="true"><span></span></div>
       <p class="ab-mono ab-track__time">0:00</p>
       <p class="ab-hand">${esc(s.note)}</p>
+      ${s.link ? `<a class="ab-link" href="${esc(s.link[1])}" target="_blank" rel="noopener">${esc(s.link[0])} <span aria-hidden="true">→</span></a>` : ""}
     </div>
   </div>`
 }
 
 const films = () => `
-  <div class="ab-strip" tabindex="0" role="listbox" aria-label="Favourite films, use left and right arrows">
+  <div class="ab-strip" tabindex="0" role="listbox" aria-label="Films and shows I rewatch, use left and right arrows">
     <div class="ab-strip__reel">
       ${CONTENT.films
           .map(
-              (f, i) => `<button class="ab-frame-film" type="button" role="option" aria-selected="false" data-i="${i}">
-              <span class="ab-frame-film__art">${f.poster ? `<img src="${esc(f.poster)}" alt="" loading="lazy" draggable="false" />` : poster(f.tint, f.art)}</span>
+              (f, i) => `<button class="ab-frame-film" type="button" role="option" aria-selected="false" aria-label="${esc(f.title)}" data-i="${i}">
+              <span class="ab-frame-film__art">${f.poster ? `<img src="${esc(f.poster)}" alt="" loading="lazy" draggable="false" />` : `${poster(f.art)}<span class="ab-frame-film__name">${esc(f.title)}</span>`}</span>
             </button>`
           )
           .join("")}
@@ -252,8 +265,8 @@ const films = () => `
   <div class="ab-ticket-row">
     <div class="ab-ticket"></div>
     <div class="ab-film-nav">
-      <button class="ab-arrow" type="button" data-step="-1" aria-label="Previous film">${arrow(-1)}</button>
-      <button class="ab-arrow" type="button" data-step="1" aria-label="Next film">${arrow(1)}</button>
+      <button class="ab-arrow" type="button" data-step="-1" aria-label="Previous one">${arrow(-1)}</button>
+      <button class="ab-arrow" type="button" data-step="1" aria-label="Next one">${arrow(1)}</button>
     </div>
   </div>`
 
@@ -701,10 +714,10 @@ function setFilm(i, scroll = true) {
       <div class="ab-ticket__stub"><p class="ab-mono">Admit one</p><b>${String(i + 1).padStart(2, "0")}</b></div>
       <div class="ab-ticket__main">
         <h4>${esc(f.title)}</h4>
-        <p class="ab-ticket__by">${esc(f.by)} · ${esc(f.year)}</p>
-        <p class="ab-hand">${esc(f.note)}</p>
+        <p class="ab-ticket__by">${esc(f.kind)} · ${esc(f.by)} · ${esc(f.year)}</p>
+        ${f.note ? `<p class="ab-hand">${esc(f.note)}</p>` : ""}
       </div>
-      <div class="ab-ticket__seen"><p class="ab-mono">Seen</p>${tally(f.seen)}</div>`
+      ${f.seen ? `<div class="ab-ticket__seen"><p class="ab-mono">Seen</p>${tally(f.seen)}</div>` : ""}`
     if (scroll) {
         const b = frames[i]
         strip.scrollTo({ left: b.offsetLeft - (strip.clientWidth - b.offsetWidth) / 2, behavior: reduced ? "auto" : "smooth" })
