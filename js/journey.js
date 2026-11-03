@@ -10,13 +10,13 @@ const CONTENT = {
     doodles: ["graphic design?", "illustration?", "UI?", "research?"],
     milestones: [
         { year: "2023", period: "2023 — 2027", kicker: "where it began", title: "B.Des, User Experience Design", org: "MIT World Peace University, Pune", text: "Started my design degree not quite sure which direction to take. Interaction design, systems thinking, UI, prototyping and HCI slowly pulled everything together. CGPA 8.7.", tags: ["HCI", "Systems thinking", "Prototyping"] },
-        { year: "2023", period: "June 2023", kicker: "my first real brief", title: "Visual Design Intern", org: "Texol Engineering, Pune", text: "Designed playful, on-brand poster graphics for the Texol canteen — still up in the factory and appreciated by visitors from across the country and the globe.", tags: ["Visual design", "Illustration"] },
+        { year: "2023", period: "June 2023", kicker: "my first real brief", title: "Visual Design Intern", org: "Texol Engineering, Pune", logos: [["texol", "Texol Engineering"]], text: "Designed playful, on-brand poster graphics for the Texol canteen — still up in the factory and appreciated by visitors from across the country and the globe.", tags: ["Visual design", "Illustration"] },
         { year: "2024", period: "Studio project · 2024", kicker: "designing for someone else", title: "Pay Ez", org: "Digital payments for elderly people", text: "Simplified online payments for older users with low digital literacy — clearer flows, stronger trust cues and learning support for financial independence.", tags: ["Accessibility", "Research", "Mobile"] },
-        { year: "2024", period: "Certifications", kicker: "learning the why", title: "HCI, critical thinking & SEL", org: "IDC School of Design · RIT · UC Riverside", text: "Human-Computer Interaction (IDC, HCIPAI), Critical Thinking & Problem Solving (Rochester Institute of Technology), Social Emotional Learning (UC Riverside).", tags: ["HCI", "Problem solving"] },
-        { year: "2025", period: "Feb — May 2025", kicker: "where data meets care", title: "UX Design Intern", org: "Encora Inc., Pune", text: "Interactive biomedical data visualisations for clinical decision-making — 5 concepts across 4 data types, tested with 6 users: ~30% faster interpretation, ~20% fewer misreads.", tags: ["Data viz", "Healthcare", "Usability testing"], link: ["Read the case study", "work/encora/"] },
+        { year: "2024", period: "Certifications", kicker: "learning the why", title: "HCI, critical thinking & SEL", org: "IDC School of Design · RIT · UC Riverside", logos: [["idc", "IDC School of Design"], ["hcipai", "HCIPAI"], ["rit", "Rochester Institute of Technology"], ["ucr", "UC Riverside"]], text: "Human-Computer Interaction (IDC, HCIPAI), Critical Thinking & Problem Solving (Rochester Institute of Technology), Social Emotional Learning (UC Riverside).", tags: ["HCI", "Problem solving"] },
+        { year: "2025", period: "Feb — May 2025", kicker: "where data meets care", title: "UX Design Intern", org: "Encora Inc., Pune", logos: [["encora", "Encora"]], text: "Interactive biomedical data visualisations for clinical decision-making — 5 concepts across 4 data types, tested with 6 users: ~30% faster interpretation, ~20% fewer misreads.", tags: ["Data viz", "Healthcare", "Usability testing"], link: ["Read the case study", "work/encora/"] },
         { year: "2025", period: "Studio project · 2025", kicker: "thinking in systems", title: "Dentigo", org: "B2B platform for dental clinics & labs", text: "Brought restorations, supplies and clinic–lab communication into one transparent flow to cut remakes, delays and staff workload.", tags: ["B2B", "Service design", "Web app"], link: ["Read the case study", "work/dentigo/"] },
         { year: "2026", period: "Academic project · 2026", kicker: "a system of support", title: "Lumi", org: "Postpartum support for mothers & families", text: "Explored how a digital experience can help mothers recognise and express postpartum emotional difficulty, while giving partners and family a clearer, more compassionate way to support her.", tags: ["User research", "Interaction design", "Maternal health"], link: ["Read the case study", "work/lumi/"] },
-        { year: "2026", period: "March 2026 — now", kicker: "going end-to-end", title: "Product Design Intern", org: "SSK Technologies · 3TFlow", text: "End-to-end flows across 2000+ ITSM screens for 5 user roles — ticket assignment cut from 6 steps to 3, a Reports module, SLA tracking and a design system of 4000+ components.", tags: ["ITSM", "Design systems", "Enterprise"], link: ["Under NDA · ask me about it", "work/3tflow/"] },
+        { year: "2026", period: "March 2026 — now", kicker: "going end-to-end", title: "Product Design Intern", org: "SSK Technologies · 3TFlow", logos: [["ssk", "SSK Technologies"]], text: "End-to-end flows across 2000+ ITSM screens for 5 user roles — ticket assignment cut from 6 steps to 3, a Reports module, SLA tracking and a design system of 4000+ components.", tags: ["ITSM", "Design systems", "Enterprise"], link: ["Under NDA · ask me about it", "work/3tflow/"] },
     ],
     finale: { label: "Today", year: "2026", connector: "and now I'm an", title: "End-to-end product & interaction designer", text: "Research to release — systems, flows, data and the small moments that make them feel alive.", cta: ["See my work", "#work"] },
 }
@@ -27,6 +27,7 @@ const FLOCK = ["#1E90FF", "#FF9EB5", "#F5C518"]
 const TRACK_END = 0.86 // the last 14% of the scroll is the sunset finale
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
 const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
+const logo = ([file, name]) => `<img class="jt-logo jt-logo--${file}" src="assets/images/logos/${file}.png" alt="${name}" title="${name}" />`
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c])
 
 const root = document.getElementById("journey")
@@ -87,8 +88,11 @@ function render() {
               <span class="jt-stem" style="height:${gap - 8}px;${above ? `bottom:24px` : `top:24px`}"></span>
               <article class="jt-card${compact ? " is-compact" : ""}" style="width:${cardW}px;left:${-cardW / 2}px;${above ? `bottom:${24 + gap}px` : `top:${24 + gap}px`}">
                 <div class="jt-card__top"><span class="jt-kicker">${esc(m.kicker)}</span><span class="jt-period">${esc(m.period)}</span></div>
-                <h3>${esc(m.title)}</h3>
-                <p class="jt-org">${esc(m.org)}</p>
+                <div class="jt-card__head">
+                  ${m.logos?.length === 1 ? logo(m.logos[0]) : ""}
+                  <div><h3>${esc(m.title)}</h3><p class="jt-org">${esc(m.org)}</p></div>
+                </div>
+                ${m.logos?.length > 1 ? `<div class="jt-logos">${m.logos.map(logo).join("")}</div>` : ""}
                 <p class="jt-text">${esc(m.text)}</p>
                 <div class="jt-card__foot">
                   <div class="jt-tags">${m.tags.map((t) => `<span style="border-color:${color}">${esc(t)}</span>`).join("")}</div>
