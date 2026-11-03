@@ -4,7 +4,7 @@
 import { lumi, dentigo, kg, pip } from "./briefs.mjs"
 import { copilot } from "./research-copilot.mjs"
 
-const home = { backLink: "../../#work", menuLink: "../../" }
+const home = { backLink: "../../#work" }
 const bg = "rgb(245, 243, 234)"
 const FILE = "CaseStudy"
 
