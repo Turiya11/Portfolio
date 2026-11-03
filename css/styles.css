@@ -1203,7 +1203,11 @@ button {
     border-radius: 8px;
 }
 .jt-logos .jt-logo--indiahci {
-    padding: 0; /* already a full tile, with its own background */
+    height: 40px; /* it has small text, so a little taller than the others */
+    padding: 3px 7px;
+}
+.jt-logos {
+    align-items: center;
 }
 .jt-card h3 {
     margin: 0;
