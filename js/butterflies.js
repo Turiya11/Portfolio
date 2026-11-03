@@ -7,12 +7,11 @@ const DEFAULTS = {
         { tag: "Who I am", title: "UX/UI designer", detail: "Design undergrad at MIT-WPU, Pune. Graduating in 2027." },
         { tag: "Right now", title: "Interning at SSK", detail: "Designing agent-facing workflows, reports modules, ticketing systems and SLA tracking interfaces for an enterprise ITSM platform." },
         { tag: "What I care about", title: "Ethical, human-centered AI", detail: "Inclusive, accessible systems that work for real people." },
-        { tag: "Side build", title: "Meeting-to-Figma agent", detail: "An MVP AI agent that turns live meetings into Figma design briefs." },
         { tag: "Home base", title: "Pune, India", detail: "Designing from Pune." },
     ],
     padding: 48,
     layout: "trail", // "trail" | "scattered" (ignored for butterflies given a fixed spot in options.spots)
-    count: 5,
+    count: 4,
     minSize: 14,
     maxSize: 42,
     speed: 1,
