@@ -5,7 +5,7 @@
 const DEFAULTS = {
     details: [
         { tag: "Who I am", title: "UX/UI designer", detail: "Design undergrad at MIT-WPU, Pune. Graduating in 2027." },
-        { tag: "Right now", title: "Interning at 3TFlow", detail: "Designing agent-facing workflows, reports modules, ticketing systems and SLA tracking interfaces for an enterprise ITSM platform." },
+        { tag: "Right now", title: "Interning at SSK", detail: "Designing agent-facing workflows, reports modules, ticketing systems and SLA tracking interfaces for an enterprise ITSM platform." },
         { tag: "What I care about", title: "Ethical, human-centered AI", detail: "Inclusive, accessible systems that work for real people." },
         { tag: "Side build", title: "Meeting-to-Figma agent", detail: "An MVP AI agent that turns live meetings into Figma design briefs." },
         { tag: "Home base", title: "Pune, India", detail: "Designing from Pune." },
