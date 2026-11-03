@@ -48,11 +48,21 @@ const SELECTED = [
         scene: "lumi",
     },
     {
+        meta: "Independent concept · Automotive",
+        title: "Adaptive Emotional AI Co-Pilot",
+        text: "A driver-monitoring experience that notices fatigue and stress early, and answers with calm instead of alarms.",
+        tags: ["Automotive", "HMI", "AI"],
+        href: "work/copilot/",
+        video: "assets/video/work/cp-hero.mp4",
+        poster: "assets/video/work/cp-hero.jpg",
+    },
+    {
         meta: "2025 - Academic project",
         title: "Dentigo",
         text: "A B2B platform concept connecting dental clinics and labs — restorations, supplies and clinic–lab communication in one transparent flow.",
         tags: ["B2B", "Service design", "Web app"],
         href: "work/dentigo/",
+        wide: true, // the row's odd card, now that Co-Pilot pairs with Lumi
         scene: "dentigo",
     },
 ]
@@ -104,15 +114,17 @@ work.querySelector(".pj-grid").innerHTML = SELECTED.map(
 
 /* ------------------------------ passion projects: open a detail view ------------------------------ */
 
+// parked: the section is commented out in index.html, so all of this waits until it's back
 const passion = document.getElementById("passion")
-passion.querySelector(".pj-grid").innerHTML = PASSION.map(
-    (p, i) => `<button class="pj-card is-small" type="button" data-i="${i}" aria-haspopup="dialog">${media(p)}${body(p)}</button>`
-).join("")
+if (passion)
+    passion.querySelector(".pj-grid").innerHTML = PASSION.map(
+        (p, i) => `<button class="pj-card is-small" type="button" data-i="${i}" aria-haspopup="dialog">${media(p)}${body(p)}</button>`
+    ).join("")
 
 const dialog = document.getElementById("pj-dialog")
 const dialogBody = dialog.querySelector(".pj-dialog__body")
 let opener = null
-passion.addEventListener("click", (e) => {
+passion?.addEventListener("click", (e) => {
     const card = e.target.closest(".pj-card")
     if (!card) return
     const p = PASSION[+card.dataset.i]

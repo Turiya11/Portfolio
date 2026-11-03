@@ -198,4 +198,91 @@ const ppScenes = [
     ]),
 ]
 
-export const scenes = [...kgScenes, ...dgScenes, ...lmScenes, ...ppScenes]
+/* ---------------- Co-Pilot: car displays, from the Automobile Design Expo Figma file. Touch, because these are in-car screens ---------------- */
+
+const cpShots = Object.fromEntries(["cl-clear", "cl-stress", "cl-drowsy", "cl-critical", "ce-home", "ce-drowsy", "ce-trip", "faces", "wheel"].map((k) => [k, VIDEO + `copilot/${k}.png`]))
+const cp = (id, first, fw, fh, W, H, steps, extra = {}) => ({ id, kind: "phone", fw, fh, W, H, bitrate: 2600000, accent: "#14D6B8", start: [fw * 0.55, fh * 0.8], shots: cpShots, first, steps, ...extra })
+const cluster = (id, first, steps) => cp(id, first, 1760, 660, 1760, 660, steps)
+const centre = (id, first, steps) => cp(id, first, 1280, 800, 1280, 800, steps)
+// positions below are read off the frame at 2000 px wide, then moved into the crop
+const FACE = [60, 280, 1880, 780]
+const fr_ = (x, y, w, h) => [x - FACE[0], y - FACE[1], w, h]
+const fp = (x, y) => [x - FACE[0], y - FACE[1]]
+const WHEEL = [66, 622, 859, 537]
+const wr = (x, y, w, h) => [x - WHEEL[0], y - WHEEL[1], w, h]
+const wp = (x, y) => [x - WHEEL[0], y - WHEEL[1]]
+
+const cpScenes = [
+    // the drive in one pass, for the top of the page
+    cluster("cp-hero", "cl-clear", [
+        { wait: 1.3 },
+        { to: "cl-stress", fx: "fade" },
+        { wait: 1.5 },
+        { to: "cl-drowsy", fx: "fade" },
+        { wait: 1.5 },
+        { to: "cl-critical", fx: "fade" },
+        { wait: 1.2 },
+        { tap: [880, 478], to: "cl-clear", fx: "fade" },
+    ]),
+    cluster("cp-states", "cl-clear", [
+        { wait: 0.3 },
+        { ring: [788, 47, 184, 46], hold: 0.9 },
+        { ring: [1185, 175, 261, 326], hold: 1 },
+        { to: "cl-stress", fx: "fade" },
+        { ring: [795, 47, 170, 46], hold: 0.8 },
+        { ring: [560, 255, 560, 292], hold: 1 },
+        { tap: [648, 486], to: "cl-clear", fx: "fade" },
+    ]),
+    cluster("cp-escalate", "cl-drowsy", [
+        { wait: 0.3 },
+        { ring: [1185, 175, 261, 326], hold: 0.9 },
+        { ring: [560, 226, 560, 321], hold: 1.1 },
+        { to: "cl-critical", fx: "fade" },
+        { ring: [1185, 175, 261, 326], hold: 0.8 },
+        { tap: [880, 478], ring: [811, 452, 138, 52], hold: 0.4 },
+    ]),
+    centre("cp-centre", "ce-home", [
+        { wait: 0.3 },
+        { ring: [893, 131, 346, 228], hold: 1 },
+        { to: "ce-drowsy", fx: "fade" },
+        { wait: 0.2 },
+        { ring: [560, 312, 560, 70], hold: 0.8 },
+        { ring: [560, 394, 560, 70], hold: 0.6 },
+        { ring: [160, 586, 303, 40], hold: 0.7 },
+        { tap: [680, 606], ring: [560, 578, 239, 55], hold: 0.35 },
+    ]),
+    centre("cp-trip", "ce-trip", [
+        { wait: 0.3 },
+        { tap: [580, 270], ring: [256, 248, 652, 44], hold: 0.8 },
+        { tap: [580, 444], ring: [256, 422, 652, 44], hold: 0.8 },
+        { tap: [745, 530], ring: [653, 512, 184, 36], hold: 0.7 },
+        { ring: [970, 507, 250, 133], hold: 0.9 },
+    ]),
+    {
+        ...cp("cp-faces", "faces", FACE[2], FACE[3], 1880, 780, [
+            { move: fp(475, 495), z: 1.6, at: fp(650, 495), ring: fr_(354, 344, 243, 304), hold: 0.5 },
+            { move: fp(738, 495), ring: fr_(616, 344, 243, 304), hold: 0.5 },
+            { move: fp(1000, 495), z: 1.6, at: fp(1000, 495), ring: fr_(878, 344, 243, 304), hold: 0.5 },
+            { move: fp(1262, 495), ring: fr_(1140, 344, 243, 304), hold: 0.5 },
+            { move: fp(1524, 495), z: 1.6, at: fp(1500, 495), ring: fr_(1403, 344, 243, 304), hold: 0.5 },
+            { move: fp(1786, 495), ring: fr_(1665, 344, 243, 304), hold: 0.8 },
+            { move: fp(1786, 885), z: 1.6, at: fp(1500, 885), ring: fr_(1665, 733, 243, 304), hold: 0.8 },
+        ]),
+        kind: "desktop",
+        crop: FACE,
+        imgW: 2000,
+    },
+    {
+        ...cp("cp-wheel", "wheel", WHEEL[2], WHEEL[3], 1600, 1000, [
+            { wait: 0.3 },
+            { ring: wr(200, 620, 300, 130), hold: 1 },
+            { tap: wp(516, 901), ring: wr(476, 861, 80, 80), round: true, hold: 0.5 },
+            { tap: wp(561, 991), ring: wr(533, 969, 56, 44), hold: 0.5 },
+            { tap: wp(189, 904), ring: wr(155, 870, 68, 68), round: true, hold: 0.5 },
+        ]),
+        crop: WHEEL,
+        imgW: 2000,
+    },
+]
+
+export const scenes = [...kgScenes, ...dgScenes, ...lmScenes, ...ppScenes, ...cpScenes]
