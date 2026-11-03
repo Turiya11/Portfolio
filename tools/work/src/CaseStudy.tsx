@@ -10,7 +10,6 @@ type ClipData = { src: string; poster?: string; label?: string; sound?: boolean;
 type Did = { lead: string; text: string; clips: ClipData[]; phones?: boolean }
 type Props = {
     backLink: string
-    menuLink: string
     title: string
     meta: string
     headline: string
@@ -54,9 +53,6 @@ const CSS = `
 .cs-rail nav a:hover{color:var(--ink)}
 .cs-rail nav a.on{color:var(--ai);font-weight:600}
 .cs-rail nav a.on:before{content:'';position:absolute;left:0;top:7px;bottom:7px;width:3px;border-radius:2px;background:var(--a)}
-.cs-menu{position:fixed;top:24px;right:var(--gut);z-index:5;display:inline-flex;align-items:center;gap:12px;height:42px;padding:0 22px;border-radius:999px;border:1px solid var(--edge);
-  background:rgba(255,255,255,.5);backdrop-filter:blur(18px) saturate(170%);-webkit-backdrop-filter:blur(18px) saturate(170%);box-shadow:inset 0 1px 0 #fff,0 12px 28px -16px rgba(50,60,120,.4);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
-.cs-menu i{display:block;width:17px;height:7px;border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink)}
 .cs-main{margin-left:var(--rail);padding:92px var(--gut) 40px;display:flex;flex-direction:column;gap:clamp(72px,9vw,128px)}
 .cs-top{display:flex;flex-direction:column;gap:clamp(24px,3vw,36px)}
 .cs-top h1{margin:0;font-size:clamp(52px,8vw,112px);font-weight:800;letter-spacing:-.045em;line-height:.95}
@@ -66,7 +62,7 @@ const CSS = `
 .cs-top.phone{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,5vw,72px);align-items:center}
 .cs-sec{display:flex;flex-direction:column;gap:clamp(22px,2.6vw,34px);scroll-margin-top:32px}
 .cs-eye{margin:0;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--quiet)}
-.cs-state{margin:0;padding-right:clamp(0px,10vw,150px);font-size:clamp(23px,2.5vw,34px);font-weight:600;letter-spacing:-.02em;line-height:1.22}
+.cs-state{margin:0;font-size:clamp(23px,2.5vw,34px);font-weight:600;letter-spacing:-.02em;line-height:1.22}
 .cs-state b{color:var(--ai);font-weight:600}
 .cs-small{margin:0;font-size:14px;line-height:1.5;color:var(--soft)}
 .cs-small a{text-decoration:underline;text-underline-offset:3px}
@@ -115,7 +111,6 @@ const CSS = `
   .cs-top.phone{grid-template-columns:1fr}
   .cs-top.phone .cs-clip{width:min(100%,340px);margin:0 auto}
   .cs-back{font-size:10.5px;letter-spacing:.12em;padding:0 14px}
-  .cs-menu{padding:0 14px;font-size:10.5px}
   .cs-phones{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--gut) * -1);padding:0 var(--gut) 8px;gap:12px}
   .cs-phones figure{flex:0 0 74vw;scroll-snap-align:center}
   .cs-proc,.cs-refl{grid-template-columns:1fr}
@@ -248,10 +243,6 @@ export default function CaseStudy(p: Props) {
                     ))}
                 </nav>
             </aside>
-            <a className="cs-menu" href={p.menuLink}>
-                menu
-                <i />
-            </a>
 
             <main className="cs-main">
                 {p.hero.phone ? (
