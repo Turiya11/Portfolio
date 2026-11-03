@@ -52,7 +52,7 @@ function layout() {
     const firstX = mobile ? vw * 0.92 : Math.max(vw * 0.64, x0 + introW + cardW * 0.6)
     const xs = CONTENT.milestones.map((_, i) => firstX + i * step)
     const T = xs[n - 1] + vw * 0.7
-    const baseY = vh * (compact ? 0.5 : 0.52)
+    const baseY = vh * 0.55 // below centre: the nav takes space from the cards above the line
     const amp = (compact ? 16 : 30) * kk
     const yFn = (x) => baseY + amp * Math.sin((x / (step * 0.9)) * Math.PI * 2 + 0.6) + amp * 0.35 * Math.sin(x / 173)
     let d = ""
@@ -166,19 +166,25 @@ function render() {
     fitCards()
 }
 
-// keep every card on screen: between the nav (top) and the bottom edge; a card that's still too tall
-// after the wide layout is scaled down a touch, anchored at its stem
+// keep every card on screen: between the nav (top) and the bottom edge; if one is still too tall after
+// the wide layout, they all scale down together, each anchored at its stem
 const NAV_CLEAR = 76
 function fitCards() {
     const { vh, xs, yFn, compact, kk } = geo
     const gap = compact ? 28 : 44 * kk
-    els.marks.forEach((mark, i) => {
-        const card = mark.querySelector(".jt-card")
-        const above = i % 2 === 1
-        const y = yFn(xs[i])
-        const room = above ? y - 24 - gap - NAV_CLEAR : vh - 16 - (y + 24 + gap)
-        card.style.transformOrigin = above ? "50% 100%" : "50% 0%"
-        card.style.setProperty("--fit", Math.min(1, room / card.offsetHeight).toFixed(3))
+    const cards = els.marks.map((mark) => mark.querySelector(".jt-card"))
+    // one scale for every card, set by the tightest fit, so they all stay the same size
+    const fit = Math.min(
+        1,
+        ...cards.map((card, i) => {
+            const y = yFn(xs[i])
+            const room = i % 2 === 1 ? y - 24 - gap - NAV_CLEAR : vh - 16 - (y + 24 + gap)
+            return room / card.offsetHeight
+        })
+    )
+    cards.forEach((card, i) => {
+        card.style.transformOrigin = i % 2 === 1 ? "50% 100%" : "50% 0%"
+        card.style.setProperty("--fit", fit.toFixed(3))
     })
 }
 
