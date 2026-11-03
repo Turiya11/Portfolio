@@ -2908,11 +2908,9 @@ button {
 .ab-play:focus-visible,
 .ab-vinyl:focus-visible,
 .ab-day.is-kept:focus-visible,
-.ab-frame-film:focus-visible,
 .ab-piece__frame:focus-visible,
 .ab-tab:focus-visible,
-.ab-link:focus-visible,
-.ab-strip:focus-visible {
+.ab-link:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
 }
@@ -3712,7 +3710,6 @@ button.ab-day {
 }
 .ab-polaroid__art img,
 .ab-sleeve__art img,
-.ab-frame-film__art img,
 .ab-piece__art img,
 .ab-lightbox__art img {
     display: block;
@@ -4093,172 +4090,467 @@ button.ab-day {
     margin-top: 12px;
 }
 
-/* ---- 03: the film strip ---- */
-.ab-body--films {
-    --film-h: clamp(170px, 30vh, 250px);
-    --film-w: calc(var(--film-h) * 0.68);
+/* ---- things I can't explain: a shelf of six objects, each with its own trick ---- */
+.ab-body--things {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 16px;
 }
-.ab-strip {
-    margin-inline: calc(-1 * clamp(18px, 3vw, 40px));
-    overflow-x: auto;
-    overflow-y: hidden;
-    container-type: inline-size;
-    scrollbar-width: none;
-    scroll-snap-type: x proximity;
-    cursor: grab;
-    -webkit-user-select: none;
+.ab-things {
+    --obj: clamp(130px, 33vh - 56px, 250px);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(8px, 2vh, 22px) 18px;
+}
+.ab-thing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 4px;
+    border: 0;
+    border-radius: 12px;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+}
+.ab-thing:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+.ab-thing__stage {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: var(--obj);
+}
+.ab-thing__label {
+    font-family: var(--hand);
+    font-size: 23px;
+    line-height: 1.05;
+    text-align: center;
+    color: var(--ink);
+}
+.ab-thing:nth-child(odd) .ab-thing__label {
+    rotate: -1.2deg;
+}
+.ab-thing:nth-child(even) .ab-thing__label {
+    rotate: 1deg;
+}
+.ab-thing__stage img {
+    display: block;
+    -webkit-user-drag: none;
     user-select: none;
 }
-.ab-strip::-webkit-scrollbar {
-    display: none;
-}
-.ab-strip.is-dragging {
-    cursor: grabbing;
-    scroll-snap-type: none;
-}
-.ab-strip__reel {
-    --holes: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='12'><rect x='6' y='1' width='12' height='10' rx='2.5' fill='white' fill-opacity='.92'/></svg>");
+
+/* orange: skin wipes down from the top, a cream edge of pith just behind it, and the strip of peel uncurls */
+.ab-orange {
     position: relative;
-    display: inline-flex;
-    gap: 12px;
-    margin: 12px 0;
-    padding: 26px calc(50cqw - var(--film-w) / 2);
-    background:
-        var(--holes) 0 7px / 24px 12px repeat-x,
-        var(--holes) 0 calc(100% - 7px) / 24px 12px repeat-x,
-        linear-gradient(180deg, rgba(90, 70, 198, 0.3), rgba(46, 38, 110, 0.42));
+    display: block;
+    width: calc(var(--obj) * 1.08);
+    max-width: 100%;
+    aspect-ratio: 553 / 446;
+    filter: drop-shadow(0 12px 12px rgba(120, 70, 20, 0.28));
+    transition: rotate 0.7s cubic-bezier(0.3, 1.4, 0.5, 1);
 }
-.ab-frame-film {
-    position: relative;
-    flex: none;
-    width: var(--film-w);
-    height: var(--film-h);
-    padding: 0;
-    border: 0;
-    background: none;
-    cursor: inherit;
-    scroll-snap-align: center;
-    opacity: 0.66;
+.ab-thing--orange.is-on .ab-orange {
+    rotate: -5deg;
+}
+.ab-orange img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+.ab-orange__body {
+    clip-path: ellipse(37.4% 40.4% at 37% 40%);
+}
+.ab-orange__flap {
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(39.5% -2%, 80% -2%, 80% 72%, 62% 73%, 52% 79%, 41% 82%, 39.5% 60%);
+    transition: clip-path 0.72s cubic-bezier(0.5, 0.05, 0.3, 1);
+}
+.ab-orange__flap img {
+    clip-path: ellipse(37.4% 40.4% at 37% 40%);
+    transform: scaleX(-1);
+    transform-origin: 37% 50%;
+}
+/* the mirrored side has its own highlight: shade it, so the orange reads as one lit from the left */
+.ab-orange__flap:not(.ab-orange__flap--pith)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    clip-path: ellipse(37.4% 40.4% at 37% 40%);
+    background: linear-gradient(90deg, transparent 39%, rgba(214, 120, 8, 0.34) 52%, rgba(205, 108, 6, 0.42) 76%);
+}
+.ab-orange__flap--pith {
+    background: #fdf0c8;
+    -webkit-mask: radial-gradient(ellipse 37.4% 40.4% at 37% 40%, #000 99%, transparent 100%);
+    mask: radial-gradient(ellipse 37.4% 40.4% at 37% 40%, #000 99%, transparent 100%);
+    transition-delay: 0.07s;
+}
+.ab-thing--orange.is-on .ab-orange__flap {
+    clip-path: polygon(41% 80%, 62% 71%, 64% 72%, 62% 73%, 52% 79%, 41% 82%, 41% 81%);
+}
+.ab-orange__curl {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    clip-path: polygon(42% 78%, 52% 74%, 63% 71%, 72% 72%, 88% 82%, 93% 73%, 100% 73%, 100% 86%, 90% 95%, 75% 100%, 60% 99%, 49% 91%);
+    transform: rotate(-58deg) scale(0.26);
+    transform-origin: 46% 80%;
     transition:
-        opacity 0.35s ease,
-        transform 0.5s cubic-bezier(0.2, 0.9, 0.25, 1);
+        transform 0.55s cubic-bezier(0.4, 0, 0.8, 0.6),
+        opacity 0.2s ease 0.35s;
 }
-.ab-frame-film:hover {
-    opacity: 0.92;
-}
-.ab-frame-film.is-on {
-    z-index: 1;
+.ab-thing--orange.is-on .ab-orange__curl {
     opacity: 1;
-    transform: scale(1.1) rotate(-1.4deg);
+    transform: none;
+    transition:
+        transform 0.75s cubic-bezier(0.3, 1.45, 0.5, 1) 0.32s,
+        opacity 0.15s ease 0.32s;
 }
-.ab-frame-film__art {
+
+/* can: about.js draws the crush; this just leans it over as it goes */
+.ab-can {
+    display: block;
+    width: calc(var(--obj) * 0.72);
+    height: var(--obj);
+    rotate: calc(var(--p, 0) * -5deg);
+    filter: drop-shadow(0 10px 9px rgba(40, 30, 95, 0.32));
+}
+
+/* packaging: brown paper and string, because it's just a box. Then it isn't */
+.ab-box {
+    position: relative;
+    display: block;
+    width: calc(var(--obj) * 0.878);
+    height: var(--obj);
+    filter: drop-shadow(0 12px 12px rgba(40, 30, 95, 0.26));
+    transition: scale 0.6s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.ab-thing--box.is-on .ab-box {
+    scale: 1.05;
+}
+.ab-box img {
+    width: 100%;
+    height: 100%;
+}
+.ab-box__sheen {
+    position: absolute;
+    left: 9%;
+    right: 0;
+    top: 2.4%;
+    bottom: 20.8%;
+    background: linear-gradient(112deg, transparent 38%, rgba(255, 255, 255, 0.75) 50%, transparent 62%) -100% 0 / 300% 100% no-repeat;
+}
+.ab-thing--box.is-on .ab-box__sheen {
+    background-position: 200% 0;
+    transition: background-position 1s ease 0.45s;
+}
+.ab-box__wrap {
+    position: absolute;
+    left: 8.6%;
+    right: -0.6%;
+    top: 2%;
+    bottom: 20.4%;
+    perspective: 700px;
+}
+.ab-box__flap {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50.4%;
+    background:
+        repeating-linear-gradient(93deg, rgba(90, 60, 25, 0.06) 0 2px, transparent 2px 7px),
+        linear-gradient(160deg, #d7b98e, #c29f70);
+    box-shadow: inset 0 0 0 1px rgba(90, 60, 25, 0.28);
+    transition: transform 0.7s cubic-bezier(0.45, 0.05, 0.25, 1) 0.1s, opacity 0.2s ease 0.62s;
+}
+.ab-box__flap--l {
+    left: 0;
+    transform-origin: 0 50%;
+}
+.ab-box__flap--r {
+    right: 0;
+    transform-origin: 100% 50%;
+}
+.ab-box__flap b {
+    position: absolute;
+    right: 8px;
+    bottom: 6px;
+    font-family: var(--hand);
+    font-size: 17px;
+    font-weight: 400;
+    color: rgba(70, 45, 18, 0.8);
+    white-space: nowrap;
+    rotate: -3deg;
+}
+.ab-thing--box.is-on .ab-box__flap--l {
+    transform: rotateY(-112deg);
+    opacity: 0;
+}
+.ab-thing--box.is-on .ab-box__flap--r {
+    transform: rotateY(112deg);
+    opacity: 0;
+}
+.ab-thing--box:not(.is-on) .ab-box__flap {
+    transition: transform 0.6s cubic-bezier(0.45, 0.05, 0.25, 1), opacity 0.1s ease;
+}
+/* the string: one line each way, tied in the middle */
+.ab-box__twine {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(#f4ecdc, #f4ecdc) center / 3px 100% no-repeat,
+        linear-gradient(#f4ecdc, #f4ecdc) center / 100% 3px no-repeat;
+    transition: opacity 0.22s ease, scale 0.3s ease;
+}
+.ab-box__twine::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 30px;
+    height: 16px;
+    margin: -8px 0 0 -15px;
+    border-radius: 50%;
+    background:
+        radial-gradient(ellipse at 22% 50%, transparent 30%, #f4ecdc 32% 58%, transparent 60%),
+        radial-gradient(ellipse at 78% 50%, transparent 30%, #f4ecdc 32% 58%, transparent 60%);
+}
+.ab-thing--box.is-on .ab-box__twine {
+    opacity: 0;
+    scale: 1.2;
+}
+
+/* the blurry photo: it hunts for focus, gives up, and looks better for it */
+.ab-blur {
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    width: calc(var(--obj) * 0.75);
+    height: var(--obj);
+    padding: 7px;
+    rotate: 2.4deg;
+    background: #fff;
+    box-shadow: 0 16px 20px -14px rgba(40, 30, 95, 0.55);
+    transition: rotate 0.6s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.ab-thing--blur.is-on .ab-blur {
+    rotate: -1.4deg;
+}
+.ab-blur__pic {
+    position: relative;
     display: block;
     width: 100%;
     height: 100%;
     overflow: hidden;
-    border-radius: 5px;
-    background: #d7cff3;
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
 }
-.ab-frame-film.is-on .ab-frame-film__art {
-    box-shadow:
-        0 0 0 3px #fff,
-        0 18px 28px -12px rgba(29, 25, 50, 0.65);
+.ab-blur__pic img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.7s ease;
 }
-.ab-ticket-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 18px;
+.ab-blur__ghost {
+    opacity: 0;
+    mix-blend-mode: screen;
+    transform: translate(calc(var(--gx, 0) * 9px), calc(var(--gy, 0) * 9px)) scale(1.04);
+    transition:
+        opacity 0.6s ease,
+        transform 0.5s ease-out !important;
 }
-/* a ticket stub: two punched notches, a dashed tear line */
-.ab-ticket {
-    display: flex;
-    align-items: stretch;
-    flex: 0 1 620px;
-    min-width: 0;
-    min-height: 92px;
-    rotate: -0.6deg;
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.58));
-    border-radius: 12px;
-    -webkit-mask: radial-gradient(circle 9px at 96px 0, transparent 98%, #000) top / 100% 51% no-repeat, radial-gradient(circle 9px at 96px 100%, transparent 98%, #000) bottom / 100% 51% no-repeat;
-    mask: radial-gradient(circle 9px at 96px 0, transparent 98%, #000) top / 100% 51% no-repeat, radial-gradient(circle 9px at 96px 100%, transparent 98%, #000) bottom / 100% 51% no-repeat;
+.ab-blur__ghost--2 {
+    transform: translate(calc(var(--gx, 0) * -7px), calc(var(--gy, 0) * -7px)) scale(1.07);
 }
-.ab-ticket__stub {
-    flex: none;
-    width: 96px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    border-right: 1.5px dashed rgba(90, 70, 198, 0.35);
+.ab-thing--blur.is-on .ab-blur__pic img:first-child {
+    filter: blur(1.6px) brightness(1.06) saturate(1.2);
 }
-.ab-ticket__stub .ab-mono {
-    font-size: 9px;
+.ab-thing--blur.is-on .ab-blur__ghost {
+    opacity: 0.5;
 }
-.ab-ticket__stub b {
+.ab-blur__af {
+    position: absolute;
+    inset: 22% 18%;
+    opacity: 0;
+    --c: rgba(255, 255, 255, 0.95);
+    background:
+        linear-gradient(var(--c), var(--c)) 0 0 / 16px 2px no-repeat,
+        linear-gradient(var(--c), var(--c)) 0 0 / 2px 16px no-repeat,
+        linear-gradient(var(--c), var(--c)) 100% 0 / 16px 2px no-repeat,
+        linear-gradient(var(--c), var(--c)) 100% 0 / 2px 16px no-repeat,
+        linear-gradient(var(--c), var(--c)) 0 100% / 16px 2px no-repeat,
+        linear-gradient(var(--c), var(--c)) 0 100% / 2px 16px no-repeat,
+        linear-gradient(var(--c), var(--c)) 100% 100% / 16px 2px no-repeat,
+        linear-gradient(var(--c), var(--c)) 100% 100% / 2px 16px no-repeat;
+}
+.ab-thing--blur.is-on .ab-blur__af {
+    animation: abHunt 1.5s ease-in-out forwards;
+}
+@keyframes abHunt {
+    0% {
+        opacity: 1;
+        scale: 1.25;
+    }
+    30% {
+        scale: 0.85;
+    }
+    55% {
+        scale: 1.1;
+    }
+    80% {
+        opacity: 1;
+        scale: 0.95;
+    }
+    100% {
+        opacity: 0;
+        scale: 0.95;
+    }
+}
+.ab-blur__pic em {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 8px;
     font-family: var(--hand);
-    font-size: 36px;
-    font-weight: 600;
-    line-height: 1;
-    color: var(--accent);
+    font-size: 20px;
+    font-style: normal;
+    text-align: center;
+    color: #fff;
+    opacity: 0;
+    text-shadow: 0 1px 6px rgba(60, 30, 0, 0.6);
+    transition: opacity 0.2s ease;
 }
-.ab-ticket__main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-width: 0;
-    padding: 12px 18px 12px;
+.ab-thing--blur.is-on .ab-blur__pic em {
+    opacity: 1;
+    transition: opacity 0.4s ease 1.3s;
 }
-.ab-ticket__main h4 {
-    margin: 0;
-    font-family: Figtree, var(--sans);
-    font-size: 23px;
-    font-weight: 500;
-    line-height: 1.15;
-    letter-spacing: -0.012em;
+
+/* lily and tiramisu: snapshots with something falling on them */
+.ab-snap {
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    width: calc(var(--obj) * 0.92);
+    height: var(--obj);
+    padding: 7px 7px 20px;
+    rotate: -2.2deg;
+    background: #fff;
+    box-shadow: 0 16px 20px -14px rgba(40, 30, 95, 0.55);
+    transition:
+        rotate 0.6s cubic-bezier(0.3, 1.4, 0.5, 1),
+        scale 0.6s cubic-bezier(0.3, 1.4, 0.5, 1);
 }
-.ab-ticket__by {
-    margin: 2px 0 2px;
-    font-size: 13.5px;
-    font-weight: 500;
-    color: var(--soft);
+.ab-snap--tiramisu {
+    rotate: 2deg;
 }
-.ab-ticket__main .ab-hand {
-    font-size: 21px;
+.ab-thing.is-on .ab-snap {
+    rotate: 1.2deg;
+    scale: 1.03;
 }
-.ab-ticket__seen {
-    flex: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 6px;
-    padding: 0 18px 0 0;
+.ab-thing.is-on .ab-snap--tiramisu {
+    rotate: -0.8deg;
 }
-.ab-tally path {
+.ab-snap__pic {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #ece7f8;
+}
+.ab-snap__pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.ab-thing--tiramisu .ab-snap__pic img {
+    object-position: 50% 58%;
+}
+.ab-petal,
+.ab-speck {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    pointer-events: none;
+}
+.ab-petal {
+    width: 15px;
+    filter: drop-shadow(0 2px 2px rgba(120, 40, 90, 0.35));
+}
+.ab-petal svg {
+    display: block;
+}
+.ab-speck {
+    top: 22%;
+    width: 2.5px;
+    height: 2.5px;
+    border-radius: 50%;
+    background: #4b2a16;
+}
+/* the sieve shakes above the plate while the cocoa builds up */
+.ab-sieve {
+    position: absolute;
+    left: 50%;
+    top: -2%;
+    width: 42%;
+    margin-left: -21%;
+    opacity: 0;
+    translate: 0 -12px;
+    transition:
+        opacity 0.25s ease,
+        translate 0.35s ease;
+}
+.ab-sieve path {
     fill: none;
-    stroke: var(--ink);
-    stroke-width: 1.6;
+    stroke: #1d1932;
+    stroke-width: 2;
     stroke-linecap: round;
 }
-.ab-film-nav {
-    flex: none;
-    display: flex;
-    gap: 8px;
+.ab-sieve path:first-child {
+    fill: rgba(255, 255, 255, 0.82);
 }
-.ab-credit {
-    margin-top: 10px;
-    font-size: 9.5px;
-    text-align: center;
+.ab-sieve path:last-child {
+    stroke-width: 1;
+    opacity: 0.55;
 }
-.ab-credit a {
-    color: inherit;
+.ab-thing--tiramisu.is-on .ab-sieve {
+    opacity: 1;
+    translate: 0 0;
+    animation: abSift 0.22s linear infinite alternate;
+}
+@keyframes abSift {
+    from {
+        transform: translateX(-4px) rotate(-2deg);
+    }
+    to {
+        transform: translateX(4px) rotate(2deg);
+    }
+}
+.ab-snap__cocoa {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 0.26  0 0 0 0 0.14  0 0 0 0 0.07  0 0 0 3 -1.5'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    -webkit-mask: radial-gradient(ellipse 46% 40% at 50% 55%, #000 45%, transparent 100%);
+    mask: radial-gradient(ellipse 46% 40% at 50% 55%, #000 45%, transparent 100%);
+    transition: opacity 0.6s ease;
+}
+.ab-thing--tiramisu.is-on .ab-snap__cocoa {
+    opacity: 0.9;
+    transition: opacity 3.5s linear 0.3s;
+}
+@media (prefers-reduced-motion: reduce) {
+    .ab-thing--tiramisu.is-on .ab-sieve,
+    .ab-thing--blur.is-on .ab-blur__af {
+        animation: none;
+    }
 }
 
 /* ---- 04: the wall ---- */
@@ -4599,12 +4891,13 @@ button.ab-day {
         flex: none;
         width: 110px;
     }
-    .ab-ticket-row {
-        flex-direction: column;
+    .ab-things {
+        --obj: 150px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px 8px;
     }
-    .ab-ticket {
-        width: 100%;
-        flex-basis: auto;
+    .ab-thing__label {
+        font-size: 20px;
     }
     .ab-wall {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4638,8 +4931,5 @@ button.ab-day {
     .ab-polaroid {
         width: 200px;
         margin-inline: auto;
-    }
-    .ab-ticket__seen {
-        display: none;
     }
 }
