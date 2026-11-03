@@ -125,7 +125,7 @@ function render() {
         </div>
         <div class="jt-finale">
           <svg class="jt-wave" viewBox="0 0 100 1000" preserveAspectRatio="none" style="width:${Math.round(vw * 0.08)}px" aria-hidden="true">
-            <defs><linearGradient id="jt-sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BBDAFE"/><stop offset="1" stop-color="#BBDAFE"/></linearGradient></defs>
+            <defs><linearGradient id="jt-sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F1F8"/><stop offset="1" stop-color="#F4F1F8"/></linearGradient></defs>
             <path d="M100 0 L100 1000 L60 1000 C20 930 90 860 50 790 S20 650 60 580 S90 440 40 370 S25 230 65 160 S85 70 55 0 Z" fill="url(#jt-sg)"/>
           </svg>
           <div class="jt-sunset">
