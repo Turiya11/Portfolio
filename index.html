@@ -12,7 +12,7 @@
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Figtree:wght@400;500&family=Plus+Jakarta+Sans:wght@600&family=JetBrains+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&family=Caveat:wght@500;600&family=Shadows+Into+Light+Two&family=Mona+Sans:wght@400;500;600;700&display=swap"
         />
         <link rel="preload" as="image" href="assets/images/window.webp" />
-        <link rel="stylesheet" href="css/styles.css?v=32" />
+        <link rel="stylesheet" href="css/styles.css?v=33" />
     </head>
     <body>
         <!-- top nav: centred, fixed; a gooey pill follows the hovered tab (port of the Framer Liquid Gooey nav) -->
@@ -25,7 +25,7 @@
                 <a href="#top" aria-current="page">Home</a>
                 <a href="#work">Work</a>
                 <a href="#about">About</a>
-                <a href="mailto:itsturiyajoshi11@gmail.com">Contact</a>
+                <a href="#garden">Contact</a>
             </nav>
         </header>
 
@@ -181,7 +181,7 @@
                 <p class="gf-tagline">Welcome to my <strong>garden</strong>, where most of my ideas start.</p>
                 <form class="gf-form" novalidate autocomplete="off">
                     <label for="garden-note">Drop a thought, critique or idea and watch it bloom.</label>
-                    <textarea id="garden-note" maxlength="200" rows="3" placeholder="What would you grow next?"></textarea>
+                    <textarea id="garden-note" maxlength="200" rows="2" placeholder="What would you grow next?"></textarea>
                     <div class="gf-row">
                         <input maxlength="40" aria-label="Your name or company (optional)" placeholder="Name or company (optional)" />
                         <button class="gf-plant" type="submit"><span class="gf-plant__seed" aria-hidden="true"></span>Plant</button>
@@ -191,6 +191,10 @@
                         <button class="gf-clear" type="button" hidden>Clear my garden</button>
                     </div>
                 </form>
+                <a class="gf-mail" href="mailto:itsturiyajoshi11@gmail.com">
+                    <svg viewBox="0 0 20 16" width="17" height="14" aria-hidden="true"><rect x="1" y="1" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6" /><path d="m2 3.5 8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    Or reach out to me on mail <span aria-hidden="true">→</span>
+                </a>
             </div>
 
             <div class="gf-soil" aria-hidden="true">
