@@ -1168,8 +1168,42 @@ button {
     white-space: nowrap;
     color: var(--soft);
 }
+/* company and certification logos, on small white tiles */
+.jt-card__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+}
+.jt-card__head > div {
+    min-width: 0;
+}
+.jt-logo {
+    flex: none;
+    display: block;
+    height: 44px;
+    width: auto;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(29, 25, 50, 0.08), 0 4px 10px -6px rgba(29, 25, 50, 0.35);
+}
+.jt-logo--texol {
+    padding: 8px 9px;
+    object-fit: contain;
+}
+.jt-logos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+.jt-logos .jt-logo {
+    height: 32px;
+    padding: 6px 9px;
+    border-radius: 8px;
+}
 .jt-card h3 {
-    margin: 8px 0 0;
+    margin: 0;
     font-size: 22px;
     line-height: 1.12;
     font-weight: 600;
