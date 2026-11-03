@@ -6,7 +6,7 @@ import StickyWall, { type StickyGroup } from "./StickyWall"
 import JourneyMap, { type Persona } from "./JourneyMap"
 import ResearchFolders, { type Folder } from "./ResearchFolders"
 
-type ClipData = { src: string; poster?: string; label?: string; sound?: boolean }
+type ClipData = { src: string; poster?: string; label?: string; sound?: boolean; ratio?: number }
 type Did = { lead: string; text: string; clips: ClipData[]; phones?: boolean }
 type Props = {
     backLink: string
@@ -60,6 +60,7 @@ const CSS = `
 .cs-main{margin-left:var(--rail);padding:92px var(--gut) 40px;display:flex;flex-direction:column;gap:clamp(72px,9vw,128px)}
 .cs-top{display:flex;flex-direction:column;gap:clamp(24px,3vw,36px)}
 .cs-top h1{margin:0;font-size:clamp(52px,8vw,112px);font-weight:800;letter-spacing:-.045em;line-height:.95}
+.cs-top h1.long{font-size:clamp(40px,5.4vw,78px);letter-spacing:-.035em;line-height:1}
 .cs-top .cs-head{margin:14px 0 0;font-size:clamp(22px,2.5vw,34px);font-weight:600;letter-spacing:-.02em;line-height:1.2}
 .cs-meta{margin:0 0 14px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ai)}
 .cs-top.phone{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,5vw,72px);align-items:center}
@@ -226,7 +227,7 @@ export default function CaseStudy(p: Props) {
     const heading = (
         <div>
             <p className="cs-meta">{p.meta}</p>
-            <h1>{p.title}</h1>
+            <h1 className={p.title.length > 14 ? "long" : undefined}>{p.title}</h1>
             <p className="cs-head">{p.headline}</p>
         </div>
     )
@@ -342,7 +343,7 @@ export default function CaseStudy(p: Props) {
                                         ))}
                                     </div>
                                 ) : (
-                                    <Clip clip={d.clips[0]} cls="wide" ratio={p.ratio} />
+                                    <Clip clip={d.clips[0]} cls="wide" ratio={d.clips[0].ratio || p.ratio} />
                                 )}
                             </article>
                         ))}
