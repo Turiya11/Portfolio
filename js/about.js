@@ -6,7 +6,7 @@ import { butterflyArt } from "./butterflies.js"
 const CONTENT = {
     eyebrow: "about me",
     heading: "The archive",
-    intro: "I'm Turiya, a product designer in Pune. The case studies are up there. This is the rest of it: the song on repeat, the films and shows I rewatch and the paintings I've made.",
+    intro: "I'm Turiya, a product designer in Pune. The case studies are up there. This is the rest of it: the song on repeat, the things I can't explain why I like and the paintings I've made.",
     hint: "scroll to flip through",
     card: [
         ["Collection", "Turiya Joshi"],
@@ -43,15 +43,14 @@ const CONTENT = {
         cover: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/9d/58/bb/9d58bb3a-c6b5-4c3d-fbba-50872d2712f4/5056494917336.jpg/600x600bb.jpg",
         link: ["Hear the whole song", "https://music.apple.com/us/album/fool/1632447652?i=1632447908"],
     },
-    // `seen` (a number, drawn as tally marks) and `note` are optional. Posters load from TMDB
-    films: [
-        { title: "The Office", kind: "Show", by: "Greg Daniels", year: "2005–2013", poster: "https://image.tmdb.org/t/p/w500/7DJKHzAi83BmQrWLrYYOqcoKfhR.jpg" },
-        { title: "The Big Bang Theory", kind: "Show", by: "Chuck Lorre & Bill Prady", year: "2007–2019", poster: "https://image.tmdb.org/t/p/w500/euKFiO5M125rpngFRBbSW83beeI.jpg" },
-        { title: "Jerry Maguire", kind: "Film", by: "Cameron Crowe", year: "1996", poster: "https://image.tmdb.org/t/p/w500/lABvGN7fDk5ifnwZoxij6G96t2w.jpg" },
-        { title: "The Holiday", kind: "Film", by: "Nancy Meyers", year: "2006", poster: "https://image.tmdb.org/t/p/w500/h1ITOpvJN3Tw4Sy60w2QTfYMvdd.jpg" },
-        { title: "The Truman Show", kind: "Film", by: "Peter Weir", year: "1998", poster: "https://image.tmdb.org/t/p/w500/vuza0WqY239yBXOadKlGwJsZJFE.jpg" },
-        { title: "People We Meet on Vacation", kind: "Film", by: "Brett Haley", year: "2026", poster: "https://image.tmdb.org/t/p/w500/peG6482ALJQ9Tbvv2P38BquVk0f.jpg" },
-        { title: "La La Land", kind: "Film", by: "Damien Chazelle", year: "2016", poster: "https://image.tmdb.org/t/p/w500/uDO8zWDhfWwoFdKS4fzkUJt0Rf0.jpg" },
+    // each one does its own thing when you point at it (or tap it). `kind` picks which
+    things: [
+        { kind: "orange", label: "Orange peel.", image: "assets/images/about/things/orange.webp", alt: "An orange" },
+        { kind: "can", label: "Crushing a can.", image: "assets/images/about/things/can.webp", alt: "A can of Diet Coke" },
+        { kind: "box", label: "Unnecessarily pretty packaging.", image: "assets/images/about/things/packaging.webp", alt: "A hand holding an ornate illustrated box of little tubes, painted with flowers and figures" },
+        { kind: "blur", label: "Blurry photographs that somehow look better.", image: "assets/images/about/things/blurry.jpg", alt: "A blurry, golden photo of me pushing my hair back, holding a bunch of pink flowers" },
+        { kind: "lily", label: "Lilies.", image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/Oriental_hybrid1_%28cropped%29.jpg/500px-Oriental_hybrid1_%28cropped%29.jpg", alt: "A white and pink lily in bloom" },
+        { kind: "tiramisu", label: "Tiramisu.", image: "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/Purezza%27s_Legendary_Tiramisu_-_Purezza_2024-12-17.jpg/500px-Purezza%27s_Legendary_Tiramisu_-_Purezza_2024-12-17.jpg", alt: "A layered slice of tiramisu dusted with cocoa" },
     ],
     // my own work. `w` and `h` keep each picture's shape; `wide` lets it take a full row on phones
     instagram: "slyyarts",
@@ -69,7 +68,7 @@ const CONTENT = {
 const FOLDERS = [
     { id: "ab-hello", tab: "hello", no: "TJ·001", title: CONTENT.hello.title, hint: "nice to meet you", tint: "#ffb9c9", titleInBody: true },
     { id: "ab-repeat", tab: "on repeat", no: "TJ·002", title: "On repeat", hint: "drop the needle", tint: "#8f7bea" },
-    { id: "ab-films", tab: "on rewatch", no: "TJ·003", title: "Films and shows I rewatch", hint: "drag the strip", tint: "#7cc2f6" },
+    { id: "ab-things", tab: "no reason", no: "TJ·003", title: "Things I can't explain why I like", hint: "go on, poke them", tint: "#7cc2f6" },
     { id: "ab-wall", tab: "the wall", no: "TJ·004", title: "On my wall", hint: "step closer to any of them", tint: "#ffd2a8" },
 ]
 
@@ -91,22 +90,6 @@ const sticker = (k) => `<svg class="ab-sticker" viewBox="0 0 24 24" aria-hidden=
 
 // a wobbly hand-drawn ring; pathLength lets CSS draw it in
 const RING = `<svg class="ab-ring" viewBox="0 0 48 48" aria-hidden="true"><path pathLength="1" d="M26 5C15 3.500 5 10.500 4.500 23c-.5 12 9 20.500 20.500 20 11-.5 19-9 18.500-20C43 12 35 4.500 22 6"/></svg>`
-
-// rewatches as pencil tally marks
-const tally = (n) => {
-    let d = ""
-    let x = 2
-    for (let i = 1; i <= n; i++) {
-        if (i % 5 === 0) {
-            d += `M${x - 25} 19 ${x - 1} 3`
-            x += 7
-        } else {
-            d += `M${x} ${2 + (i % 2)} ${x + (i % 3) - 1} 20`
-            x += 6
-        }
-    }
-    return `<svg class="ab-tally" width="${x}" height="22" viewBox="0 0 ${x} 22" role="img" aria-label="seen ${n} times"><path d="${d}"/></svg>`
-}
 
 const tape = (i, rot = -4) => `<span class="ab-tape" style="--tape:${TAPE[i % TAPE.length]};--rot:${rot}deg" aria-hidden="true"></span>`
 
@@ -222,26 +205,50 @@ const repeat = () => {
   </div>`
 }
 
-const films = () => `
-  <div class="ab-strip" tabindex="0" role="listbox" aria-label="Films and shows I rewatch, use left and right arrows">
-    <div class="ab-strip__reel">
-      ${CONTENT.films
-          .map(
-              (f, i) => `<button class="ab-frame-film" type="button" role="option" aria-selected="false" aria-label="${esc(f.title)}" data-i="${i}">
-              <span class="ab-frame-film__art"><img src="${esc(f.poster)}" alt="${esc(f.title)} poster" loading="lazy" draggable="false" /></span>
-            </button>`
-          )
-          .join("")}
-    </div>
-  </div>
-  <div class="ab-ticket-row">
-    <div class="ab-ticket"></div>
-    <div class="ab-film-nav">
-      <button class="ab-arrow" type="button" data-step="-1" aria-label="Previous one">${arrow(-1)}</button>
-      <button class="ab-arrow" type="button" data-step="1" aria-label="Next one">${arrow(1)}</button>
-    </div>
-  </div>
-  <p class="ab-mono ab-credit">Posters from <a href="https://www.themoviedb.org/" target="_blank" rel="noopener">TMDB</a></p>`
+const THING = {
+    // the flap of skin is the orange's own left side, mirrored over the opening; it wipes down while the strip of peel uncurls
+    orange: (t) => `<span class="ab-orange">
+        <img class="ab-orange__body" src="${esc(t.image)}" alt="${esc(t.alt)}" />
+        <span class="ab-orange__flap ab-orange__flap--pith" aria-hidden="true"></span>
+        <span class="ab-orange__flap" aria-hidden="true"><img src="${esc(t.image)}" alt="" /></span>
+        <span class="ab-orange__curl" aria-hidden="true"><img src="${esc(t.image)}" alt="" /></span>
+      </span>`,
+    can: (t) => `<canvas class="ab-can" role="img" aria-label="${esc(t.alt)}" data-src="${esc(t.image)}"></canvas>`,
+    box: (t) => `<span class="ab-box">
+        <img src="${esc(t.image)}" alt="${esc(t.alt)}" />
+        <span class="ab-box__sheen" aria-hidden="true"></span>
+        <span class="ab-box__wrap" aria-hidden="true">
+          <i class="ab-box__flap ab-box__flap--l"></i><i class="ab-box__flap ab-box__flap--r"><b>just a box</b></i>
+          <i class="ab-box__twine"></i>
+        </span>
+      </span>`,
+    blur: (t) => `<span class="ab-blur">
+        ${tape(3, -5)}
+        <span class="ab-blur__pic">
+          <img src="${esc(t.image)}" alt="${esc(t.alt)}" />
+          <img class="ab-blur__ghost" src="${esc(t.image)}" alt="" /><img class="ab-blur__ghost ab-blur__ghost--2" src="${esc(t.image)}" alt="" />
+          <i class="ab-blur__af" aria-hidden="true"></i>
+          <em aria-hidden="true">focus? no.</em>
+        </span>
+      </span>`,
+    lily: (t) => `<span class="ab-snap">${tape(1, 6)}<span class="ab-snap__pic"><img src="${esc(t.image)}" alt="${esc(t.alt)}" /></span></span>`,
+    tiramisu: (t) => `<span class="ab-snap ab-snap--tiramisu">
+        <span class="ab-snap__pic"><img src="${esc(t.image)}" alt="${esc(t.alt)}" /><i class="ab-snap__cocoa" aria-hidden="true"></i></span>
+        <svg class="ab-sieve" viewBox="0 0 90 44" aria-hidden="true"><path d="M6 8h54c0 16-12 28-27 28S6 24 6 8Z"/><path d="M60 11c10-1 18-3 26-7"/><path d="M14 16h38M18 24h30M25 31h16M20 9v18M33 9v27M46 9v18"/></svg>
+      </span>`,
+}
+
+const things = () => `
+  <div class="ab-things">
+    ${CONTENT.things
+        .map(
+            (t) => `<button class="ab-thing ab-thing--${esc(t.kind)}" type="button" aria-pressed="false" data-kind="${esc(t.kind)}">
+            <span class="ab-thing__stage">${THING[t.kind](t)}</span>
+            <span class="ab-thing__label">${esc(t.label)}</span>
+          </button>`
+        )
+        .join("")}
+  </div>`
 
 const wall = () => `
   <div class="ab-wall">
@@ -262,7 +269,7 @@ const wall = () => `
     ${insta("ab-insta")}
   </div>`
 
-const BODIES = { hello, moments, repeat, films, wall }
+const BODIES = { hello, moments, repeat, things, wall }
 
 function render() {
     root.innerHTML = `
@@ -665,89 +672,169 @@ playBtn.addEventListener("click", () => setPlaying(!playing))
 // the song keeps going while you flip through the other folders; it stops when you leave the archive
 new IntersectionObserver(([e]) => !e.isIntersecting && setPlaying(false)).observe(root.querySelector(".ab-drawer"))
 
-/* ------------------------------ the film strip ------------------------------ */
+/* ------------------------------ things I can't explain: point at one (or tap it) and it does its thing ------------------------------ */
 
-const strip = root.querySelector(".ab-strip")
-const reel = root.querySelector(".ab-strip__reel")
-const frames = [...reel.children]
-const ticket = root.querySelector(".ab-ticket")
-let film = -1
-
-function setFilm(i, scroll = true) {
-    i = clamp(i, 0, frames.length - 1)
-    if (i === film) return
-    film = i
-    frames.forEach((b, k) => {
-        b.classList.toggle("is-on", k === i)
-        b.setAttribute("aria-selected", String(k === i))
-    })
-    const f = CONTENT.films[i]
-    ticket.innerHTML = `
-      <div class="ab-ticket__stub"><p class="ab-mono">Admit one</p><b>${String(i + 1).padStart(2, "0")}</b></div>
-      <div class="ab-ticket__main">
-        <h4>${esc(f.title)}</h4>
-        <p class="ab-ticket__by">${esc(f.kind)} · ${esc(f.by)} · ${esc(f.year)}</p>
-        ${f.note ? `<p class="ab-hand">${esc(f.note)}</p>` : ""}
-      </div>
-      ${f.seen ? `<div class="ab-ticket__seen"><p class="ab-mono">Seen</p>${tally(f.seen)}</div>` : ""}`
-    if (scroll) {
-        const b = frames[i]
-        strip.scrollTo({ left: b.offsetLeft - (strip.clientWidth - b.offsetWidth) / 2, behavior: reduced ? "auto" : "smooth" })
+// the can: drawn row by row, so it can fold into pleats. Rims stay rigid, the middle gives way
+const FACETS = [
+    [0, 0.2, 0.42, 0.14, 0.2, 0.44, 0],
+    [0.42, 0.14, 0.2, 0.44, 0.62, 0.36, 1],
+    [0.42, 0.14, 1, 0.24, 0.62, 0.36, 0],
+    [0.62, 0.36, 1, 0.24, 1, 0.58, 1],
+    [0, 0.44, 0.2, 0.44, 0.34, 0.74, 1],
+    [0.2, 0.44, 0.62, 0.36, 0.34, 0.74, 0],
+    [0.62, 0.36, 1, 0.58, 0.72, 0.78, 0],
+    [0.34, 0.74, 0.62, 0.36, 0.72, 0.78, 1],
+]
+function makeCan(canvas) {
+    const ctx = canvas.getContext("2d")
+    const img = new Image()
+    const smooth = (a, b, v) => {
+        const t = clamp((v - a) / (b - a), 0, 1)
+        return t * t * (3 - 2 * t)
+    }
+    let p = 0
+    let v = 0
+    let target = 0
+    let raf = 0
+    function draw() {
+        const dpr = Math.min(2, devicePixelRatio || 1)
+        const W = Math.round(canvas.clientWidth * dpr)
+        const H = Math.round(canvas.clientHeight * dpr)
+        if (!W || !H || !img.naturalWidth) return
+        if (canvas.width !== W || canvas.height !== H) (canvas.width = W), (canvas.height = H)
+        ctx.clearRect(0, 0, W, H)
+        const dh = H * 0.97
+        const dw = (dh * img.naturalWidth) / img.naturalHeight
+        const x0 = (W - dw) / 2
+        const ROWS = 120
+        const zone = (s) => smooth(0.06, 0.2, s) * (1 - smooth(0.82, 0.94, s))
+        const row = []
+        for (let r = 0; r < ROWS; r++) {
+            const s = (r + 0.5) / ROWS
+            row.push((dh / ROWS) * (1 - p * zone(s) * (0.38 + 0.2 * Math.abs(Math.sin(s * Math.PI * 3.5)))))
+        }
+        // from the base up, so the can stays standing while it shrinks
+        let y = H
+        let top = H
+        for (let r = ROWS - 1; r >= 0; r--) {
+            const s = (r + 0.5) / ROWS
+            const z = zone(s)
+            const fold = Math.cos(s * Math.PI * 7 + 0.5)
+            const w = dw * (1 + p * z * (0.09 + 0.07 * fold))
+            const off = p * z * dw * 0.06 * Math.sin(s * Math.PI * 3.5 + 0.7)
+            y -= row[r]
+            ctx.drawImage(img, 0, (r / ROWS) * img.naturalHeight, img.naturalWidth, img.naturalHeight / ROWS, x0 + off + (dw - w) / 2, y, w, row[r] + 0.8)
+            top = y
+        }
+        // light and shade on the folds, painted only where the can already is
+        ctx.globalCompositeOperation = "source-atop"
+        y = H
+        for (let r = ROWS - 1; r >= 0; r--) {
+            const s = (r + 0.5) / ROWS
+            const fold = Math.cos(s * Math.PI * 7 + 0.5)
+            const a = p * zone(s) * fold * fold * 0.22
+            y -= row[r]
+            ctx.fillStyle = fold > 0 ? `rgba(20,16,40,${a})` : `rgba(255,255,255,${a * 0.9})`
+            ctx.fillRect(0, y, W, row[r] + 0.8)
+        }
+        const hNow = H - top
+        for (const [ax, ay, bx, by, cx, cy, light] of FACETS) {
+            ctx.fillStyle = light ? `rgba(255,255,255,${p * 0.34})` : `rgba(20,16,40,${p * 0.3})`
+            ctx.beginPath()
+            ctx.moveTo(x0 + ax * dw, top + ay * hNow)
+            ctx.lineTo(x0 + bx * dw, top + by * hNow)
+            ctx.lineTo(x0 + cx * dw, top + cy * hNow)
+            ctx.fill()
+        }
+        ctx.globalCompositeOperation = "source-over"
+        canvas.style.setProperty("--p", p.toFixed(3))
+    }
+    function tick() {
+        // crumples fast with a little give, then springs slowly back
+        v += (target - p) * (target ? 0.13 : 0.05)
+        v *= target ? 0.72 : 0.8
+        p = clamp(p + v, 0, 1.04)
+        draw()
+        raf = Math.abs(target - p) > 0.002 || Math.abs(v) > 0.002 ? requestAnimationFrame(tick) : ((p = target), draw(), 0)
+    }
+    img.onload = draw
+    img.src = canvas.dataset.src
+    new ResizeObserver(draw).observe(canvas)
+    return (on) => {
+        target = on ? 1 : 0
+        if (reduced) return (p = target), draw()
+        raf ||= requestAnimationFrame(tick)
     }
 }
 
-// drag with a mouse; touch keeps native scrolling
-let drag = null
-strip.addEventListener("pointerdown", (e) => {
-    if (e.pointerType !== "mouse") return
-    drag = { x: e.clientX, left: strip.scrollLeft, moved: 0 }
-})
-addEventListener("pointermove", (e) => {
-    if (!drag) return
-    const dx = e.clientX - drag.x
-    drag.moved = Math.max(drag.moved, Math.abs(dx))
-    if (drag.moved > 4) strip.classList.add("is-dragging")
-    strip.scrollLeft = drag.left - dx
-})
-addEventListener("pointerup", () => {
-    if (!drag) return
-    setTimeout(() => strip.classList.remove("is-dragging"))
-    drag = null
-})
-strip.addEventListener("click", (e) => {
-    if (strip.classList.contains("is-dragging")) return
-    const b = e.target.closest(".ab-frame-film")
-    if (b) setFilm(+b.dataset.i)
-})
-strip.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-        e.preventDefault()
-        setFilm(film + (e.key === "ArrowRight" ? 1 : -1))
+// lily petals and cocoa, let go a few at a time while you stay
+const PETAL = `<svg viewBox="0 0 20 34"><path d="M10 1C3 9 1 18 4 27c1 4 4 6 6 6s5-2 6-6c3-9 1-18-6-26Z" fill="#fff6f8"/><path d="M10 4c-2 8-2 18 0 27M10 4c2 8 2 18 0 27" stroke="#f08db0" stroke-width="2.200" fill="none"/><circle cx="7" cy="16" r="1" fill="#d9487c"/><circle cx="13" cy="20" r="1" fill="#d9487c"/></svg>`
+function letGo(stage, kind) {
+    const piece = document.createElement("i")
+    const r = Math.random()
+    if (kind === "lily") {
+        piece.className = "ab-petal"
+        piece.innerHTML = PETAL
+        piece.style.left = `${6 + r * 88}%`
+        piece.animate(
+            [
+                { transform: `translate(0, 0) rotate(${r * 180}deg)`, opacity: 0 },
+                { opacity: 1, offset: 0.12 },
+                { transform: `translate(${(r - 0.5) * 70}px, 62%) rotate(${r * 360 + 120}deg)`, opacity: 1, offset: 0.8 },
+                { transform: `translate(${(r - 0.5) * 90}px, 80%) rotate(${r * 360 + 200}deg)`, opacity: 0 },
+            ],
+            { duration: 1900 + r * 1100, easing: "ease-in" }
+        ).onfinish = () => piece.remove()
+    } else {
+        piece.className = "ab-speck"
+        piece.style.left = `${34 + r * 34}%`
+        piece.animate(
+            [
+                { transform: "translateY(0)", opacity: 1 },
+                { transform: `translate(${(r - 0.5) * 22}px, ${stage.clientHeight * (0.34 + r * 0.2)}px)`, opacity: 0.85 },
+            ],
+            { duration: 620 + r * 380, easing: "cubic-bezier(.4,0,.9,.6)" }
+        ).onfinish = () => piece.remove()
+    }
+    stage.append(piece)
+}
+
+root.querySelectorAll(".ab-thing").forEach((el) => {
+    const kind = el.dataset.kind
+    const stage = el.querySelector(".ab-thing__stage")
+    const can = kind === "can" ? makeCan(el.querySelector(".ab-can")) : null
+    let on = false
+    let timer = 0
+    const set = (next) => {
+        if (next === on) return
+        on = next
+        el.classList.toggle("is-on", on)
+        el.setAttribute("aria-pressed", String(on))
+        can?.(on)
+        clearInterval(timer)
+        if (on && !reduced && (kind === "lily" || kind === "tiramisu")) {
+            letGo(stage, kind)
+            timer = setInterval(() => letGo(stage, kind), kind === "lily" ? 300 : 42)
+        }
+    }
+    let mouse = false
+    el.addEventListener("pointerenter", (e) => {
+        mouse = e.pointerType === "mouse"
+        if (mouse) set(true)
+    })
+    el.addEventListener("pointerleave", (e) => e.pointerType === "mouse" && set(false))
+    // no hover on a touch screen or a keyboard: a tap or a press toggles it
+    el.addEventListener("click", () => mouse || set(!on))
+    el.addEventListener("keydown", () => (mouse = false))
+    if (kind === "blur") {
+        // the ghosts drift towards the pointer
+        el.addEventListener("pointermove", (e) => {
+            const r = stage.getBoundingClientRect()
+            el.style.setProperty("--gx", (((e.clientX - r.left) / r.width - 0.5) * 2).toFixed(3))
+            el.style.setProperty("--gy", (((e.clientY - r.top) / r.height - 0.5) * 2).toFixed(3))
+        })
     }
 })
-root.querySelector(".ab-film-nav").addEventListener("click", (e) => {
-    const btn = e.target.closest(".ab-arrow")
-    if (btn) setFilm(film + +btn.dataset.step)
-})
-// whichever frame is nearest the middle is the one on the ticket
-let stripRaf = 0
-strip.addEventListener(
-    "scroll",
-    () => {
-        stripRaf ||= requestAnimationFrame(() => {
-            stripRaf = 0
-            const mid = strip.scrollLeft + strip.clientWidth / 2
-            let best = 0
-            let gap = Infinity
-            frames.forEach((b, i) => {
-                const d = Math.abs(b.offsetLeft + b.offsetWidth / 2 - mid)
-                if (d < gap) (gap = d), (best = i)
-            })
-            setFilm(best, false)
-        })
-    },
-    { passive: true }
-)
 
 /* ------------------------------ the wall ------------------------------ */
 
@@ -785,15 +872,7 @@ if (matchMedia("(hover: hover)").matches && !reduced) {
 
 /* ------------------------------ go ------------------------------ */
 
-setFilm(2, false)
-function centreStrip() {
-    const b = frames[film]
-    strip.scrollLeft = b.offsetLeft - (strip.clientWidth - b.offsetWidth) / 2
-}
-new ResizeObserver(() => {
-    layoutDrawer()
-    centreStrip()
-}).observe(root.querySelector(".ab-drawer"))
+new ResizeObserver(layoutDrawer).observe(root.querySelector(".ab-drawer"))
 let lastH = innerHeight
 addEventListener("resize", () => {
     // ignore the small height jumps of mobile browser toolbars
@@ -802,7 +881,6 @@ addEventListener("resize", () => {
     layoutDrawer()
 })
 layoutDrawer()
-centreStrip()
 document.fonts?.ready.then(layoutDrawer)
 
 new IntersectionObserver(
