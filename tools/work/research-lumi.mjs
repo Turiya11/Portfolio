@@ -173,7 +173,7 @@ export const lumiResearch = [
 
 // level: how low the emotion curve sits at that stage, 0 positive to 1 negative, read from the emoji positions on the Figma journey map
 export const lumiEcosystem = {
-    statement: "Same home, different experiences.",
+    statement: "One home, but the mother, her partner and her in-laws each live it differently.",
     hubLabel: "Opportunity",
     personas: [
         {

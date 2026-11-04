@@ -162,7 +162,7 @@ const folders = [
 
 // level: how low the emotion line sits at that stage, 0 positive to 1 negative, read from the journey slide. Times are illustrative.
 const ecosystem = {
-    statement: "A four-hour drive, and where the co-pilot steps in.",
+    statement: "On a four-hour drive, this is where it goes wrong, and where a co-pilot could step in.",
     hubLabel: "Co-pilot",
     personas: [
         {
@@ -199,7 +199,7 @@ export const copilot = {
             { n: "9", l: "wireframes reviewed" },
         ],
     },
-    research: { statement: "What the research found.", folders },
+    research: { statement: "First, I looked at why fatigue gets noticed so late, and why drivers switch alerts off.", folders },
     understanding: {
         quote: "Fatigue is spotted late. Alerts that nag get switched off. Drivers want help they can trust, not a scolding.",
         method: "Secondary research and standards, human factors, public driver discussions and a competitor review.",
@@ -212,14 +212,19 @@ export const copilot = {
         ],
     },
     ecosystem,
+    story: {
+        did: "So I designed a co-pilot that stays calm, and steps up only as tiredness or stress persists. Here it is across a drive.",
+        process: "The work behind those screens.",
+        reflection: "What I expect, and how I'd find out.",
+    },
     didNote: "Prototype walkthroughs of the real screens, with sample data.",
     did: [
-        { lead: "Show state at the edge of vision:", text: "the word and confidence lead, and heat rises from the screen edge.", clips: [clip("cp-states", "The cluster moving from clear to stress, then undoing the cabin change", CLUSTER)] },
-        { lead: "Escalate in steps:", text: "each cue earns attention, and the loudest is rare.", clips: [clip("cp-escalate", "The cluster escalating from drowsy to critical", CLUSTER)] },
-        { lead: "One question, clear answers:", text: "the map comes first, until a decision is needed.", clips: [clip("cp-centre", "The centre display moving from the map to a rest-stop question", CENTRE)] },
-        { lead: "Learn from the drive:", text: "the trip heat map shows when alertness dipped, after parking.", clips: [clip("cp-trip", "Reviewing the trip heat map by signal", CENTRE)] },
-        { lead: "Say what the car can and cannot see:", text: "heat sits on the signal source, and a grey state admits its limits.", clips: [clip("cp-faces", "Heat maps for each state on two stock portraits", 1880 / 780)] },
-        { lead: "Answer without looking:", text: "keys you can tell apart by touch, right on the wheel.", clips: [clip("cp-wheel", "Steering wheel light and thumb controls", 1.6)] },
+        { lead: "Early on, it stays quiet:", text: "the word and confidence lead, and heat rises from the screen edge.", clips: [clip("cp-states", "The cluster moving from clear to stress, then undoing the cabin change", CLUSTER)] },
+        { lead: "It says what it can and cannot see:", text: "heat sits on the signal source, and a grey state admits its limits.", clips: [clip("cp-faces", "Heat maps for each state on two stock portraits", 1880 / 780)] },
+        { lead: "If tiredness persists, it escalates in steps:", text: "each cue earns attention, and the loudest is rare.", clips: [clip("cp-escalate", "The cluster escalating from drowsy to critical", CLUSTER)] },
+        { lead: "Then it asks one question:", text: "the map stays first until a decision is needed.", clips: [clip("cp-centre", "The centre display moving from the map to a rest-stop question", CENTRE)] },
+        { lead: "The driver answers without looking:", text: "keys you can tell apart by touch, right on the wheel.", clips: [clip("cp-wheel", "Steering wheel light and thumb controls", 1.6)] },
+        { lead: "After parking, the trip explains itself:", text: "a heat map shows when alertness dipped.", clips: [clip("cp-trip", "Reviewing the trip heat map by signal", CENTRE)] },
     ],
     process: [
         { label: "Sketches: where state shows up", image: img("sketches.png") },
