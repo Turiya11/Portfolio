@@ -46,7 +46,6 @@ const folders = [
                     ],
                 },
             },
-            { note: "No primary research yet: driver interviews and testing with real drivers are still to come. The posts are public discussions, not interview data, and no names are shown." },
         ],
     },
     {
@@ -157,7 +156,7 @@ const folders = [
     {
         title: "User persona",
         hint: "Nadia, the long-haul driver",
-        blocks: [{ persona: nadia }, { note: "A proto-persona synthesised from the secondary research and public driver discussions. It is a design tool, not a real person, and the goal line was written by the designer." }],
+        blocks: [{ persona: nadia }],
     },
 ]
 
@@ -189,7 +188,6 @@ export const copilot = {
     meta: "UX/UI design · Independent concept · Automotive",
     headline: "A driver-monitoring experience that notices fatigue and stress early, and answers with calm instead of alarms.",
     accent: "rgb(10, 128, 112)",
-    note: "An independent student concept. Tesla is the framing only: not affiliated with Tesla, and no Tesla branding or internal data is used. Face overlays are illustrative, on stock portraits, and percentages are placeholders to validate with real drivers.",
     ratio: CENTRE,
     hero: { ...clip("cp-hero", "The driver display moving from clear to stress, drowsy and critical", CLUSTER), ratio: CLUSTER },
     brief: {
@@ -200,7 +198,6 @@ export const copilot = {
             { n: "12", l: "sketches" },
             { n: "9", l: "wireframes reviewed" },
         ],
-        impactNote: "Hypotheses, not results. The next step is testing with real drivers.",
     },
     research: { statement: "What the research found.", folders },
     understanding: {
