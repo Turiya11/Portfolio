@@ -1,4 +1,5 @@
 // What each case-study page says. Keep it short: the videos carry the story.
+// Every page follows the same thread: the question I started with, what I found, what I designed (in the order someone uses it), the work behind it, what's next.
 // Research sticky notes come from content.mjs. Numbers are only the ones the projects actually produced.
 import { dentigo as dentigoSource, encora as kgSource, pip as pipSource, lumiStickies } from "./content.mjs"
 import { lumiResearch, lumiEcosystem } from "./research-lumi.mjs"
@@ -31,30 +32,35 @@ export const lumi = {
         ],
         impactNote: "A concept prototype. Effects on wellbeing have not been measured.",
     },
-    research: { statement: "What the research found.", folders: lumiResearch },
+    research: { statement: "First, I had to understand why help comes so late.", folders: lumiResearch },
     understanding: {
         quote: "The problem isn't absence of support. It's absence of emotional understanding.",
         method: "Interviews with mothers, fathers and caregivers, plus doctors, psychiatrists and research papers, grouped by card sorting.",
         ...{ stickiesTitle: lumiStickies.stickiesTitle, stickies: lumiStickies.stickies },
     },
     ecosystem: lumiEcosystem,
+    story: {
+        did: "So I designed one app for all three of them.",
+        process: "The work behind those screens.",
+        reflection: "It's still a concept, so here's where it stands.",
+    },
     didNote: WALKTHROUGH,
     did: [
         {
-            lead: "For the mother:",
-            text: "name a feeling in a few taps, and get validated, not diagnosed.",
+            lead: "First, the mother:",
+            text: "she names a feeling in a few taps, and gets validated, not diagnosed.",
             phones: true,
             clips: [clip("lm-mood", "Check in"), clip("lm-check", "Should I seek help?"), clip("lm-journal", "A private journal")],
         },
         {
-            lead: "For the partner:",
-            text: "understand before fixing, with clear actions and the right words.",
+            lead: "Then her partner:",
+            text: "he learns to understand before fixing, with clear actions and the right words.",
             phones: true,
             clips: [clip("lm-partner", "What can I do?"), clip("lm-flowers", "A gesture of love"), clip("lm-say", "What do I say?")],
         },
         {
-            lead: "For the family:",
-            text: "a shared, non-clinical picture, and small ways to show up.",
+            lead: "Then the wider family:",
+            text: "they get a shared, non-clinical picture, and small ways to show up.",
             phones: true,
             clips: [clip("lm-family", "Send an affirmation"), clip("lm-learn", "Understanding modern PPD"), clip("lm-calls", "Daily calls")],
         },
@@ -92,21 +98,26 @@ export const dentigo = {
         ],
         impactNote: "A concept. Whether it reduces remakes is still untested.",
     },
-    research: { statement: "What the research found.", folders: dentigoResearch },
+    research: { statement: "First, I had to see how a case really moves between clinic and lab.", folders: dentigoResearch },
     understanding: {
         quote: "Clinics and labs run on fragmented, manual workflows, and small miscommunications turn into remakes and delays.",
         method: "User interviews and surveys, secondary research and a competitive analysis, affinity-mapped.",
         stickiesTitle: dentigoSource.stickiesTitle,
         stickies: dentigoSource.stickies,
     },
+    story: {
+        did: "So I designed one place for the whole case. Here it is, in the order a dentist would use it.",
+        process: "The work behind those screens.",
+        reflection: "It's still a concept, so here's where it stands.",
+    },
     didNote: WALKTHROUGH,
     did: [
-        { lead: "One hub for every case:", text: "active orders, pending actions and scheduled deliveries at a glance.", clips: [clip("dg-hub", "Dentigo dashboard, moving on to Browse Labs")] },
-        { lead: "Find trusted labs:", text: "ratings, specialties, delivery times and on-time rates.", clips: [clip("dg-labs", "Browsing labs and requesting a quote")] },
-        { lead: "Order without the guesswork:", text: "a guided form with AI lab recommendations and clear turnaround times.", clips: [clip("dg-order", "Filling in a new lab order")] },
-        { lead: "Compare side by side:", text: "pricing, delivery, performance, materials and warranty.", clips: [clip("dg-compare", "Comparing three labs")] },
+        { lead: "It starts on the dashboard:", text: "active orders, pending actions and scheduled deliveries at a glance.", clips: [clip("dg-hub", "Dentigo dashboard, moving on to Browse Labs")] },
+        { lead: "Next, find a lab to trust:", text: "ratings, specialties, delivery times and on-time rates.", clips: [clip("dg-labs", "Browsing labs and requesting a quote")] },
+        { lead: "Then compare the quotes:", text: "pricing, delivery, performance, materials and warranty, side by side.", clips: [clip("dg-compare", "Comparing three labs")] },
+        { lead: "Place the order:", text: "a guided form with AI lab recommendations and clear turnaround times.", clips: [clip("dg-order", "Filling in a new lab order")] },
         { lead: "Track it like a package:", text: "status, ETA and one-tap messaging for every active case.", clips: [clip("dg-track", "Tracking active orders")] },
-        { lead: "Check before approving:", text: "measurements, annotations and layers on the digital scan.", clips: [clip("dg-viewer", "Reviewing a case in the 3D viewer")] },
+        { lead: "Check it before approving:", text: "measurements, annotations and layers on the digital scan.", clips: [clip("dg-viewer", "Reviewing a case in the 3D viewer")] },
     ],
     process: [
         { label: "Stakeholder map", image: fr("600AM7vuVugdK4bghpSttVSms") },
@@ -125,7 +136,7 @@ export const dentigo = {
 
 export const kg = {
     title: "KG Hub",
-    meta: "UX design intern · Encora Inc. · Feb – May 2025",
+    meta: "UX design intern · Encora Inc. · Feb to May 2025",
     headline: "From data to discovery, with biomedical visualisation powered by a knowledge graph.",
     accent: "rgb(98, 58, 200)",
     note: "This project has been modified due to an NDA. The product is presented as KG Hub, proprietary names are changed and the screens are redesigned with sample data. Happy to walk through the work at itsturiyajoshi11@gmail.com.",
@@ -141,7 +152,7 @@ export const kg = {
         ],
         impactNote: "Measured on the internship prototypes and presented to 10+ stakeholders.",
     },
-    research: { statement: "What the research found.", folders: kgResearch },
+    research: { statement: "First, I had to see how researchers work today, and what their tools leave out.", folders: kgResearch },
     understanding: {
         quote: "Researchers have the data, but no single place to see how it connects.",
         method: "Secondary research, a competitive analysis of ten platforms, two personas with journey maps, and team dot voting.",
@@ -150,7 +161,7 @@ export const kg = {
     },
     // persona wording is new; the phases, actions and pain points are condensed from the project's two journey maps
     ecosystem: {
-        statement: "Two research roles, one question: how does this connect?",
+        statement: "That gap shows up differently for the two roles I designed for.",
         personas: [
             {
                 role: "Clinical researcher",
@@ -181,14 +192,19 @@ export const kg = {
             },
         ],
     },
+    story: {
+        did: "So I designed one place to follow an investigation, from the first question to a shared project.",
+        process: "The work behind those screens.",
+        reflection: "What I took away from it.",
+    },
     didNote: WALKTHROUGH,
     did: [
-        { lead: "Ask in plain language:", text: "start from a research question, then tighten it with clauses.", clips: [clip("kg-query", "Building a query and running it")] },
-        { lead: "See how it connects:", text: "results open as a graph, with sources behind every relation.", clips: [clip("kg-graph", "Exploring query results")] },
-        { lead: "Trace the path:", text: "find how two entities connect, hop by hop, with evidence.", clips: [clip("kg-paths", "Comparing paths between EGFR and Rash")] },
-        { lead: "Compare graphs:", text: "shared and unique entities, side by side.", clips: [clip("kg-compare", "Comparing two knowledge graphs")] },
-        { lead: "Save the finding:", text: "an insight keeps its graph snapshot and its sources.", clips: [clip("kg-save", "Saving a selection as an insight")] },
-        { lead: "Work on the same graph:", text: "threaded comments on entities, and sharing by role.", clips: [clip("kg-collab", "Commenting on the graph and sharing the project")] },
+        { lead: "It starts with a question:", text: "ask in plain language, then tighten it with clauses.", clips: [clip("kg-query", "Building a query and running it")] },
+        { lead: "The answer opens as a graph,", text: "with sources behind every relation.", clips: [clip("kg-graph", "Exploring query results")] },
+        { lead: "Then trace the path:", text: "see how two entities connect, hop by hop, with evidence.", clips: [clip("kg-paths", "Comparing paths between EGFR and Rash")] },
+        { lead: "Compare two graphs:", text: "shared and unique entities, side by side.", clips: [clip("kg-compare", "Comparing two knowledge graphs")] },
+        { lead: "Save what you find:", text: "an insight keeps its graph snapshot and its sources.", clips: [clip("kg-save", "Saving a selection as an insight")] },
+        { lead: "Bring the team in:", text: "threaded comments on entities, and sharing by role.", clips: [clip("kg-collab", "Commenting on the graph and sharing the project")] },
     ],
     process: [
         { label: "Research trends", image: site("kg/research.jpg") },
@@ -223,21 +239,26 @@ export const pip = {
         ],
         impactNote: "Not yet tested with users.",
     },
-    research: { statement: "What the research found.", folders: pipResearch },
+    research: { statement: "First, I had to find out where intentions get lost.", folders: pipResearch },
     understanding: {
         quote: "Students don't lack places to store intentions. They lack a way to bring the right one back when they can act on it.",
         method: "A survey of 46 students, 18 interviews, a clutter experiment with 4 participants and a scan of eight Reddit threads.",
         stickiesTitle: pipSource.stickiesTitle,
         stickies: pipSource.stickies,
     },
+    story: {
+        did: "So I designed Pip, a companion that brings back one thought at a time.",
+        process: "The work behind Pip.",
+        reflection: "Next, I'd find out whether it works.",
+    },
     didNote: "The first two are walkthroughs of the design screens. The rest are recorded from the working prototypes: Three.js with WebXR, and Meta Quest with hand tracking.",
     did: [
-        { lead: "Test the structure first:", text: "capture, the orbit, the card and the AR check-in, sketched as mobile flows.", clips: [clip("pip-lofi", "Moving through the lo-fi wireframes")] },
-        { lead: "From opening to offloading:", text: "seven steps, from choosing your Pip to parking a new thought.", clips: [clip("pip-final", "Moving through the hi-fi flow")] },
-        { lead: "Capture in seconds:", text: "type a thought and park it, without organising it.", clips: [clip("pip-capture", "Parking a thought in the web prototype")] },
-        { lead: "Step into the space:", text: "Pip appears in the room, with thoughts orbiting as glowing orbs.", clips: [clip("pip-step-in", "Pip in passthrough AR on Meta Quest")] },
-        { lead: "Focus on one thing:", text: "grab an orb and drop it into the ring. Everything else dims.", clips: [clip("pip-ring", "Dropping an orb into the ring with hand tracking")] },
-        { lead: "Find the first step:", text: "stickies, sub-tasks and Break Down on a glass board.", clips: [clip("pip-board", "Adding a sticky on the thinking board")] },
+        { lead: "I sketched the structure first:", text: "capture, the orbit, the card and the AR check-in, as mobile flows.", clips: [clip("pip-lofi", "Moving through the lo-fi wireframes")] },
+        { lead: "Then the full flow:", text: "seven steps, from choosing your Pip to parking a new thought.", clips: [clip("pip-final", "Moving through the hi-fi flow")] },
+        { lead: "You park a thought in seconds:", text: "type it and move on, without organising it.", clips: [clip("pip-capture", "Parking a thought in the web prototype")] },
+        { lead: "Pip appears in the room,", text: "with your thoughts orbiting as glowing orbs.", clips: [clip("pip-step-in", "Pip in passthrough AR on Meta Quest")] },
+        { lead: "You pick one to focus on:", text: "grab an orb and drop it into the ring, and everything else dims.", clips: [clip("pip-ring", "Dropping an orb into the ring with hand tracking")] },
+        { lead: "Then you find the first step:", text: "stickies, sub-tasks and Break Down on a glass board.", clips: [clip("pip-board", "Adding a sticky on the thinking board")] },
     ],
     process: [
         { label: "Seven themes", image: site("pip/slide-09.jpg") },

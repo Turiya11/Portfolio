@@ -22,6 +22,7 @@ type Props = {
     understanding: { quote: string; method: string; stickiesTitle?: string; stickies: StickyGroup[] }
     research?: { statement: string; folders: Folder[] }
     ecosystem?: { statement: string; hubLabel?: string; personas: Persona[] }
+    story?: { did?: string; process?: string; reflection?: string } // the line that carries the reader from one section to the next
     didNote?: string
     did: Did[]
     process: { label: string; image: string }[]
@@ -317,6 +318,7 @@ export default function CaseStudy(p: Props) {
 
                 <section className="cs-sec" id="did">
                     <p className="cs-eye">What I did</p>
+                    {p.story?.did ? <p className="cs-state">{p.story.did}</p> : null}
                     {p.didNote ? <p className="cs-small">{p.didNote}</p> : null}
                     <div className="cs-did">
                         {p.did.map((d) => (
@@ -343,6 +345,7 @@ export default function CaseStudy(p: Props) {
 
                 <section className="cs-sec" id="process">
                     <p className="cs-eye">Process</p>
+                    {p.story?.process ? <p className="cs-state">{p.story.process}</p> : null}
                     <div className="cs-proc">
                         {p.process.map((s) => (
                             <a key={s.label} href={s.image} target="_blank" rel="noreferrer">
@@ -358,6 +361,7 @@ export default function CaseStudy(p: Props) {
 
                 <section className="cs-sec" id="reflection">
                     <p className="cs-eye">Reflection</p>
+                    {p.story?.reflection ? <p className="cs-state">{p.story.reflection}</p> : null}
                     <div className="cs-refl">
                         {p.reflection.map((r) => (
                             <div className="cs-card" key={r.label}>
