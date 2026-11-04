@@ -46,7 +46,8 @@ const CSS = `
 .rf-head h3{margin:0;font-size:clamp(20px,2.1vw,27px);font-weight:600;letter-spacing:-.02em;line-height:1.15}
 .rf-x{flex:none;width:40px;height:40px;border:0;border-radius:50%;background:rgba(30,35,60,.08);color:var(--ink);font-size:19px;line-height:1;cursor:pointer}
 .rf-x:hover{background:rgba(30,35,60,.15)}
-.rf-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:clamp(18px,3vw,32px);display:flex;flex-direction:column;gap:18px}
+.rf-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:clamp(18px,3vw,32px);display:flex;flex-direction:column;gap:18px}
+.rf-body:focus{outline:none}
 .rf-body > *{flex-shrink:0}
 .rf-body h4{margin:12px 0 -6px;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ai)}
 .rf-body > h4:first-child{margin-top:0}
@@ -206,7 +207,10 @@ export default function ResearchFolders({ folders }: { folders: Folder[] }) {
         const d = dialog.current
         if (!d || open === null) return
         if (!d.open) d.showModal() // native dialog: keeps focus inside, Esc closes, focus returns to the folder
-        if (body.current) body.current.scrollTop = 0
+        if (body.current) {
+            body.current.scrollTop = 0
+            body.current.focus({ preventScroll: true }) // arrow keys scroll straight away; otherwise Safari rings the close button
+        }
         const html = document.documentElement
         const before = html.style.overflow
         html.style.overflow = "hidden"
