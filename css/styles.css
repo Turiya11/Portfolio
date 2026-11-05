@@ -25,11 +25,6 @@
 
 :root {
     --paper: #f4f1f8;
-    --ink: #1d1932;
-    --soft: #5b5677;
-    --accent: #5a46c6;
-    --sans: "Mona Sans", "Inter", system-ui, -apple-system, sans-serif;
-    --hand: "Caveat", "Comic Sans MS", cursive;
     --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
     --sky-time: 1.4s;
     --gutter: clamp(20px, 5vw, 88px);
@@ -98,9 +93,8 @@ button {
     position: relative;
     padding: 10px 20px;
     border-radius: 999px;
-    font-family: Inter, system-ui, sans-serif;
-    font-size: 12px;
-    font-weight: 400;
+    font-size: var(--t-small);
+    font-weight: 500;
     line-height: 15px;
     color: rgb(51, 51, 51);
     text-decoration: none;
@@ -291,24 +285,24 @@ button {
 .hello {
     margin: 0;
     font-family: var(--hand);
-    font-weight: 600;
-    font-size: clamp(22px, 2vw, 28px);
+    font-size: var(--t-hand-lg);
+    font-weight: 500;
     color: var(--hero-accent);
     transition: color var(--sky-time) ease;
 }
 .headline {
     margin: 14px 0 0;
-    font-size: clamp(40px, 4.6vw, 80px);
-    line-height: 1;
+    font-size: var(--t-display);
     font-weight: 600;
-    letter-spacing: -0.045em;
+    letter-spacing: var(--ls-display);
+    line-height: 1;
 }
 .tagline {
     margin: 26px 0 0;
     max-width: 30ch;
-    font-size: clamp(17px, 1.35vw, 20px);
-    line-height: 1.45;
-    font-weight: 500;
+    font-size: var(--t-lead);
+    font-weight: 400;
+    line-height: 1.5;
     color: var(--hero-soft);
     transition: color var(--sky-time) ease;
 }
@@ -317,7 +311,7 @@ button {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    font-size: 14px;
+    font-size: var(--t-small);
     font-weight: 500;
 }
 .meta > span {
@@ -371,11 +365,10 @@ button {
     position: relative;
     display: inline-block;
     white-space: nowrap;
-    font-family: "Shadows Into Light Two", var(--hand);
-    font-weight: 700;
+    font-family: var(--hand);
     font-size: 1.24em;
+    font-weight: 600;
     line-height: 0.8;
-    letter-spacing: 0;
     color: var(--hero-ink);
     transition: color var(--sky-time) ease;
 }
@@ -472,8 +465,8 @@ button {
     margin-top: 10px;
     padding-left: 6%;
     font-family: var(--hand);
+    font-size: var(--t-hand);
     font-weight: 500;
-    font-size: 22px;
     color: var(--hero-soft);
     transition:
         opacity 0.6s ease,
@@ -654,8 +647,9 @@ button {
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.55);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    font-size: 10px;
-    letter-spacing: 0.08em;
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--ls-caps);
     text-transform: uppercase;
     color: #1e90ff;
 }
@@ -668,16 +662,16 @@ button {
 .bf__title {
     display: block;
     margin-bottom: 6px;
-    font-size: 17px;
+    font-size: var(--t-body);
+    font-weight: 600;
     line-height: 1.15;
-    letter-spacing: -0.02em;
     color: #1a1a1a;
 }
 .bf__detail {
     display: block;
-    font-size: 13px;
-    line-height: 1.4;
-    letter-spacing: -0.01em;
+    font-size: var(--t-small);
+    font-weight: 400;
+    line-height: 1.5;
     color: #4a4a4a;
 }
 
@@ -706,7 +700,8 @@ button {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     font-family: var(--hand);
-    font-size: 16px;
+    font-size: var(--t-hand-sm);
+    font-weight: 500;
     line-height: 1;
     color: var(--hero-soft);
     cursor: pointer;
@@ -781,7 +776,8 @@ button {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     font-family: var(--hand);
-    font-size: 16px;
+    font-size: var(--t-hand-sm);
+    font-weight: 500;
     white-space: nowrap;
     color: var(--hero-ink);
     cursor: pointer;
@@ -817,9 +813,8 @@ button {
     margin: 0;
     min-width: 76px;
     text-align: left;
-    font-size: 11.5px;
+    font-size: var(--t-label);
     font-weight: 600;
-    letter-spacing: 0.02em;
     font-variant-numeric: tabular-nums;
     color: var(--hero-soft);
     line-height: 1.2;
@@ -827,9 +822,8 @@ button {
 .timebar__name {
     display: block;
     font-family: var(--hand);
-    font-size: 16px;
+    font-size: var(--t-hand-sm);
     font-weight: 500;
-    letter-spacing: 0;
     color: var(--hero-accent);
 }
 
@@ -846,8 +840,7 @@ button {
         gap: 20px;
     }
     .headline {
-        font-size: clamp(32px, 9vw, 46px);
-    }
+}
     .tagline,
     .meta {
         margin-top: 16px;
@@ -1012,20 +1005,23 @@ button {
 .jt-hint {
     margin: 0;
     font-family: var(--hand);
-    font-size: 26px;
+    font-size: var(--t-hand-lg);
+    font-weight: 500;
     color: var(--accent);
 }
 .jt-hint {
     margin-top: 14px;
-    font-size: 24px;
+    font-family: var(--hand);
+    font-size: var(--t-hand);
+    font-weight: 500;
     color: var(--soft);
 }
 .jt-intro h2 {
     margin: 6px 0 0;
-    font-size: clamp(44px, 5.8vw, 96px);
-    line-height: 0.98;
+    font-size: var(--t-display);
     font-weight: 600;
-    letter-spacing: -0.045em;
+    letter-spacing: var(--ls-display);
+    line-height: 1;
 }
 
 /* 2023 doodles */
@@ -1065,7 +1061,8 @@ button {
     margin: 0;
     text-align: center;
     font-family: var(--hand);
-    font-size: 22px;
+    font-size: var(--t-hand);
+    font-weight: 500;
     color: var(--ink);
     opacity: 0.75;
 }
@@ -1098,7 +1095,7 @@ button {
     display: grid;
     place-items: center;
     border-radius: 50%;
-    font-size: 13px;
+    font-size: var(--t-label);
     font-weight: 600;
     color: var(--soft);
     transition:
@@ -1154,16 +1151,17 @@ button {
 }
 .jt-kicker {
     font-family: var(--hand);
-    font-size: 21px;
+    font-size: var(--t-hand);
+    font-weight: 500;
     color: var(--accent);
 }
 .jt-period {
     padding: 5px 10px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.55);
-    font-size: 11px;
+    font-size: var(--t-label);
     font-weight: 600;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--ls-caps);
     text-transform: uppercase;
     white-space: nowrap;
     color: var(--soft);
@@ -1211,29 +1209,28 @@ button {
 }
 .jt-card h3 {
     margin: 0;
-    font-size: 22px;
-    line-height: 1.12;
+    font-size: var(--t-h3);
     font-weight: 600;
-    letter-spacing: -0.025em;
+    letter-spacing: var(--ls-h3);
+    line-height: 1.25;
 }
 .jt-card.is-compact h3 {
-    font-size: 19px;
 }
 .jt-org {
     margin: 4px 0 0;
-    font-size: 13.5px;
+    font-size: var(--t-small);
     font-weight: 500;
     color: var(--soft);
 }
 .jt-text {
     margin: 8px 0 0;
-    font-size: 14.5px;
-    line-height: 1.45;
+    font-size: var(--t-small);
+    font-weight: 400;
+    line-height: 1.5;
     color: var(--soft);
 }
 .jt-card.is-compact .jt-text {
     margin-top: 8px;
-    font-size: 13.5px;
 }
 /* tags and the case-study link share one row */
 .jt-card__foot {
@@ -1257,7 +1254,7 @@ button {
     border-radius: 999px;
     border: 1px solid;
     background: rgba(255, 255, 255, 0.4);
-    font-size: 11.5px;
+    font-size: var(--t-label);
     font-weight: 500;
 }
 .jt-card.is-compact .jt-tags {
@@ -1265,7 +1262,6 @@ button {
 }
 .jt-card.is-compact .jt-tags span {
     padding: 3px 8px;
-    font-size: 11px;
 }
 .jt-link,
 .jt-cta {
@@ -1277,7 +1273,8 @@ button {
     transition: gap 0.3s ease;
 }
 .jt-link {
-    font-size: 13.5px;
+    font-size: var(--t-small);
+    font-weight: 600;
     white-space: nowrap;
     color: var(--accent);
 }
@@ -1320,35 +1317,36 @@ button {
 }
 .jt-label {
     margin: 0 0 14px;
-    font-size: clamp(15px, 1.2vw, 18px);
+    font-size: var(--t-body);
     font-weight: 500;
     color: #2b2b2b;
 }
 .jt-year {
     margin: 0;
-    font-size: clamp(72px, 10.5vw, 160px);
-    font-weight: 800;
+    font-size: var(--t-numeral);
+    font-weight: 600;
+    letter-spacing: var(--ls-display);
     line-height: 0.9;
-    letter-spacing: -0.04em;
 }
 .jt-connector {
     margin: 14px 0 6px;
     font-family: var(--hand);
-    font-size: clamp(22px, 2vw, 30px);
+    font-size: var(--t-hand-lg);
+    font-weight: 500;
     color: var(--accent);
 }
 .jt-glass h3 {
     margin: 0;
-    font-size: clamp(34px, 5.2vw, 84px);
-    line-height: 0.95;
-    font-weight: 800;
-    letter-spacing: -0.035em;
-    text-transform: uppercase;
+    font-size: var(--t-display);
+    font-weight: 600;
+    letter-spacing: var(--ls-display);
+    line-height: 1;
 }
 .jt-glass > p:last-of-type {
     margin: 26px auto 0;
     max-width: 640px;
-    font-size: clamp(15px, 1.3vw, 19px);
+    font-size: var(--t-lead);
+    font-weight: 400;
     line-height: 1.5;
     color: #3f3f3f;
 }
@@ -1358,7 +1356,8 @@ button {
     border-radius: 999px;
     background: #1a1a1a;
     color: #fff;
-    font-size: 16px;
+    font-size: var(--t-body);
+    font-weight: 600;
     box-shadow: 0 14px 30px -14px rgba(26, 26, 26, 0.6);
 }
 .jt-cta:hover {
@@ -1380,7 +1379,7 @@ button {
     border-radius: 999px;
 }
 .jt-progress__year {
-    font-size: 12px;
+    font-size: var(--t-label);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
 }
@@ -1562,10 +1561,9 @@ button {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-family: var(--hand);
+    font-size: var(--t-hand-lg);
+    font-weight: 500;
     color: var(--g-accent);
 }
 .gf-eyebrow svg {
@@ -1574,23 +1572,22 @@ button {
 }
 .gf-intro h2 {
     margin: 8px 0 6px;
-    font-size: clamp(30px, min(4.4vw, 6.6vh), 60px);
-    font-weight: 800;
-    letter-spacing: -0.045em;
+    font-size: min(var(--t-display), 9vh);
+    font-weight: 600;
+    letter-spacing: var(--ls-display);
     line-height: 1;
     color: var(--g-ink);
     text-align: center;
 }
 .gf-tagline {
     margin: 0 0 clamp(12px, 2vh, 20px);
-    font-family: "Instrument Sans", var(--sans);
-    font-size: clamp(16px, 2.2vh, 20px);
-    letter-spacing: -0.01em;
+    font-size: var(--t-lead);
+    font-weight: 400;
     color: var(--g-muted);
     text-align: center;
 }
 .gf-tagline strong {
-    font-weight: 500;
+    font-weight: 600;
     color: var(--g-accent);
 }
 
@@ -1611,7 +1608,8 @@ button {
 .gf-form label {
     display: block;
     margin-bottom: 8px;
-    font-size: 14px;
+    font-size: var(--t-small);
+    font-weight: 400;
     color: var(--g-muted);
 }
 .gf-form textarea,
@@ -1632,8 +1630,9 @@ button {
     resize: none;
     padding: 10px 14px;
     border-radius: 16px;
-    font-size: 15px;
-    line-height: 1.45;
+    font-size: var(--t-body);
+    font-weight: 400;
+    line-height: 1.5;
 }
 .gf-form textarea:focus,
 .gf-form input:focus {
@@ -1662,7 +1661,8 @@ button {
     width: auto;
     padding: 10px 16px;
     border-radius: 999px;
-    font-size: 14px;
+    font-size: var(--t-body);
+    font-weight: 400;
 }
 /* glass "Plant" button with a little seed */
 .gf-plant {
@@ -1680,9 +1680,8 @@ button {
         inset 0 1.5px 0 rgba(255, 255, 255, 0.95),
         inset 0 -8px 16px rgba(255, 255, 255, 0.18),
         0 10px 24px rgba(30, 144, 255, 0.24);
+    font-size: var(--t-body);
     font-weight: 600;
-    font-size: 15px;
-    letter-spacing: -0.01em;
     color: var(--g-ink);
     cursor: pointer;
     transition:
@@ -1718,8 +1717,8 @@ button {
     align-items: center;
     min-height: 16px;
     margin-top: 6px;
-    font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
-    font-size: 11px;
+    font-size: var(--t-label);
+    font-weight: 400;
     color: var(--g-muted);
 }
 .gf-status.is-accent {
@@ -1746,7 +1745,7 @@ button {
     background: rgba(255, 255, 255, 0.45);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    font-size: 14px;
+    font-size: var(--t-small);
     font-weight: 500;
     color: var(--g-accent);
     text-decoration: none;
@@ -1793,9 +1792,8 @@ button {
     bottom: calc(var(--base) + 34px);
     margin: 0;
     text-align: center;
-    font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
-    font-size: 12px;
-    letter-spacing: 0.06em;
+    font-size: var(--t-small);
+    font-weight: 400;
     color: rgba(90, 70, 40, 0.6);
 }
 .gf-flower,
@@ -1997,9 +1995,9 @@ button {
     padding: 6px 12px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.78);
-    font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
-    font-size: 12px;
-    letter-spacing: 0.1em;
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--ls-caps);
     text-transform: uppercase;
     color: var(--c);
 }
@@ -2011,15 +2009,16 @@ button {
 }
 .gf-card__msg {
     margin-top: 12px;
-    font-size: 15px;
-    line-height: 1.45;
-    letter-spacing: -0.01em;
+    font-size: var(--t-small);
+    font-weight: 400;
+    line-height: 1.5;
     color: var(--g-ink);
     overflow-wrap: anywhere;
 }
 .gf-card__by {
     margin-top: 8px;
-    font-size: 13px;
+    font-size: var(--t-label);
+    font-weight: 400;
     color: var(--g-muted);
 }
 .gf-butterflies {
@@ -2040,8 +2039,8 @@ button {
     padding: 0 clamp(16px, 3vw, 43px);
 }
 .gf-credit {
-    font-size: 15px;
-    letter-spacing: -0.01em;
+    font-size: var(--t-small);
+    font-weight: 400;
     color: #3e3225;
 }
 .gf-links {
@@ -2049,7 +2048,7 @@ button {
     gap: 28px;
 }
 .gf-links a {
-    font-size: 16px;
+    font-size: var(--t-small);
     font-weight: 500;
     color: var(--g-accent);
     text-decoration: none;
@@ -2075,14 +2074,12 @@ button {
         justify-content: center;
     }
     .gf-credit {
-        font-size: 13px;
-    }
+}
     .gf-links {
         gap: 20px;
     }
     .gf-links a {
-        font-size: 14px;
-    }
+}
 }
 
 @keyframes gfDrift {
@@ -2160,23 +2157,20 @@ button {
     padding-bottom: 140px;
 }
 .pj-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 6px 16px;
     margin-bottom: 28px;
 }
-.pj-eyebrow {
+.pj-heading {
     margin: 0;
-    font-family: "Plus Jakarta Sans", var(--sans);
-    font-size: 18.6px;
+    font-size: var(--t-display);
     font-weight: 600;
-    color: #212121;
+    letter-spacing: var(--ls-display);
+    color: var(--ink);
 }
 .pj-hint {
     margin: 0;
     font-family: var(--hand);
-    font-size: 22px;
+    font-size: var(--t-hand-lg);
+    font-weight: 500;
     color: var(--soft);
 }
 .pj-grid {
@@ -2192,8 +2186,8 @@ button {
     grid-column: 1 / -1;
     margin: 18px 0 -10px;
     font-family: var(--hand);
-    font-size: 26px;
-    font-weight: 600;
+    font-size: var(--t-hand-lg);
+    font-weight: 500;
     color: var(--accent);
 }
 .pj-group:first-child {
@@ -2273,10 +2267,10 @@ button {
 }
 .pj-meta {
     margin: 0;
-    font-family: "Instrument Sans", var(--sans);
-    font-size: 18px;
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--ls-caps);
     line-height: 1.1;
-    letter-spacing: -0.03em;
     text-transform: uppercase;
     color: #252525;
 }
@@ -2287,28 +2281,27 @@ button {
     border-radius: 999px;
     background: #1f2347;
     color: #fff;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--ls-caps);
+    text-transform: uppercase;
     vertical-align: 2px;
 }
 .pj-title {
     margin: 28px 0 14px;
-    font-family: Figtree, var(--sans);
-    font-size: clamp(34px, 3.3vw, 47px);
-    font-weight: 400;
-    line-height: 1.24;
-    letter-spacing: -0.012em;
+    font-size: var(--t-h2);
+    font-weight: 600;
+    letter-spacing: var(--ls-h2);
+    line-height: 1.15;
     color: #252525;
-    text-wrap: balance; /* long titles break evenly, not at a hyphen */
+    text-wrap: balance; /* long titles break evenly, not at a hyphen */;
 }
 .pj-text {
     margin: 0;
     max-width: 560px;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 1.3;
-    letter-spacing: -0.2px;
+    font-size: var(--t-body);
+    font-weight: 400;
+    line-height: 1.5;
     color: #1a1a1a;
 }
 .pj-tags {
@@ -2329,9 +2322,8 @@ button {
     border-radius: 100px;
     background: radial-gradient(50% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(230, 241, 255, 0.5) 100%);
     box-shadow: 0 2px 8px -4px rgba(40, 30, 95, 0.2);
-    font-family: "Instrument Sans", var(--sans);
-    font-size: 16px;
-    text-transform: uppercase;
+    font-size: var(--t-label);
+    font-weight: 500;
     color: #252525;
 }
 /* passion cards are smaller */
@@ -2340,14 +2332,16 @@ button {
     padding: 16px;
 }
 .pj-card.is-small .pj-meta {
-    font-size: 14px;
 }
 .pj-card.is-small .pj-title {
     margin: 16px 0 10px;
-    font-size: 28px;
+    font-size: var(--t-h3);
+    font-weight: 600;
+    letter-spacing: var(--ls-h3);
 }
 .pj-card.is-small .pj-text {
-    font-size: 15px;
+    font-size: var(--t-small);
+    font-weight: 400;
 }
 .pj-card.is-small .pj-tags {
     padding-top: 20px;
@@ -2357,7 +2351,6 @@ button {
     min-width: 0;
     height: 30px;
     padding: 0 14px;
-    font-size: 13px;
 }
 
 /* passion project detail view */
@@ -2765,7 +2758,6 @@ button {
     --tab-h: 42px;
     --radius: 26px;
     --pencil: rgba(29, 25, 50, 0.46);
-    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
     position: relative;
     isolation: isolate;
     padding: 90px 0 110px;
@@ -2839,25 +2831,27 @@ button {
 
 /* small shared bits */
 .ab-mono {
+    font-family: var(--sans);
     margin: 0;
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--ls-caps);
     text-transform: uppercase;
     color: var(--soft);
 }
 .ab-hand {
     margin: 0;
     font-family: var(--hand);
-    font-size: 23px;
+    font-size: var(--t-hand);
+    font-weight: 500;
     line-height: 1.05;
     color: var(--accent);
 }
 .ab-scrawl {
     margin: 0;
     font-family: var(--hand);
-    font-size: 23px;
+    font-size: var(--t-hand);
+    font-weight: 500;
     line-height: 1.1;
     color: var(--soft);
 }
@@ -2930,23 +2924,23 @@ button {
 .ab-eyebrow {
     margin: 0;
     font-family: var(--hand);
-    font-size: 26px;
+    font-size: var(--t-hand-lg);
+    font-weight: 500;
     color: var(--accent);
 }
 .ab-head h2 {
     margin: 6px 0 0;
-    font-size: clamp(44px, 5.8vw, 96px);
-    line-height: 0.98;
+    font-size: var(--t-display);
     font-weight: 600;
-    letter-spacing: -0.045em;
+    letter-spacing: var(--ls-display);
+    line-height: 1;
 }
 .ab-intro {
     max-width: 600px;
     margin: 20px 0 0;
-    font-size: 17px;
-    font-weight: 500;
-    line-height: 1.42;
-    letter-spacing: -0.2px;
+    font-size: var(--t-lead);
+    font-weight: 400;
+    line-height: 1.5;
     color: var(--soft);
 }
 .ab-scrawl--down {
@@ -2978,10 +2972,11 @@ button {
     box-shadow: 0 24px 44px -28px rgba(60, 45, 130, 0.45);
 }
 .ab-card__no {
+    font-family: var(--sans);
     margin: 0 0 10px;
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--ls-caps);
     text-transform: uppercase;
     color: var(--accent);
 }
@@ -2994,16 +2989,18 @@ button {
     padding-top: 10px;
 }
 .ab-card dt {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.06em;
+    font-family: var(--sans);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--ls-caps);
     text-transform: uppercase;
     color: var(--soft);
 }
 .ab-card dd {
     margin: 0;
     font-family: var(--hand);
-    font-size: 24px;
+    font-size: var(--t-hand);
+    font-weight: 500;
     line-height: 1;
     text-align: right;
     color: var(--ink);
@@ -3081,8 +3078,8 @@ button {
     width: min(21%, 164px);
     height: var(--tab-h);
     font-family: var(--hand);
-    font-size: 22px;
-    font-weight: 600;
+    font-size: var(--t-hand);
+    font-weight: 500;
     line-height: 1;
     white-space: nowrap;
     color: var(--ink);
@@ -3152,10 +3149,10 @@ button {
 }
 .ab-folder__head h3 {
     margin: 0;
-    font-size: clamp(26px, 2.7vw, 36px);
+    font-size: var(--t-h2);
     font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+    letter-spacing: var(--ls-h2);
+    line-height: 1.15;
 }
 .ab-folder__head .ab-hand {
     margin-left: auto;
@@ -3203,10 +3200,10 @@ button {
     width: min-content;
     margin: 0;
     padding: 6px 0 16px;
-    font-size: clamp(56px, min(6.4vw, 9.4vh), 92px);
+    font-size: min(var(--t-display), 9.4vh);
     font-weight: 600;
-    line-height: 0.9;
-    letter-spacing: -0.055em;
+    letter-spacing: var(--ls-display);
+    line-height: 1;
     color: var(--ink);
 }
 .ab-hello__cell {
@@ -3233,30 +3230,28 @@ button {
     position: absolute;
     top: 12px;
     right: 6px;
-    font-size: 19px;
-    line-height: 1;
-    letter-spacing: -0.02em;
+    font-size: var(--t-body);
+    font-weight: 400;
+    line-height: 1.5;
     color: var(--soft);
 }
 .ab-hello__cell p {
     margin: 0;
-    font-size: clamp(15px, 1.2vw, 16.5px);
-    font-weight: 500;
-    line-height: 1.42;
-    letter-spacing: -0.2px;
+    font-size: var(--t-body);
+    font-weight: 400;
+    line-height: 1.5;
     color: var(--ink);
 }
 .ab-hello__cell--lead p {
-    font-size: clamp(16.5px, 1.45vw, 20px);
-    line-height: 1.28;
-    letter-spacing: -0.35px;
+    font-size: var(--t-lead);
+    font-weight: 400;
+    line-height: 1.5;
 }
 .ab-hello__cell--belief p {
     font-family: var(--hand);
-    font-size: clamp(22px, min(2vw, 3.1vh), 28px);
-    font-weight: 400;
+    font-size: var(--t-hand-lg);
+    font-weight: 500;
     line-height: 1.04;
-    letter-spacing: 0;
     color: var(--accent);
 }
 /* highlighter strokes */
@@ -3438,8 +3433,7 @@ button {
         padding-block: 10px;
     }
     .ab-hello__cell--lead p {
-        font-size: 16px;
-    }
+}
     .ab-hello__loves {
         min-height: 92px;
     }
@@ -3557,8 +3551,8 @@ button {
 .ab-cal__top h4 {
     margin: 0;
     font-family: var(--hand);
-    font-size: 38px;
-    font-weight: 600;
+    font-size: var(--t-hand-lg);
+    font-weight: 500;
     line-height: 1;
     color: var(--accent);
 }
@@ -3569,9 +3563,10 @@ button {
     text-align: center;
 }
 .ab-cal__dow {
+    font-family: var(--sans);
     margin-top: 8px;
-    font-family: var(--mono);
-    font-size: 11px;
+    font-size: var(--t-label);
+    font-weight: 400;
     color: var(--soft);
 }
 .ab-cal__grid {
@@ -3583,7 +3578,7 @@ button {
     position: relative;
     display: grid;
     place-items: center;
-    font-size: 14px;
+    font-size: var(--t-small);
     font-weight: 500;
     color: color-mix(in srgb, var(--ink) 58%, transparent);
 }
@@ -3591,7 +3586,7 @@ button.ab-day {
     padding: 0;
     border: 0;
     background: none;
-    font-weight: 700;
+    font-weight: 600;
     color: var(--ink);
     cursor: pointer;
 }
@@ -3644,7 +3639,8 @@ button.ab-day {
 .ab-cal__count {
     margin: 0;
     font-family: var(--hand);
-    font-size: 22px;
+    font-size: var(--t-hand);
+    font-weight: 500;
     color: var(--soft);
 }
 .ab-thread {
@@ -3721,30 +3717,27 @@ button.ab-day {
     margin-top: 8px;
     min-height: 46px;
     text-align: center;
-    font-size: 21px;
 }
 .ab-note__text h4 {
     margin: 10px 0 10px;
-    font-family: Figtree, var(--sans);
-    font-size: clamp(26px, 2.7vw, 36px);
-    font-weight: 400;
-    line-height: 1.14;
-    letter-spacing: -0.012em;
+    font-size: var(--t-h2);
+    font-weight: 600;
+    letter-spacing: var(--ls-h2);
+    line-height: 1.15;
 }
 .ab-note__text p:not(.ab-mono) {
     margin: 0;
     max-width: 380px;
-    font-size: 15.5px;
-    font-weight: 500;
-    line-height: 1.36;
-    letter-spacing: -0.2px;
+    font-size: var(--t-body);
+    font-weight: 400;
+    line-height: 1.5;
     color: var(--soft);
 }
 .ab-link {
     display: inline-flex;
     gap: 6px;
     margin-top: 14px;
-    font-size: 14px;
+    font-size: var(--t-small);
     font-weight: 600;
     color: var(--accent);
     text-decoration: none;
@@ -3985,7 +3978,8 @@ button.ab-day {
     position: absolute;
     left: calc(var(--x, 0) * 1px);
     font-family: var(--hand);
-    font-size: 26px;
+    font-size: var(--t-hand-lg);
+    font-weight: 500;
     font-style: normal;
     color: var(--accent);
     opacity: 0;
@@ -4054,15 +4048,14 @@ button.ab-day {
 }
 .ab-track h4 {
     margin: 10px 0 2px;
-    font-family: Figtree, var(--sans);
-    font-size: clamp(26px, 2.7vw, 36px);
-    font-weight: 400;
-    line-height: 1.14;
-    letter-spacing: -0.012em;
+    font-size: var(--t-h2);
+    font-weight: 600;
+    letter-spacing: var(--ls-h2);
+    line-height: 1.15;
 }
 .ab-track__by {
     margin: 0;
-    font-size: 15.5px;
+    font-size: var(--t-small);
     font-weight: 500;
     color: var(--soft);
 }
@@ -4128,7 +4121,8 @@ button.ab-day {
 }
 .ab-thing__label {
     font-family: var(--hand);
-    font-size: 23px;
+    font-size: var(--t-hand);
+    font-weight: 500;
     line-height: 1.05;
     text-align: center;
     color: var(--ink);
@@ -4283,8 +4277,8 @@ button.ab-day {
     right: 8px;
     bottom: 6px;
     font-family: var(--hand);
-    font-size: 17px;
-    font-weight: 400;
+    font-size: var(--t-hand-sm);
+    font-weight: 500;
     color: rgba(70, 45, 18, 0.8);
     white-space: nowrap;
     rotate: -3deg;
@@ -4419,7 +4413,8 @@ button.ab-day {
     right: 0;
     top: 8px;
     font-family: var(--hand);
-    font-size: 20px;
+    font-size: var(--t-hand);
+    font-weight: 500;
     font-style: normal;
     text-align: center;
     color: #fff;
@@ -4677,7 +4672,8 @@ button.ab-day {
     bottom: 34px;
     rotate: -2deg;
     font-family: var(--hand);
-    font-size: 23px;
+    font-size: var(--t-hand);
+    font-weight: 500;
     line-height: 1.05;
     color: var(--soft);
     text-decoration: none;
@@ -4760,8 +4756,10 @@ button.ab-day {
         left: calc(var(--i) * 22%);
         width: 21%;
         gap: 4px;
-        font-size: 18px;
-    }
+    font-family: var(--hand);
+    font-size: var(--t-hand-sm);
+    font-weight: 500;
+}
     .ab-tab .ab-mono {
         display: none;
     }
@@ -4790,8 +4788,7 @@ button.ab-day {
     .ab-hello__title {
         width: auto;
         padding-bottom: 92px;
-        font-size: clamp(50px, 15vw, 88px);
-    }
+}
     .ab-hello__me {
         width: 100%;
     }
@@ -4820,14 +4817,11 @@ button.ab-day {
         right: 0;
     }
     .ab-hello__cell p {
-        font-size: 16px;
-    }
+}
     .ab-hello__cell--lead p {
-        font-size: 18.5px;
-    }
+}
     .ab-hello__cell--belief p {
-        font-size: 26px;
-    }
+}
     .ab-hello__loves {
         min-height: 0;
         height: 148px;
@@ -4897,8 +4891,7 @@ button.ab-day {
         gap: 20px 8px;
     }
     .ab-thing__label {
-        font-size: 20px;
-    }
+}
     .ab-wall {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         grid-auto-flow: dense;
