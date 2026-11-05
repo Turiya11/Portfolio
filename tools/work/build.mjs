@@ -60,9 +60,13 @@ for (const p of pages) {
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>${p.title}</title>
+        <link rel="icon" type="image/png" sizes="48x48" href="../../assets/images/favicon-48.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon-32.png" />
+        <link rel="apple-touch-icon" href="../../assets/images/apple-touch-icon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700;800&family=Caveat:wght@500&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600&family=Caveat:wght@500;600&display=swap" />
+        <link rel="stylesheet" href="../../css/brand.css?v=1" />
         <style>html,body{margin:0;background:${p.bg}}*,*::before,*::after{box-sizing:border-box}.pc-stimg:empty,.pc-img:empty{display:none}${FILL}${NEXT}${p.css || ""}</style>
     </head>
     <body>
