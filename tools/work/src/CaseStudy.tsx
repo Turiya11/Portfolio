@@ -17,7 +17,7 @@ type Props = {
     note?: string
     link?: { href: string; label: string }
     ratio?: number // width ÷ height of the wide videos
-    hero: ClipData & { phone?: boolean; ratio?: number }
+    hero: ClipData & { phone?: boolean; ratio?: number; title?: string }
     brief: { context: string; background: string; impact: { n: string; l: string }[]; impactNote?: string }
     understanding: { quote: string; method: string; stickiesTitle?: string; stickies: StickyGroup[] }
     research?: { statement: string; folders: Folder[] }
@@ -254,6 +254,11 @@ export default function CaseStudy(p: Props) {
                 ) : (
                     <header className="cs-top">
                         {heading}
+                        {p.hero.title ? (
+                            <p className="cs-state">
+                                <b>{p.hero.title}</b>
+                            </p>
+                        ) : null}
                         <Clip clip={p.hero} cls="wide" ratio={p.hero.ratio || p.ratio} />
                     </header>
                 )}
