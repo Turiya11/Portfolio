@@ -34,6 +34,11 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&l
 const root = document.getElementById("journey")
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches
 let geo = null
+let widen = 1
+let lineY = null // set when the line is rebalanced to fit the tallest cards on short screens
+const isAbove = (i, mobile) => !mobile && i % 2 === 1 // phones keep every card under the line: one card at a time, more room
+const NODE_R = 28 // half the year bubble
+const MAX_W = 0.7 // cards never get wider than this share of the screen
 let els = {}
 
 function layout() {
@@ -43,29 +48,38 @@ function layout() {
     const compact = vh < 760 || mobile
     const kk = clamp(Math.min(vw / 1440, vh / 860), 0.62, 1.1)
     const n = CONTENT.milestones.length
-    const cardW = mobile ? Math.min(vw * 0.86, 380) : clamp(vw * 0.34, 380, 520) // wide cards = fewer lines = shorter cards
+    // wide cards = fewer lines = shorter cards; `widen` grows them on short screens so text never has to shrink
+    const cardW = mobile ? Math.min(vw * 0.86, 380) : Math.min(clamp(vw * 0.4, 460, 620) * widen, vw * MAX_W)
     const step = mobile ? vw * 0.92 : cardW * 0.78
     const tipFrac = mobile ? 0.5 : 0.58
     const lead = mobile ? vw * 0.42 : 6 // phones reveal a card as its node approaches
     const x0 = mobile ? 22 : vw * 0.06
     const introW = Math.min(vw - x0 * 2, 640 * kk)
-    const firstX = mobile ? vw * 0.92 : Math.max(vw * 0.64, x0 + introW + cardW * 0.6)
+    const firstX = mobile ? vw * 1.12 : Math.max(vw * 0.64, x0 + introW + cardW * 0.6)
     const xs = CONTENT.milestones.map((_, i) => firstX + i * step)
     const T = xs[n - 1] + vw * 0.7
-    const baseY = vh * 0.55 // below centre: the nav takes space from the cards above the line
-    const amp = (compact ? 16 : 30) * kk
-    const yFn = (x) => baseY + amp * Math.sin((x / (step * 0.9)) * Math.PI * 2 + 0.6) + amp * 0.35 * Math.sin(x / 173)
+    const short = vh < 700
+    const gap = mobile ? 20 : short ? 16 : compact ? 28 : 44 * kk
+    const baseY = lineY ?? vh * 0.55 // below centre: the nav takes space from the cards above the line
+    const topY = Math.max(100, vh * 0.16)
+    // phones: the line starts level with the intro, then climbs to the top before the first card
+    const rise = (x) => {
+        const t = clamp((x - vw * 0.55) / (firstX - vw * 0.65), 0, 1)
+        return t * t * (3 - 2 * t)
+    }
+    const midY = mobile ? (x) => baseY + (topY - baseY) * rise(x) : () => baseY
+    const amp = (short && !mobile ? 8 : compact ? 16 : 30) * kk
+    const yFn = (x) => midY(x) + amp * Math.sin((x / (step * 0.9)) * Math.PI * 2 + 0.6) + amp * 0.35 * Math.sin(x / 173)
     let d = ""
     for (let x = x0; x <= T; x += 18) d += `${d ? " L" : "M"}${x.toFixed(1)} ${(yFn(x) + Math.sin(x * 1.7) * 0.8).toFixed(1)}`
     const m = CONTENT.doodles.length
     const exX = CONTENT.doodles.map((_, k) => (mobile ? vw * 0.18 + k * vw * 0.2 : vw * 0.14 + k * Math.min(140, (firstX - vw * 0.14 - cardW * 0.6) / m)))
-    return { vw, vh, mobile, compact, kk, cardW, tipFrac, lead, x0, introW, xs, T, travel: Math.max(T - vw, 1), yFn, d, exX }
+    return { vw, vh, mobile, compact, kk, gap, cardW, tipFrac, lead, x0, introW, xs, T, travel: Math.max(T - vw, 1), yFn, d, exX }
 }
 
 function render() {
     geo = layout()
-    const { vw, vh, kk, cardW, compact, x0, introW, xs, T, yFn, d, exX } = geo
-    const gap = compact ? 28 : 44 * kk
+    const { vw, vh, kk, cardW, compact, gap, mobile, x0, introW, xs, T, yFn, d, exX } = geo
 
     const doodles = CONTENT.doodles
         .map((label, k) => {
@@ -82,12 +96,12 @@ function render() {
 
     const cards = CONTENT.milestones
         .map((m, i) => {
-            const above = i % 2 === 1
+            const above = isAbove(i, mobile)
             const color = NODE_COLORS[i % NODE_COLORS.length]
             return `<div class="jt-mark" style="left:${xs[i]}px;top:${yFn(xs[i])}px;--node:${color};--from:${above ? -24 : 24}px">
               <div class="jt-node">’${esc(m.year.slice(-2))}</div>
-              <span class="jt-stem" style="height:${gap - 8}px;${above ? `bottom:24px` : `top:24px`}"></span>
-              <article class="jt-card${compact ? " is-compact" : ""}" style="width:${cardW}px;left:${-cardW / 2}px;${above ? `bottom:${24 + gap}px` : `top:${24 + gap}px`}">
+              <span class="jt-stem" style="height:${gap - 8}px;${above ? `bottom:${NODE_R}px` : `top:${NODE_R}px`}"></span>
+              <article class="jt-card${compact ? " is-compact" : ""}" style="width:${cardW}px;left:${-cardW / 2}px;${above ? `bottom:${NODE_R + gap}px` : `top:${NODE_R + gap}px`}">
                 <div class="jt-card__top"><span class="jt-kicker">${esc(m.kicker)}</span><span class="jt-period">${esc(m.period)}</span></div>
                 <div class="jt-card__head">
                   ${m.logos?.length === 1 ? logo(m.logos[0]) : ""}
@@ -166,24 +180,33 @@ function render() {
     fitCards()
 }
 
-// keep every card on screen: between the nav (top) and the bottom edge; if one is still too tall after
-// the wide layout, they all scale down together, each anchored at its stem
+// keep every card on screen: between the nav (top) and the bottom edge. Cards widen first; only if that isn't
+// enough do they all scale down together, each anchored at its stem
 const NAV_CLEAR = 76
 function fitCards() {
-    const { vh, xs, yFn, compact, kk } = geo
-    const gap = compact ? 28 : 44 * kk
+    const { vh, vw, xs, yFn, gap, mobile, cardW } = geo
+    const bottomClear = mobile ? 56 : 12 // phones keep the progress bar clear
     const cards = els.marks.map((mark) => mark.querySelector(".jt-card"))
+    const roomFor = (i) => {
+        const y = yFn(xs[i])
+        return isAbove(i, mobile) ? y - NODE_R - gap - NAV_CLEAR : vh - bottomClear - (y + NODE_R + gap)
+    }
     // one scale for every card, set by the tightest fit, so they all stay the same size
-    const fit = Math.min(
-        1,
-        ...cards.map((card, i) => {
-            const y = yFn(xs[i])
-            const room = i % 2 === 1 ? y - 24 - gap - NAV_CLEAR : vh - 16 - (y + 24 + gap)
-            return room / card.offsetHeight
-        })
-    )
+    const fit = Math.min(1, ...cards.map((card, i) => roomFor(i) / card.offsetHeight))
+    // too tall: centre the line between the tallest cards and widen them, then lay out again.
+    // Scaling down (below) is the last resort, because it shrinks the text under 14px.
+    if (fit < 1 && !mobile) {
+        const tallest = (above) => Math.max(...cards.filter((_, i) => isAbove(i, mobile) === above).map((c) => c.offsetHeight))
+        const balanced = (vh - bottomClear + NAV_CLEAR + tallest(true) - tallest(false)) / 2
+        const canWiden = cardW < MAX_W * vw && widen < 2
+        if (canWiden || Math.abs(balanced - (lineY ?? 0)) > 3) {
+            lineY = balanced
+            if (canWiden) widen += 0.08
+            return render()
+        }
+    }
     cards.forEach((card, i) => {
-        card.style.transformOrigin = i % 2 === 1 ? "50% 100%" : "50% 0%"
+        card.style.transformOrigin = isAbove(i, mobile) ? "50% 100%" : "50% 0%"
         card.style.setProperty("--fit", fit.toFixed(3))
     })
 }
@@ -280,6 +303,8 @@ addEventListener("resize", () => {
     if (innerWidth === lastW && Math.abs(innerHeight - lastH) < 120) return
     lastW = innerWidth
     lastH = innerHeight
+    widen = 1
+    lineY = null
     render()
     apply((cur = goal = progress()))
 })
