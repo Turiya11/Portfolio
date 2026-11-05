@@ -28,3 +28,14 @@ screens with a scripted pointer: the steps are in `tools/work/video/scenes.mjs`,
 and `assets/images/`. With the site running on :4175, `cd tools/work/video && node render.mjs` renders all of them,
 and `node render.mjs lm-mood` renders one. Pip's clips are trimmed from the real prototype recordings with `clip.swift`.
 Both tools need Chrome and macOS (they encode through AVFoundation, no ffmpeg).
+
+## Visitor notes
+
+Notes planted in the garden form go to a private Google Sheet. The script is `tools/garden-notes/Code.gs`.
+
+1. Create a new Google Sheet, then open Extensions > Apps Script.
+2. Replace the code there with the contents of `Code.gs` and save.
+3. Choose Deploy > New deployment > Web app. Set "Execute as" to Me and "Who has access" to Anyone, then deploy and approve the permissions.
+4. Copy the web app URL (it ends in `/exec`) into `data-notes-url` on the form in `index.html`.
+
+If you change `Code.gs` later, use Deploy > Manage deployments > Edit > New version so the URL stays the same.

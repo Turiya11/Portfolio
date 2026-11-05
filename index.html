@@ -16,7 +16,7 @@
         />
         <link rel="preload" as="image" href="assets/images/window.webp" />
         <link rel="stylesheet" href="css/brand.css?v=1" />
-        <link rel="stylesheet" href="css/styles.css?v=49" />
+        <link rel="stylesheet" href="css/styles.css?v=50" />
     </head>
     <body>
         <!-- top nav: centred, fixed; a gooey pill follows the hovered tab (port of the Framer Liquid Gooey nav) -->
@@ -183,7 +183,7 @@
                 </p>
                 <h2>Plant your thoughts</h2>
                 <p class="gf-tagline">Welcome to my <strong>garden</strong>, where most of my ideas start.</p>
-                <form class="gf-form" novalidate autocomplete="off">
+                <form class="gf-form" data-notes-url="https://script.google.com/macros/s/AKfycbwnmOO0Exw3usZFsOFb-JKS5ZkQs6p054FjW-Jl0bxA8PRYG3TghnPAgb5Qg7vG5Zfc/exec" novalidate autocomplete="off">
                     <label for="garden-note">Drop a thought, critique or idea and watch it bloom.</label>
                     <textarea id="garden-note" maxlength="200" rows="2" placeholder="What would you grow next?"></textarea>
                     <div class="gf-row">
@@ -194,6 +194,8 @@
                         <span class="gf-status" role="status">0/200</span>
                         <button class="gf-clear" type="button" hidden>Clear my garden</button>
                     </div>
+                    <!-- hidden from people; bots that fill it in get ignored -->
+                    <input class="gf-trap" name="website" tabindex="-1" aria-hidden="true" />
                 </form>
                 <a class="gf-mail" href="mailto:itsturiyajoshi11@gmail.com">
                     <svg viewBox="0 0 20 16" width="17" height="14" aria-hidden="true"><rect x="1" y="1" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.6" /><path d="m2 3.5 8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -224,7 +226,7 @@
         <script src="js/journey.js?v=34" type="module"></script>
         <script src="js/nav.js?v=28" type="module"></script>
         <script src="js/eyes.js?v=26" type="module"></script>
-        <script src="js/garden.js?v=27" type="module"></script>
+        <script src="js/garden.js?v=29" type="module"></script>
         <script src="js/work.js?v=28" type="module"></script>
         <script src="js/about.js?v=32" type="module"></script>
     </body>

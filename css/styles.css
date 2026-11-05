@@ -1480,7 +1480,7 @@ button {
     --glass-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.14) 55%, rgba(255, 255, 255, 0.22) 100%);
     --glass-edge: inset 0 1.5px 0 rgba(255, 255, 255, 0.85), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
     position: relative;
-    height: 100svh; /* exactly one screen; below this height the flowers tuck behind the form */
+    height: 100svh; /* exactly one screen; garden.js shortens flowers under the form to fit */
     min-height: 620px;
     overflow: hidden;
     background: var(--paper);
@@ -1664,6 +1664,13 @@ button {
     font-size: var(--t-body);
     font-weight: 400;
 }
+.gf-form .gf-trap {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
 /* glass "Plant" button with a little seed */
 .gf-plant {
     position: relative;
@@ -1784,6 +1791,9 @@ button {
     inset: 0;
     z-index: 3;
     pointer-events: none;
+}
+.gf-bed:has(.gf-bloom.is-open) {
+    z-index: 12; /* a flower's note reads over the form, not behind its glass */
 }
 .gf-empty {
     position: absolute;
@@ -2029,7 +2039,7 @@ button {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 6;
+    z-index: 13; /* the credit and links stay on top of the flower bed, even with a note open */
     height: var(--soil);
     display: flex;
     flex-wrap: wrap;
@@ -2068,6 +2078,10 @@ button {
     }
     .gf-shape {
         display: none; /* no room beside the form */
+    }
+    .gf-empty {
+        left: calc(50% - 50px); /* wrap to fit the gap between the flowers */
+        right: calc(50% - 50px);
     }
     .gf-base {
         flex-direction: column;

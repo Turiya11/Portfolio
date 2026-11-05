@@ -1,11 +1,13 @@
 // The garden footer — a plain-JS port of the Framer "GardenFooter".
 // A pastel cloud sky, hills and glass shapes that drift with scroll, geometric flowers that grow in,
-// three blue butterflies that say thank you, and a glass form: a visitor's note drops a seed that
-// sprouts into a flower. Notes are kept in the visitor's own browser (nothing is sent anywhere).
+// three blue butterflies with a note each, and a glass form: a visitor's note drops a seed that
+// sprouts into a flower. The flower stays in the visitor's own browser, and the note goes to a private
+// Google Sheet once the form's data-notes-url is set (see the README).
 import { mountButterflies } from "./butterflies.js"
 
 const root = document.getElementById("garden")
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches
+const compact = innerWidth < 720
 
 const STORE = "garden-blooms-v1"
 const MAX_BLOOMS = 24
@@ -60,14 +62,18 @@ const flowerArt = (type, color, w, h, sway) => `
 const bed = root.querySelector(".gf-bed")
 {
     const r = makeRng(31)
-    const n = 9
+    const n = compact ? 7 : 9
+    const phoneX = [0.08, 0.18, 0.28, 0.5, 0.72, 0.82, 0.92] // grouped at the sides so leaves clear the hint
     let html = ""
     for (let i = 0; i < n; i++) {
-        const x = Math.min(0.96, Math.max(0.04, (i + 0.5) / n + (r() - 0.5) * 0.05))
+        const jitter = (r() - 0.5) * 0.05
+        const x = compact ? phoneX[i] : Math.min(0.96, Math.max(0.04, (i + 0.5) / n + jitter))
         const h = 46 + r() * 64
         const type = (i * 2 + Math.floor(r() * 3)) % 5
         const color = PALETTE[Math.floor(r() * PALETTE.length)]
-        html += `<div class="gf-flower" style="left:${x * 100}%;--delay:${0.1 + i * 0.12}s" aria-hidden="true">${flowerArt(type, color, 52, h, 3.6 + r() * 2.4)}</div>`
+        const sway = 3.6 + r() * 2.4
+        if (i === (n - 1) / 2) continue // the middle plot stays free for "Your seed will grow here"
+        html += `<div class="gf-flower" data-want="${h + 52}" style="left:${x * 100}%;--delay:${0.1 + i * 0.12}s" aria-hidden="true">${flowerArt(type, color, 52, h, sway)}</div>`
     }
     bed.insertAdjacentHTML("beforeend", html)
 }
@@ -106,16 +112,19 @@ if (!reduced) {
     onScroll()
 } else root.style.setProperty("--p", 1)
 
-/* ------------------------------ butterflies that say thank you ------------------------------ */
+/* ------------------------------ butterflies, each with its own note ------------------------------ */
 
-const compact = innerWidth < 720
 mountButterflies(root.querySelector(".gf-butterflies"), {
     count: 3,
     padding: 24,
     spots: compact
         ? [{ ox: 20, oy: 63, size: 36 }, { ox: 78, oy: 58, size: 34 }, { ox: 50, oy: 68, size: 32 }]
         : [{ ox: 13, oy: 36, size: 44 }, { ox: 85, oy: 30, size: 38 }, { ox: 24, oy: 68, size: 32 }],
-    details: [{ tag: "A little note", title: "Thank you for your time", detail: "Hope something here sparked an idea." }],
+    details: [
+        { tag: "A little note", title: "Thank you for your time", detail: "Hope something here sparked an idea." },
+        { tag: "Say hello", title: "Let's talk over chai", detail: "My inbox is open for projects, questions or just a hello." },
+        { tag: "Your turn", title: "Leave a thought behind", detail: "Plant an idea or a critique and watch it bloom." },
+    ],
 })
 
 /* ------------------------------ the form: a note becomes a flower ------------------------------ */
@@ -126,6 +135,23 @@ const nameIn = form.querySelector("input")
 const status = form.querySelector(".gf-status")
 const clearBtn = form.querySelector(".gf-clear")
 const hint = root.querySelector(".gf-empty")
+
+// only promise to read notes once they actually reach the sheet
+if (form.dataset.notesUrl) form.querySelector("label").textContent += " I read every note."
+
+async function sendNote(note, name) {
+    const url = form.dataset.notesUrl
+    if (!url) return true
+    try {
+        const res = await fetch(url, {
+            method: "POST",
+            body: new URLSearchParams({ note, name, website: form.elements.website.value }),
+        })
+        return (await res.json()).ok === true
+    } catch {
+        return false
+    }
+}
 
 let blooms = []
 try {
@@ -152,6 +178,7 @@ function renderBloom(b, fall) {
     const side = b.x < 0.18 ? "left" : b.x > 0.82 ? "right" : "center"
     const el = document.createElement("div")
     el.className = `gf-bloom${fall ? " is-fresh" : ""}`
+    el.dataset.want = b.h + HEAD
     el.style.cssText = `left:${b.x * 100}%;--fall:${fall || 0}px;--total:${b.h + HEAD}px;--hh:${b.h}px`
     el.innerHTML = `
       ${fall ? `<span class="gf-seed" aria-hidden="true"></span><span class="gf-ripple" aria-hidden="true"></span>` : ""}
@@ -180,12 +207,39 @@ const sync = () => {
 blooms.forEach((b) => renderBloom(b, 0))
 sync()
 
+// flowers in the form's column stop short of the mail link, so none ever grows behind the form.
+// offset* ignore the intro's scroll drift, so this measures where the form finally rests.
+const intro = root.querySelector(".gf-intro")
+const mail = root.querySelector(".gf-mail")
+function fitFlowers() {
+    const mid = intro.offsetLeft + form.offsetLeft + form.offsetWidth / 2
+    const halfForm = form.offsetWidth / 2
+    const top = intro.offsetTop + mail.offsetTop + mail.offsetHeight + 14
+    bed.querySelectorAll(".gf-flower, .gf-bloom").forEach((el) => {
+        const clip = el.querySelector(".gf-clip")
+        const want = +el.dataset.want
+        const room = el.offsetTop - top // height 0, so offsetTop is where its stem meets the ground
+        const under = Math.abs(el.offsetLeft - mid) < halfForm + clip.offsetWidth / 2 + 12
+        // when several get capped, vary them a little so they don't line up in a flat row
+        const total = under && want > room ? Math.round(room * (0.82 + (0.18 * (Math.round(want) % 10)) / 10)) : want
+        clip.style.setProperty("--total", `${total}px`)
+        if (el.classList.contains("gf-bloom")) {
+            el.style.setProperty("--total", `${total}px`)
+            el.style.setProperty("--hh", `${total - HEAD}px`)
+        }
+    })
+}
+fitFlowers()
+const fitObserver = new ResizeObserver(fitFlowers)
+fitObserver.observe(root)
+fitObserver.observe(intro) // web fonts landing can change the form's height
+
 let statusTimer = 0
-const say = (text, accent) => {
+const say = (text, accent, ms = 3600) => {
     clearTimeout(statusTimer)
     status.textContent = text
     status.classList.toggle("is-accent", !!accent)
-    if (accent) statusTimer = setTimeout(() => say(`${note.value.length}/200`), 3600)
+    if (accent) statusTimer = setTimeout(() => say(`${note.value.length}/200`), ms)
 }
 note.addEventListener("input", () => {
     form.classList.remove("is-nudge")
@@ -221,9 +275,13 @@ form.addEventListener("submit", (e) => {
     const fall = reduced ? 0 : Math.max(140, bed.getBoundingClientRect().bottom - form.getBoundingClientRect().bottom)
     const el = renderBloom(b, fall)
     while (bed.querySelectorAll(".gf-bloom").length > MAX_BLOOMS) bed.querySelector(".gf-bloom").remove()
+    fitFlowers()
     note.value = ""
     sync()
     say("Seed sown. Thank you for your time.", true)
+    sendNote(b.msg, b.name).then((sent) => {
+        if (!sent) say("Your flower grew, but the note didn't reach me. Try the mail link below.", true, 8000)
+    })
     setTimeout(() => el.classList.add("is-open"), reduced ? 150 : 2700)
     setTimeout(() => el.classList.remove("is-open"), reduced ? 4500 : 7600)
 })
