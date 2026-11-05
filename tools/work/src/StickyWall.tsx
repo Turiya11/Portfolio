@@ -8,15 +8,15 @@ const PALETTE = ["#FFF1A6", "#FFD6E0", "#D3E8FF", "#D9F3CF", "#E6DDFF", "#FFE2C6
 
 const CSS = `
 .sw{display:flex;flex-direction:column;gap:14px}
-.sw-title{margin:0;font-size:18px;font-weight:600;letter-spacing:-.01em}
+.sw-title{margin:0;font-size:var(--t-h3);font-weight:600;letter-spacing:var(--ls-h3)}
 .sw-board{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:26px 22px;padding:26px 24px 30px;border-radius:24px;
   border:1px solid rgba(255,255,255,.75);background-color:rgba(255,255,255,.55);
   background-image:radial-gradient(rgba(60,60,90,.16) 1px,transparent 1.2px);background-size:18px 18px;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 24px 48px -32px rgba(40,40,90,.35)}
 .sw-col{display:flex;flex-direction:column;gap:12px;min-width:0}
 .sw-lab{align-self:flex-start;margin:0 0 2px;padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.85);
-  box-shadow:0 1px 0 rgba(0,0,0,.04);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4b5563}
-.sw-note{margin:0;padding:13px 14px 16px;border-radius:3px 3px 10px 3px;font-family:"Caveat","Comic Sans MS",cursive;font-size:21px;
+  box-shadow:0 1px 0 rgba(0,0,0,.04);font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:#4b5563}
+.sw-note{margin:0;padding:13px 14px 16px;border-radius:3px 3px 10px 3px;font-family:var(--hand);font-size:var(--t-hand);font-weight:500;
   line-height:1.12;color:#262626;box-shadow:0 1px 1px rgba(0,0,0,.06),0 10px 16px -10px rgba(0,0,0,.35);
   transition:transform .35s cubic-bezier(.2,.9,.25,1),box-shadow .35s ease;overflow-wrap:anywhere}
 .sw-note:hover{transform:rotate(0deg) scale(1.04)!important;box-shadow:0 2px 2px rgba(0,0,0,.06),0 18px 26px -12px rgba(0,0,0,.35)}

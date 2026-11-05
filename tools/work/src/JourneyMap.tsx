@@ -13,33 +13,33 @@ const CSS = `
 .jm-person:hover{background:rgba(255,255,255,.72)}
 .jm-person[aria-pressed=true]{border-color:var(--a);background:rgba(255,255,255,.86);box-shadow:0 24px 44px -28px rgba(60,50,150,.55)}
 .jm-who{display:flex;align-items:center;gap:14px}
-.jm-who i{flex:none;display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:var(--a);color:#fff;font-style:normal;font-size:15px;font-weight:700;letter-spacing:.02em}
+.jm-who i{flex:none;display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:var(--a);color:#fff;font-style:normal;font-size:var(--t-small);font-weight:600}
 .jm-person[aria-pressed=false] .jm-who i{background:rgba(70,80,100,.5)}
-.jm-who b{display:block;font-size:clamp(19px,1.7vw,23px);font-weight:600;letter-spacing:-.015em;line-height:1.15}
+.jm-who b{display:block;font-size:var(--t-h3);font-weight:600;letter-spacing:var(--ls-h3);line-height:1.25}
 .jm-who > span{display:block}
-.jm-who span span{display:block;margin-top:3px;font-size:14.5px;color:var(--soft)}
+.jm-who span span{display:block;margin-top:3px;font-size:var(--t-small);font-weight:400;color:var(--soft)}
 .jm-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin:0}
-.jm-facts dt{margin:0 0 4px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--quiet)}
-.jm-facts dd{margin:0;font-size:15px;line-height:1.38}
+.jm-facts dt{margin:0 0 4px;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--quiet)}
+.jm-facts dd{margin:0;font-size:var(--t-small);font-weight:400;line-height:1.5}
 .jm-board{border-radius:24px;border:1px solid rgba(255,255,255,.75);background-color:rgba(255,255,255,.55);background-image:radial-gradient(rgba(60,60,90,.14) 1px,transparent 1.2px);background-size:18px 18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 24px 48px -32px rgba(40,40,90,.35);overflow-x:auto}
 .jm-map{--cols:92px repeat(var(--n),minmax(142px,1fr));min-width:calc(92px + var(--n) * 152px);padding:clamp(16px,2vw,26px);display:flex;flex-direction:column;gap:14px;animation:jm-in .4s ease both}
 @keyframes jm-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .jm-row{display:grid;grid-template-columns:var(--cols);gap:10px;align-items:start}
-.jm-lane{margin:0;padding-top:2px;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--quiet)}
+.jm-lane{margin:0;padding-top:2px;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--quiet)}
 .jm-route{position:relative;grid-column:2/-1}
-.jm-axis{display:flex;flex-direction:column;justify-content:space-between;align-self:stretch;margin:0;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--quiet)}
+.jm-axis{display:flex;flex-direction:column;justify-content:space-between;align-self:stretch;margin:0;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--quiet)}
 .jm-emoji{position:absolute;display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:#fff;border:2px solid var(--a);font-size:24px;line-height:1;box-shadow:0 8px 16px -8px rgba(40,40,90,.6)}
-.jm-feel{margin:0;font-size:13.5px;font-style:italic;line-height:1.3;color:var(--ink)}
+.jm-feel{margin:0;font-size:var(--t-small);font-weight:400;font-style:italic;line-height:1.5;color:var(--ink)}
 .jm-route svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .jm-route path{fill:none;stroke:var(--a);stroke-width:3;stroke-linecap:round;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:1;animation:jm-draw 1.1s cubic-bezier(.4,0,.2,1) .1s forwards}
 @keyframes jm-draw{to{stroke-dashoffset:0}}
-.jm-stop{position:absolute;display:flex;align-items:center;justify-content:center;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:#fff;border:3px solid var(--a);color:var(--ink);font-size:13px;font-weight:700;box-shadow:0 8px 16px -8px rgba(40,40,90,.6)}
-.jm-phase{margin:0;font-size:15px;font-weight:600;line-height:1.2;letter-spacing:-.01em}
-.jm-does{margin:0;font-size:14px;line-height:1.36;color:var(--soft)}
-.jm-pain{margin:0;padding:10px 11px 12px;border-radius:3px 3px 10px 3px;background:#FFD6E0;color:#262626;font-family:"Caveat","Comic Sans MS",cursive;font-size:19px;line-height:1.1;box-shadow:0 1px 1px rgba(0,0,0,.06),0 10px 16px -10px rgba(0,0,0,.35)}
+.jm-stop{position:absolute;display:flex;align-items:center;justify-content:center;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:#fff;border:3px solid var(--a);color:var(--ink);font-size:var(--t-label);font-weight:600;box-shadow:0 8px 16px -8px rgba(40,40,90,.6)}
+.jm-phase{margin:0;font-size:var(--t-body);font-weight:600;line-height:1.2}
+.jm-does{margin:0;font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--soft)}
+.jm-pain{margin:0;padding:10px 11px 12px;border-radius:3px 3px 10px 3px;background:#FFD6E0;color:#262626;font-family:var(--hand);font-size:var(--t-hand-sm);font-weight:500;line-height:1.1;box-shadow:0 1px 1px rgba(0,0,0,.06),0 10px 16px -10px rgba(0,0,0,.35)}
 .jm-row > .jm-pain:nth-child(odd){transform:rotate(-1deg)}
 .jm-row > .jm-pain:nth-child(even){transform:rotate(.9deg)}
-.jm-hub{justify-self:start;margin:0;padding:6px 12px;border-radius:999px;background:var(--a);color:#fff;font-size:13px;font-weight:600;line-height:1.2}
+.jm-hub{justify-self:start;margin:0;padding:6px 12px;border-radius:999px;background:var(--a);color:#fff;font-size:var(--t-small);font-weight:600;line-height:1.2}
 @media (max-width:760px){
   .jm-people{grid-template-columns:1fr}
 }

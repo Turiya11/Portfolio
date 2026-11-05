@@ -41,39 +41,39 @@ const SECTIONS = [
 ]
 
 const CSS = `
-.cs{--ink:#20252b;--soft:#46505a;--quiet:#66717c;--edge:rgba(255,255,255,.72);--rail:188px;--gut:clamp(16px,2.6vw,40px);
-  min-height:100vh;color:var(--ink);font-family:'Mona Sans',Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.45;
+.cs{--edge:rgba(255,255,255,.72);--rail:188px;--gut:clamp(16px,2.6vw,40px);
+  min-height:100vh;color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.45;
   background:radial-gradient(circle at 88% 120px,rgba(255,217,163,.55) 0,rgba(255,217,163,0) 260px),linear-gradient(180deg,#BFD9FF 0,#EAF3FF 900px,#DAD8FF 45%,#F8E9F2 75%,#F3EEE2 100%)}
 .cs a{color:inherit;text-decoration:none}
 .cs :focus-visible{outline:2px solid var(--ai);outline-offset:3px;border-radius:6px}
 .cs-rail{position:fixed;left:0;top:0;bottom:0;width:var(--rail);padding:34px 18px 28px 30px;display:flex;flex-direction:column;justify-content:center;z-index:4}
-.cs-back{position:absolute;top:36px;left:30px;font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);transition:color .2s}
+.cs-back{position:absolute;top:36px;left:30px;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--soft);transition:color .2s}
 .cs-back:hover{color:var(--ink)}
 .cs-rail nav{display:flex;flex-direction:column;gap:6px}
-.cs-rail nav a{position:relative;padding:7px 0 7px 16px;font-size:15px;color:var(--quiet);transition:color .2s}
+.cs-rail nav a{position:relative;padding:7px 0 7px 16px;font-size:var(--t-small);font-weight:400;color:var(--quiet);transition:color .2s}
 .cs-rail nav a:hover{color:var(--ink)}
 .cs-rail nav a.on{color:var(--ai);font-weight:600}
 .cs-rail nav a.on:before{content:'';position:absolute;left:0;top:7px;bottom:7px;width:3px;border-radius:2px;background:var(--a)}
 .cs-main{margin-left:var(--rail);padding:92px var(--gut) 40px;display:flex;flex-direction:column;gap:clamp(72px,9vw,128px)}
 .cs-top{display:flex;flex-direction:column;gap:clamp(24px,3vw,36px)}
-.cs-top h1{margin:0;font-size:clamp(52px,8vw,112px);font-weight:800;letter-spacing:-.045em;line-height:.95}
-.cs-top h1.long{font-size:clamp(40px,5.4vw,78px);letter-spacing:-.035em;line-height:1}
-.cs-top .cs-head{margin:14px 0 0;font-size:clamp(22px,2.5vw,34px);font-weight:600;letter-spacing:-.02em;line-height:1.2}
-.cs-meta{margin:0 0 14px;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ai)}
+.cs-top h1{margin:0;font-size:var(--t-display);font-weight:600;letter-spacing:var(--ls-display);line-height:1}
+.cs-top h1.long{line-height:1}
+.cs-top .cs-head{margin:14px 0 0;font-size:var(--t-h2);font-weight:600;letter-spacing:var(--ls-h2);line-height:1.15}
+.cs-meta{margin:0 0 14px;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--ai)}
 .cs-top.phone{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,5vw,72px);align-items:center}
 .cs-sec{display:flex;flex-direction:column;gap:clamp(22px,2.6vw,34px);scroll-margin-top:32px}
-.cs-eye{margin:0;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--quiet)}
-.cs-state{margin:0;font-size:clamp(23px,2.5vw,34px);font-weight:600;letter-spacing:-.02em;line-height:1.22}
+.cs-eye{margin:0;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--quiet)}
+.cs-state{margin:0;font-size:var(--t-h2);font-weight:600;letter-spacing:var(--ls-h2);line-height:1.15}
 .cs-state b{color:var(--ai);font-weight:600}
-.cs-small{margin:0;font-size:14px;line-height:1.5;color:var(--soft)}
+.cs-small{margin:0;font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--soft)}
 .cs-small a{text-decoration:underline;text-underline-offset:3px}
 .cs-brief{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:16px}
 .cs-card{padding:clamp(20px,2vw,28px);border-radius:22px;border:1px solid var(--edge);background:linear-gradient(145deg,rgba(255,255,255,.66),rgba(255,255,255,.34));box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 18px 36px -24px rgba(60,70,170,.3);display:flex;flex-direction:column;gap:12px}
-.cs-card p{margin:0;font-size:17px;line-height:1.42}
-.cs-card .cs-eye{font-size:11px}
+.cs-card p{margin:0;font-size:var(--t-body);font-weight:400;line-height:1.5}
+.cs-card .cs-eye{font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);line-height:inherit}
 .cs-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.cs-stats b{display:block;font-size:clamp(28px,2.9vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05;color:var(--ai)}
-.cs-stats span{display:block;margin-top:6px;font-size:13px;line-height:1.3;color:var(--soft)}
+.cs-stats b{display:block;font-size:var(--t-h2);font-weight:600;letter-spacing:var(--ls-h2);line-height:1.15;color:var(--ai)}
+.cs-stats span{display:block;margin-top:6px;font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--soft)}
 .cs-did{display:flex;flex-direction:column;gap:clamp(64px,7vw,104px)}
 .cs-item{display:flex;flex-direction:column;gap:clamp(16px,1.8vw,24px)}
 .cs-clip{position:relative;width:100%;margin:0;border-radius:clamp(12px,1.4vw,20px);overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(40,50,90,.08),0 32px 64px -32px rgba(40,50,110,.5);line-height:0;cursor:pointer}
@@ -87,18 +87,18 @@ const CSS = `
 .cs-phones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.8vw,24px)}
 .cs-phones figure{margin:0;display:flex;flex-direction:column;gap:10px;min-width:0}
 .cs-phones .cs-clip{max-width:calc(92vh * 0.449);margin:0 auto}
-.cs-phones figcaption{text-align:center;font-size:14px;font-weight:500;color:var(--soft)}
+.cs-phones figcaption{text-align:center;font-size:var(--t-small);font-weight:500;color:var(--soft)}
 .cs-top.phone .cs-clip{width:min(29vw,calc(84vh * 0.449));min-width:250px}
 .cs-proc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .cs-proc a{display:flex;flex-direction:column;gap:10px;min-width:0}
 .cs-proc span.cs-thumb{display:block;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.8);box-shadow:0 0 0 1px rgba(40,50,90,.07),0 20px 40px -28px rgba(40,50,110,.5)}
 .cs-proc img{display:block;width:100%;height:100%;padding:8px;object-fit:contain;transition:transform .5s cubic-bezier(.2,.8,.25,1)}
 .cs-proc a:hover img{transform:scale(1.04)}
-.cs-proc small{font-size:14px;font-weight:500;color:var(--soft)}
+.cs-proc small{font-size:var(--t-small);font-weight:500;color:var(--soft)}
 .cs-refl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .cs-next{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:clamp(24px,3vw,40px) clamp(24px,3.4vw,48px);border-radius:28px}
-.cs-next small{display:block;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
-.cs-next b{display:block;margin-top:6px;font-size:clamp(30px,4.4vw,60px);font-weight:700;letter-spacing:-.03em;line-height:1}
+.cs-next small{display:block;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase}
+.cs-next b{display:block;margin-top:6px;font-size:var(--t-display);font-weight:600;letter-spacing:var(--ls-display);line-height:1}
 .cs-next span{flex:none;display:inline-flex;align-items:center;justify-content:center;width:clamp(48px,6vw,72px);height:clamp(48px,6vw,72px);border-radius:50%;font-size:24px}
 @media (max-width:1040px){
   .cs{--rail:0px}
@@ -111,7 +111,7 @@ const CSS = `
 @media (max-width:680px){
   .cs-top.phone{grid-template-columns:1fr}
   .cs-top.phone .cs-clip{width:min(100%,340px);margin:0 auto}
-  .cs-back{font-size:10.5px;letter-spacing:.12em;padding:0 14px}
+  .cs-back{padding:0 14px}
   .cs-phones{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--gut) * -1);padding:0 var(--gut) 8px;gap:12px}
   .cs-phones figure{flex:0 0 74vw;scroll-snap-align:center}
   .cs-proc,.cs-refl{grid-template-columns:1fr}
