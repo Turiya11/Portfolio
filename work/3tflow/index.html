@@ -4,17 +4,21 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>3TFlow — under NDA · Turiya Joshi</title>
+        <link rel="icon" type="image/png" sizes="48x48" href="../../assets/images/favicon-48.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon-32.png" />
+        <link rel="apple-touch-icon" href="../../assets/images/apple-touch-icon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700;800&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600&family=Caveat:wght@500;600&display=swap" />
+        <link rel="stylesheet" href="../../css/brand.css?v=1" />
         <!-- parked case study: the 3TFlow work is under NDA. The full Framer case study (tools/work/src/ThreeTFlowCaseStudy.tsx) can be re-added to tools/work/pages.mjs later. -->
         <style>
             :root {
                 --a: rgb(79, 82, 214);
                 --ai: rgb(58, 61, 170);
                 --tint: rgb(221, 226, 255);
-                --dark: rgb(31, 35, 71);
-                --muted: rgb(43, 47, 143);
+                --dark: var(--ink);
+                --muted: var(--soft);
             }
             * { box-sizing: border-box; }
             html, body { margin: 0; min-height: 100%; }
@@ -23,12 +27,9 @@
                 display: grid;
                 place-items: center;
                 padding: 96px 20px 48px;
-                font-family: "Mona Sans", system-ui, sans-serif;
+                font-family: var(--sans);
                 color: var(--dark);
-                background:
-                    radial-gradient(60% 50% at 80% 10%, rgba(255, 214, 170, 0.45), transparent 70%),
-                    radial-gradient(70% 60% at 10% 90%, var(--tint), transparent 70%),
-                    rgb(245, 243, 234);
+                background: radial-gradient(circle at 88% 120px, rgba(255, 217, 163, 0.55) 0, rgba(255, 217, 163, 0) 260px), linear-gradient(180deg, #bfd9ff 0, #eaf3ff 900px, #dad8ff 45%, #f8e9f2 75%, #f3eee2 100%);
             }
             .bar {
                 position: fixed;
@@ -49,12 +50,12 @@
                 backdrop-filter: blur(18px) saturate(160%);
                 -webkit-backdrop-filter: blur(18px) saturate(160%);
                 box-shadow: inset 0 1px 0 #fff, 0 10px 30px -18px rgba(31, 35, 71, 0.4);
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: 0.12em;
-                text-transform: uppercase;
                 color: var(--dark);
                 text-decoration: none;
+                font-size: var(--t-label);
+                font-weight: 600;
+                letter-spacing: var(--ls-caps);
+                text-transform: uppercase;
             }
             .card {
                 width: 100%; /* fills the page, like every other work-page component */
@@ -74,32 +75,32 @@
                 border-radius: 999px;
                 background: var(--dark);
                 color: #fff;
-                font-size: 12px;
+                font-size: var(--t-label);
                 font-weight: 600;
-                letter-spacing: 0.12em;
+                letter-spacing: var(--ls-caps);
                 text-transform: uppercase;
             }
             .nda svg { width: 12px; height: 12px; }
             .meta {
                 margin: 22px 0 0;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: 0.14em;
-                text-transform: uppercase;
                 color: var(--muted);
+                font-size: var(--t-label);
+                font-weight: 600;
+                letter-spacing: var(--ls-caps);
+                text-transform: uppercase;
             }
             h1 {
                 margin: 10px 0 0;
-                font-size: clamp(48px, 8vw, 84px);
-                font-weight: 800;
-                letter-spacing: -0.045em;
-                line-height: 0.95;
+                font-size: var(--t-display);
+                font-weight: 600;
+                letter-spacing: var(--ls-display);
+                line-height: 1;
             }
             .lead {
                 margin: 18px 0 0;
-                font-size: clamp(18px, 2vw, 21px);
-                line-height: 1.45;
                 color: var(--dark);
+                font-size: var(--t-lead);
+                line-height: 1.5;
             }
             .note {
                 margin: 26px 0 0;
@@ -107,9 +108,9 @@
                 border-radius: 18px;
                 border: 1px solid rgba(79, 82, 214, 0.18);
                 background: rgba(221, 226, 255, 0.55);
-                font-size: 15px;
-                line-height: 1.5;
                 color: var(--muted);
+                font-size: var(--t-small);
+                line-height: 1.5;
             }
             ul {
                 margin: 24px 0 0;
@@ -121,8 +122,8 @@
             li {
                 position: relative;
                 padding-left: 22px;
-                font-size: 16px;
-                line-height: 1.45;
+                font-size: var(--t-body);
+                line-height: 1.5;
             }
             li::before {
                 content: "";
@@ -148,9 +149,10 @@
                 border-radius: 999px;
                 background: var(--a);
                 color: #fff;
-                font-weight: 600;
                 text-decoration: none;
                 transition: background 0.2s ease, gap 0.25s ease;
+                font-size: var(--t-body);
+                font-weight: 600;
             }
             .btn:hover { background: var(--ai); gap: 12px; }
             .btn.ghost { background: rgba(255, 255, 255, 0.7); color: var(--dark); border: 1px solid rgba(31, 35, 71, 0.12); }
