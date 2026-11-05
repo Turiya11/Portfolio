@@ -1,0 +1,51 @@
+/* ------------------------------------------------------------------
+   Brand guideline, shared by the home page and every work page.
+   Change a value here and it changes everywhere.
+
+   Fonts
+     Mona Sans  everything you read
+     Caveat     handwritten asides only: eyebrows, kickers, sticky notes
+
+   Weights
+     400 text · 500 tags and small UI · 600 headings, buttons, labels
+
+   A section header is always: Caveat eyebrow, then a display title.
+   Mock screens inside the project cards are product UI, so they keep their own sizes.
+------------------------------------------------------------------- */
+
+:root {
+    --sans: "Mona Sans", system-ui, -apple-system, sans-serif;
+    --hand: "Caveat", "Comic Sans MS", cursive;
+
+    /* type scale */
+    --t-numeral: clamp(72px, 10.5vw, 160px); /* the timeline's big 2026, nothing else */
+    --t-display: clamp(40px, 4.6vw, 80px); /* page and section titles */
+    --t-h2: clamp(26px, 2.6vw, 36px); /* project titles, sub-section heads, stats */
+    --t-h3: 22px; /* card titles */
+    --t-lead: clamp(17px, 1.4vw, 20px); /* intro sentences */
+    --t-body: 16px; /* body text, buttons */
+    --t-small: 14px; /* captions, secondary text, nav */
+    --t-label: 12px; /* tags and uppercase labels */
+
+    --t-hand-lg: 28px; /* eyebrows */
+    --t-hand: 22px; /* kickers, hints, sticky notes */
+    --t-hand-sm: 18px; /* tight spots */
+
+    /* letter spacing */
+    --ls-display: -0.04em;
+    --ls-h2: -0.02em;
+    --ls-h3: -0.015em;
+    --ls-caps: 0.12em;
+
+    /* text colours */
+    --ink: #1d1932;
+    --soft: #5b5677;
+    --quiet: #6d6889;
+    --accent: #5a46c6;
+}
+
+@media (max-width: 800px) {
+    :root {
+        --t-display: clamp(32px, 9vw, 46px);
+    }
+}
