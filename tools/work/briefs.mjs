@@ -228,7 +228,7 @@ export const pip = {
     accent: "rgb(104, 62, 214)",
     note: pipSource.ovNote,
     ratio: 16 / 9,
-    hero: { src: "../../assets/video/pip-walkthrough.mp4", poster: "../../assets/video/work/pip-hero.jpg", label: "Pip's Thought Orbit, the web prototype" },
+    hero: { ...clip("pip-mr", "Pip Focus Mode on Meta Quest: grabbing an orb, dropping it into the ring and opening the thinking board"), title: "An MR experience" },
     brief: {
         context: "Academic research on prospective memory: remembering to act at the right moment, with design students aged 18 to 25.",
         background: "Students hold several intentions at once, and they slip anyway. More reminders only add to the overload.",

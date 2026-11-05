@@ -3,6 +3,7 @@
 // .clip info <video>                             prints duration and size
 // .clip stills <video> <outDir> <everySeconds>   writes a JPEG every N seconds (to find clip ranges)
 // .clip trim <video> <out.mp4> <start> <duration> trims and re-encodes (web-ready, no audio)
+// .clip compress <video> <out.mp4> <bitrate>     re-encodes the video track at a target bitrate, for clips that are too heavy to autoplay
 import AVFoundation
 import AppKit
 
@@ -63,6 +64,39 @@ case "trim":
         await e2.export()
         if e2.status != .completed { fatalError("trim failed: \(String(describing: e2.error))") }
         print("trimmed", out.lastPathComponent)
+        sem.signal()
+    }
+    sem.wait()
+case "compress":
+    let out = URL(fileURLWithPath: a[3]); let bitrate = Int(a[4])!
+    try? FileManager.default.removeItem(at: out)
+    Task {
+        let v = try await asset.loadTracks(withMediaType: .video).first!
+        let size = try await v.load(.naturalSize)
+        let reader = try AVAssetReader(asset: asset)
+        let output = AVAssetReaderTrackOutput(track: v, outputSettings: [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA])
+        reader.add(output)
+        let writer = try AVAssetWriter(outputURL: out, fileType: .mp4)
+        writer.shouldOptimizeForNetworkUse = true
+        let input = AVAssetWriterInput(mediaType: .video, outputSettings: [
+            AVVideoCodecKey: AVVideoCodecType.h264,
+            AVVideoWidthKey: Int(size.width),
+            AVVideoHeightKey: Int(size.height),
+            AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: bitrate, AVVideoProfileLevelKey: AVVideoProfileLevelH264HighAutoLevel],
+        ])
+        input.expectsMediaDataInRealTime = false
+        writer.add(input)
+        reader.startReading()
+        writer.startWriting()
+        writer.startSession(atSourceTime: .zero)
+        while let sample = output.copyNextSampleBuffer() {
+            while !input.isReadyForMoreMediaData { usleep(2000) }
+            input.append(sample)
+        }
+        input.markAsFinished()
+        await writer.finishWriting()
+        if writer.status != .completed { fatalError("compress failed: \(String(describing: writer.error))") }
+        print("compressed", out.lastPathComponent)
         sem.signal()
     }
     sem.wait()
