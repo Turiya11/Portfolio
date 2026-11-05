@@ -1127,7 +1127,7 @@ button {
 }
 .jt-card {
     position: absolute;
-    padding: 22px 24px 24px;
+    padding: 18px 20px 20px;
     border-radius: 24px;
     opacity: 0;
     transform: translateY(var(--from)) scale(calc(var(--fit, 1) * 0.97));
@@ -1224,7 +1224,7 @@ button {
 }
 .jt-text {
     margin: 8px 0 0;
-    font-size: var(--t-small);
+    font-size: var(--t-body);
     font-weight: 400;
     line-height: 1.5;
     color: var(--soft);
