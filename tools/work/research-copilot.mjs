@@ -8,6 +8,7 @@ const CENTRE = 1280 / 800
 const nadia = {
     name: "Nadia Rao",
     role: "The long-haul highway driver",
+    face: { skin: "#e3a982", hair: "bob", hairColor: "#3a2418", bg: "#a9d8ea", top: "#e98aa5", shades: true },
     meta: "34 · product manager · a 3–4 hour highway run, two or three times a month, often after a full day of work",
     quote: "“Notice before I do, and tell me kindly.”",
     traits: ["Electric car", "Driver assistance", "Camera facing her"],

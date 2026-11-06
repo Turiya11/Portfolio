@@ -1,10 +1,12 @@
 // Research: a row of folders. Each opens a scrollable modal with the data behind it.
 // A folder's content is a list of blocks; see the Block type for what each one draws.
 import * as React from "react"
+import Avatar, { type Face } from "./Avatar"
 
 type Persona = {
     name: string
     role: string
+    face?: Face | Face[] // an illustrated face, or two for a couple
     meta?: string
     quote?: string
     traits?: string[]
@@ -72,9 +74,14 @@ const CSS = `
 .rf-img img{display:block;width:100%;height:auto}
 .rf-img figcaption{font-size:var(--t-small);font-weight:400;color:var(--quiet)}
 .rf-person{padding:clamp(16px,2vw,24px);border-radius:18px;background:#fff;box-shadow:0 0 0 1px rgba(30,35,60,.07);display:flex;flex-direction:column;gap:14px}
-.rf-person > b{font-size:var(--t-h3);font-weight:600;letter-spacing:var(--ls-h3);line-height:1.25}
-.rf-person > b small{display:block;margin-top:4px;font-size:var(--t-small);font-weight:500;color:var(--ai)}
-.rf-person > span{font-size:var(--t-small);font-weight:400;color:var(--quiet)}
+.rf-p-top{display:flex;align-items:center;gap:clamp(14px,1.8vw,20px)}
+.rf-faces{flex:none;display:flex}
+.rf-faces .av{display:block;width:clamp(64px,7vw,84px);height:auto;border-radius:50%;box-shadow:0 0 0 3px #fff,0 8px 18px -10px rgba(30,35,60,.45)}
+.rf-faces .av + .av{margin-left:-16px}
+.rf-p-id{display:flex;flex-direction:column;gap:6px;min-width:0}
+.rf-p-id b{font-size:var(--t-h3);font-weight:600;letter-spacing:var(--ls-h3);line-height:1.25}
+.rf-p-id b small{display:block;margin-top:4px;font-size:var(--t-small);font-weight:500;color:var(--ai)}
+.rf-p-id span{font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--quiet)}
 .rf-person blockquote{margin:0;padding-left:14px;border-left:3px solid var(--a);font-size:var(--t-body);font-weight:500;line-height:1.3}
 .rf-traits{display:flex;flex-wrap:wrap;gap:6px}
 .rf-traits i{padding:4px 11px;border-radius:999px;background:rgba(30,35,60,.06);font-size:var(--t-label);font-weight:500;font-style:normal;color:var(--soft)}
@@ -100,13 +107,25 @@ function PersonaCard({ p }: { p: Persona }) {
                 </ul>
             </div>
         ) : null
+    const faces = p.face ? ([] as Face[]).concat(p.face) : []
     return (
         <article className="rf-person">
-            <b>
-                {p.name}
-                <small>{p.role}</small>
-            </b>
-            {p.meta ? <span>{p.meta}</span> : null}
+            <div className="rf-p-top">
+                {faces.length ? (
+                    <span className="rf-faces">
+                        {faces.map((f, i) => (
+                            <Avatar key={i} face={f} size={84} />
+                        ))}
+                    </span>
+                ) : null}
+                <div className="rf-p-id">
+                    <b>
+                        {p.name}
+                        <small>{p.role}</small>
+                    </b>
+                    {p.meta ? <span>{p.meta}</span> : null}
+                </div>
+            </div>
             {p.quote ? <blockquote>{p.quote}</blockquote> : null}
             {p.traits?.length ? (
                 <div className="rf-traits">

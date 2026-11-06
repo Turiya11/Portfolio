@@ -133,6 +133,7 @@ export const dentigoResearch = [
                 persona: {
                     name: "Dr. Pooja Sharma",
                     role: "Dentist",
+                    face: { skin: "#c98c62", hair: "bun", hairColor: "#2a1a14", bg: "#f0b3c4", top: "#8fa3cf", coat: true, earrings: true },
                     meta: "45 · general dentistry, specialising in prosthodontics · 2 assistants and a receptionist",
                     quote: "“My reputation is built on the final fit. Every remake costs me chair time and patient trust.”",
                     traits: ["Budget conscious", "Tech savvy"],
@@ -150,6 +151,7 @@ export const dentigoResearch = [
                 persona: {
                     name: "Ravi Kumar",
                     role: "Lab technician",
+                    face: { skin: "#a86b45", hair: "short", hairColor: "#1d1410", bg: "#f3ddd3", top: "#7f9bd1", beard: "full" },
                     meta: "32 · independent dental lab · custom dentures and ceramic restorations",
                     quote: "“I can create a perfect crown, but I need clear instructions and good photos.”",
                     traits: ["Budget conscious", "Tech savvy"],
@@ -298,6 +300,7 @@ export const kgResearch = [
                 persona: {
                     name: "Clinical researcher",
                     role: "Pre-clinical phase",
+                    face: { skin: "#e0ac85", hair: "curly", hairColor: "#3b2a20", bg: "#9fb1db", top: "#f2a7bb", coat: true, glasses: true },
                     meta: "Turns large datasets into hypotheses",
                     columns: [
                         { t: "Needs", items: ["Interpret large datasets and form clear hypotheses", "One platform for visualisation and analysis", "Identify and validate biomarkers", "Save searches and sessions"] },
@@ -310,6 +313,7 @@ export const kgResearch = [
                 persona: {
                     name: "Translational scientist",
                     role: "Moving findings toward the clinic",
+                    face: { skin: "#8a5636", hair: "ponytail", hairColor: "#1a1210", bg: "#f3ddd3", top: "#6fb5a8" },
                     meta: "Balances research with collaboration",
                     columns: [
                         { t: "Needs", items: ["Summarise results and outputs quickly", "Integrate the latest literature into analysis", "Collaborate with the wider team", "Spend less time on admin"] },
@@ -507,6 +511,7 @@ export const pipResearch = [
                 persona: {
                     name: "Anaya",
                     role: "Systems Builder",
+                    face: { skin: "#d9a07a", hair: "long", hairColor: "#2a1a14", bg: "#f0b3c4", top: "#8fa3cf" },
                     quote: "“... needs someone who is actually checking in.”",
                     traits: ["Notes app", "WhatsApp to self", "Her mother"],
                     columns: [
@@ -520,6 +525,7 @@ export const pipResearch = [
                 persona: {
                     name: "Riya",
                     role: "Deadline Juggler",
+                    face: { skin: "#c08058", hair: "bun", hairColor: "#3a2418", bg: "#a9d8ea", top: "#f6c36b", earrings: true },
                     quote: "“Too many things going on, no time to jot down.”",
                     traits: ["Notes app", "WhatsApp to self", "Someone calling"],
                     columns: [
@@ -533,6 +539,7 @@ export const pipResearch = [
                 persona: {
                     name: "Kabir",
                     role: "Minimalist Completer",
+                    face: { skin: "#e3a982", hair: "side", hairColor: "#20160f", bg: "#f3ddd3", top: "#6f8fd8", hoodie: true, beard: "stubble" },
                     quote: "Wants capture to be easier than “making another note section or searching for pen paper.”",
                     traits: ["Avoids lists", "Does it now"],
                     columns: [
