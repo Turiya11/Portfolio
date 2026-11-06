@@ -1306,7 +1306,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 76px 6vw 24px; /* top: room for the nav, so the content centres below it */
+    padding: 76px max(6vw, 96px) 24px; /* top: room for the nav; sides: clear of the progress bar */
     overflow: hidden;
     background: #fff1a6;
 }
@@ -1386,84 +1386,91 @@ button {
         margin-top: 16px;
         padding: 12px 24px;
     }
-    .jt-tools {
-        gap: 6px;
-        margin-top: 16px;
-    }
-    .jt-tool {
-        width: 46px;
-        height: 46px;
-        border-radius: 13px;
-    }
-    .jt-tool svg {
-        width: 24px;
-        height: 24px;
-    }
 }
 
-/* tools on the 2026 screen: brand marks on glass tiles that wiggle gently on hover */
-.jt-tools {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-top: 34px;
-}
-.jt-tools__label {
-    font-family: var(--hand);
-    font-size: var(--t-hand);
-    font-weight: 500;
-    color: var(--accent);
-}
-.jt-tools ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
+/* tools on the 2026 screen: round glass tiles in a loose ring around the text. They bob gently,
+   and the one under the mouse wiggles. Phones have no room for a ring, so the tools line up under the button. */
+.jt-orbit {
+    position: absolute;
+    inset: 0;
     margin: 0;
     padding: 0;
     list-style: none;
+    pointer-events: none;
+    opacity: 0;
+}
+.jt-orbit li {
+    position: absolute;
+    left: var(--x);
+    top: clamp(112px, var(--y), calc(100% - 56px)); /* never under the nav or past the bottom */
+    translate: -50% -50%;
+    pointer-events: auto;
+    animation: jt-bob 5s ease-in-out var(--bob) infinite;
 }
 .jt-tool {
     display: grid;
     place-items: center;
-    width: 56px;
-    height: 56px;
-    border-radius: 16px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
     border: 1px solid rgba(255, 255, 255, 0.9);
     background: rgba(255, 255, 255, 0.6);
-    box-shadow: inset 0 1px 0 #fff, 0 10px 22px -14px rgba(26, 26, 26, 0.45);
+    box-shadow: inset 0 1px 0 #fff, 0 12px 26px -14px rgba(26, 26, 26, 0.45);
+    rotate: var(--tilt);
 }
 .jt-tool svg {
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
 }
-.jt-tools li:hover .jt-tool {
+.jt-orbit li:hover .jt-tool {
     animation: jt-wiggle 0.9s ease-in-out infinite;
 }
+@keyframes jt-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
 @keyframes jt-wiggle {
-    0%, 100% { transform: translateY(-3px) rotate(0deg); }
-    25% { transform: translateY(-4px) rotate(-7deg); }
-    75% { transform: translateY(-2px) rotate(7deg); }
+    0%, 100% { transform: scale(1.08) rotate(0deg); }
+    25% { transform: scale(1.08) rotate(-9deg); }
+    75% { transform: scale(1.08) rotate(9deg); }
 }
 @media (prefers-reduced-motion: reduce) {
-    .jt-tools li:hover .jt-tool {
+    .jt-orbit li,
+    .jt-orbit li:hover .jt-tool {
         animation: none;
-        transform: translateY(-3px);
     }
 }
-@media (max-width: 700px) {
-    .jt-tools ul {
-        gap: 8px;
-    }
+/* short laptop screens: smaller tiles */
+@media (max-height: 720px) {
     .jt-tool {
-        width: 44px;
-        height: 44px;
-        border-radius: 13px;
+        width: 52px;
+        height: 52px;
     }
     .jt-tool svg {
         width: 24px;
         height: 24px;
+    }
+}
+/* phones: a row under the button */
+@media (max-width: 700px) {
+    .jt-orbit {
+        inset: auto 0 76px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    .jt-orbit li {
+        position: static;
+        translate: none;
+    }
+    .jt-tool {
+        width: 44px;
+        height: 44px;
+    }
+    .jt-tool svg {
+        width: 22px;
+        height: 22px;
     }
 }
 
