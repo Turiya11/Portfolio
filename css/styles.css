@@ -1283,6 +1283,7 @@ button {
     gap: 10px;
 }
 
+
 /* 2026 finale: the hero's sunset wipes in */
 .jt-finale {
     position: absolute;
@@ -1305,7 +1306,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 6vw;
+    padding: 76px 6vw 24px; /* top: room for the nav, so the content centres below it */
     overflow: hidden;
     background: #fff1a6;
 }
@@ -1323,7 +1324,7 @@ button {
 }
 .jt-year {
     margin: 0;
-    font-size: var(--t-numeral);
+    font-size: min(var(--t-numeral), 16vh); /* shorter screens: smaller, so everything fits */
     font-weight: 600;
     letter-spacing: var(--ls-display);
     line-height: 0.9;
@@ -1362,6 +1363,108 @@ button {
 }
 .jt-cta:hover {
     background: #2f2f2f;
+}
+
+/* short screens: the 2026 screen tightens up so it still fits between the nav and the bottom edge */
+@media (max-height: 720px) {
+    .jt-year {
+        font-size: min(var(--t-numeral), 14vh);
+    }
+    .jt-label {
+        margin-bottom: 4px;
+    }
+    .jt-connector {
+        margin: 6px 0 2px;
+    }
+    .jt-glass h3 {
+        font-size: min(var(--t-display), 8.5vh);
+    }
+    .jt-glass > p:last-of-type {
+        margin-top: 12px;
+    }
+    .jt-cta {
+        margin-top: 16px;
+        padding: 12px 24px;
+    }
+    .jt-tools {
+        gap: 6px;
+        margin-top: 16px;
+    }
+    .jt-tool {
+        width: 46px;
+        height: 46px;
+        border-radius: 13px;
+    }
+    .jt-tool svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* tools on the 2026 screen: brand marks on glass tiles that wiggle gently on hover */
+.jt-tools {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 34px;
+}
+.jt-tools__label {
+    font-family: var(--hand);
+    font-size: var(--t-hand);
+    font-weight: 500;
+    color: var(--accent);
+}
+.jt-tools ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.jt-tool {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: inset 0 1px 0 #fff, 0 10px 22px -14px rgba(26, 26, 26, 0.45);
+}
+.jt-tool svg {
+    width: 28px;
+    height: 28px;
+}
+.jt-tools li:hover .jt-tool {
+    animation: jt-wiggle 0.9s ease-in-out infinite;
+}
+@keyframes jt-wiggle {
+    0%, 100% { transform: translateY(-3px) rotate(0deg); }
+    25% { transform: translateY(-4px) rotate(-7deg); }
+    75% { transform: translateY(-2px) rotate(7deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .jt-tools li:hover .jt-tool {
+        animation: none;
+        transform: translateY(-3px);
+    }
+}
+@media (max-width: 700px) {
+    .jt-tools ul {
+        gap: 8px;
+    }
+    .jt-tool {
+        width: 44px;
+        height: 44px;
+        border-radius: 13px;
+    }
+    .jt-tool svg {
+        width: 24px;
+        height: 24px;
+    }
 }
 
 /* progress: current year + dots */
@@ -1413,7 +1516,7 @@ button {
         padding: 8px 14px;
     }
     .jt-sunset {
-        padding: 0 18px;
+        padding: 70px 18px 64px; /* the nav above, the progress bar below */
     }
     .jt-glass {
         padding: 0 4px;
@@ -4942,4 +5045,13 @@ button.ab-day {
         width: 200px;
         margin-inline: auto;
     }
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
 }
