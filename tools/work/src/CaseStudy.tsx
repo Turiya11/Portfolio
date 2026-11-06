@@ -24,6 +24,7 @@ type Props = {
     ecosystem?: { statement: string; hubLabel?: string; personas: Persona[] }
     story?: { did?: string; process?: string; reflection?: string } // the line that carries the reader from one section to the next
     didNote?: string
+    why?: { title: string; statement: string; points: { label: string; text: string }[] } // why this medium, shown before the work
     did: Did[]
     process: { label: string; image: string }[]
     reflection: { label: string; text: string }[]
@@ -95,6 +96,8 @@ const CSS = `
 .cs-proc img{display:block;width:100%;height:100%;padding:8px;object-fit:contain;transition:transform .5s cubic-bezier(.2,.8,.25,1)}
 .cs-proc a:hover img{transform:scale(1.04)}
 .cs-proc small{font-size:var(--t-small);font-weight:500;color:var(--soft)}
+.cs-why{display:flex;flex-direction:column;gap:clamp(16px,1.8vw,24px);padding:clamp(8px,1.4vw,20px) 0 clamp(16px,2vw,28px)}
+.cs-why > .cs-eye{color:var(--ai)}
 .cs-refl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .cs-next{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:clamp(24px,3vw,40px) clamp(24px,3.4vw,48px);border-radius:28px}
 .cs-next small{display:block;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase}
@@ -324,6 +327,20 @@ export default function CaseStudy(p: Props) {
                 <section className="cs-sec" id="did">
                     <p className="cs-eye">What I did</p>
                     {p.story?.did ? <p className="cs-state">{p.story.did}</p> : null}
+                    {p.why ? (
+                        <div className="cs-why">
+                            <p className="cs-eye">{p.why.title}</p>
+                            <p className="cs-state">{p.why.statement}</p>
+                            <div className="cs-refl">
+                                {p.why.points.map((r) => (
+                                    <div className="cs-card" key={r.label}>
+                                        <p className="cs-eye">{r.label}</p>
+                                        <p>{r.text}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ) : null}
                     {p.didNote ? <p className="cs-small">{p.didNote}</p> : null}
                     <div className="cs-did">
                         {p.did.map((d) => (

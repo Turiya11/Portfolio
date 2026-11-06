@@ -43,8 +43,8 @@ const SELECTED = [
     {
         meta: "2026 - Academic research",
         title: "Pip",
-        text: "An AR companion that helps design students park their thoughts and come back to them at the right moment. Built on a survey of 46 students, 18 interviews and a recall experiment; prototyped for the web and Meta Quest.",
-        tags: ["AR", "Research", "Prototype"],
+        text: "A mixed reality companion that helps design students park their thoughts and come back to them at the right moment. Built on a survey of 46 students, 18 interviews and a recall experiment; prototyped for the web and Meta Quest.",
+        tags: ["Mixed Reality", "Research", "Prototype"],
         href: "work/pip/",
         scene: "pip",
     },
