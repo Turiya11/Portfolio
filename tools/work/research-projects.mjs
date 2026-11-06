@@ -454,7 +454,7 @@ export const pipResearch = [
                 table: {
                     head: ["Concept", "Idea", "Right moment", "Low reminder load", "Easy to test"],
                     rows: [
-                        ["Pip (AR), lead", "A friend that checks in", "●●●", "●●●", "●●●"],
+                        ["Pip (MR), lead", "A friend that checks in", "●●●", "●●●", "●●●"],
                         ["Check-in Buddy", "A chat check-in", "●●●", "●●○", "●●●"],
                         ["Colour Anchor", "A colour that follows you", "●●○", "●●●", "●●●"],
                         ["Park-it Pebble", "A token for a thought", "●●○", "●●●", "●●○"],
@@ -498,7 +498,7 @@ export const pipResearch = [
                     { t: "Onboarding", items: ["Welcome brief", "Choose your Pip"] },
                     { t: "Capture and park", items: ["Home and orbit", "Text or voice capture", "Optional details", "Choose a revisit time"] },
                     { t: "Find and revisit", items: ["All thoughts library", "Search and filters", "Thought detail"] },
-                    { t: "Pip in AR", items: ["Camera permission", "Detect and place Pip", "Placed AR orbit", "Pip's reminder in AR"] },
+                    { t: "Pip in MR", items: ["Camera permission", "Detect and place Pip", "Placed MR orbit", "Pip's reminder in MR"] },
                 ],
             },
         ],

@@ -223,7 +223,7 @@ export const kg = {
 
 export const pip = {
     title: "Pip",
-    meta: "UX research · AR interaction design · 2026 · Academic research",
+    meta: "UX research · Mixed Reality interaction design · 2026 · Academic research",
     headline: pipSource.ovHeadline,
     accent: "rgb(104, 62, 214)",
     note: pipSource.ovNote,
@@ -235,7 +235,7 @@ export const pip = {
         impact: [
             { n: "46", l: "students surveyed" },
             { n: "18", l: "interviews" },
-            { n: "2", l: "working AR prototypes" },
+            { n: "2", l: "working MR prototypes" },
         ],
         impactNote: "Not yet tested with users.",
     },
@@ -251,14 +251,23 @@ export const pip = {
         process: "The work behind Pip.",
         reflection: "Next, I'd find out whether it works.",
     },
+    why: {
+        title: "Why mixed reality",
+        statement: "The research kept pointing to cues you can see around you, so Pip lives in your room, not on a screen.",
+        points: [
+            { label: "Anchored to the room", text: "A related object brought an intention back for 83% of students. In passthrough, Pip and your thoughts float about 85 cm in front of you, in the room you're working in." },
+            { label: "A friend, not an alert", text: "A person mentioning it cued 72%, and students asked for a check-in rather than an alarm. Pip greets you as a character in the space, not as one more phone notification." },
+            { label: "One thought at a time", text: "In the clutter experiment, a busy screen made it harder to take in what mattered. Focus Mode moves into a fully virtual space, so only the chosen thought is left." },
+        ],
+    },
     didNote: "The first two are walkthroughs of the design screens. The rest are recorded from the working prototypes: Three.js with WebXR, and Meta Quest with hand tracking.",
     did: [
-        { lead: "I sketched the structure first:", text: "capture, the orbit, the card and the AR check-in, as mobile flows.", clips: [clip("pip-lofi", "Moving through the lo-fi wireframes")] },
+        { lead: "I sketched the structure first:", text: "capture, the orbit, the card and the MR check-in, as mobile flows.", clips: [clip("pip-lofi", "Moving through the lo-fi wireframes")] },
         { lead: "Then the full flow:", text: "seven steps, from choosing your Pip to parking a new thought.", clips: [clip("pip-final", "Moving through the hi-fi flow")] },
         { lead: "You park a thought in seconds:", text: "type it and move on, without organising it.", clips: [clip("pip-capture", "Parking a thought in the web prototype")] },
-        { lead: "Pip appears in the room,", text: "with your thoughts orbiting as glowing orbs.", clips: [clip("pip-step-in", "Pip in passthrough AR on Meta Quest")] },
+        { lead: "Pip appears in the room,", text: "with your thoughts orbiting as glowing orbs.", clips: [clip("pip-step-in", "Pip in mixed reality (passthrough) on Meta Quest")] },
         { lead: "You pick one to focus on:", text: "grab an orb and drop it into the ring, and everything else dims.", clips: [clip("pip-ring", "Dropping an orb into the ring with hand tracking")] },
-        { lead: "Then you find the first step:", text: "stickies, sub-tasks and Break Down on a glass board.", clips: [clip("pip-board", "Adding a sticky on the thinking board")] },
+        { lead: "Then you find the first step:", text: "stickies, sub-tasks and Break Down on a glass board.", clips: [clip("pip-sticky", "Adding a sticky to the glass board, changing its colour and moving it across the board")] },
     ],
     process: [
         { label: "Seven themes", image: site("pip/slide-09.jpg") },
@@ -269,7 +278,7 @@ export const pip = {
         { label: "Insights and opportunity areas", image: site("pip/slide-14.jpg") },
     ],
     reflection: [
-        { label: "A longer study", text: "Six to eight weeks comparing Pip in AR, Pip in 2D, a phone notification and a sticky note." },
+        { label: "A longer study", text: "Six to eight weeks comparing Pip in MR, Pip in 2D, a phone notification and a sticky note." },
         { label: "Smaller tests", text: "A one-week Wizard-of-Oz Check-in Buddy with five or six students." },
         { label: "The prototype", text: "Voice capture, search and more than three active thoughts." },
     ],
