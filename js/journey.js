@@ -35,6 +35,16 @@ const TOOLS = [
     ["Framer", `<svg viewBox="0 0 24 24"><path fill="#1a1a1a" d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z"/></svg>`],
 ]
 
+// where each tool sits on the 2026 screen: a loose ring around the text (x %, y %, tilt in degrees),
+// clear of the title's row, the button below it, the nav on top and the progress bar on the right
+const ORBIT = [
+    [16, 27, -8],
+    [29, 12, 6],
+    [71, 12, -5],
+    [84, 27, 8],
+    [82, 78, -6],
+    [18, 78, 5],
+]
 const TRACK_END = 0.86 // the last 14% of the scroll is the sunset finale
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
 const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
@@ -158,6 +168,7 @@ function render() {
             <path d="M100 0 L100 1000 L60 1000 C20 930 90 860 50 790 S20 650 60 580 S90 440 40 370 S25 230 65 160 S85 70 55 0 Z" fill="url(#jt-sg)"/>
           </svg>
           <div class="jt-sunset">
+            <ul class="jt-orbit" aria-label="Tools I use">${TOOLS.map(([name, svg], i) => `<li title="${name}" style="--x:${ORBIT[i][0]}%;--y:${ORBIT[i][1]}%;--tilt:${ORBIT[i][2]}deg;--bob:${(i % 3) * 0.7}s"><span class="jt-tool" aria-hidden="true">${svg}</span><span class="sr-only">${name}</span></li>`).join("")}</ul>
             <div class="jt-glass">
               <p class="jt-label">${esc(f.label)}</p>
               <p class="jt-year">${esc(f.year)}</p>
@@ -165,10 +176,6 @@ function render() {
               <h3>${esc(f.title)}</h3>
               <p>${esc(f.text)}</p>
               <a class="jt-cta" href="${f.cta[1]}">${esc(f.cta[0])} <span aria-hidden="true">→</span></a>
-              <div class="jt-tools">
-                <span class="jt-tools__label">tools I reach for</span>
-                <ul aria-label="Tools I use">${TOOLS.map(([name, svg]) => `<li title="${name}"><span class="jt-tool" aria-hidden="true">${svg}</span><span class="sr-only">${name}</span></li>`).join("")}</ul>
-              </div>
             </div>
           </div>
         </div>
@@ -182,6 +189,7 @@ function render() {
         clouds: root.querySelector(".jt-clouds"),
         finale: root.querySelector(".jt-finale"),
         glass: root.querySelector(".jt-glass"),
+        orbit: root.querySelector(".jt-orbit"),
         marks: [...root.querySelectorAll(".jt-mark")],
         doodles: [...root.querySelectorAll(".jt-doodle")],
         dots: [...root.querySelectorAll(".jt-progress i")],
@@ -278,6 +286,7 @@ function apply(p) {
     els.finale.style.transform = `translate3d(calc(${(1 - ease(wp)) * 110}% - ${ease(wp) * geo.waveW}px),0,0)`
     const o = clamp((wp - 0.5) / 0.4, 0, 1)
     els.glass.style.opacity = o
+    els.orbit.style.opacity = o
     els.glass.style.transform = `translate3d(0,${(1 - o) * 26}px,0)`
     const active = wp > 0.5 ? els.dots.length - 1 : passed + 1
     els.dots.forEach((d, i) => (d.dataset.on = i === active ? "1" : i < active ? "2" : "0"))
