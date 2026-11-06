@@ -65,6 +65,17 @@ const SELECTED = [
         wide: true, // the odd card out, after Pip and Lumi pair up
         scene: "dentigo",
     },
+    {
+        group: "Something Fun – A VR experience!",
+        meta: "2026 - Academic project",
+        title: "Doodleverse",
+        text: "A WebXR experience for Meta Quest 3 where children aged 12+ draw with their fingertips, wave a magic wand, and play fetch with the drawing that comes to life.",
+        tags: ["VR", "Mixed Reality", "Kids"],
+        href: "work/doodleverse/",
+        wide: true,
+        video: "assets/video/work/dv-hero.mp4",
+        poster: "assets/video/work/dv-hero.jpg",
+    },
 ]
 
 // passion projects open a detail view; `link` (optional) adds a button to a prototype, repo or video
