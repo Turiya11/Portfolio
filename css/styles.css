@@ -1368,6 +1368,7 @@ button {
 .jt-progress {
     position: absolute;
     z-index: 6;
+    isolation: isolate; /* its own layer: the frosted glass repaints cleanly as the dots change */
     right: 24px;
     top: 50%;
     translate: 0 -50%;
@@ -1388,7 +1389,8 @@ button {
     height: 8px;
     border-radius: 8px;
     background: rgba(29, 25, 50, 0.18);
-    transition: all 0.35s ease;
+    /* only these animate; the dots around never move, so no stale squares get left behind */
+    transition: height 0.35s ease, margin 0.35s ease, background-color 0.35s ease, opacity 0.35s ease;
 }
 .jt-progress i[data-on="2"] {
     background: var(--accent);
@@ -1397,6 +1399,7 @@ button {
 .jt-progress i[data-on="1"] {
     background: var(--accent);
     height: 22px;
+    margin-block: -7px; /* grows into the gaps: its slot stays 8px, so its neighbours stay put */
 }
 
 @media (max-width: 700px) {
