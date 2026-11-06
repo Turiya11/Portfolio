@@ -5,6 +5,7 @@ const img = (n) => `../../assets/images/lumi/research/${n}.png`
 const neha = {
     name: "Neha",
     role: "The Silent Struggler · mother",
+    face: { skin: "#d9a07a", hair: "long", hairColor: "#24170f", bg: "#f3ddd3", top: "#e98aa5", earrings: true },
     meta: "32 · first-time mother, 10 weeks postpartum · working professional, Pune",
     quote: "“If I say I'm struggling, they'll think I'm a bad mother.”",
     traits: ["Emotionally withdrawn", "Internalises stress", "Avoids confrontation", "High guilt orientation"],
@@ -17,6 +18,7 @@ const neha = {
 const rohan = {
     name: "Rohan",
     role: "The Hyper-Responsible Fixer · partner",
+    face: { skin: "#c98c62", hair: "short", hairColor: "#1d1410", bg: "#9fb1db", top: "#fbfbfd", glasses: true, beard: "stubble" },
     meta: "34 · first-time father · product manager, Pune",
     quote: "“I need to fix this for her.”",
     traits: ["Problem solver", "Stressed", "Suppresses own emotion", "Anxious", "Constant research", "Helpless seeing his wife"],
@@ -29,6 +31,10 @@ const rohan = {
 const sarita = {
     name: "Sarita & Mohan",
     role: "The Well-Meaning Minimizer · in-laws",
+    face: [
+        { skin: "#d39a72", hair: "bun", hairColor: "#bdb8b3", bg: "#f0b3c4", top: "#6fb5a8", earrings: true, glasses: true },
+        { skin: "#b97a50", hair: "bald", hairColor: "#cfcac4", bg: "#a9d8ea", top: "#e7c77a", glasses: true, moustache: true },
+    ],
     meta: "Retired · Nagpur · call daily and travel often to stay with their son's family",
     quote: "“In our time, nobody went to doctors for sadness. You just prayed and kept going.”",
     traits: ["Care and concern", "Emotionally withdrawn", "Internalise stress", "Avoid confrontation"],
