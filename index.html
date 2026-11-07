@@ -15,8 +15,8 @@
             href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600&family=Caveat:wght@500;600&display=swap"
         />
         <link rel="preload" as="image" href="assets/images/window.webp" />
-        <link rel="stylesheet" href="css/brand.css?v=1" />
-        <link rel="stylesheet" href="css/styles.css?v=53" />
+        <link rel="stylesheet" href="css/brand.css?v=2" />
+        <link rel="stylesheet" href="css/styles.css?v=56" />
     </head>
     <body>
         <!-- top nav: centred, fixed; a gooey pill follows the hovered tab (port of the Framer Liquid Gooey nav) -->
@@ -55,7 +55,15 @@
 
                 <div class="hero__inner">
                     <div class="hero__copy">
-                        <p class="hello">hi, I'm Turiya</p>
+                        <p class="hello">
+                            hi, I'm
+                            <span class="name" tabindex="0" aria-describedby="name-meaning"
+                                ><span class="name__box" aria-hidden="true"></span>Turiya Joshi<span class="name-card" role="tooltip" id="name-meaning"
+                                    ><span class="name-card__tag"><i></i>A question I get asked often</span
+                                    ><span class="name-card__text"><b>Turiya</b> means pure, unconditioned, infinite consciousness.</span></span
+                                ></span
+                            >
+                        </p>
                         <h1 class="headline">
                             a <span class="hl"><span class="hl__box" aria-hidden="true"></span>Product Designer</span><br />
                             with an
