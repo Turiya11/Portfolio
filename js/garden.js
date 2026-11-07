@@ -3,7 +3,7 @@
 // three blue butterflies with a note each, and a glass form: a visitor's note drops a seed that
 // sprouts into a flower. The flower stays in the visitor's own browser, and the note goes to a private
 // Google Sheet once the form's data-notes-url is set (see the README).
-import { mountButterflies } from "./butterflies.js"
+import { mountButterflies } from "./butterflies.js?v=2"
 
 const root = document.getElementById("garden")
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches

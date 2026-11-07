@@ -1,4 +1,4 @@
-import { mountButterflies } from "./butterflies.js"
+import { mountButterflies } from "./butterflies.js?v=2"
 
 // Hero: paper by default; look out of the window and the sky appears at the visitor's
 // real time of day. A thin bar on the right lets you pick another time, or go back to "auto".
