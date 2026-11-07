@@ -5,7 +5,7 @@
 const DEFAULTS = {
     details: [
         { tag: "Who I am", title: "UX/UI designer", detail: "Design undergrad at MIT-WPU, Pune. Graduating in 2027." },
-        { tag: "Right now", title: "Interning at SSK", detail: "Designing agent-facing workflows, reports modules, ticketing systems and SLA tracking interfaces for an enterprise ITSM platform." },
+        { tag: "Right now", logo: ["ssk", "SSK Technologies"], title: "Interning at SSK", detail: "Designing agent-facing workflows, reports modules, ticketing systems and SLA tracking interfaces for an enterprise ITSM platform." },
         { tag: "What I care about", title: "Ethical, human-centered AI", detail: "Inclusive, accessible systems that work for real people." },
         { tag: "Home base", title: "Pune, India", detail: "Designing from Pune." },
     ],
@@ -145,7 +145,7 @@ export function mountButterflies(container, options = {}) {
           </span>
           <span class="bf__card" role="tooltip">
             ${d.tag ? `<span class="bf__tag"><i></i>${esc(d.tag)}</span>` : ""}
-            <span class="bf__title">${esc(d.title)}</span>
+            ${d.logo ? `<span class="bf__head"><img class="bf__logo" src="${new URL(`../assets/images/logos/${d.logo[0]}.png`, import.meta.url)}" alt="${esc(d.logo[1])}" /><span class="bf__title">${esc(d.title)}</span></span>` : `<span class="bf__title">${esc(d.title)}</span>`}
             <span class="bf__detail">${esc(d.detail)}</span>
           </span>`
         container.append(el)

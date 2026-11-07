@@ -1,7 +1,7 @@
 // "My design journey": one screen, pinned while you scroll; the track slides sideways,
 // a line draws itself, glass cards rise as the pen passes, and a sunset wipes in for 2026.
 // Port of the Framer JourneyTimeline. Edit the content below.
-import { butterflyArt } from "./butterflies.js"
+import { butterflyArt } from "./butterflies.js?v=2"
 
 const CONTENT = {
     eyebrow: "2023 → 2026",

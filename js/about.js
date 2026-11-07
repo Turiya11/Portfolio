@@ -1,7 +1,7 @@
 // "About": the archive. A filing drawer you scroll through: each glass folder slides up over the last,
 // and the older tabs stay in a row at the top so you can flip back.
 // Edit the content below. `photo`, `image` and `cover` are image paths or links.
-import { butterflyArt } from "./butterflies.js"
+import { butterflyArt } from "./butterflies.js?v=2"
 
 const CONTENT = {
     eyebrow: "about me",
