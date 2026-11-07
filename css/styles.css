@@ -797,6 +797,24 @@ button {
     line-height: 1.15;
     color: #1a1a1a;
 }
+/* a card can carry a company logo beside its title, on a small white tile like the timeline's */
+.bf__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+.bf__head .bf__title {
+    margin-bottom: 0;
+}
+.bf__logo {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(29, 25, 50, 0.08), 0 4px 10px -6px rgba(29, 25, 50, 0.35);
+}
 .bf__detail {
     display: block;
     font-size: var(--t-small);
