@@ -3094,6 +3094,12 @@ button {
 .about[data-at="3"] .ab-sky i:nth-child(2) {
     color: #ffd9a8;
 }
+.about[data-at="4"] .ab-sky i:nth-child(1) {
+    color: #ffd9a8;
+}
+.about[data-at="4"] .ab-sky i:nth-child(3) {
+    color: #ffc4d2;
+}
 .ab-sky span {
     position: absolute;
     aspect-ratio: 640 / 300;
@@ -3345,12 +3351,12 @@ button {
 .ab-tab {
     position: absolute;
     top: 0;
-    left: calc(var(--i) * min(24%, 196px));
+    left: calc(var(--i) * min(96% / var(--n), 196px));
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 7px;
-    width: min(21%, 164px);
+    width: min(84% / var(--n), 164px);
     height: var(--tab-h);
     font-family: var(--hand);
     font-size: var(--t-hand);
@@ -5028,13 +5034,13 @@ button.ab-day {
         max-width: 340px;
     }
     .ab-tab {
-        left: calc(var(--i) * 22%);
-        width: 21%;
+        left: calc(var(--i) * 100% / var(--n));
+        width: calc(100% / var(--n) - 1%);
         gap: 4px;
-    font-family: var(--hand);
-    font-size: var(--t-hand-sm);
-    font-weight: 500;
-}
+        font-family: var(--hand);
+        font-size: calc(var(--t-hand-sm) - (var(--n) - 4) * 3px);
+        font-weight: 500;
+    }
     .ab-tab .ab-mono {
         display: none;
     }
@@ -5209,4 +5215,285 @@ button.ab-day {
     overflow: hidden;
     clip-path: inset(50%);
     white-space: nowrap;
+}
+
+/* ------------------------------ what I bring to a team: the jigsaw (team.js), folder 02 of the archive ------------------------------ */
+/* loose pieces on the folder; drop each on its pencilled spot, and the finished puzzle turns into cards */
+
+.ab-body--team {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.tm-board path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.tm-stage {
+    position: relative;
+    -webkit-user-select: none;
+    user-select: none;
+    transition: height 0.6s cubic-bezier(0.3, 1, 0.5, 1);
+}
+.tm-board {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+.tm-board path {
+    fill: rgba(255, 255, 255, 0.4);
+    stroke: rgba(90, 70, 198, 0.42);
+    stroke-width: 1.4;
+    stroke-dasharray: 5 6;
+}
+.tm.is-solved .tm-board {
+    opacity: 0;
+}
+
+/* a piece: the front is the coloured jigsaw shape, the back a square card; the button turns over once the puzzle is done */
+.tm-piece {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: var(--e);
+    height: var(--e);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: grab;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    perspective: 900px;
+    filter: drop-shadow(0 12px 10px rgba(40, 30, 95, 0.26));
+    transition:
+        transform 0.55s cubic-bezier(0.3, 1.35, 0.5, 1),
+        filter 0.3s ease;
+}
+.tm-piece.is-instant,
+.tm-piece.is-dragging {
+    transition: filter 0.3s ease;
+}
+.tm-piece.is-dragging {
+    cursor: grabbing;
+    filter: drop-shadow(0 26px 20px rgba(40, 30, 95, 0.34));
+}
+.tm-piece.is-placed {
+    cursor: default;
+    filter: drop-shadow(0 4px 4px rgba(40, 30, 95, 0.18));
+}
+.tm-piece:focus-visible {
+    outline: none;
+}
+.tm-piece:focus-visible .tm-piece__shape {
+    stroke: var(--accent);
+    stroke-width: 3;
+}
+/* the click: a squash past the outline and back, with a quick bright flash */
+.tm-piece.is-locking {
+    animation: tmLock 0.5s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+@keyframes tmLock {
+    0% {
+        scale: 1.07;
+    }
+    40% {
+        scale: 0.97;
+        filter: drop-shadow(0 4px 4px rgba(40, 30, 95, 0.18)) brightness(1.14);
+    }
+    100% {
+        scale: 1;
+    }
+}
+.tm-click {
+    position: absolute;
+    z-index: 25;
+    width: 46px;
+    height: 46px;
+    margin: -23px 0 0 -23px;
+    pointer-events: none;
+    animation: tmClick 0.55s ease-out forwards;
+}
+.tm-click svg {
+    display: block;
+    overflow: visible;
+}
+.tm-click path {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+}
+@keyframes tmClick {
+    from {
+        opacity: 1;
+        scale: 0.5;
+    }
+    to {
+        opacity: 0;
+        scale: 1.5;
+    }
+}
+.tm-piece.is-nope {
+    animation: tmNope 0.4s ease;
+}
+@keyframes tmNope {
+    25% {
+        translate: -7px 0;
+    }
+    50% {
+        translate: 6px 0;
+    }
+    75% {
+        translate: -3px 0;
+    }
+}
+.tm-piece__flip {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transition: transform 0.75s cubic-bezier(0.45, 0.05, 0.25, 1);
+}
+.tm.is-solved .tm-piece__flip {
+    transform: rotateY(180deg);
+    transition-delay: calc(1s + var(--i) * 0.14s);
+}
+.tm-piece__front,
+.tm-piece__back {
+    position: absolute;
+    inset: 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+.tm-piece__front {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+.tm-piece__shape {
+    fill: var(--c);
+    stroke: rgba(29, 25, 50, 0.18);
+    stroke-width: 0.8;
+}
+.tm-face {
+    fill: none;
+    stroke: #1d1932;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.tm-face .tm-dot {
+    fill: #1d1932;
+    stroke: none;
+}
+/* the back: a square card over the piece's own cell (the knobs sit 24 of 148 units outside it) */
+.tm-piece__back {
+    inset: calc(16.216% + 3px);
+    transform: rotateY(180deg);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    background: linear-gradient(150deg, color-mix(in srgb, var(--c) 22%, #fff), color-mix(in srgb, var(--c) 8%, #fff));
+    box-shadow: inset 0 -3px 0 color-mix(in srgb, var(--c) 55%, transparent);
+}
+.tm-card {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: calc(var(--unit, 2) * 2.4px);
+    padding: calc(var(--unit, 2) * 7px);
+    text-align: left;
+}
+.tm-card__label {
+    font-family: var(--mono);
+    font-size: clamp(8.5px, calc(var(--unit, 2) * 4.6px), 11px);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    line-height: 1.25;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--c) 60%, #1d1932);
+}
+.tm-card__title {
+    font-family: Figtree, var(--sans);
+    font-size: clamp(13px, calc(var(--unit, 2) * 10px), 23px);
+    font-weight: 500;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+}
+
+/* the reveal: a strip of washi tape stamped across the top of the finished puzzle */
+.tm-ribbon {
+    position: absolute;
+    z-index: 30;
+    margin: 0;
+    translate: -50% -50%;
+    rotate: -2deg;
+    padding: 6px 26px 8px;
+    white-space: nowrap;
+    font-family: var(--hand);
+    font-size: clamp(26px, 3vw, 38px);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--ink);
+    background: color-mix(in srgb, #ffb9c9 78%, transparent);
+    clip-path: polygon(0 0, 2% 22%, 0 44%, 2% 66%, 0 100%, 100% 100%, 98% 74%, 100% 50%, 98% 26%, 100% 0);
+    box-shadow: 0 6px 12px -8px rgba(40, 30, 95, 0.4);
+    opacity: 0;
+    scale: 0.4;
+    visibility: hidden;
+    pointer-events: none;
+}
+.tm.is-wall .tm-piece {
+    transition-duration: 0.8s;
+    transition-delay: calc(var(--i) * 0.06s);
+}
+.tm.is-solved .tm-ribbon {
+    visibility: visible;
+    animation: tmStamp 0.6s cubic-bezier(0.3, 1.6, 0.5, 1) 0.35s forwards;
+}
+@keyframes tmStamp {
+    to {
+        opacity: 1;
+        scale: 1;
+    }
+}
+.tm-foot {
+    margin: 8px auto 0;
+    text-align: center;
+}
+.tm-skip {
+    padding: 4px 8px;
+    border: 0;
+    background: none;
+    font-family: var(--hand);
+    font-size: 22px;
+    color: var(--accent);
+    text-decoration: underline wavy 1px;
+    text-underline-offset: 5px;
+    cursor: pointer;
+}
+.tm-skip:hover {
+    color: var(--ink);
+}
+.tm-skip:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+    .tm-piece,
+    .tm-piece__flip {
+        transition: none;
+    }
+    .tm.is-solved .tm-ribbon {
+        animation: none;
+        opacity: 1;
+        scale: 1;
+    }
 }

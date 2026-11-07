@@ -67,9 +67,10 @@ const CONTENT = {
 // { id: "ab-moments", tab: "moments", no: "TJ·001", title: "Days I kept", hint: "tap a circled day", tint: "#ffb9c9" },
 const FOLDERS = [
     { id: "ab-hello", tab: "hello", no: "TJ·001", title: CONTENT.hello.title, hint: "nice to meet you", tint: "#ffb9c9", titleInBody: true },
-    { id: "ab-repeat", tab: "on repeat", no: "TJ·002", title: "On repeat", hint: "drop the needle", tint: "#8f7bea" },
-    { id: "ab-things", tab: "no reason", no: "TJ·003", title: "Things I can't explain why I like", hint: "go on, poke them", tint: "#7cc2f6" },
-    { id: "ab-wall", tab: "the wall", no: "TJ·004", title: "On my wall", hint: "step closer to any of them", tint: "#ffd2a8" },
+    { id: "ab-team", tab: "team", no: "TJ·002", title: "What I bring to a team", hint: "drag each piece to the shape it fits", tint: "#b9a8ff" },
+    { id: "ab-repeat", tab: "on repeat", no: "TJ·003", title: "On repeat", hint: "drop the needle", tint: "#8f7bea" },
+    { id: "ab-things", tab: "no reason", no: "TJ·004", title: "Things I can't explain why I like", hint: "go on, poke them", tint: "#7cc2f6" },
+    { id: "ab-wall", tab: "the wall", no: "TJ·005", title: "On my wall", hint: "step closer to any of them", tint: "#ffd2a8" },
 ]
 
 const TAPE = ["#f5c518", "#ff9eb5", "#7cc2f6", "#c4e727", "#b9a8ff"]
@@ -269,7 +270,10 @@ const wall = () => `
     ${insta("ab-insta")}
   </div>`
 
-const BODIES = { hello, moments, repeat, things, wall }
+// the puzzle is built by team.js, into this empty table
+const team = () => `<div class="tm" id="team"></div>`
+
+const BODIES = { hello, moments, team, repeat, things, wall }
 
 function render() {
     root.innerHTML = `
