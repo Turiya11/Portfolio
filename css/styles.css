@@ -285,10 +285,140 @@ button {
 .hello {
     margin: 0;
     font-family: var(--hand);
-    font-size: var(--t-hand-lg);
+    font-size: var(--t-hand-xl);
     font-weight: 500;
     color: var(--hero-accent);
     transition: color var(--sky-time) ease;
+    position: relative;
+    z-index: 6; /* the name card opens over the headline */
+}
+
+/* "Turiya Joshi": the same yellow swipe as "Product Designer" on hover, plus a glass note on what Turiya means */
+.name {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+    isolation: isolate;
+    cursor: help;
+    outline: none;
+    transition: color 0.3s ease;
+}
+.name__box {
+    position: absolute;
+    inset: 0.12em -0.12em 0.02em;
+    z-index: -1;
+    border-radius: 4px;
+    background: rgb(243, 234, 154);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform 0.65s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+.name:hover,
+.name:focus {
+    color: rgb(37, 37, 37);
+}
+.name:hover .name__box,
+.name:focus .name__box {
+    transform: scaleX(1);
+}
+.name-card {
+    position: absolute;
+    z-index: 20;
+    bottom: calc(100% + 14px);
+    left: 50%;
+    width: 320px;
+    padding: 16px 18px 18px;
+    border-radius: 28px;
+    overflow: hidden;
+    isolation: isolate;
+    font-family: var(--sans);
+    white-space: normal;
+    text-align: left;
+    background:
+        radial-gradient(120% 80% at 12% 0%, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0) 55%),
+        radial-gradient(90% 60% at 100% 100%, rgba(243, 234, 154, 0.4) 0%, rgba(243, 234, 154, 0) 60%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0.28) 45%, rgba(255, 255, 255, 0.14) 100%);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow:
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.75),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.25),
+        inset 1px 0 0 rgba(255, 255, 255, 0.35),
+        inset -1px 0 0 rgba(255, 255, 255, 0.2),
+        inset 0 0 22px rgba(255, 255, 255, 0.22),
+        0 24px 48px rgba(16, 40, 100, 0.22),
+        0 2px 8px rgba(16, 40, 100, 0.12);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%);
+    translate: 0 8px;
+    scale: 0.96;
+    transition:
+        opacity 0.4s ease,
+        translate 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        scale 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.4s ease;
+}
+.name:hover .name-card,
+.name:focus .name-card {
+    opacity: 1;
+    visibility: visible;
+    translate: 0 0;
+    scale: 1;
+}
+.name-card__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--ls-caps);
+    text-transform: uppercase;
+    color: var(--accent);
+}
+.name-card__tag i {
+    width: 5px;
+    height: 5px;
+    border-radius: 5px;
+    background: var(--accent);
+}
+.name-card__text {
+    display: block;
+    font-size: var(--t-body);
+    font-weight: 400;
+    line-height: 1.45;
+    color: #2a2a2a;
+}
+.name-card__text b {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+@media (max-width: 800px) {
+    .name-card {
+        /* phones: below the name, since the nav sits above; a tap opens it */
+        bottom: auto;
+        top: calc(100% + 10px);
+        width: min(278px, calc(100vw - 40px));
+    }
+    .name-card__tag {
+        /* normal case, so it fits on one line in the narrower card */
+        letter-spacing: 0;
+        text-transform: none;
+        font-size: var(--t-small);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .name__box,
+    .name-card {
+        transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
 }
 .headline {
     margin: 14px 0 0;

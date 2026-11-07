@@ -27,6 +27,7 @@
     --t-small: 14px; /* captions, secondary text, nav */
     --t-label: 12px; /* tags and uppercase labels */
 
+    --t-hand-xl: clamp(32px, 2.6vw, 40px); /* the hero greeting */
     --t-hand-lg: 28px; /* eyebrows */
     --t-hand: 22px; /* kickers, hints, sticky notes */
     --t-hand-sm: 18px; /* tight spots */
