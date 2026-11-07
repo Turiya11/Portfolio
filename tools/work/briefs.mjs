@@ -139,6 +139,7 @@ export const kg = {
     meta: "UX design intern · Encora Inc. · Feb to May 2025",
     headline: "From data to discovery, with biomedical visualisation powered by a knowledge graph.",
     accent: "rgb(98, 58, 200)",
+    nda: true,
     note: "This project has been modified due to an NDA. The product is presented as KG Hub, proprietary names are changed and the screens are redesigned with sample data. Happy to walk through the work at itsturiyajoshi11@gmail.com.",
     ratio: 1.5,
     hero: clip("kg-journey", "One investigation in KG Hub, from a research question to a shared project"),

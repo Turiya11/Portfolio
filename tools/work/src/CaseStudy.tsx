@@ -15,6 +15,7 @@ type Props = {
     headline: string
     accent: string
     note?: string
+    nda?: boolean // shows the note as a highlighted box with a lock
     link?: { href: string; label: string }
     ratio?: number // width ÷ height of the wide videos
     hero: ClipData & { phone?: boolean; ratio?: number; title?: string }
@@ -68,6 +69,8 @@ const CSS = `
 .cs-state b{color:var(--ai);font-weight:600}
 .cs-small{margin:0;font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--soft)}
 .cs-small a{text-decoration:underline;text-underline-offset:3px}
+.cs-nda{display:flex;align-items:flex-start;gap:14px;margin:0;padding:clamp(16px,1.8vw,22px) clamp(18px,2.2vw,28px);border-radius:18px;background:var(--ai);color:#fff;font-size:var(--t-body);font-weight:600;line-height:1.5;box-shadow:0 18px 36px -22px rgba(60,40,150,.6)}
+.cs-nda svg{flex:none;width:24px;height:24px;margin-top:1px}
 .cs-brief{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:16px}
 .cs-card{padding:clamp(20px,2vw,28px);border-radius:22px;border:1px solid var(--edge);background:linear-gradient(145deg,rgba(255,255,255,.66),rgba(255,255,255,.34));box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 18px 36px -24px rgba(60,70,170,.3);display:flex;flex-direction:column;gap:12px}
 .cs-card p{margin:0;font-size:var(--t-body);font-weight:400;line-height:1.5}
@@ -344,7 +347,16 @@ export default function CaseStudy(p: Props) {
                             {p.brief.impactNote ? <p className="cs-small">{p.brief.impactNote}</p> : null}
                         </div>
                     </div>
-                    {p.note || p.link ? (
+                    {p.note && p.nda ? (
+                        <p className="cs-nda">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <rect x="4" y="10.5" width="16" height="10.5" rx="2.5" />
+                                <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" />
+                                <circle cx="12" cy="15.5" r="1.3" fill="currentColor" stroke="none" />
+                            </svg>
+                            <span>{p.note}</span>
+                        </p>
+                    ) : p.note || p.link ? (
                         <p className="cs-small">
                             {p.note}{" "}
                             {p.link ? (
