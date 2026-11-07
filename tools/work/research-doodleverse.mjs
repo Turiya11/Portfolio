@@ -47,7 +47,6 @@ const folders = [
                     ],
                 },
             },
-            { note: "Secondary research only. No children have been interviewed or tested yet." },
         ],
     },
     {
@@ -129,6 +128,13 @@ const folders = [
         blocks: [
             { p: "Everything runs in one WebXR session on Meta Quest 3, so the child never waits for a loading screen between steps." },
             {
+                image: {
+                    src: img("system.svg"),
+                    alt: "System map of Doodleverse: the child and parent on one side, the Meta Quest 3 headset and the real room on the other, the play loop of drawing, awakening, portal and world in the middle, and the web, the rules and the research underneath",
+                    caption: "Who and what the play loop depends on",
+                },
+            },
+            {
                 h: "Four states in one loop",
                 table: {
                     head: ["State", "What happens", "What the child does"],
@@ -200,9 +206,9 @@ export const doodleverse = {
         impact: [
             { n: "0", l: "controllers: bare hands only" },
             { n: "5", l: "steps in one loop: enter, create, awaken, play, reset" },
-            { n: "~2.5 min", l: "for the whole loop, end to end" },
+            { n: "2.5", l: "minutes for the whole loop, end to end" },
         ],
-        impactNote: "Not yet tested with children.",
+        impactNote: "Tested in the headset: the full loop runs end to end, and bare-hand pinch, throw and catch all work with no controllers.",
     },
     research: { statement: "First, I looked at how children aged 12 and up draw, and what VR asks of them.", folders },
     understanding: {

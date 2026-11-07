@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="912" viewBox="0 118 1600 912" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif">
+  <!-- Doodleverse system map: the people, the headset, the room and what sits behind the experience -->
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#5b5f73"/>
+    </marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#ce4034"/>
+    </marker>
+    <filter id="s" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#283060" flood-opacity=".12"/>
+    </filter>
+  </defs>
+
+  <rect y="118" width="1600" height="912" fill="#fbfaf7"/>
+
+  <!-- ===== centre: the experience ===== -->
+  <rect x="500" y="150" width="600" height="620" rx="32" fill="#fff" stroke="#ce4034" stroke-width="2.5" filter="url(#s)"/>
+  <text x="800" y="200" text-anchor="middle" font-size="30" font-weight="700" fill="#1f2233">Doodleverse</text>
+  <text x="800" y="232" text-anchor="middle" font-size="18" fill="#5b5f73">WebXR, in the Meta Quest browser · one continuous session</text>
+
+  <!-- the state loop -->
+  <g font-size="21" font-weight="700" text-anchor="middle">
+    <rect x="560" y="290" width="200" height="74" rx="37" fill="#fff1a6"/>
+    <text x="660" y="334" fill="#1f2233">Drawing</text>
+    <rect x="840" y="290" width="200" height="74" rx="37" fill="#ffd6e0"/>
+    <text x="940" y="334" fill="#1f2233">Awakening</text>
+    <rect x="840" y="530" width="200" height="74" rx="37" fill="#d3e8ff"/>
+    <text x="940" y="574" fill="#1f2233">Portal</text>
+    <rect x="560" y="530" width="200" height="74" rx="37" fill="#d9f3cf"/>
+    <text x="660" y="574" fill="#1f2233">World</text>
+  </g>
+  <g stroke="#ce4034" stroke-width="2.5" fill="none" marker-end="url(#r)">
+    <path d="M762 327H836"/>
+    <path d="M940 366V526"/>
+    <path d="M838 567H764"/>
+    <path d="M660 528V368"/>
+  </g>
+  <g font-size="16" fill="#ce4034" text-anchor="middle">
+    <text x="800" y="279">wave the wand</text>
+    <text x="924" y="405" text-anchor="end">it wakes up,</text>
+    <text x="924" y="425" text-anchor="end">the room opens</text>
+    <text x="800" y="625">the meadow grows</text>
+    <text x="676" y="490" text-anchor="start">point at the diamond</text>
+    <text x="676" y="510" text-anchor="start">to draw again</text>
+  </g>
+  <text x="800" y="452" text-anchor="middle" font-size="17" font-weight="700" fill="#1f2233">The play loop</text>
+
+  <g font-size="16" fill="#5b5f73" text-anchor="middle">
+    <rect x="540" y="670" width="520" height="66" rx="16" fill="#f3f1fb"/>
+    <text x="800" y="698">Coaching pills · a guide that follows your gaze</text>
+    <text x="800" y="721">spatial sound · sparkles · a character that comes back into view</text>
+  </g>
+
+  <!-- ===== left: people ===== -->
+  <rect x="60" y="150" width="340" height="250" rx="26" fill="#fff" stroke="#e3e1ec" stroke-width="2" filter="url(#s)"/>
+  <circle cx="112" cy="206" r="26" fill="#a9d8ea"/>
+  <text x="112" y="214" text-anchor="middle" font-size="22" font-weight="700" fill="#1f2233">A</text>
+  <text x="152" y="200" font-size="24" font-weight="700" fill="#1f2233">Child, 12+</text>
+  <text x="152" y="226" font-size="16" fill="#5b5f73">curious, new to headsets</text>
+  <g font-size="17" fill="#3d4052">
+    <text x="88" y="282">• Draws on the board</text>
+    <text x="88" y="312">• Wakes the drawing up</text>
+    <text x="88" y="342">• Throws, catches, carries</text>
+    <text x="88" y="372">• Plays in short bursts</text>
+  </g>
+
+  <rect x="60" y="520" width="340" height="250" rx="26" fill="#fff" stroke="#e3e1ec" stroke-width="2" filter="url(#s)"/>
+  <circle cx="112" cy="576" r="26" fill="#f0b3c4"/>
+  <text x="112" y="584" text-anchor="middle" font-size="22" font-weight="700" fill="#1f2233">P</text>
+  <text x="152" y="570" font-size="24" font-weight="700" fill="#1f2233">Parent</text>
+  <text x="152" y="596" font-size="16" fill="#5b5f73">close by, in the same room</text>
+  <g font-size="17" fill="#3d4052">
+    <text x="88" y="652">• Manages the account to age 12</text>
+    <text x="88" y="682">• Sets the time limit</text>
+    <text x="88" y="712">• Stays nearby while the child plays</text>
+  </g>
+
+  <!-- child <-> experience -->
+  <path d="M402 245H496" stroke="#5b5f73" stroke-width="2.5" fill="none" marker-end="url(#a)"/>
+  <path d="M496 305H404" stroke="#5b5f73" stroke-width="2.5" fill="none" marker-end="url(#a)"/>
+  <text x="449" y="235" text-anchor="middle" font-size="15" fill="#5b5f73">touch, pinch</text>
+  <text x="449" y="330" text-anchor="middle" font-size="15" fill="#5b5f73">cues, sounds</text>
+  <!-- parent -> child -->
+  <path d="M230 518V404" stroke="#5b5f73" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#a)"/>
+  <text x="244" y="466" font-size="15" fill="#5b5f73">supervises</text>
+
+  <!-- ===== right: headset and room ===== -->
+  <rect x="1200" y="150" width="340" height="250" rx="26" fill="#fff" stroke="#e3e1ec" stroke-width="2" filter="url(#s)"/>
+  <text x="1228" y="200" font-size="24" font-weight="700" fill="#1f2233">Meta Quest 3</text>
+  <text x="1228" y="226" font-size="16" fill="#5b5f73">the device</text>
+  <g font-size="17" fill="#3d4052">
+    <text x="1228" y="282">• Hand tracking: 25 joints per hand</text>
+    <text x="1228" y="312">• Passthrough of the real room</text>
+    <text x="1228" y="342">• Quest Browser runs WebXR</text>
+    <text x="1228" y="372">• Spatial audio</text>
+  </g>
+
+  <rect x="1200" y="520" width="340" height="250" rx="26" fill="#fff" stroke="#e3e1ec" stroke-width="2" filter="url(#s)"/>
+  <text x="1228" y="570" font-size="24" font-weight="700" fill="#1f2233">The real room</text>
+  <text x="1228" y="596" font-size="16" fill="#5b5f73">home, seen through passthrough</text>
+  <g font-size="17" fill="#3d4052">
+    <text x="1228" y="652">• A table to sit and draw at</text>
+    <text x="1228" y="682">• Clear floor to stand and play</text>
+    <text x="1228" y="712">• Stays visible while drawing</text>
+    <text x="1228" y="742">• No walking needed</text>
+  </g>
+
+  <!-- headset <-> experience, headset -> room -->
+  <path d="M1198 245H1104" stroke="#5b5f73" stroke-width="2.5" fill="none" marker-end="url(#a)"/>
+  <path d="M1104 305H1196" stroke="#5b5f73" stroke-width="2.5" fill="none" marker-end="url(#a)"/>
+  <text x="1151" y="235" text-anchor="middle" font-size="15" fill="#5b5f73">hand joints</text>
+  <text x="1151" y="330" text-anchor="middle" font-size="15" fill="#5b5f73">3D frames</text>
+  <path d="M1370 402V516" stroke="#5b5f73" stroke-width="2.5" fill="none" marker-end="url(#a)"/>
+  <text x="1384" y="466" font-size="15" fill="#5b5f73">passthrough</text>
+  <!-- room -> experience: the board is placed in it -->
+  <path d="M1198 645H1104" stroke="#5b5f73" stroke-width="2.5" stroke-dasharray="7 6" fill="none" marker-end="url(#a)"/>
+  <text x="1151" y="632" text-anchor="middle" font-size="14" fill="#5b5f73">board at</text>
+  <text x="1151" y="668" text-anchor="middle" font-size="14" fill="#5b5f73">table height</text>
+
+  <!-- ===== bottom: what sits behind it ===== -->
+  <g font-size="17" fill="#3d4052">
+    <rect x="60" y="850" width="460" height="150" rx="22" fill="#f3f1fb"/>
+    <text x="88" y="890" font-size="20" font-weight="700" fill="#1f2233">The web</text>
+    <text x="88" y="924">Static site on Vercel · three.js</text>
+    <text x="88" y="952">No account, no login</text>
+    <text x="88" y="980">Drawings live in memory, never saved</text>
+
+    <rect x="570" y="850" width="460" height="150" rx="22" fill="#f3f1fb"/>
+    <text x="598" y="890" font-size="20" font-weight="700" fill="#1f2233">The rules</text>
+    <text x="598" y="924">Meta: age 10+, parent-managed to 12</text>
+    <text x="598" y="952">A break at least every 30 minutes</text>
+    <text x="598" y="980">Single-player, no forced walking</text>
+
+    <rect x="1080" y="850" width="460" height="150" rx="22" fill="#f3f1fb"/>
+    <text x="1108" y="890" font-size="20" font-weight="700" fill="#1f2233">The research</text>
+    <text x="1108" y="924">How 12-year-olds judge their drawings</text>
+    <text x="1108" y="952">What keeps motivation going</text>
+    <text x="1108" y="980">How children respond to VR</text>
+  </g>
+  <g stroke="#5b5f73" stroke-width="2.5" fill="none" marker-end="url(#a)">
+    <path d="M290 848C290 812 560 812 600 774"/>
+    <path d="M800 848V774"/>
+    <path d="M1310 848C1310 812 1040 812 1000 774"/>
+  </g>
+  <g font-size="15" fill="#5b5f73" text-anchor="middle">
+    <text x="370" y="796">hosts and loads it</text>
+    <text x="862" y="818">limits it</text>
+    <text x="1180" y="806">shapes it</text>
+  </g>
+</svg>
