@@ -8,7 +8,8 @@ css/styles.css      all styles
 js/hero.js          hero: window, sky by time of day, time bar
 js/butterflies.js   hoverable butterflies (port of the Framer ButterflyHero)
 js/journey.js       "My design journey" horizontal timeline
-js/about.js         "The archive": hello, record player, film strip, gallery wall (content at the top)
+js/about.js         "The archive": hello, team, record player, things I like, gallery wall (content at the top)
+js/team.js          the jigsaw in the archive's "team" folder, which turns into cards (content at the top)
 js/garden.js        the garden footer (port of the Framer GardenFooter)
 js/eyes.js          googly-eyes cursor
 work/<project>/     case-study pages (built, see below)
