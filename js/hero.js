@@ -164,6 +164,28 @@ function placeRevealOrigin() {
     sky.style.setProperty("--oy", `${w.top - h.top + w.height * 0.45}px`)
 }
 
+// the text only takes the sky's colours ("is-lit") once the opening sky has reached all of it,
+// and gives them back as soon as the closing sky starts to uncover it, so it's never white on paper
+// or mid-grey; this follows the reveal's real radius for the ~2s it animates
+const copy = hero.querySelector(".hero__copy")
+let litRaf = 0
+function followReveal() {
+    cancelAnimationFrame(litRaf)
+    const h = hero.getBoundingClientRect()
+    const c = copy.getBoundingClientRect()
+    const ox = parseFloat(sky.style.getPropertyValue("--ox")) + h.left
+    const oy = parseFloat(sky.style.getPropertyValue("--oy")) + h.top
+    // the farthest corner of the text block from where the sky opens
+    const reach = Math.max(...[[c.left, c.top], [c.left, c.bottom], [c.right, c.top], [c.right, c.bottom]].map(([x, y]) => Math.hypot(x - ox, y - oy)))
+    const until = performance.now() + 2200
+    const step = () => {
+        const r = parseFloat((getComputedStyle(sky).clipPath.match(/circle\(([\d.]+)px/) || [])[1]) || 0
+        hero.classList.toggle("is-lit", hero.classList.contains("is-awake") && r >= reach)
+        if (performance.now() < until) litRaf = requestAnimationFrame(step)
+    }
+    step()
+}
+
 function wake() {
     clearTimeout(sleepTimer)
     if (hero.classList.contains("is-awake")) return
@@ -171,26 +193,41 @@ function wake() {
     hero.classList.add("is-awake")
     document.documentElement.classList.add("sky-on")
     windowBtn.setAttribute("aria-pressed", "true")
+    followReveal()
 }
 
 function sleep() {
     if (pinned) return
     hero.classList.remove("is-awake")
+    hero.classList.remove("is-lit") // dark text straight away: the closing sky uncovers it first
     document.documentElement.classList.remove("sky-on")
     windowBtn.setAttribute("aria-pressed", "false")
+    followReveal()
 }
 
 const canHover = matchMedia("(hover: hover)").matches
 
-// the sky opens while the mouse is over the window (or the time bar under it) and fades back to paper when it leaves
+// the sky opens while the mouse is over the window (or the time bar under it) and fades back to paper when it leaves.
+// This checks where the mouse is rather than listening for enter/leave on the window, so a butterfly
+// fluttering under the cursor doesn't count as leaving (that made the sky flicker shut and open)
 const windowEl = hero.querySelector(".window")
-windowEl.addEventListener("pointerenter", (e) => {
-    if (e.pointerType === "mouse") wake()
-})
-windowEl.addEventListener("pointerleave", (e) => {
-    if (e.pointerType !== "mouse" || hero.classList.contains("is-dragging")) return
-    sleepTimer = setTimeout(sleep, 200)
-})
+let over = false
+const setOver = (now) => {
+    if (now === over) return
+    over = now
+    if (now) wake()
+    else if (!hero.classList.contains("is-dragging")) sleepTimer = setTimeout(sleep, 200)
+}
+addEventListener(
+    "pointermove",
+    (e) => {
+        if (e.pointerType !== "mouse") return
+        const r = windowEl.getBoundingClientRect()
+        setOver(e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom)
+    },
+    { passive: true }
+)
+document.documentElement.addEventListener("pointerleave", () => setOver(false))
 
 // tap / keyboard toggles it (a mouse click does nothing extra: with a mouse the sky just follows hover)
 windowBtn.addEventListener("click", (e) => {
@@ -223,7 +260,7 @@ track.addEventListener("pointermove", (e) => {
 const endDrag = () => {
     hero.classList.remove("is-dragging")
     // let go outside the window: close the sky like a normal mouse-out
-    if (!windowEl.matches(":hover")) sleepTimer = setTimeout(sleep, 200)
+    if (!over) sleepTimer = setTimeout(sleep, 200)
 }
 track.addEventListener("pointerup", endDrag)
 track.addEventListener("pointercancel", endDrag)
