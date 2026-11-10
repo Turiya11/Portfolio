@@ -31,15 +31,26 @@ export type Folder = { title: string; hint: string; blocks: Block[] }
 
 const CSS = `
 .rf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,30px) clamp(14px,1.8vw,24px);padding-top:14px}
-.rf-folder{position:relative;display:flex;flex-direction:column;justify-content:flex-end;width:100%;height:100%;min-height:clamp(150px,14vw,196px);padding:clamp(16px,1.8vw,24px);border:0;border-radius:4px 18px 18px 18px;background:linear-gradient(160deg,#ffe3a0,#f8cf74);color:#3b2f12;font:inherit;text-align:left;cursor:pointer;box-shadow:0 22px 34px -24px rgba(90,60,10,.65),inset 0 1px 0 rgba(255,255,255,.6);transition:transform .3s cubic-bezier(.2,.9,.25,1),box-shadow .3s}
-.rf-folder:before{content:'';position:absolute;left:0;top:-13px;width:38%;height:14px;border-radius:9px 12px 0 0;background:#f4c766}
-.rf-folder:after{content:'';position:absolute;left:12px;right:12px;top:-6px;height:16px;border-radius:6px 6px 0 0;background:#fffdf6;box-shadow:0 1px 2px rgba(0,0,0,.14);transform:translateY(8px);transition:transform .3s cubic-bezier(.2,.9,.25,1);z-index:-1}
-.rf-folder:hover{transform:translateY(-4px);box-shadow:0 30px 42px -24px rgba(90,60,10,.7),inset 0 1px 0 rgba(255,255,255,.6)}
-.rf-folder:hover:after{transform:translateY(-3px)}
+.rf-wrap{position:relative;isolation:isolate;height:100%;padding-top:20px;transition:transform .35s cubic-bezier(.2,.9,.25,1)}
+.rf-wrap:hover,.rf-wrap:focus-within{transform:translateY(-4px)}
+/* liquid glass: a frosted body and tab, with a coloured sheet inside that the glass blurs, and that peeks out on hover */
+.rf-paper{position:absolute;z-index:0;left:9%;right:9%;top:30px;height:62%;border-radius:12px;background:linear-gradient(135deg,var(--p1),var(--p2));box-shadow:0 6px 16px -8px rgba(40,40,90,.35);transform:rotate(-3deg);filter:blur(12px);transition:transform .45s cubic-bezier(.2,.9,.25,1),filter .45s;pointer-events:none}
+.rf-paper:after{content:'';position:absolute;left:12%;right:30%;top:18%;height:8px;border-radius:4px;background:rgba(255,255,255,.7);box-shadow:0 16px 0 rgba(255,255,255,.55),0 32px 0 -1px rgba(255,255,255,.45)}
+.rf-wrap:hover .rf-paper,.rf-wrap:focus-within .rf-paper{transform:translateY(-30px) rotate(-5deg);filter:blur(0)}
+.rf-tab,.rf-folder{background:linear-gradient(160deg,rgba(255,255,255,.62),rgba(255,255,255,.26));backdrop-filter:blur(18px) saturate(170%);-webkit-backdrop-filter:blur(18px) saturate(170%)}
+.rf-tab{position:absolute;z-index:1;left:0;top:2px;width:46%;height:20px;background:linear-gradient(170deg,rgba(255,255,255,.85),rgba(255,255,255,.5));clip-path:polygon(0 calc(100% + 1px),0 12px,0.5px 7.4px,2.1px 4.2px,4.2px 2.1px,7.4px 0.5px,12px 0,66.0% 0.0%,69.4% 2.8%,72.8% 10.4%,76.2% 21.6%,79.6% 35.2%,83.0% 50.0%,86.4% 64.8%,89.8% 78.4%,93.2% 89.6%,96.6% 97.2%,100.0% 100.0%,100% calc(100% + 1px));box-shadow:inset 0 1.5px 0 rgba(255,255,255,.95);pointer-events:none}
+.rf-folder{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:flex-end;width:100%;height:100%;min-height:clamp(150px,14vw,196px);padding:clamp(16px,1.8vw,24px);border:1px solid rgba(255,255,255,.78);border-top-color:rgba(255,255,255,.6);border-radius:0 22px 22px 22px;color:var(--ink);font:inherit;text-align:left;cursor:pointer;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(255,255,255,.35),0 26px 44px -28px rgba(50,60,140,.5);transition:box-shadow .35s}
+.rf-folder:before{content:'';position:absolute;left:clamp(16px,1.8vw,24px);right:clamp(16px,1.8vw,24px);bottom:clamp(12px,1.2vw,16px);height:5px;border-top:1.5px solid rgba(255,255,255,.85);border-bottom:1.5px solid rgba(255,255,255,.6);pointer-events:none}
+.rf-wrap:hover .rf-folder{box-shadow:inset 0 1.5px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.4),0 34px 52px -28px rgba(50,60,140,.55)}
 .rf-folder:focus-visible{outline:3px solid var(--ai);outline-offset:3px}
-.rf-wrap{position:relative;isolation:isolate}
+.rf-wrap:nth-child(6n+1){--p1:#ffd6e0;--p2:#c9b8ff}
+.rf-wrap:nth-child(6n+2){--p1:#d3e8ff;--p2:#9fe3d0}
+.rf-wrap:nth-child(6n+3){--p1:#fff1a6;--p2:#ffb98a}
+.rf-wrap:nth-child(6n+4){--p1:#e6ddff;--p2:#ff9fc4}
+.rf-wrap:nth-child(6n+5){--p1:#d9f3cf;--p2:#8fc8ee}
+.rf-wrap:nth-child(6n+6){--p1:#ffe2c6;--p2:#f59aa8}
 .rf-title{display:block;font-size:var(--t-h3);font-weight:600;letter-spacing:var(--ls-h3);line-height:1.25}
-.rf-hint{display:block;margin-top:6px;font-size:var(--t-small);font-weight:400;line-height:1.5;color:#6b5722}
+.rf-hint{display:block;margin-top:6px;margin-bottom:12px;font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--soft)}
 .rf-modal{width:min(1040px,94vw);max-width:none;max-height:88vh;padding:0;border:0;border-radius:24px;background:#fbfaf7;color:var(--ink);box-shadow:0 40px 90px -20px rgba(20,20,60,.6);overflow:hidden}
 .rf-modal[open]{display:flex;flex-direction:column;animation:rf-in .28s cubic-bezier(.2,.9,.25,1)}
 .rf-modal::backdrop{background:rgba(25,25,55,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
@@ -92,7 +103,7 @@ const CSS = `
   .rf-modal{width:100vw;max-height:100dvh;height:100dvh;border-radius:0}
 }
 @media (max-width:440px){.rf-grid{grid-template-columns:1fr}.rf-folder{min-height:112px}}
-@media (prefers-reduced-motion:reduce){.rf-folder,.rf-folder:after{transition:none}.rf-modal[open]{animation:none}}
+@media (prefers-reduced-motion:reduce){.rf-wrap,.rf-paper,.rf-folder{transition:none}.rf-modal[open]{animation:none}}
 `
 
 function PersonaCard({ p }: { p: Persona }) {
@@ -247,6 +258,8 @@ export default function ResearchFolders({ folders }: { folders: Folder[] }) {
             <div className="rf-grid">
                 {folders.map((x, i) => (
                     <div className="rf-wrap" key={x.title}>
+                        <span className="rf-paper" aria-hidden="true" />
+                        <span className="rf-tab" aria-hidden="true" />
                         <button type="button" className="rf-folder" aria-haspopup="dialog" onClick={() => setOpen(i)}>
                             <span className="rf-title">{x.title}</span>
                             <span className="rf-hint">{x.hint}</span>
@@ -258,7 +271,9 @@ export default function ResearchFolders({ folders }: { folders: Folder[] }) {
                 className="rf-modal"
                 ref={dialog}
                 aria-labelledby="rf-title"
-                onClose={() => setOpen(null)}
+                onClose={() => {
+                    if (!dialog.current?.open) setOpen(null) // a quick click on the next folder may have reopened it already
+                }}
                 onClick={(e) => {
                     if (e.target === dialog.current) close() // a click on the backdrop lands on the dialog itself
                 }}
