@@ -916,6 +916,53 @@ button {
     left: calc(var(--t) * 100%);
     translate: -50% 0;
 }
+/* six labels don't fit side by side on a short bar, so every other one sits a row higher;
+   each keeps its tick at its real time on the track */
+.timebar__stops li:nth-child(even) {
+    bottom: calc(100% + 36px);
+}
+.timebar__stops li:first-child {
+    translate: -22% 0; /* "Dawn" leans right, clear of the auto button */
+}
+@media (max-width: 420px) {
+    /* narrow phones: the bar is too short to pin six labels to their times, so they sit
+       as a small centred group of chips above it */
+    .timebar {
+        padding-top: 64px;
+    }
+    .timebar__stops {
+        position: absolute;
+        bottom: calc(100% + 10px);
+        left: 50%;
+        width: min(320px, calc(100vw - 40px));
+        translate: -50% 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+    }
+    .timebar__stops li,
+    .timebar__stops li:nth-child(even),
+    .timebar__stops li:first-child {
+        position: static;
+        translate: none;
+    }
+    .timebar__stops li::before,
+    .timebar__stops li::after {
+        display: none;
+    }
+}
+.timebar__stops li:nth-child(even)::before {
+    /* a hairline down to its tick */
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: 1px;
+    height: 17px;
+    background: var(--hero-soft);
+    opacity: 0.35;
+}
 .timebar__stops button {
     padding: 1px 8px 2px;
     border: 0;
@@ -956,6 +1003,9 @@ button {
     border-radius: 50%;
     background: var(--hero-soft);
     opacity: 0.6;
+}
+.timebar__stops li:nth-child(even)::after {
+    top: calc(100% + 39px);
 }
 .timebar__readout {
     margin: 0;
