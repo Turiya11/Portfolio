@@ -86,12 +86,23 @@ const nameEl = hero.querySelector(".timebar__name")
 let auto = true
 let t = timeToT()
 
+// the stops on the bar: sun and moon phases instead of words (the name shows on hover)
+const PHASE_ICON = {
+    Dawn: `<path d="M3 19h18"/><path d="M7 19a5 5 0 0 1 10 0"/><path d="M12 4v4m-3-1.5L12 4l3 2.5"/><path d="M4.6 13.4l1.4 1.1M19.4 13.4L18 14.5"/>`,
+    Day: `<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.5 1.5M17.2 17.2l1.5 1.5M5.3 18.7l1.5-1.5M17.2 6.8l1.5-1.5"/>`,
+    "Golden hour": `<path d="M3 20h18"/><circle cx="12" cy="14" r="3.6"/><path d="M12 6.5v1.8M5.6 9.1l1.3 1.2M18.4 9.1l-1.3 1.2M3.8 15h1.8M18.4 15h1.8"/>`,
+    Sunset: `<path d="M3 19h18"/><path d="M7 19a5 5 0 0 1 10 0"/><path d="M12 4v4m-3-1.5L12 9l3-2.5"/><path d="M4.6 13.4l1.4 1.1M19.4 13.4L18 14.5"/>`,
+    Dusk: `<path d="M15.5 4.5a7.5 7.5 0 1 0 4 12.2A6 6 0 0 1 15.5 4.5z"/>`,
+    Night: `<circle cx="10.5" cy="13.5" r="6" fill="currentColor" fill-opacity=".28"/><path d="M18.5 3v4M16.5 5h4M20.5 10v2.4M19.3 11.2h2.4"/>`,
+}
 for (const s of STOPS) {
     const li = document.createElement("li")
     li.style.setProperty("--t", s.t)
     const b = document.createElement("button")
     b.type = "button"
-    b.textContent = s.name
+    b.title = s.name
+    b.setAttribute("aria-label", s.name)
+    b.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${PHASE_ICON[s.name]}</svg>`
     b.tabIndex = -1
     b.addEventListener("click", () => setT(s.t, { manual: true }))
     li.append(b)
@@ -102,6 +113,8 @@ for (const s of STOPS) {
 
 function paint() {
     const s = skyAt(t)
+    const near = STOPS.reduce((best, x) => (Math.abs(x.t - t) < Math.abs(best.t - t) ? x : best))
+    stopsList.querySelectorAll("button").forEach((b) => b.classList.toggle("is-on", b.title === near.name))
     const st = hero.style
     st.setProperty("--sky-top", s.top)
     st.setProperty("--sky-mid", s.mid)

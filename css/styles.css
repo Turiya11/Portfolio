@@ -834,7 +834,7 @@ button {
     align-items: center;
     gap: 14px;
     margin: 18px 6% 0;
-    padding-top: 26px; /* room for the stop labels above the track */
+    padding-top: 38px; /* room for the sun and moon chips above the track */
     opacity: 0.55;
     transition: opacity 0.5s ease;
 }
@@ -918,64 +918,18 @@ button {
     left: calc(var(--t) * 100%);
     translate: -50% 0;
 }
-/* six labels don't fit side by side on a short bar, so every other one sits a row higher;
-   each keeps its tick at its real time on the track */
-.timebar__stops li:nth-child(even) {
-    bottom: calc(100% + 36px);
-}
-.timebar__stops li:first-child {
-    translate: -22% 0; /* "Dawn" leans right, clear of the auto button */
-}
-@media (max-width: 420px) {
-    /* narrow phones: the bar is too short to pin six labels to their times, so they sit
-       as a small centred group of chips above it */
-    .timebar {
-        padding-top: 64px;
-    }
-    .timebar__stops {
-        position: absolute;
-        bottom: calc(100% + 10px);
-        left: 50%;
-        width: min(320px, calc(100vw - 40px));
-        translate: -50% 0;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 6px;
-    }
-    .timebar__stops li,
-    .timebar__stops li:nth-child(even),
-    .timebar__stops li:first-child {
-        position: static;
-        translate: none;
-    }
-    .timebar__stops li::before,
-    .timebar__stops li::after {
-        display: none;
-    }
-}
-.timebar__stops li:nth-child(even)::before {
-    /* a hairline down to its tick */
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 100%;
-    width: 1px;
-    height: 17px;
-    background: var(--hero-soft);
-    opacity: 0.35;
-}
+/* sun and moon phases: small round glass chips, one at each time on the track */
 .timebar__stops button {
-    padding: 1px 8px 2px;
-    border: 0;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.3);
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.28);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    font-family: var(--hand);
-    font-size: var(--t-hand-sm);
-    font-weight: 500;
-    white-space: nowrap;
     color: var(--hero-ink);
     cursor: pointer;
     opacity: 0;
@@ -983,10 +937,29 @@ button {
     pointer-events: none;
     transition:
         opacity 0.25s ease,
-        translate 0.25s ease;
+        translate 0.25s ease,
+        background-color 0.25s ease,
+        scale 0.25s ease;
+}
+.timebar__stops svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 .timebar__stops button:hover {
     color: var(--hero-accent);
+    scale: 1.1;
+}
+.timebar__stops button.is-on {
+    /* the current time: a solid white chip with a brand-purple icon, readable on every sky */
+    background: #fff;
+    border-color: #fff;
+    color: var(--accent);
+    box-shadow: 0 4px 12px -4px rgba(29, 25, 50, 0.35);
 }
 .hero.is-awake .timebar__stops button,
 .timebar:focus-within .timebar__stops button {
@@ -994,21 +967,27 @@ button {
     translate: 0 0;
     pointer-events: auto;
 }
-.timebar__stops li::after {
-    /* tiny tick on the track */
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: calc(100% + 11px);
-    width: 2px;
-    height: 2px;
-    border-radius: 50%;
-    background: var(--hero-soft);
-    opacity: 0.6;
+@media (max-width: 380px) {
+    .timebar__stops button {
+        width: 25px;
+        height: 25px;
+    }
+    .timebar__stops svg {
+        width: 15px;
+        height: 15px;
+    }
 }
-.timebar__stops li:nth-child(even)::after {
-    top: calc(100% + 39px);
+@media (max-width: 340px) {
+    .timebar__stops button {
+        width: 22px;
+        height: 22px;
+    }
+    .timebar__stops svg {
+        width: 13px;
+        height: 13px;
+    }
 }
+
 .timebar__readout {
     margin: 0;
     min-width: 76px;
