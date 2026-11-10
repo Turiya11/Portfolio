@@ -32,11 +32,11 @@ export type Folder = { title: string; hint: string; blocks: Block[] }
 const CSS = `
 .rf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,30px) clamp(14px,1.8vw,24px);padding-top:14px}
 .rf-wrap{position:relative;isolation:isolate;height:100%;padding-top:20px;transition:transform .35s cubic-bezier(.2,.9,.25,1)}
-.rf-wrap:hover,.rf-wrap:focus-within{transform:translateY(-4px)}
+.rf-wrap:hover,.rf-wrap:has(.rf-folder:focus-visible){transform:translateY(-4px)}
 /* liquid glass: a frosted body and tab, with a coloured sheet inside that the glass blurs, and that peeks out on hover */
 .rf-paper{position:absolute;z-index:0;left:9%;right:9%;top:30px;height:62%;border-radius:12px;background:linear-gradient(135deg,var(--p1),var(--p2));box-shadow:0 6px 16px -8px rgba(40,40,90,.35);transform:rotate(-3deg);filter:blur(12px);transition:transform .45s cubic-bezier(.2,.9,.25,1),filter .45s;pointer-events:none}
 .rf-paper:after{content:'';position:absolute;left:12%;right:30%;top:18%;height:8px;border-radius:4px;background:rgba(255,255,255,.7);box-shadow:0 16px 0 rgba(255,255,255,.55),0 32px 0 -1px rgba(255,255,255,.45)}
-.rf-wrap:hover .rf-paper,.rf-wrap:focus-within .rf-paper{transform:translateY(-30px) rotate(-5deg);filter:blur(0)}
+.rf-wrap:hover .rf-paper,.rf-wrap:has(.rf-folder:focus-visible) .rf-paper{transform:translateY(-30px) rotate(-5deg);filter:blur(0)}
 .rf-tab,.rf-folder{background:linear-gradient(160deg,rgba(255,255,255,.62),rgba(255,255,255,.26));backdrop-filter:blur(18px) saturate(170%);-webkit-backdrop-filter:blur(18px) saturate(170%)}
 .rf-tab{position:absolute;z-index:1;left:0;top:2px;width:46%;height:20px;background:linear-gradient(170deg,rgba(255,255,255,.85),rgba(255,255,255,.5));clip-path:polygon(0 calc(100% + 1px),0 12px,0.5px 7.4px,2.1px 4.2px,4.2px 2.1px,7.4px 0.5px,12px 0,66.0% 0.0%,69.4% 2.8%,72.8% 10.4%,76.2% 21.6%,79.6% 35.2%,83.0% 50.0%,86.4% 64.8%,89.8% 78.4%,93.2% 89.6%,96.6% 97.2%,100.0% 100.0%,100% calc(100% + 1px));box-shadow:inset 0 1.5px 0 rgba(255,255,255,.95);pointer-events:none}
 .rf-folder{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:flex-end;width:100%;height:100%;min-height:clamp(150px,14vw,196px);padding:clamp(16px,1.8vw,24px);border:1px solid rgba(255,255,255,.78);border-top-color:rgba(255,255,255,.6);border-radius:0 22px 22px 22px;color:var(--ink);font:inherit;text-align:left;cursor:pointer;box-shadow:inset 0 1.5px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(255,255,255,.35),0 26px 44px -28px rgba(50,60,140,.5);transition:box-shadow .35s}
@@ -249,7 +249,12 @@ export default function ResearchFolders({ folders }: { folders: Folder[] }) {
         }
     }, [open])
 
-    const close = () => dialog.current?.close()
+    // closed with the mouse (the X or the backdrop): the folder lets go of focus, so it drops back into place
+    const byPointer = React.useRef(false)
+    const close = () => {
+        byPointer.current = true
+        dialog.current?.close()
+    }
     const f = open === null ? null : folders[open]
 
     return (
@@ -272,7 +277,10 @@ export default function ResearchFolders({ folders }: { folders: Folder[] }) {
                 ref={dialog}
                 aria-labelledby="rf-title"
                 onClose={() => {
-                    if (!dialog.current?.open) setOpen(null) // a quick click on the next folder may have reopened it already
+                    if (dialog.current?.open) return // a quick click on the next folder may have reopened it already
+                    setOpen(null)
+                    if (byPointer.current) (document.activeElement as HTMLElement | null)?.blur?.()
+                    byPointer.current = false
                 }}
                 onClick={(e) => {
                     if (e.target === dialog.current) close() // a click on the backdrop lands on the dialog itself

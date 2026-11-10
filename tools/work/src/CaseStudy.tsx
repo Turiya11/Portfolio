@@ -233,6 +233,11 @@ export default function CaseStudy(p: Props) {
     const [shot, setShot] = React.useState<number | null>(null)
     const lb = React.useRef<HTMLDialogElement | null>(null)
     const lbBody = React.useRef<HTMLDivElement | null>(null)
+    const lbPointer = React.useRef(false)
+    const closeLb = () => {
+        lbPointer.current = true
+        lb.current?.close()
+    }
     const thumb = (src: string) => (src.includes("framerusercontent") ? src + "?scale-down-to=1024" : src)
     const [sharp, setSharp] = React.useState<number | null>(null) // which pop-up image has its full size loaded
     React.useEffect(() => {
@@ -451,10 +456,13 @@ export default function CaseStudy(p: Props) {
                         ref={lb}
                         aria-labelledby="cs-lb-t"
                         onClose={() => {
-                            if (!lb.current?.open) setShot(null) // a quick click on the next thumbnail may have reopened it already
+                            if (lb.current?.open) return // a quick click on the next thumbnail may have reopened it already
+                            setShot(null)
+                            if (lbPointer.current) (document.activeElement as HTMLElement | null)?.blur?.() // closed with the mouse: no ring left on the thumbnail
+                            lbPointer.current = false
                         }}
                         onClick={(e) => {
-                            if (e.target === lb.current) lb.current?.close() // a click on the backdrop lands on the dialog itself
+                            if (e.target === lb.current) closeLb() // a click on the backdrop lands on the dialog itself
                         }}
                         onKeyDown={(e) => {
                             if (e.key === "ArrowRight") step(1)
@@ -474,7 +482,7 @@ export default function CaseStudy(p: Props) {
                                     <button type="button" className="cs-lb-btn" aria-label="Next image" disabled={shot === p.process.length - 1} onClick={() => step(1)}>
                                         ›
                                     </button>
-                                    <button type="button" className="cs-lb-btn" aria-label="Close" onClick={() => lb.current?.close()}>
+                                    <button type="button" className="cs-lb-btn" aria-label="Close" onClick={closeLb}>
                                         ✕
                                     </button>
                                 </header>
