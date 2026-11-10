@@ -9,9 +9,9 @@ const STOPS = [
     { t: 0, name: "Dawn", minutes: 370, top: "#7F8BD0", mid: "#C9AEDF", low: "#FFD3C4", lit: "#FFF0F1", shade: "#B9A3D9", haze: "#FFC9B5", sun: "#FFDDBD", sunX: 18, sunY: 84, glow: 0.75, moon: 0, stars: 0.12, ink: "#221A38", soft: "#4A3F66", accent: "#7046C8" },
     { t: 0.22, name: "Day", minutes: 690, top: "#A6B0F1", mid: "#CBC5F4", low: "#F1EAFB", lit: "#FFFFFF", shade: "#C6BFEE", haze: "#FFFFFF", sun: "#FFFFFF", sunX: 74, sunY: 14, glow: 0.55, moon: 0, stars: 0, ink: "#1D1932", soft: "#4D4870", accent: "#5A46C6" },
     { t: 0.45, name: "Golden hour", minutes: 1000, top: "#96A0E2", mid: "#E4C1D8", low: "#FFE0B6", lit: "#FFF3DF", shade: "#D6A8C4", haze: "#FFD8A0", sun: "#FFE6A8", sunX: 80, sunY: 58, glow: 0.85, moon: 0, stars: 0, ink: "#281A33", soft: "#5A4560", accent: "#8A3CA6" },
-    { t: 0.65, name: "Sunset", minutes: 1120, top: "#4D56A5", mid: "#C579AD", low: "#FF9E7C", lit: "#FFBA9E", shade: "#8A5A9E", haze: "#FF8C6B", sun: "#FFB27A", sunX: 70, sunY: 90, glow: 1, moon: 0, stars: 0.05, ink: "#24153A", soft: "#47294F", accent: "#4B2A8F" },
-    { t: 0.82, name: "Dusk", minutes: 1170, top: "#262A65", mid: "#645496", low: "#D2869F", lit: "#C69AC4", shade: "#4A3E7A", haze: "#E28AA0", sun: "#FF9C8E", sunX: 66, sunY: 106, glow: 0.45, moon: 0.35, stars: 0.55, ink: "#F7F2FF", soft: "#DCD3F2", accent: "#FFC6DA" },
-    { t: 1, name: "Night", minutes: 1380, top: "#0D1033", mid: "#222759", low: "#43397A", lit: "#7C76B6", shade: "#2B2A5C", haze: "#5B4B95", sun: "#FF9C8E", sunX: 64, sunY: 120, glow: 0, moon: 1, stars: 1, ink: "#F4F1FF", soft: "#C9C3EA", accent: "#BBA9FF" },
+    { t: 0.65, name: "Sunset", minutes: 1120, top: "#4D56A5", mid: "#C579AD", low: "#FF9E7C", lit: "#FFBA9E", shade: "#8A5A9E", haze: "#FF8C6B", sun: "#FFB27A", sunX: 70, sunY: 90, glow: 1, moon: 0, stars: 0.05, ink: "#FFFFFF", soft: "#F4ECF8", accent: "#FFE2B8" },
+    { t: 0.82, name: "Dusk", minutes: 1170, top: "#262A65", mid: "#645496", low: "#D2869F", lit: "#C69AC4", shade: "#4A3E7A", haze: "#E28AA0", sun: "#FF9C8E", sunX: 66, sunY: 106, glow: 0.45, moon: 0.35, stars: 0.55, ink: "#FFFFFF", soft: "#F1EAFB", accent: "#FFD3E3" },
+    { t: 1, name: "Night", minutes: 1380, top: "#0D1033", mid: "#222759", low: "#43397A", lit: "#7C76B6", shade: "#2B2A5C", haze: "#5B4B95", sun: "#FF9C8E", sunX: 64, sunY: 120, glow: 0, moon: 1, stars: 1, ink: "#FFFFFF", soft: "#E6E1F7", accent: "#CBBDFF" },
 ]
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
@@ -19,6 +19,12 @@ const hex = (c) => {
     const n = parseInt(c.slice(1), 16)
     return [(n >> 16) & 255, (n >> 8) & 255, n & 255]
 }
+// relative luminance (0 dark .. 1 light) of a "#rrggbb" colour
+const luminance = ([r, g, b]) => {
+    const lin = (v) => ((v /= 255) <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)
+    return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
+}
+const TEXT = ["ink", "soft", "accent"]
 const mix = (a, b, k) => {
     const x = hex(a)
     const y = hex(b)
@@ -36,6 +42,15 @@ function skyAt(t) {
     for (const key of Object.keys(a)) {
         if (key === "name" || key === "t") continue
         out[key] = typeof a[key] === "number" ? a[key] + (b[key] - a[key]) * k : mix(a[key], b[key], k)
+    }
+    // text never blends between dark and white (the halfway grey is unreadable): it switches,
+    // depending on how dark the sky is behind the words (the upper-middle of the gradient)
+    if (luminance(hex(a.ink)) > 0.5 !== luminance(hex(b.ink)) > 0.5) {
+        const at = (key) => hex(a[key]).map((v, i) => v + (hex(b[key])[i] - v) * k)
+        const sky = at("top").map((v, i) => v + (at("mid")[i] - v) * 0.6)
+        const wantWhite = luminance(sky) < 0.22
+        const src = luminance(hex(a.ink)) > 0.5 === wantWhite ? a : b
+        for (const key of TEXT) out[key] = src[key]
     }
     return out
 }
