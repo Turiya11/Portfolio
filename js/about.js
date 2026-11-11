@@ -544,7 +544,9 @@ let audio = null
 let synth = null
 const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`
 
-// stand-in until a real song is added: a soft music-box loop, plus the crackle every record gets
+// stand-in until a real song is added: a soft music-box loop, plus the crackle every record gets.
+// Only used without a song: on an iPhone, Web Audio running next to the song can put the page in the
+// "ambient" sound mode, which the silent switch mutes, song and all
 function makeSynth() {
     const ctx = new (window.AudioContext || window.webkitAudioContext)()
     const out = ctx.createGain()
@@ -560,7 +562,6 @@ function makeSynth() {
     hiss.loop = true
     hiss.connect(out)
     hiss.start()
-    if (CONTENT.song.src) return { ctx, out, tune: false }
     // tune
     const NOTES = [392, 493.88, 587.33, 659.25, 587.33, 493.88, 440, 523.25, 659.25, 783.99, 659.25, 523.25, 349.23, 440, 523.25, 659.25, 523.25, 440, 392, 493.88, 587.33, 493.88, 392, 293.66]
     const beat = 0.34
@@ -595,15 +596,19 @@ function setPlaying(on) {
     root.classList.toggle("is-playing", on)
     playBtn.setAttribute("aria-pressed", String(on))
     playBtn.setAttribute("aria-label", `${on ? "Pause" : "Play"} ${CONTENT.song.title}`)
-    if (on) {
+    if (on && CONTENT.song.src) {
+        // start the song first, while the click still counts as permission to play sound
+        if ("audioSession" in navigator) navigator.audioSession.type = "playback" // plays through the silent switch, like a music app
+        audio ||= Object.assign(new Audio(CONTENT.song.src), { loop: true, volume: 0 })
+        audio.play().catch((err) => {
+            console.warn("The song didn't play:", err)
+            setPlaying(false)
+            clock.textContent = "couldn't play the song, tap again"
+        })
+    } else if (on) {
         synth ||= makeSynth()
         synth.ctx.resume()
         synth.out.gain.setTargetAtTime(0.7, synth.ctx.currentTime, 0.4)
-        if (CONTENT.song.src) {
-            audio ||= Object.assign(new Audio(CONTENT.song.src), { loop: true, preservesPitch: false, volume: 0.8 })
-            audio.playbackRate = 0.6
-            audio.play().catch(() => setPlaying(false))
-        }
     } else {
         if (synth) synth.out.gain.setTargetAtTime(0, synth.ctx.currentTime, 0.25)
         setTimeout(() => !playing && synth?.ctx.suspend(), 900)
@@ -621,8 +626,9 @@ function spin(now) {
     }
     disc.style.transform = `rotate(${angle.toFixed(2)}deg)`
     if (audio) {
-        // the song slides up to pitch as the platter gets going, and sags as it slows
-        if (!grab && playing) audio.playbackRate = clamp(0.6 + 0.4 * speed, 0.6, 1)
+        // the song fades up as the platter gets going and fades as it slows (phones keep their own volume).
+        // Not by changing its speed: Safari stalls a song every time its playback rate changes
+        audio.volume = clamp(0.8 * speed, 0, 0.8)
         if (!playing && speed < 0.3 && !audio.paused) audio.pause()
         if (audio.duration) {
             bar.style.transform = `scaleX(${(audio.currentTime / audio.duration).toFixed(4)})`
@@ -657,19 +663,19 @@ vinyl.addEventListener("pointermove", (e) => {
     angle += (d * 180) / Math.PI
     if (audio?.duration) audio.currentTime = clamp(audio.currentTime + (d / (Math.PI * 2)) * 1.8, 0, audio.duration)
 })
+// play and pause happen on the click, not the pointer: a click is what every browser (iPhones especially)
+// accepts as permission to start sound, it still comes when a tap wobbles a little, and Enter and Space make one too
+let scratched = false
 const drop = () => {
     if (!grab) return
-    const click = grab.moved < 0.06
+    scratched = grab.moved >= 0.06
     grab = null
-    if (click) setPlaying(!playing)
 }
 vinyl.addEventListener("pointerup", drop)
-vinyl.addEventListener("pointercancel", () => (grab = null))
-vinyl.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault()
-        setPlaying(!playing)
-    }
+vinyl.addEventListener("pointercancel", drop)
+vinyl.addEventListener("click", () => {
+    if (!scratched) setPlaying(!playing)
+    scratched = false
 })
 playBtn.addEventListener("click", () => setPlaying(!playing))
 
