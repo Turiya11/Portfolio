@@ -312,3 +312,22 @@ if (hash.has("awake")) {
     pinned = true
     wake()
 }
+
+/* ------------------------------ hover cues ------------------------------ */
+
+// the nudge under the chips and the butterflies' pulse step back once a visitor has found
+// something to hover (the name, "Product Designer" or a butterfly); remembered for the visit
+const EXPLORED = "hero-explored"
+const explored = () => {
+    hero.classList.add("is-explored")
+    try {
+        sessionStorage.setItem(EXPLORED, "1")
+    } catch {}
+}
+try {
+    if (sessionStorage.getItem(EXPLORED)) hero.classList.add("is-explored")
+} catch {}
+for (const type of ["pointerover", "focusin", "click"])
+    hero.addEventListener(type, (e) => {
+        if (!hero.classList.contains("is-explored") && e.target.closest?.(".name, .hl, .bf")) explored()
+    })

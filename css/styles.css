@@ -622,6 +622,73 @@ button {
     }
 }
 
+/* ------------------------------ hover cues: there's more to find in the hero ------------------------------ */
+
+/* a soft dotted underline on the words that open something; it fades as the highlight sweeps in */
+.name,
+.hl {
+    text-decoration-line: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 0.07em;
+    text-underline-offset: 0.16em;
+    text-decoration-color: color-mix(in srgb, var(--hero-accent) 55%, transparent);
+    text-decoration-skip-ink: none;
+}
+.name:hover,
+.name:focus,
+.hl:hover {
+    text-decoration-color: transparent;
+}
+/* the handwritten nudge under the chips, in the same voice as "hover the window" */
+.nudge {
+    margin: 18px 0 0;
+    font-family: var(--hand);
+    font-size: var(--t-hand-sm);
+    font-weight: 500;
+    color: var(--hero-soft);
+    transition:
+        opacity 0.6s ease,
+        color var(--ink-time) ease;
+}
+.nudge::before {
+    content: "✦ ";
+    color: var(--hero-accent);
+}
+/* the hero's butterflies: a faint ring pulses now and then, each on its own beat */
+.butterflies .bf__hit::before {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(30, 144, 255, 0.4);
+    animation: bf-beckon 4.2s ease-out infinite;
+}
+.butterflies .bf:nth-child(2) .bf__hit::before {
+    animation-delay: 1.4s;
+}
+.butterflies .bf:nth-child(3) .bf__hit::before {
+    animation-delay: 2.8s;
+}
+.butterflies .bf:nth-child(4) .bf__hit::before {
+    animation-delay: 0.7s;
+}
+@keyframes bf-beckon {
+    0% { box-shadow: 0 0 0 0 rgba(30, 144, 255, 0.4); }
+    45%, 100% { box-shadow: 0 0 0 14px rgba(30, 144, 255, 0); }
+}
+/* once something's been found, the nudges step back */
+.hero.is-explored .nudge {
+    opacity: 0;
+}
+.hero.is-explored .butterflies .bf__hit::before {
+    animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+    .butterflies .bf__hit::before {
+        animation: none;
+    }
+}
+
 /* ------------------------------ butterflies ------------------------------ */
 /* port of the Framer ButterflyHero: 3D wings, Liquid Glass details card */
 
