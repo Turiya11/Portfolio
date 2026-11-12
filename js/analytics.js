@@ -22,6 +22,9 @@
     // Microsoft Clarity: heatmaps and session recordings (clarity.microsoft.com > Settings > Setup).
     var CLARITY = "zcennqpbp2"
     if (CLARITY) {
+        // By default Clarity hides every digit in recordings and heatmaps (years show as "▫▫▫▫").
+        // The site's text is public, so show it; the visitor-notes form stays masked (data-clarity-mask).
+        document.documentElement.setAttribute("data-clarity-unmask", "true")
         window.clarity =
             window.clarity ||
             function () {
