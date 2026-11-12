@@ -18,4 +18,18 @@
     }
     window.gtag("js", new Date())
     window.gtag("config", ID)
+
+    // Microsoft Clarity: heatmaps and session recordings (clarity.microsoft.com > Settings > Setup).
+    var CLARITY = "zcennqpbp2"
+    if (CLARITY) {
+        window.clarity =
+            window.clarity ||
+            function () {
+                ;(window.clarity.q = window.clarity.q || []).push(arguments)
+            }
+        var c = document.createElement("script")
+        c.async = true
+        c.src = "https://www.clarity.ms/tag/" + CLARITY
+        document.head.appendChild(c)
+    }
 })()
