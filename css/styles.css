@@ -77,6 +77,12 @@ button {
     filter: url(#goo);
     pointer-events: none;
 }
+/* the goo only shows while the pill glides between hovered tabs; without a mouse it's just a filter to redraw on every scroll */
+@media (hover: none) {
+    .nav__goo {
+        filter: none;
+    }
+}
 .nav__pill {
     position: absolute;
     top: 6px;
@@ -5124,6 +5130,25 @@ button.ab-day {
 @media (max-width: 899px) {
     .about {
         padding-top: 70px;
+    }
+    /* phones: the folders sit in a plain stack and scroll normally. Sticking, sinking and frosted glass
+       on top of each other flickered on them (the drawer effect stays on wider screens) */
+    .ab-folder {
+        position: relative;
+        top: auto;
+        margin-bottom: 22px;
+    }
+    .ab-folder__in {
+        opacity: 1;
+        transform: none;
+    }
+    .ab-folder.is-buried .ab-folder__in {
+        visibility: visible;
+    }
+    .ab-folder__glass {
+        background-color: color-mix(in srgb, var(--tint) 9%, rgba(255, 255, 255, 0.84));
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
     }
     .ab-head {
         grid-template-columns: 1fr;

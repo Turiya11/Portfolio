@@ -381,7 +381,8 @@ function layoutDrawer() {
     drawThread()
 }
 
-// as the next folder slides over, the one beneath sinks back and fades, so only the sky shows through at rest
+// as the next folder slides over, the one beneath sinks back and fades, so only the sky shows through at rest.
+// Phones get a plain stack instead (see the 899px styles): sticking, fading, frosted folders flickered on them
 let scrollRaf = 0
 function onScroll() {
     scrollRaf = 0
@@ -391,7 +392,7 @@ function onScroll() {
         const r = f.getBoundingClientRect()
         if (r.top < vh * 0.55) active = i
         // 0 while the next folder is below the screen, 1 once it has reached its stick point
-        const next = folders[i + 1]
+        const next = innerWidth < 900 ? null : folders[i + 1]
         const stop = next ? parseFloat(next.style.getPropertyValue("--stick")) : 0
         const cover = next ? clamp(1 - (next.getBoundingClientRect().top - stop) / (vh - stop), 0, 1) : 0
         f.style.setProperty("--cover", cover.toFixed(3))
