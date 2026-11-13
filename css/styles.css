@@ -2434,7 +2434,7 @@ button {
 }
 @media (max-width: 720px) {
     .garden {
-        --soil: 84px;
+        --soil: 96px; /* room for the two-line credit and the links */
         height: 100svh;
         min-height: 700px;
     }
@@ -2453,7 +2453,11 @@ button {
         justify-content: center;
     }
     .gf-credit {
-}
+        text-align: center; /* the notice and the chai line each get their own line */
+    }
+    .gf-credit > span {
+        display: block;
+    }
     .gf-links {
         gap: 20px;
     }
