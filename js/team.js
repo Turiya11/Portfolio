@@ -118,7 +118,7 @@ function layout() {
     const W = stage.clientWidth
     const wide = W >= 820
     // one piece cell, in pixels; the board is two of them square
-    const cell = wide ? clamp(Math.min(W * 0.155, (innerHeight - 350) / 2.4), 118, 190) : clamp((W - 24) / (2 + (2 * PAD) / S), 110, 180)
+    const cell = wide ? clamp(Math.min(W * 0.155, (innerHeight - 380) / 2.4), 118, 190) : clamp((W - 24) / (2 + (2 * PAD) / S), 110, 180)
     unit = cell / S
     const E = (S + PAD * 2) * unit // a piece's box, knobs included
     const sc = wide ? 0.92 : 0.8 // loose pieces lie a little smaller until you pick one up
