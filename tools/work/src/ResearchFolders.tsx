@@ -59,6 +59,15 @@ const CSS = `
 .rf-head h3{margin:0;font-size:var(--t-h2);font-weight:600;letter-spacing:var(--ls-h2);line-height:1.15}
 .rf-x{flex:none;width:40px;height:40px;border:0;border-radius:50%;background:rgba(30,35,60,.08);color:var(--ink);font-size:19px;line-height:1;cursor:pointer}
 .rf-x:hover{background:rgba(30,35,60,.15)}
+.rf-x:disabled{opacity:.35;cursor:default}
+.rf-head h3{flex:1;min-width:0}
+.rf-count{flex:none;font-size:var(--t-small);font-weight:500;color:var(--quiet)}
+.rf-foot{flex:none;display:flex;justify-content:space-between;gap:12px;padding:12px clamp(18px,3vw,32px) 14px;border-top:1px solid rgba(30,35,60,.1)}
+.rf-step{display:flex;flex-direction:column;gap:2px;max-width:48%;min-width:0;padding:10px 16px;border:0;border-radius:14px;background:rgba(30,35,60,.05);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:background .2s}
+.rf-step:hover{background:rgba(30,35,60,.1)}
+.rf-step small{font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--ai)}
+.rf-step b{font-size:var(--t-small);font-weight:600;line-height:1.35}
+.rf-step.next{margin-left:auto;align-items:flex-end;text-align:right}
 .rf-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:clamp(18px,3vw,32px);display:flex;flex-direction:column;gap:18px}
 .rf-body:focus{outline:none}
 .rf-body > *{flex-shrink:0}
@@ -99,6 +108,7 @@ const CSS = `
 .rf-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
 .rf-p-col p{margin:0 0 7px;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--quiet)}
 @media (max-width:760px){
+  .rf-count,.rf-head .rf-nav{display:none}
   .rf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .rf-modal{width:100vw;max-height:100dvh;height:100dvh;border-radius:0}
 }
@@ -256,6 +266,9 @@ export default function ResearchFolders({ folders }: { folders: Folder[] }) {
         dialog.current?.close()
     }
     const f = open === null ? null : folders[open]
+    const go = (d: number) => setOpen((i) => (i === null ? i : Math.min(folders.length - 1, Math.max(0, i + d))))
+    const prev = open !== null && open > 0 ? folders[open - 1] : null
+    const next = open !== null && open < folders.length - 1 ? folders[open + 1] : null
 
     return (
         <div>
@@ -285,11 +298,25 @@ export default function ResearchFolders({ folders }: { folders: Folder[] }) {
                 onClick={(e) => {
                     if (e.target === dialog.current) close() // a click on the backdrop lands on the dialog itself
                 }}
+                onKeyDown={(e) => {
+                    if ((e.target as HTMLElement).closest(".rf-tablewrap")) return // left and right scroll wide tables
+                    if (e.key === "ArrowRight") go(1)
+                    if (e.key === "ArrowLeft") go(-1)
+                }}
             >
                 {f ? (
                     <>
                         <header className="rf-head">
                             <h3 id="rf-title">{f.title}</h3>
+                            <small className="rf-count">
+                                {(open ?? 0) + 1} / {folders.length}
+                            </small>
+                            <button type="button" className="rf-x rf-nav" aria-label="Previous folder" disabled={!prev} onClick={() => go(-1)}>
+                                ‹
+                            </button>
+                            <button type="button" className="rf-x rf-nav" aria-label="Next folder" disabled={!next} onClick={() => go(1)}>
+                                ›
+                            </button>
                             <button type="button" className="rf-x" aria-label="Close" onClick={close}>
                                 ✕
                             </button>
@@ -297,6 +324,20 @@ export default function ResearchFolders({ folders }: { folders: Folder[] }) {
                         <div className="rf-body" ref={body} tabIndex={0}>
                             <Blocks blocks={f.blocks} />
                         </div>
+                        <footer className="rf-foot">
+                            {prev ? (
+                                <button type="button" className="rf-step" onClick={() => go(-1)}>
+                                    <small>← Previous</small>
+                                    <b>{prev.title}</b>
+                                </button>
+                            ) : null}
+                            {next ? (
+                                <button type="button" className="rf-step next" onClick={() => go(1)}>
+                                    <small>Next →</small>
+                                    <b>{next.title}</b>
+                                </button>
+                            ) : null}
+                        </footer>
                     </>
                 ) : null}
             </dialog>
