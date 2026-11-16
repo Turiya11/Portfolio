@@ -18,6 +18,7 @@ const SELECTED = [
         tags: ["ITSM", "Design systems", "Enterprise"],
         href: "work/3tflow/",
         nda: true,
+        lock: true, // parked under NDA: the card closes into a glass lock before the NDA page
         scene: "tflow",
     },
     {
@@ -120,8 +121,62 @@ const work = document.getElementById("work")
 work.querySelector(".pj-grid").innerHTML = SELECTED.map(
     (p) =>
         (p.group ? `<h3 class="pj-group">${esc(p.group)}</h3>` : "") +
-        `<a class="pj-card${p.wide ? " is-wide" : ""}" href="${esc(p.href)}" aria-label="${esc(p.title)}${p.nda ? " — under NDA" : ""}: read more">${media(p)}${body(p)}</a>`
+        `<a class="pj-card${p.wide ? " is-wide" : ""}" href="${esc(p.href)}"${p.lock ? " data-lock" : ""} aria-label="${esc(p.title)}${p.nda ? " — under NDA" : ""}: read more">${media(p)}${body(p)}</a>`
 ).join("")
+
+/* ------------------------------ an NDA card: a glass lock appears over it, then grows into the NDA page ------------------------------ */
+
+const LOCK_CSS = `
+.nda-veil{position:fixed;inset:0;z-index:200;pointer-events:none;background:rgba(234,243,255,0);backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0)}
+.nda-lock{position:fixed;z-index:201;display:grid;place-items:center;border-radius:30px;border:1px solid rgba(255,255,255,.9);background:linear-gradient(150deg,rgba(255,255,255,.78),rgba(255,255,255,.36));backdrop-filter:blur(20px) saturate(170%);-webkit-backdrop-filter:blur(20px) saturate(170%);box-shadow:inset 0 1.5px 0 #fff,inset 0 -1px 0 rgba(255,255,255,.4),0 30px 60px -24px rgba(40,50,120,.45);color:rgb(58,61,170);pointer-events:none}
+.nda-lock svg{width:44%;height:44%;overflow:visible}
+.nda-lock .shackle{transform-box:fill-box;transform-origin:50% 100%}`
+const LOCK_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10.5" width="16" height="10.5" rx="2.5"/><path class="shackle" d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.3" fill="currentColor" stroke="none"/></svg>`
+
+function lockThenGo(card) {
+    const href = card.href
+    const calm = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    if (calm || !document.body.animate) return (location.href = href)
+    if (!document.getElementById("nda-lock-css")) document.head.insertAdjacentHTML("beforeend", `<style id="nda-lock-css">${LOCK_CSS}</style>`)
+    const r = card.getBoundingClientRect()
+    const size = Math.min(132, r.width * 0.4, r.height * 0.6)
+    const veil = document.createElement("div")
+    veil.className = "nda-veil"
+    const lock = document.createElement("div")
+    lock.className = "nda-lock"
+    lock.innerHTML = LOCK_SVG
+    Object.assign(lock.style, { left: r.left + r.width / 2 - size / 2 + "px", top: r.top + r.height / 2 - size / 2 + "px", width: size + "px", height: size + "px" })
+    document.body.append(veil, lock)
+    const ease = "cubic-bezier(.2,.85,.25,1)"
+    // 1. the page frosts over and the glass lock settles in, shackle open
+    veil.animate([{ background: "rgba(234,243,255,0)", backdropFilter: "blur(0px)", webkitBackdropFilter: "blur(0px)" }, { background: "rgba(234,243,255,.35)", backdropFilter: "blur(14px)", webkitBackdropFilter: "blur(14px)" }], { duration: 420, easing: ease, fill: "forwards" })
+    lock.animate([{ opacity: 0, transform: "scale(.6)" }, { opacity: 1, transform: "scale(1)" }], { duration: 420, easing: "cubic-bezier(.3,1.4,.5,1)", fill: "forwards" })
+    // 2. the shackle clicks shut
+    lock.querySelector(".shackle").animate([{ transform: "translateY(-3px) rotate(-14deg)" }, { transform: "translateY(-3px) rotate(-14deg)", offset: 0.55 }, { transform: "none" }], { duration: 760, easing: ease, fill: "forwards" })
+    // 3. the lock grows into the page, which takes over from the same glass
+    const grow = lock.animate(
+        [
+            { left: lock.style.left, top: lock.style.top, width: size + "px", height: size + "px", borderRadius: "30px" },
+            { left: "0px", top: "0px", width: innerWidth + "px", height: innerHeight + "px", borderRadius: "0px" },
+        ],
+        { duration: 460, delay: 820, easing: "cubic-bezier(.7,0,.25,1)", fill: "forwards" }
+    )
+    lock.querySelector("svg").animate([{ opacity: 1 }, { opacity: 0.85 }], { duration: 460, delay: 820, fill: "forwards" })
+    try {
+        sessionStorage.setItem("nda-lock", "1")
+    } catch (e) {}
+    grow.finished.then(() => (location.href = href)).catch(() => (location.href = href))
+}
+work.addEventListener("click", (e) => {
+    const card = e.target.closest("a.pj-card[data-lock]")
+    if (!card || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    e.preventDefault()
+    lockThenGo(card)
+})
+// coming back with the browser's back button: clear the lock left over from leaving
+window.addEventListener("pageshow", (e) => {
+    if (e.persisted) document.querySelectorAll(".nda-veil,.nda-lock").forEach((n) => n.remove())
+})
 
 /* ------------------------------ passion projects: open a detail view ------------------------------ */
 
