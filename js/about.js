@@ -395,8 +395,14 @@ function onScroll() {
         const next = folders[i + 1]
         const stop = next ? parseFloat(next.style.getPropertyValue("--stick")) : 0
         const cover = next ? clamp(1 - (next.getBoundingClientRect().top - stop) / (vh - stop), 0, 1) : 0
-        f.style.setProperty("--cover", cover.toFixed(3))
-        f.classList.toggle("is-buried", cover >= 1)
+        // only write what changed, so a still folder never gets restyled
+        const c = cover.toFixed(3)
+        if (f.style.getPropertyValue("--cover") !== c) f.style.setProperty("--cover", c)
+        const buried = cover >= 1
+        if (f.classList.contains("is-buried") !== buried) {
+            f.classList.toggle("is-buried", buried)
+            f.querySelector(".ab-folder__in").inert = buried // out of reach for keyboards and screen readers, but still painted
+        }
         if (r.top < vh * 0.72) f.classList.add("is-in")
     })
     if (root.dataset.at !== String(active)) {

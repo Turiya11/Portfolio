@@ -1851,7 +1851,8 @@ button {
     background: var(--paper);
     font-family: var(--sans);
 }
-/* pastel sky with wispy clouds (SVG noise, nothing to load) */
+/* pastel sky with wispy clouds. The clouds are a pre-rendered image: drawn live from SVG noise,
+   Safari took over a second to paint them and left the footer blank while it did */
 .gf-sky {
     position: absolute;
     inset: -40px 0 0;
@@ -1862,13 +1863,17 @@ button {
     -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%);
     mask-image: linear-gradient(180deg, transparent 0%, #000 18%);
     transform: translateY(calc((1 - var(--p, 1)) * -40px));
+    will-change: transform;
 }
 .gf-clouds {
     position: absolute;
     top: 0;
     left: 50%;
+    width: 2600px;
+    height: 1000px;
     margin-left: -1300px;
     max-width: none;
+    will-change: transform;
     animation: gfDrift 110s ease-in-out infinite alternate;
 }
 /* hills and glass shapes drift into place with scroll (--p, set by garden.js) */
@@ -1881,6 +1886,7 @@ button {
     min-height: 110px;
     pointer-events: none;
     transform: translateY(calc((1 - var(--p, 1)) * var(--from)));
+    will-change: transform;
 }
 .gf-hill svg {
     display: block;
@@ -1894,6 +1900,7 @@ button {
     height: var(--s);
     pointer-events: none;
     transform: translateY(calc(var(--from) + (var(--to) - var(--from)) * var(--p, 1))) rotate(calc(var(--spin) * var(--p, 1)));
+    will-change: transform;
 }
 .gf-shape i {
     display: block;
@@ -1920,6 +1927,7 @@ button {
     padding: 0 24px;
     pointer-events: none;
     transform: translateY(calc((1 - var(--p, 1)) * 24px));
+    will-change: transform;
 }
 .gf-eyebrow {
     margin: 0;
@@ -3526,9 +3534,12 @@ button {
     opacity: clamp(0, calc(1.3 - var(--cover, 0) * 1.5), 1);
     transform: translateY(calc(var(--cover, 0) * -18px)) scale(calc(1 - var(--cover, 0) * 0.025));
     transform-origin: 50% 0;
+    will-change: transform, opacity; /* its own layer: Safari fades and sinks it without repainting it every frame */
 }
+/* a covered folder is already at opacity 0. It stays painted (about.js makes it inert instead of hiding it),
+   so scrolling back up never waits for Safari to redraw it */
 .ab-folder.is-buried .ab-folder__in {
-    visibility: hidden;
+    pointer-events: none;
 }
 .ab-folder__head {
     display: flex;
@@ -5161,6 +5172,7 @@ button.ab-day {
     .ab-folder__in {
         opacity: 1;
         transform: none;
+        will-change: auto;
     }
     .ab-folder.is-buried {
         visibility: hidden;
