@@ -178,7 +178,37 @@ const pipSlide = (id, slide, z, x, steps) => ({
     steps,
 })
 
+// the first sketches: the "Pip in VR — sketches & explorations" board from the Sem 7 Figma file, padded to 16:9.
+// Positions are in the 1920 px frame; the camera takes the eight sketches two at a time.
+const vr = (x, y) => [x * 1.2, y * 1.2] // read off the board at 1600 px wide
+const vrr = (x, y, w, h) => [x * 1.2, y * 1.2, w * 1.2, h * 1.2]
+const pipSketches = {
+    id: "pip-sketches",
+    kind: "desktop",
+    fw: 1920,
+    fh: 1080,
+    W: 1600,
+    H: 900,
+    bitrate: 2400000,
+    accent: "#7C4DE6",
+    shots: { s: SITE + "pip/vr-sketches.jpg" },
+    first: "s",
+    start: vr(980, 560),
+    steps: [
+        { move: vr(330, 130), ring: vrr(46, 106, 562, 46), hold: 0.8 },
+        { move: vr(180, 264), z: 1.8, at: vr(414, 378), ring: vrr(56, 250, 246, 26), hold: 0.7 },
+        { move: vr(548, 264), ring: vrr(442, 250, 206, 26), hold: 0.6 },
+        { move: vr(925, 262), z: 1.8, at: vr(1184, 378), ring: vrr(826, 249, 196, 26), hold: 0.6 },
+        { move: vr(1310, 264), ring: vrr(1209, 250, 196, 26), hold: 0.6 },
+        { move: vr(110, 556), z: 1.8, at: vr(414, 668), ring: vrr(58, 543, 104, 26), hold: 0.6 },
+        { move: vr(522, 556), ring: vrr(442, 543, 160, 26), hold: 0.6 },
+        { move: vr(938, 555), z: 1.8, at: vr(1184, 668), ring: vrr(827, 542, 218, 26), hold: 0.6 },
+        { move: vr(1316, 556), ring: vrr(1209, 543, 210, 26), hold: 0.8 },
+    ],
+}
+
 const ppScenes = [
+    pipSketches,
     pipSlide("pip-lofi", "slide-19", 1.67, 590, [
         { move: pp(212, 784), ring: pr(94, 768, 235, 32), hold: 0.6 },
         { move: pp(527, 772), ring: pr(409, 756, 235, 32), hold: 0.5 },

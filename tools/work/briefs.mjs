@@ -261,9 +261,10 @@ export const pip = {
             { label: "One thought at a time", text: "In the clutter experiment, a busy screen made it harder to take in what mattered. Focus Mode moves into a fully virtual space, so only the chosen thought is left." },
         ],
     },
-    didNote: "The first two are walkthroughs of the design screens. The rest are recorded from the working prototypes: Three.js with WebXR, and Meta Quest with hand tracking.",
+    didNote: "The first three are walkthroughs of the sketches and design screens. The rest are recorded from the working prototypes: Three.js with WebXR, and Meta Quest with hand tracking.",
     did: [
-        { lead: "I sketched the structure first:", text: "capture, the orbit, the card and the MR check-in, as mobile flows.", clips: [clip("pip-lofi", "Moving through the lo-fi wireframes")] },
+        { lead: "I started by sketching Pip in VR:", text: "where Pip lives in the room, how you grab a thought without a screen, and how resurfacing stays gentle.", clips: [clip("pip-sketches", "Moving through the VR exploration sketches")] },
+        { lead: "Next, the structure:", text: "capture, the orbit, the card and the MR check-in, as mobile flows.", clips: [clip("pip-lofi", "Moving through the lo-fi wireframes")] },
         { lead: "Then the full flow:", text: "seven steps, from choosing your Pip to parking a new thought.", clips: [clip("pip-final", "Moving through the hi-fi flow")] },
         { lead: "You park a thought in seconds:", text: "type it and move on, without organising it.", clips: [clip("pip-capture", "Parking a thought in the web prototype")] },
         { lead: "Pip appears in the room,", text: "with your thoughts orbiting as glowing orbs.", clips: [clip("pip-step-in", "Pip in mixed reality (passthrough) on Meta Quest")] },
