@@ -897,6 +897,20 @@ button {
     line-height: 1.5;
     color: #4a4a4a;
 }
+/* over a dark sky (Sunset to Night, once the sky is showing) the glass cards are dark too, so their text turns white */
+.hero.is-lit.is-dark-sky .bf__title,
+.hero.is-lit.is-dark-sky .name-card__text b {
+    color: #fff;
+}
+.hero.is-lit.is-dark-sky .bf__detail,
+.hero.is-lit.is-dark-sky .name-card__text {
+    color: rgba(255, 255, 255, 0.86);
+}
+.hero.is-lit.is-dark-sky .bf__card,
+.hero.is-lit.is-dark-sky .name-card {
+    /* a touch more shade behind the white text */
+    background-color: rgba(20, 18, 48, 0.28);
+}
 
 /* ------------------------------ time bar ------------------------------ */
 

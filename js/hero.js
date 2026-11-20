@@ -129,6 +129,9 @@ function paint() {
     st.setProperty("--moon", s.moon)
     st.setProperty("--stars", s.stars)
     st.setProperty("--sky-ink", s.ink)
+    // a dark sky (white text): the glass cards over it switch to white text too
+    const ink = s.ink.startsWith("#") ? hex(s.ink) : s.ink.match(/\d+/g).map(Number)
+    hero.classList.toggle("is-dark-sky", luminance(ink) > 0.5)
     st.setProperty("--sky-soft", s.soft)
     st.setProperty("--sky-accent", s.accent)
     document.documentElement.style.setProperty("--logo-ink", s.ink)
