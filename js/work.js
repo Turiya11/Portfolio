@@ -14,6 +14,7 @@ const SELECTED = [
         group: "Internships",
         meta: "2026 - Internship · SSK Technologies",
         title: "3TFlow",
+        domain: "it",
         text: "End-to-end flows across 2000+ ITSM screens for 5 user roles — ticket assignment cut from 6 steps to 3, a Reports module, SLA tracking and a design system of 4000+ components.",
         tags: ["ITSM", "Design systems", "Enterprise"],
         href: "work/3tflow/",
@@ -24,6 +25,7 @@ const SELECTED = [
     {
         meta: "2025 - Internship · Encora",
         title: "KG Hub",
+        domain: "health",
         text: "Knowledge-graph visualisations of biomedical data for clinical decision-making — 5 concepts across 4 data types, tested with 6 users. Shared in a modified form due to an NDA.",
         nda: true,
         tags: ["Data viz", "Healthcare", "Testing"],
@@ -34,6 +36,7 @@ const SELECTED = [
         group: "Academic projects & research",
         meta: "Independent concept · Automotive",
         title: "Adaptive Emotional AI Co-Pilot",
+        domain: "auto",
         text: "A driver-monitoring experience that notices fatigue and stress early, and answers with calm instead of alarms.",
         tags: ["Automotive", "HMI", "AI"],
         href: "work/copilot/",
@@ -44,6 +47,7 @@ const SELECTED = [
     {
         meta: "2026 - Academic research",
         title: "Pip",
+        domain: "xr",
         text: "A mixed reality companion that helps design students park their thoughts and come back to them at the right moment. Built on a survey of 46 students, 18 interviews and a recall experiment; prototyped for the web and Meta Quest.",
         tags: ["Mixed Reality", "Research", "Prototype"],
         href: "work/pip/",
@@ -52,6 +56,7 @@ const SELECTED = [
     {
         meta: "2026 - Academic project",
         title: "Lumi",
+        domain: "health",
         text: "Lumi is a mental health support platform designed to help mothers navigate postpartum emotional challenges through gentle self-awareness, guided emotional expression, and family-centered support systems.",
         tags: ["Mobile", "D2C", "Healthcare"],
         href: "work/lumi/",
@@ -60,6 +65,7 @@ const SELECTED = [
     {
         meta: "2025 - Academic project",
         title: "Dentigo",
+        domain: "health",
         text: "A B2B platform concept connecting dental clinics and labs — restorations, supplies and clinic–lab communication in one transparent flow.",
         tags: ["B2B", "Service design", "Web app"],
         href: "work/dentigo/",
@@ -70,6 +76,7 @@ const SELECTED = [
         group: "Something Fun – A VR experience!",
         meta: "2026 - Academic project",
         title: "Doodleverse",
+        domain: "xr",
         text: "A WebXR experience for Meta Quest 3 where children aged 12+ draw with their fingertips, wave a magic wand, and play fetch with the drawing that comes to life.",
         tags: ["VR", "Mixed Reality", "Kids"],
         href: "work/doodleverse/",
@@ -121,8 +128,111 @@ const work = document.getElementById("work")
 work.querySelector(".pj-grid").innerHTML = SELECTED.map(
     (p) =>
         (p.group ? `<h3 class="pj-group">${esc(p.group)}</h3>` : "") +
-        `<a class="pj-card${p.wide ? " is-wide" : ""}" href="${esc(p.href)}"${p.lock ? " data-lock" : ""} aria-label="${esc(p.title)}${p.nda ? " — under NDA" : ""}: read more">${media(p)}${body(p)}</a>`
+        `<a class="pj-card${p.wide ? " is-wide" : ""}" href="${esc(p.href)}" data-domain="${esc(p.domain)}"${p.wide ? " data-wide" : ""}${p.lock ? " data-lock" : ""} aria-label="${esc(p.title)}${p.nda ? " — under NDA" : ""}: read more">${media(p)}${body(p)}</a>`
 ).join("")
+
+/* ------------------------------ domain chips: recruiters filter the work by industry ------------------------------ */
+
+const DOMAINS = [
+    ["all", "All work"],
+    ["it", "IT Enterprise"],
+    ["health", "Healthcare"],
+    ["auto", "Automotive"],
+    ["xr", "XR"],
+]
+const FILTER_CSS = `
+.pj-head{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:28px;align-items:end}
+.pj-head>.pj-hint,.pj-head>.pj-heading{grid-column:1}
+/* the same bar as the top nav: a grey track, and a lavender pill that rests on the chosen domain and glides to whatever you hover */
+.pj-filter{position:relative;grid-column:2;grid-row:1/span 2;align-self:end;justify-self:end;display:flex;gap:4px;margin:0 0 10px;padding:6px;border-radius:999px;background:rgb(240,240,240)}
+.pj-filter-pill{position:absolute;top:6px;bottom:6px;left:0;width:var(--w,0px);translate:var(--x,0px) 0;border-radius:999px;background:rgb(218,222,245);box-shadow:inset 0 1px 0 rgba(255,255,255,.6);transition:translate .45s cubic-bezier(.3,1.35,.5,1),width .45s cubic-bezier(.3,1.35,.5,1);pointer-events:none}
+.pj-chip{position:relative;display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border:0;border-radius:999px;background:none;color:rgb(51,51,51);font:inherit;font-size:var(--t-small);font-weight:500;line-height:15px;white-space:nowrap;cursor:pointer;transition:color .25s}
+.pj-chip[aria-pressed="true"]{color:rgb(37,37,37)}
+.pj-chip:focus-visible{outline:none;box-shadow:0 0 0 2px var(--accent)}
+.pj-chip i{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:rgba(37,37,37,.07);font-style:normal;font-size:var(--t-label);font-weight:600;color:rgb(90,90,100);transition:background .25s,color .25s,transform .35s cubic-bezier(.3,1.6,.5,1)}
+.pj-chip[aria-pressed="true"] i{background:#fff;color:rgb(37,37,37)}
+.pj-chip:active i{transform:scale(.85)}
+.pj-chip.pj-bump i{animation:pj-bump .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pj-bump{40%{transform:scale(1.3)}}
+.pj-filter-note{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.pj-card[hidden],.pj-group[hidden]{display:none!important}
+.pj-card.pj-pop{animation:pj-pop .55s cubic-bezier(.2,.9,.25,1) both}
+@keyframes pj-pop{from{opacity:0;transform:translateY(16px) scale(.985)}to{opacity:1;transform:none}}
+@media (max-width:900px){.pj-head{display:block}.pj-filter{width:max-content;max-width:100%;margin:22px 0 0;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.pj-filter::-webkit-scrollbar{display:none}}
+@media (max-width:600px){.pj-filter{max-width:calc(100% + var(--gutter));margin-right:calc(var(--gutter) * -1);border-radius:999px 0 0 999px}.pj-chip{padding:10px 14px}}
+@media (prefers-reduced-motion:reduce){.pj-card.pj-pop,.pj-chip.pj-bump i{animation:none}.pj-filter-pill{transition:none}}`
+document.head.insertAdjacentHTML("beforeend", `<style id="pj-filter-css">${FILTER_CSS}</style>`)
+
+const cards = [...work.querySelectorAll(".pj-card")]
+const groups = [...work.querySelectorAll(".pj-group")]
+const count = (d) => (d === "all" ? cards.length : cards.filter((c) => c.dataset.domain === d).length)
+const filterBar = document.createElement("div")
+filterBar.className = "pj-filter"
+filterBar.setAttribute("role", "group")
+filterBar.setAttribute("aria-label", "Filter work by domain")
+filterBar.innerHTML =
+    `<span class="pj-filter-pill" aria-hidden="true"></span>` +
+    DOMAINS.map(([id, label]) => `<button type="button" class="pj-chip" data-domain="${id}" aria-pressed="false">${esc(label)} <i>${count(id)}</i></button>`).join("") +
+    `<p class="pj-filter-note" aria-live="polite"></p>`
+work.querySelector(".pj-head").append(filterBar)
+
+// the lavender pill, like the top nav's: it rests on the chosen chip and glides to a hovered one
+const pill = filterBar.querySelector(".pj-filter-pill")
+const pillTo = (b) => {
+    pill.style.setProperty("--x", `${b.offsetLeft}px`)
+    pill.style.setProperty("--w", `${b.offsetWidth}px`)
+}
+const chosen = () => filterBar.querySelector('.pj-chip[aria-pressed="true"]')
+filterBar.addEventListener("pointerover", (e) => {
+    const b = e.target.closest(".pj-chip")
+    if (b && e.pointerType === "mouse") pillTo(b)
+})
+filterBar.addEventListener("pointerleave", () => chosen() && pillTo(chosen()))
+filterBar.addEventListener("focusin", (e) => e.target.closest(".pj-chip") && pillTo(e.target.closest(".pj-chip")))
+filterBar.addEventListener("focusout", () => chosen() && pillTo(chosen()))
+addEventListener("resize", () => chosen() && pillTo(chosen()))
+document.fonts?.ready.then(() => chosen() && pillTo(chosen())) // chip widths change once Mona Sans loads
+
+function showDomain(d, first) {
+    if (!DOMAINS.some(([id]) => id === d)) d = "all"
+    filterBar.querySelectorAll(".pj-chip").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.domain === d)))
+    const on = filterBar.querySelector('.pj-chip[aria-pressed="true"]')
+    pillTo(on)
+    if (!first) {
+        on.classList.remove("pj-bump")
+        void on.offsetWidth
+        on.classList.add("pj-bump")
+    }
+    if (filterBar.scrollWidth > filterBar.clientWidth) filterBar.scrollTo({ left: Math.max(0, on.offsetLeft - 20), behavior: first ? "auto" : "smooth" }) // on phones the chips scroll sideways: keep the chosen one in view
+    const shown = cards.filter((c) => d === "all" || c.dataset.domain === d)
+    cards.forEach((c) => (c.hidden = !shown.includes(c)))
+    groups.forEach((g) => (g.hidden = d !== "all")) // the Internships / Academic rows only make sense for the full list
+    // filtered: cards pair up, and an odd one out spans the row; all: the original layout
+    shown.forEach((c, i) => c.classList.toggle("is-wide", d === "all" ? c.hasAttribute("data-wide") : shown.length % 2 === 1 && i === shown.length - 1))
+    if (!first)
+        shown.forEach((c, i) => {
+            c.classList.add("is-in")
+            c.classList.remove("pj-pop")
+            void c.offsetWidth
+            c.style.animationDelay = i * 60 + "ms"
+            c.classList.add("pj-pop")
+        })
+    const label = DOMAINS.find(([id]) => id === d)[1]
+    filterBar.querySelector(".pj-filter-note").textContent = d === "all" ? "" : `${shown.length} ${shown.length === 1 ? "project" : "projects"} in ${label}`
+    try {
+        const u = new URL(location.href)
+        d === "all" ? u.searchParams.delete("domain") : u.searchParams.set("domain", d)
+        history.replaceState(history.state, "", u)
+    } catch (e) {}
+}
+filterBar.addEventListener("click", (e) => {
+    const b = e.target.closest(".pj-chip")
+    if (!b) return
+    const d = b.getAttribute("aria-pressed") === "true" && b.dataset.domain !== "all" ? "all" : b.dataset.domain // tapping the active chip again clears it
+    showDomain(d)
+    if (work.getBoundingClientRect().top < 0) work.scrollIntoView({ behavior: "smooth", block: "start" })
+})
+showDomain(new URLSearchParams(location.search).get("domain") || "all", true)
 
 /* ------------------------------ an NDA card: a glass lock appears over it, then grows into the NDA page ------------------------------ */
 
