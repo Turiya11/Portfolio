@@ -45,6 +45,24 @@ const ORBIT = [
     [82, 78, -6],
     [18, 78, 5],
 ]
+// screens that slide out from behind a card on hover (1–2 per project, small copies in assets/images/timeline).
+// kind: "web" = a browser screen, "phone" = a mobile screen, "device" = a mockup that already has its frame
+const SHOTS = {
+    "UX Design Intern": [
+        { src: "kg-query.jpg", kind: "web" },
+        { src: "kg-map.jpg", kind: "web" },
+    ],
+    Dentigo: [{ src: "dentigo-orders.png", kind: "device" }],
+    Lumi: [
+        { src: "lumi-home.jpg", kind: "phone" },
+        { src: "lumi-journal.jpg", kind: "phone" },
+    ],
+    "Product Design Intern": [
+        { src: "tflow-landing.jpg", kind: "web" },
+        { src: "tflow-tickets.jpg", kind: "web" },
+    ],
+}
+
 const TRACK_END = 0.86 // the last 14% of the scroll is the sunset finale
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
 const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
@@ -113,6 +131,14 @@ function render() {
         })
         .join("")
 
+    // sits right behind the card (same box), so the screens slide out from under its glass
+    const shotsFor = (title, box) => {
+        const list = SHOTS[title]
+        if (!list) return ""
+        return `<div class="jt-shots" aria-hidden="true" style="${box}">${list
+            .map((x, k) => `<img class="jt-shot jt-shot--${x.kind} jt-shot--${list.length > 1 && k === 0 ? "a" : "b"}" src="assets/images/timeline/${x.src}" alt="" loading="lazy" decoding="async" />`)
+            .join("")}</div>`
+    }
     const cards = CONTENT.milestones
         .map((m, i) => {
             const above = isAbove(i, mobile)
@@ -120,6 +146,7 @@ function render() {
             return `<div class="jt-mark" style="left:${xs[i]}px;top:${yFn(xs[i])}px;--node:${color};--from:${above ? -24 : 24}px">
               <div class="jt-node">’${esc(m.year.slice(-2))}</div>
               <span class="jt-stem" style="height:${gap - 8}px;${above ? `bottom:${NODE_R}px` : `top:${NODE_R}px`}"></span>
+              ${shotsFor(m.title, `width:${cardW}px;left:${-cardW / 2}px;${above ? `bottom:${NODE_R + gap}px` : `top:${NODE_R + gap}px`}`)}
               <article class="jt-card${compact ? " is-compact" : ""}" style="width:${cardW}px;left:${-cardW / 2}px;${above ? `bottom:${NODE_R + gap}px` : `top:${NODE_R + gap}px`}">
                 <div class="jt-card__top"><span class="jt-kicker">${esc(m.kicker)}</span><span class="jt-period">${esc(m.period)}</span></div>
                 <div class="jt-card__head">
@@ -228,6 +255,13 @@ function fitCards() {
     cards.forEach((card, i) => {
         card.style.transformOrigin = isAbove(i, mobile) ? "50% 100%" : "50% 0%"
         card.style.setProperty("--fit", fit.toFixed(3))
+        // the screens behind it take the card's exact size and scale
+        const shots = els.marks[i].querySelector(".jt-shots")
+        if (shots) {
+            shots.style.height = `${card.offsetHeight}px`
+            shots.style.transformOrigin = card.style.transformOrigin
+            shots.style.setProperty("--fit", fit.toFixed(3))
+        }
     })
 }
 
