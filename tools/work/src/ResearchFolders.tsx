@@ -3,6 +3,7 @@
 // Any text can mark a key point as ==like this==: it shows bold, and a highlighter sweeps over it shortly after it scrolls into view.
 import * as React from "react"
 import Avatar, { type Face } from "./Avatar"
+import { Loops, type Loop } from "./SystemDiagrams"
 
 type Persona = {
     name: string
@@ -27,6 +28,7 @@ export type Block = {
     quote?: string
     note?: string
     persona?: Persona
+    loops?: Loop[] // causal loop diagrams, drawn live
 }
 export type Folder = { title: string; hint: string; blocks: Block[] }
 
@@ -418,6 +420,11 @@ function Blocks({ blocks }: { blocks: Block[] }) {
                             </a>
                             {b.image.caption ? <figcaption>{b.image.caption}</figcaption> : null}
                         </figure>
+                    ) : null}
+                    {b.loops ? (
+                        <div className="rf-rv">
+                            <Loops loops={b.loops} />
+                        </div>
                     ) : null}
                     {b.persona ? (
                         <div className="rf-rv">

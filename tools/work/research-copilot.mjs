@@ -143,7 +143,7 @@ const folders = [
         hint: "Why fatigue spirals",
         blocks: [
             { p: "The co-pilot only works if it is designed with everything around it: the driver, the car, the road, the data and the rules." },
-            { image: { src: img("system.png"), alt: "System map of the co-pilot with the driver, vehicle sensors, cabin and displays, environment, other road users, cloud and regulators", caption: "One co-pilot inside a larger system" } },
+            { image: { src: img("system-map.svg"), alt: "System map of the co-pilot: the driver and the road on the left, the vehicle sensors and the cabin displays on the right, the escalation loop of monitor, nudge, suggest and assist in the middle, and the cloud, the rules and the research underneath", caption: "One co-pilot inside a larger system" } },
             { image: { src: img("loop.png"), alt: "Causal loop diagram of driver fatigue, misjudged alertness, early cues and alerts being switched off", caption: "Three loops share one variable: driver fatigue" } },
             {
                 cards: [
@@ -229,7 +229,7 @@ export const copilot = {
         { lead: "After parking, the trip explains itself:", text: "a heat map shows when alertness dipped.", clips: [clip("cp-trip", "Reviewing the trip heat map by signal", CENTRE)] },
     ],
     process: [
-        { label: "System map", image: img("system.png") },
+        { label: "System map", image: img("system-map.svg") },
         { label: "Where nobody plays yet", image: img("gap.png") },
         { label: "Causal loops of driver fatigue", image: img("loop.png") },
     ],

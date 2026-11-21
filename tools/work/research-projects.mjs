@@ -124,9 +124,19 @@ export const dentigoResearch = [
         hint: "Who touches a single crown",
         blocks: [
             { p: "A single crown passes through several hands, so ==the problem is coordination across people, not one screen==." },
+            { image: { src: site("dentigo/system-map.svg"), alt: "System map of Dentigo: the dentist and clinic team on the left, the lab technician and the patient on the right, the case loop of order, produce, track and review in the middle, and today's tools, delivery and payment, and the research underneath", caption: "Who and what the case loop depends on" } },
             { image: { src: fr("Pr71ZCPIuMfJe9KqjzeAJzZOqE"), alt: "System map of the patient, receptionist, dentist, assistant and their actions", caption: "System map: who does what around a case" } },
             { image: { src: fr("600AM7vuVugdK4bghpSttVSms"), alt: "Stakeholder map of interest and influence", caption: "Stakeholder map: interest and influence" } },
             { image: { src: fr("r0TJpemDNu7JEjdSuoO3EFpcXH8"), alt: "Core workflow from sourcing to payment", caption: "Core workflow: sourcing, ordering, production, delivery, verification, payment" } },
+            {
+                h: "Causal loops",
+                loops: [
+                    { name: "The remake loop", note: "Rushed orders miss details, remakes eat chair time, and the next order is rushed again.", vars: [{ t: "Incomplete instructions" }, { t: "Remakes" }, { t: "Chair time lost" }, { t: "Time pressure" }], signs: ["+", "+", "+", "+"] },
+                    { name: "Status chasing", note: "Every “where is my case?” call slows down the lab that has to answer it.", vars: [{ t: "Unclear case status" }, { t: "Calls and messages" }, { t: "Lab interruptions" }, { t: "Production delays" }], signs: ["+", "+", "+", "+"] },
+                    { name: "Complete, the first time", note: "The order form asks for shade, material and photos up front, so gaps close before the lab starts.", vars: [{ t: "Missing details" }, { t: "Guided order form", lever: true }, { t: "Complete specification" }], signs: ["+", "+", "-"], lever: "Dentigo steps in" },
+                    { name: "Check, don't call", note: "A visible stage and ETA answers the question a call used to.", vars: [{ t: "Uncertainty about a case" }, { t: "Checking the tracker", lever: true }, { t: "Visible stage and ETA" }], signs: ["+", "+", "-"], lever: "Dentigo steps in" },
+                ],
+            },
         ],
     },
     {
@@ -291,6 +301,7 @@ export const kgResearch = [
         title: "System mapping",
         hint: "How entities and work connect",
         blocks: [
+            { image: { src: site("kg/system-map.svg"), alt: "System map of KG Hub: the translational scientist and clinical researcher on the left, the knowledge graph and the pharma R&D team on the right, the investigation loop of question, explore, compare and capture in the middle, and the data, the rules and the research underneath", caption: "Who and what the investigation loop depends on" } },
             {
                 cards: [
                     { t: "Who is involved", items: ["Clinical researchers", "Translational scientists", "Pharma R&D teams", "Clinicians", "Domain experts"] },
@@ -300,6 +311,14 @@ export const kgResearch = [
             { image: { src: fr("C2GzI43bQ1qPDtSYKoWgWzxfaQQ"), alt: "Knowledge graph linking genes, drugs, diseases and side effects", caption: "The knowledge graph: genes, drugs, diseases and side effects" } },
             { image: { src: site("kg/flow.jpg"), alt: "Flow map from query to map and compare, save insight, project and collaborate", caption: "The core journey: query, map and compare, save insight, project, collaborate" } },
             { image: { src: fr("8J9dvoXJdUEIx0PFRbvU8jg4Zo"), alt: "Information architecture of the platform", caption: "Information architecture" } },
+            {
+                h: "Causal loops",
+                loops: [
+                    { name: "Stitching by hand", note: "Data in separate tools means stitching by hand, and every workaround adds another copy.", vars: [{ t: "Data in separate tools" }, { t: "Manual stitching" }, { t: "Time to an answer" }, { t: "Local copies and workarounds" }], signs: ["+", "+", "+", "+"] },
+                    { name: "Evidence at the question", note: "Sources on every relation settle doubt where it starts, instead of in another tab.", vars: [{ t: "Doubt about a relation" }, { t: "Sources on the relation", lever: true }, { t: "Confidence in the finding" }], signs: ["+", "+", "-"], lever: "KG Hub steps in" },
+                    { name: "Insights compound", note: "Saved insights build shared knowledge, which leads to sharper questions and more insights.", vars: [{ t: "Saved insights", lever: true }, { t: "Shared team knowledge" }, { t: "Sharper questions" }], signs: ["+", "+", "+"], lever: "KG Hub steps in" },
+                ],
+            },
         ],
     },
     {
@@ -481,6 +500,7 @@ export const pipResearch = [
         title: "System mapping",
         hint: "Where a thought goes",
         blocks: [
+            { image: { src: site("pip/system-map.svg"), alt: "System map of Pip: the student and the friends and family who check in on the left, her devices and her space on the right, the thought loop of capture, orbit, resurface and focus in the middle, and today's tools, the rules and the research underneath", caption: "Who and what the thought loop depends on" } },
             {
                 h: "Where intentions live today",
                 cards: [
@@ -510,6 +530,14 @@ export const pipResearch = [
                     { t: "Capture and park", items: ["Home and orbit", "Text or voice capture", "Optional details", "Choose a revisit time"] },
                     { t: "Find and revisit", items: ["All thoughts library", "Search and filters", "Thought detail"] },
                     { t: "Pip in MR", items: ["Camera permission", "Detect and place Pip", "Placed MR orbit", "Pip's reminder in MR"] },
+                ],
+            },
+            {
+                h: "Causal loops",
+                loops: [
+                    { name: "Hundreds of tabs", note: "Holding thoughts costs focus, and lost focus leaves more half-finished thoughts to hold.", vars: [{ t: "Thoughts held in the head" }, { t: "Mental load" }, { t: "Focus on the task" }, { t: "Half-finished intentions" }], signs: ["+", "-", "-", "+"] },
+                    { name: "Park and let go", note: "Parking a thought somewhere trusted lets the head drop it.", vars: [{ t: "Thoughts held in the head" }, { t: "Parking in Pip", lever: true }, { t: "Trust it comes back" }], signs: ["+", "+", "-"], lever: "Pip steps in" },
+                    { name: "When reminders nag", note: "Badly timed reminders get swiped away, so people set more of them.", vars: [{ t: "Reminders at the wrong moment", lever: true }, { t: "Swiped away" }, { t: "Thought forgotten" }, { t: "More reminders set" }], signs: ["+", "+", "+", "+"], lever: "Pip: a chosen moment" },
                 ],
             },
         ],

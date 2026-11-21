@@ -159,6 +159,7 @@ export const lumiResearch = [
         hint: "Same home, different experiences",
         blocks: [
             { quote: "Shared disconnect. ==Same home, different experiences.==" },
+            { image: { src: "../../assets/images/lumi/system-map.svg", alt: "System map of Lumi: the mother and her partner on the left, the in-laws and the healthcare provider on the right, the support loop of check in, pattern, nudge and support in the middle, and the barriers, the rules and the research underneath", caption: "Who and what the support loop depends on" } },
             { image: { src: img("system-map"), alt: "System map of the mother, father, in-laws, newborn and healthcare provider, with the breakdowns between them", caption: "The people around a new mother, and where communication breaks down" } },
             {
                 h: "What the map shows",
@@ -166,6 +167,14 @@ export const lumiResearch = [
                     { t: "Barriers to recognition", items: ["Stigma", "Low mental-health literacy", "No guidance"] },
                     { t: "Breakdowns between people", items: ["Father and mother: no clear communication", "Mother to family: limited sharing, for fear of judgement", "Family to mother: indifference in behaviour", "Mother to provider: periodic contact, help sought late"] },
                     { t: "Outcome", items: ["==Delayed detection==", "Worse outcomes", "Bonding and care affected, with a shared caregiving load"] },
+                ],
+            },
+            {
+                h: "Causal loops",
+                loops: [
+                    { name: "The silence spiral", note: "The less she says, the less the family understands, and the stigma holds.", vars: [{ t: "Stigma" }, { t: "Fear of judgement" }, { t: "Sharing how she feels" }, { t: "Family's awareness" }], signs: ["+", "-", "+", "-"] },
+                    { name: "Late detection", note: "Symptoms kept quiet are noticed late, by which time she has pulled further away.", vars: [{ t: "Symptoms kept quiet" }, { t: "Delay before anyone notices" }, { t: "Severity" }, { t: "Withdrawal" }], signs: ["+", "+", "+", "+"] },
+                    { name: "Where Lumi steps in", note: "Daily check-ins surface a pattern early, and a gentle nudge brings people in before it builds.", vars: [{ t: "Low-mood days" }, { t: "Pattern noticed", lever: true }, { t: "Nudge to share" }, { t: "Support from family" }], signs: ["+", "+", "+", "-"], lever: "Lumi steps in" },
                 ],
             },
         ],

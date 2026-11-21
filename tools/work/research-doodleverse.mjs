@@ -162,6 +162,14 @@ const folders = [
                     { t: "The room", items: ["Stays visible through passthrough while drawing", "No walking needed to play"] },
                 ],
             },
+            {
+                h: "Causal loops",
+                loops: [
+                    { name: "Fear of getting it wrong", note: "Worry about a bad drawing means fewer tries, and fewer tries keep the worry alive.", vars: [{ t: "Fear of a wrong drawing" }, { t: "Hesitation" }, { t: "Attempts" }, { t: "Confidence" }], signs: ["+", "-", "+", "-"] },
+                    { name: "The magic pays off", note: "Every drawing wakes up, so delight turns into wanting to draw again.", vars: [{ t: "Drawing comes alive", lever: true }, { t: "Delight" }, { t: "Wanting to draw again" }, { t: "Drawings made" }], signs: ["+", "+", "+", "+"], lever: "Doodleverse steps in" },
+                    { name: "Short cues, on time", note: "A coaching pill at the moment of action clears confusion without a manual.", vars: [{ t: "Confusion" }, { t: "Coaching pill at the action", lever: true }, { t: "Knowing what to do next" }], signs: ["+", "+", "-"], lever: "Doodleverse steps in" },
+                ],
+            },
         ],
     },
     {
