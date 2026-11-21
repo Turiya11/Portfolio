@@ -5907,6 +5907,28 @@ button.ab-day {
 .tm-st__dot {
     fill: var(--ink);
 }
+/* the toggle's knob, switched on, wearing the swirl face */
+.tm-st__knob {
+    fill: var(--bg);
+    stroke: var(--ink);
+    stroke-width: 4px;
+}
+/* the jigsaw faces, redrawn on the stickers in the same thin dark doodle line */
+.tm-st__doodle {
+    fill: none;
+    stroke: #1d1932;
+    stroke-width: 2.2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+.tm-st__doodle * {
+    vector-effect: non-scaling-stroke;
+}
+.tm-st__doodle .tm-dot {
+    fill: #1d1932;
+    stroke: none;
+}
 .tm-st__ring,
 .tm-st__small,
 .tm-st__big {
@@ -5919,7 +5941,7 @@ button.ab-day {
     letter-spacing: 0.12em;
 }
 .tm-st__small {
-    font-size: 12px;
+    font-size: 13.5px;
     font-weight: 800;
     letter-spacing: 0.14em;
     opacity: 0.8;
@@ -5940,7 +5962,7 @@ button.ab-day {
     gap: 0.45em;
     padding: 0.42em 0.85em 0.42em 0.7em;
     white-space: nowrap;
-    font-size: calc(15px * var(--k, 1));
+    font-size: calc(18px * var(--k, 1));
     font-weight: 600;
     line-height: 1.2;
     color: var(--ink);

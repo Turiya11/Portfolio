@@ -17,7 +17,7 @@ const CONTENT = {
     // the little tags stuck around the big stickers, one for each way of working above
     tags: [
         { text: "asks why", icon: "ask", bg: "#e3dcff", ink: "#4a37b0" },
-        { text: "finds the overlap", icon: "overlap", bg: "#ffd9e3", ink: "#b02d63" },
+        { text: "finds the gap", icon: "gap", bg: "#ffd9e3", ink: "#b02d63" },
         { text: "zooms out", icon: "zoom", bg: "#d6edff", ink: "#1d5ea6" },
         { text: "sweats the details", icon: "spark", bg: "#fff0b0", ink: "#9a5b00" },
     ],
@@ -93,6 +93,8 @@ const INK = ["#4a37b0", "#b02d63", "#1d5ea6", "#9a5b00"]
 const BG = ["#e6e0ff", "#ffdbe4", "#d9eeff", "#fff1b8"]
 const big = (lines, y, size) => lines.map((l, k) => `<text class="tm-st__big" x="50%" y="${y + k * size * 1.12}" font-size="${size}">${esc(l)}</text>`).join("")
 const small = (t, y) => `<text class="tm-st__small" x="50%" y="${y}">${esc(t.toUpperCase())}</text>`
+// the puzzle piece's own doodle face, carried over onto its sticker
+const face = (i, x, y, k) => `<g class="tm-st__doodle" transform="translate(${x} ${y}) scale(${k})">${FACE[CONTENT.pieces[i].face]}</g>`
 const STICKERS = [
     {
         // a round badge: the words run round the edge, a magnifying glass finds a smiling face
@@ -107,17 +109,15 @@ const STICKERS = [
           <g class="tm-st__line">
             <circle cx="112" cy="112" r="33" class="tm-st__paper"/>
             <path d="M136 137l24 24" stroke-width="11"/>
-            <path d="M101 117c6 7 16 7 22 0"/>
-            <path d="M78 78l-7-7M90 70l-3-10M70 92l-10-2"/>
           </g>
-          <circle cx="102" cy="104" r="3.6" class="tm-st__dot"/><circle cx="122" cy="104" r="3.6" class="tm-st__dot"/>`,
+          ${face(i, 72, 64, 0.8)}`,
     },
     {
         // a ticket: a dashed bridge carries a heart (what people need) over to a chart (what the business needs)
         w: 276,
         h: 222,
         outline: `<rect x="12" y="12" width="252" height="198" rx="30"/>`,
-        art: () => `
+        art: (i) => `
           ${small("Business requirements", 46)}
           <g class="tm-st__line">
             <path d="M70 120c-23-14-25-33-12-37 6-2 11 2 12 7 1-5 6-9 12-7 13 4 11 23-12 37z" class="tm-st__paper"/>
@@ -125,6 +125,7 @@ const STICKERS = [
             <path d="M170 74l13 7-4-14"/>
             <path d="M184 76v40h50"/>
           </g>
+          ${face(i, 42.5, 72, 0.55)}
           <rect x="192" y="100" width="9" height="16" rx="2" class="tm-st__dot"/>
           <rect x="206" y="90" width="9" height="26" rx="2" class="tm-st__dot"/>
           <rect x="220" y="78" width="9" height="38" rx="2" class="tm-st__dot"/>
@@ -135,7 +136,7 @@ const STICKERS = [
         w: 224,
         h: 256,
         outline: `<path d="M18 116a94 94 0 0 1 188 0v108a18 18 0 0 1-18 18H36a18 18 0 0 1-18-18z"/>`,
-        art: () => `
+        art: (i) => `
           <path id="tm-arc-c" d="M40 116a72 72 0 0 1 144 0" fill="none"/>
           <text class="tm-st__ring" font-size="14"><textPath href="#tm-arc-c" startOffset="50%">SYSTEMS THINKING</textPath></text>
           <g class="tm-st__line">
@@ -144,9 +145,9 @@ const STICKERS = [
             <circle cx="64" cy="108" r="8" class="tm-st__paper"/><circle cx="158" cy="104" r="8" class="tm-st__paper"/>
             <circle cx="78" cy="158" r="8" class="tm-st__paper"/><circle cx="148" cy="158" r="8" class="tm-st__paper"/>
             <circle cx="112" cy="78" r="8" class="tm-st__paper"/>
-            <path d="M92 124q20-20 40 0q-20 20-40 0z" class="tm-st__paper"/>
+            <circle cx="112" cy="124" r="19" class="tm-st__paper"/>
           </g>
-          <circle cx="112" cy="124" r="5.5" class="tm-st__dot"/>
+          ${face(i, 83, 92, 0.6)}
           ${big(["Seeing the", "bigger picture"], 200, 21)}`,
     },
     {
@@ -154,14 +155,13 @@ const STICKERS = [
         w: 262,
         h: 232,
         outline: `<rect x="12" y="12" width="238" height="208" rx="38"/>`,
-        art: () => `
+        art: (i) => `
           ${small("Interaction design", 46)}
           <g class="tm-st__line">
             <rect x="64" y="64" width="108" height="50" rx="25" class="tm-st__paper"/>
           </g>
-          <circle cx="147" cy="89" r="17" class="tm-st__dot"/>
-          <circle cx="141" cy="85" r="2.400" fill="#fff"/><circle cx="153" cy="85" r="2.400" fill="#fff"/>
-          <path d="M140 93c4 5 10 5 14 0" fill="none" stroke="#fff" stroke-width="2.600" stroke-linecap="round"/>
+          <circle cx="147" cy="89" r="17" class="tm-st__knob"/>
+          ${face(i, 119.5, 55, 0.55)}
           <g class="tm-st__line">
             <path d="M83 89h18" stroke-width="3.5" opacity=".45"/>
             <path d="M170 104v38l10-10 9 17 8-4-9-16h15z" class="tm-st__paper" stroke-width="4"/>
@@ -173,7 +173,7 @@ const STICKERS = [
 // little drawn icons for the tags
 const ICON = {
     ask: `<circle cx="10" cy="10" r="8"/><path d="M7.5 7.6c.3-1.6 1.4-2.400 2.700-2.400 1.500 0 2.600 1 2.600 2.300 0 2.200-2.800 2-2.800 4.300"/><circle cx="10" cy="14.6" r=".9" class="tm-ico-dot"/>`,
-    overlap: `<circle cx="7.5" cy="10" r="5.5"/><circle cx="12.5" cy="10" r="5.5"/>`,
+    gap: `<path d="M3 3v14M17 3v14M6.5 10h7M9 7.5 6.5 10 9 12.5M11 7.5l2.5 2.5-2.5 2.5"/>`,
     zoom: `<path d="M3 8V3h5M17 12v5h-5M3 3l5 5M17 17l-5-5"/>`,
     spark: `<path d="M10 2c.6 4.200 1.800 6.800 8 8-6.200 1.200-7.400 3.800-8 8-.6-4.200-1.800-6.800-8-8 6.200-1.200 7.400-3.800 8-8z"/>`,
 }
@@ -303,8 +303,8 @@ const SHEET = {
             [864, 234, 6],
             [92, 350, -7],
             [342, 358, 4],
-            [700, 362, -3],
-            [918, 360, 5],
+            [676, 364, -3],
+            [906, 362, 5],
             [268, 72, 12],
             [752, 66, -10],
             [984, 118, 6],
@@ -312,7 +312,7 @@ const SHEET = {
     },
     narrow: {
         w: 360,
-        h: 560,
+        h: 610,
         size: 0.68,
         ribbon: [180, 22],
         at: [
@@ -322,8 +322,8 @@ const SHEET = {
             [264, 322, 6],
             [96, 444, -4],
             [256, 456, 3],
-            [112, 504, 3],
-            [258, 516, -3],
+            [84, 512, 3],
+            [214, 566, -3],
             [190, 222, 10],
             [342, 236, -8],
             [22, 222, 0],
