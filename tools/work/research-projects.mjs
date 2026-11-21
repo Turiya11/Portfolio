@@ -172,6 +172,12 @@ export const dentigoResearch = [
 
 /* ------------------------------ KG Hub ------------------------------ */
 
+// the two KG Hub personas, shared by the research folder and the role cards on the page
+export const kgFaces = {
+    researcher: { skin: "#e0ac85", hair: "curly", hairColor: "#3b2a20", bg: "#9fb1db", top: "#f2a7bb", coat: true, glasses: true },
+    scientist: { skin: "#8a5636", hair: "ponytail", hairColor: "#1a1210", bg: "#f3ddd3", top: "#6fb5a8" },
+}
+
 export const kgResearch = [
     {
         title: "Primary & secondary research data",
@@ -300,7 +306,7 @@ export const kgResearch = [
                 persona: {
                     name: "Clinical researcher",
                     role: "Pre-clinical phase",
-                    face: { skin: "#e0ac85", hair: "curly", hairColor: "#3b2a20", bg: "#9fb1db", top: "#f2a7bb", coat: true, glasses: true },
+                    face: kgFaces.researcher,
                     meta: "Turns large datasets into hypotheses",
                     columns: [
                         { t: "Needs", items: ["Interpret large datasets and form clear hypotheses", "One platform for visualisation and analysis", "Identify and validate biomarkers", "Save searches and sessions"] },
@@ -313,7 +319,7 @@ export const kgResearch = [
                 persona: {
                     name: "Translational scientist",
                     role: "Moving findings toward the clinic",
-                    face: { skin: "#8a5636", hair: "ponytail", hairColor: "#1a1210", bg: "#f3ddd3", top: "#6fb5a8" },
+                    face: kgFaces.scientist,
                     meta: "Balances research with collaboration",
                     columns: [
                         { t: "Needs", items: ["Summarise results and outputs quickly", "Integrate the latest literature into analysis", "Collaborate with the wider team", "Spend less time on admin"] },

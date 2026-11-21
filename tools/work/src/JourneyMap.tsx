@@ -2,9 +2,10 @@
 // Choosing a persona swaps the route. Everything comes from the project's journey maps.
 // A project whose research recorded emotions passes emoji, feel and level, and the route becomes an emotion curve; without them it's a plain wave.
 import * as React from "react"
+import Avatar, { type Face } from "./Avatar"
 
 export type Phase = { name: string; does: string; pain: string; hub: string; emoji?: string; feel?: string; level?: number }
-export type Persona = { role: string; mark?: string; tagline: string; wants: string; stuck: string; phases: Phase[] }
+export type Persona = { role: string; mark?: string; face?: Face; tagline: string; wants: string; stuck: string; phases: Phase[] }
 
 const CSS = `
 .jm{display:flex;flex-direction:column;gap:16px}
@@ -15,6 +16,9 @@ const CSS = `
 .jm-who{display:flex;align-items:center;gap:14px}
 .jm-who i{flex:none;display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:var(--a);color:#fff;font-style:normal;font-size:var(--t-small);font-weight:600}
 .jm-person[aria-pressed=false] .jm-who i{background:rgba(70,80,100,.5)}
+.jm-who .av{flex:none;display:block;width:64px;height:64px;border-radius:50%;box-shadow:0 0 0 3px #fff,0 10px 20px -12px rgba(30,35,60,.55);transition:transform .45s cubic-bezier(.3,1.6,.5,1),filter .3s}
+.jm-person[aria-pressed=false] .jm-who .av{filter:saturate(.35)}
+.jm-person:hover .jm-who .av{transform:translateY(-2px) rotate(-5deg);filter:none}
 .jm-who b{display:block;font-size:var(--t-h3);font-weight:600;letter-spacing:var(--ls-h3);line-height:1.25}
 .jm-who > span{display:block}
 .jm-who span span{display:block;margin-top:3px;font-size:var(--t-small);font-weight:400;color:var(--soft)}
@@ -45,6 +49,7 @@ const CSS = `
 }
 @media (prefers-reduced-motion:reduce){
   .jm-map{animation:none}
+  .jm-who .av{transition:none}
   .jm-route path{animation:none;stroke-dashoffset:0}
 }
 `
@@ -90,7 +95,7 @@ export default function JourneyMap({ personas, hubLabel = "KG Hub" }: { personas
                 {personas.map((x, i) => (
                     <button type="button" className="jm-person" key={x.role} aria-pressed={i === active} onClick={() => setActive(i)}>
                         <span className="jm-who">
-                            <i aria-hidden="true">{x.mark || initials(x.role)}</i>
+                            {x.face ? <Avatar face={x.face} size={64} /> : <i aria-hidden="true">{x.mark || initials(x.role)}</i>}
                             <span>
                                 <b>{x.role}</b>
                                 <span>{x.tagline}</span>

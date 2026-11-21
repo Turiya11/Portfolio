@@ -3,7 +3,7 @@
 // Research sticky notes come from content.mjs. Numbers are only the ones the projects actually produced.
 import { dentigo as dentigoSource, encora as kgSource, pip as pipSource, lumiStickies } from "./content.mjs"
 import { lumiResearch, lumiEcosystem } from "./research-lumi.mjs"
-import { dentigoResearch, kgResearch, pipResearch } from "./research-projects.mjs"
+import { dentigoResearch, kgResearch, kgFaces, pipResearch } from "./research-projects.mjs"
 
 const clip = (id, label) => ({ src: `../../assets/video/work/${id}.mp4`, poster: `../../assets/video/work/${id}.jpg`, label })
 const fr = (id, ext = "png") => `https://framerusercontent.com/images/${id}.${ext}`
@@ -166,6 +166,7 @@ export const kg = {
         personas: [
             {
                 role: "Clinical researcher",
+                face: kgFaces.researcher,
                 tagline: "Starts at a target, ends at a go/no-go call.",
                 wants: "To see how targets, biomarkers and drugs connect across every dataset.",
                 stuck: "Preclinical and clinical data that don't line up when a decision is due.",
@@ -180,6 +181,7 @@ export const kg = {
             },
             {
                 role: "Translational scientist",
+                face: kgFaces.scientist,
                 tagline: "Turns a clinical question into a research program.",
                 wants: "Clinical relevance early, with literature, targets and trial data in one view.",
                 stuck: "Too many compounds, and animal models that don't translate to patients.",
