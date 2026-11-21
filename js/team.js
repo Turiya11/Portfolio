@@ -1,15 +1,25 @@
 // "What I bring to a team", folder 02 of the archive (about.js makes the folder, this fills it): a four-piece
-// jigsaw. The pieces start scattered; drag each one onto the outline it fits, and it clicks in. Once all four are in, "How I contribute" is stamped across the top and the pieces
-// turn over into square cards. Edit the words below.
+// jigsaw. The pieces start scattered; drag each one onto the outline it fits, and it clicks in. Once all four are in,
+// "How I contribute" is taped across the top and each piece flies off and turns into a die-cut sticker. The stickers
+// tilt toward the pointer, can be peeled off and stuck down anywhere on the folder, and wiggle when tapped.
+// Edit the words below.
 const CONTENT = {
     skip: "or just show me",
     reveal: "How I contribute",
     again: "mix them up again",
+    hintAfter: "they're stickers now, move them around",
     pieces: [
         { label: "Research", title: "Understanding people", color: "#8f7bea", texture: "dots", face: "curls" },
         { label: "Business requirements", title: "Connecting user needs with business goals", color: "#ff9eb5", texture: "scribble", face: "glasses" },
         { label: "Systems thinking", title: "Seeing the bigger picture", color: "#7cc2f6", texture: "grid", face: "waves" },
         { label: "Interaction design", title: "Making things feel intuitive", color: "#f5c518", texture: "zigzag", face: "swirl" },
+    ],
+    // the little tags stuck around the big stickers, one for each way of working above
+    tags: [
+        { text: "asks why", icon: "ask", bg: "#e3dcff", ink: "#4a37b0" },
+        { text: "finds the overlap", icon: "overlap", bg: "#ffd9e3", ink: "#b02d63" },
+        { text: "zooms out", icon: "zoom", bg: "#d6edff", ink: "#1d5ea6" },
+        { text: "sweats the details", icon: "spark", bg: "#fff0b0", ink: "#9a5b00" },
     ],
 }
 
@@ -67,22 +77,128 @@ const FACE = {
 const piece = (p, i) => {
     const d = shape(EDGES[i])
     return `<button class="tm-piece" type="button" data-i="${i}" style="--c:${p.color};--i:${i}" aria-label="Puzzle piece: ${esc(p.label)}. Press Enter to put it in place.">
-      <span class="tm-piece__flip">
         <svg class="tm-piece__front" viewBox="${-PAD} ${-PAD} ${S + PAD * 2} ${S + PAD * 2}" aria-hidden="true">
           <defs>${TEXTURE[p.texture].replace(/tm-t\d/, `tm-t${i}`)}<clipPath id="tm-clip${i}"><path d="${d}"/></clipPath></defs>
           <path class="tm-piece__shape" d="${d}"/>
           <rect x="${-PAD}" y="${-PAD}" width="${S + PAD * 2}" height="${S + PAD * 2}" fill="url(#tm-t${i})" clip-path="url(#tm-clip${i})"/>
           <g class="tm-face">${FACE[p.face]}</g>
         </svg>
-        <span class="tm-piece__back">
-          <span class="tm-card">
-            <span class="tm-card__label">${esc(p.label)}</span>
-            <span class="tm-card__title">${esc(p.title)}</span>
-          </span>
-        </span>
-      </span>
     </button>`
 }
+
+/* ------------------------------ the stickers: line drawings on pastel, with a thick white die-cut edge ------------------------------ */
+
+// each one: its viewBox size, the die-cut outline, and what's drawn on it. Text is SVG so it can follow a curve.
+const INK = ["#4a37b0", "#b02d63", "#1d5ea6", "#9a5b00"]
+const BG = ["#e6e0ff", "#ffdbe4", "#d9eeff", "#fff1b8"]
+const big = (lines, y, size) => lines.map((l, k) => `<text class="tm-st__big" x="50%" y="${y + k * size * 1.12}" font-size="${size}">${esc(l)}</text>`).join("")
+const small = (t, y) => `<text class="tm-st__small" x="50%" y="${y}">${esc(t.toUpperCase())}</text>`
+const STICKERS = [
+    {
+        // a round badge: the words run round the edge, a magnifying glass finds a smiling face
+        w: 240,
+        h: 240,
+        outline: `<circle cx="120" cy="120" r="106"/>`,
+        art: (i) => `
+          <path id="tm-arc-a" d="M36 120a84 84 0 0 1 168 0" fill="none"/>
+          <path id="tm-arc-b" d="M26 120a94 94 0 0 0 188 0" fill="none"/>
+          <text class="tm-st__ring" font-size="17"><textPath href="#tm-arc-a" startOffset="50%">UNDERSTANDING PEOPLE</textPath></text>
+          <text class="tm-st__ring" font-size="14.5"><textPath href="#tm-arc-b" startOffset="50%">✦ RESEARCH ✦</textPath></text>
+          <g class="tm-st__line">
+            <circle cx="112" cy="112" r="33" class="tm-st__paper"/>
+            <path d="M136 137l24 24" stroke-width="11"/>
+            <path d="M101 117c6 7 16 7 22 0"/>
+            <path d="M78 78l-7-7M90 70l-3-10M70 92l-10-2"/>
+          </g>
+          <circle cx="102" cy="104" r="3.6" class="tm-st__dot"/><circle cx="122" cy="104" r="3.6" class="tm-st__dot"/>`,
+    },
+    {
+        // a ticket: a dashed bridge carries a heart (what people need) over to a chart (what the business needs)
+        w: 276,
+        h: 222,
+        outline: `<rect x="12" y="12" width="252" height="198" rx="30"/>`,
+        art: () => `
+          ${small("Business requirements", 46)}
+          <g class="tm-st__line">
+            <path d="M70 120c-23-14-25-33-12-37 6-2 11 2 12 7 1-5 6-9 12-7 13 4 11 23-12 37z" class="tm-st__paper"/>
+            <path d="M90 82q46-44 92-2" stroke-dasharray="1 9" stroke-width="5"/>
+            <path d="M170 74l13 7-4-14"/>
+            <path d="M184 76v40h50"/>
+          </g>
+          <rect x="192" y="100" width="9" height="16" rx="2" class="tm-st__dot"/>
+          <rect x="206" y="90" width="9" height="26" rx="2" class="tm-st__dot"/>
+          <rect x="220" y="78" width="9" height="38" rx="2" class="tm-st__dot"/>
+          ${big(["Connecting user needs", "with business goals"], 162, 20)}`,
+    },
+    {
+        // an arch: the name curves over the top, and an eye sits in the middle of everything it's connected to
+        w: 224,
+        h: 256,
+        outline: `<path d="M18 116a94 94 0 0 1 188 0v108a18 18 0 0 1-18 18H36a18 18 0 0 1-18-18z"/>`,
+        art: () => `
+          <path id="tm-arc-c" d="M40 116a72 72 0 0 1 144 0" fill="none"/>
+          <text class="tm-st__ring" font-size="14"><textPath href="#tm-arc-c" startOffset="50%">SYSTEMS THINKING</textPath></text>
+          <g class="tm-st__line">
+            <path d="M112 124L64 108M112 124l46-20M112 124l-34 34M112 124l36 34M112 124V78" />
+            <path d="M64 108l14 50M158 104l-10 54M64 108l48-30 46 26" stroke-dasharray="1 7" stroke-width="3.5"/>
+            <circle cx="64" cy="108" r="8" class="tm-st__paper"/><circle cx="158" cy="104" r="8" class="tm-st__paper"/>
+            <circle cx="78" cy="158" r="8" class="tm-st__paper"/><circle cx="148" cy="158" r="8" class="tm-st__paper"/>
+            <circle cx="112" cy="78" r="8" class="tm-st__paper"/>
+            <path d="M92 124q20-20 40 0q-20 20-40 0z" class="tm-st__paper"/>
+          </g>
+          <circle cx="112" cy="124" r="5.5" class="tm-st__dot"/>
+          ${big(["Seeing the", "bigger picture"], 200, 21)}`,
+    },
+    {
+        // a rounded square: a happy toggle, switched on, with the pointer that just clicked it
+        w: 262,
+        h: 232,
+        outline: `<rect x="12" y="12" width="238" height="208" rx="38"/>`,
+        art: () => `
+          ${small("Interaction design", 46)}
+          <g class="tm-st__line">
+            <rect x="64" y="64" width="108" height="50" rx="25" class="tm-st__paper"/>
+          </g>
+          <circle cx="147" cy="89" r="17" class="tm-st__dot"/>
+          <circle cx="141" cy="85" r="2.400" fill="#fff"/><circle cx="153" cy="85" r="2.400" fill="#fff"/>
+          <path d="M140 93c4 5 10 5 14 0" fill="none" stroke="#fff" stroke-width="2.600" stroke-linecap="round"/>
+          <g class="tm-st__line">
+            <path d="M83 89h18" stroke-width="3.5" opacity=".45"/>
+            <path d="M170 104v38l10-10 9 17 8-4-9-16h15z" class="tm-st__paper" stroke-width="4"/>
+            <path d="M160 102l-9-6M165 95l-3-10M172 97l4-9"/>
+          </g>
+          ${big(["Making things", "feel intuitive"], 170, 23)}`,
+    },
+]
+// little drawn icons for the tags
+const ICON = {
+    ask: `<circle cx="10" cy="10" r="8"/><path d="M7.5 7.6c.3-1.6 1.4-2.400 2.700-2.400 1.500 0 2.600 1 2.600 2.300 0 2.200-2.800 2-2.800 4.300"/><circle cx="10" cy="14.6" r=".9" class="tm-ico-dot"/>`,
+    overlap: `<circle cx="7.5" cy="10" r="5.5"/><circle cx="12.5" cy="10" r="5.5"/>`,
+    zoom: `<path d="M3 8V3h5M17 12v5h-5M3 3l5 5M17 17l-5-5"/>`,
+    spark: `<path d="M10 2c.6 4.200 1.800 6.800 8 8-6.200 1.200-7.400 3.800-8 8-.6-4.200-1.800-6.800-8-8 6.200-1.200 7.400-3.800 8-8z"/>`,
+}
+// and a few doodles with nothing to say
+const DOODLES = [
+    { w: 46, h: 46, c: "#ffd34d", ink: "#9a5b00", d: `<path d="M26 4L10 26h12l-4 16 18-24H24z"/>` },
+    { w: 40, h: 40, c: "#ffb9c9", ink: "#b02d63", d: `<path d="M20 34C6 25 4 13 11 10c4-2 8 0 9 4 1-4 5-6 9-4 7 3 5 15-9 24z"/>` },
+    { w: 42, h: 42, c: "#c9bcff", ink: "#4a37b0", d: `<path d="M21 4c1 9 4 13 15 17-11 4-14 8-15 17-1-9-4-13-15-17 11-4 14-8 15-17z"/>` },
+]
+
+const sticker = (p, i) => {
+    const st = STICKERS[i]
+    return `<div class="tm-st tm-st--big" data-k="${i}" style="--ink:${INK[i]};--bg:${BG[i]};--i:${i}" role="img" aria-label="${esc(p.label)}: ${esc(p.title)}">
+        <svg viewBox="0 0 ${st.w} ${st.h}" aria-hidden="true">
+          <defs><clipPath id="tm-cut${i}">${st.outline}</clipPath></defs>
+          <g class="tm-st__edge">${st.outline}</g>
+          <g class="tm-st__face">${st.outline}</g>
+          <g clip-path="url(#tm-cut${i})">${st.art(i)}<circle class="tm-st__glare" cx="-200" cy="-200" r="${st.w * 0.55}"/></g>
+        </svg>
+      </div>`
+}
+const tag = (t, i) =>
+    `<div class="tm-st tm-st--tag" data-k="${4 + i}" style="--ink:${t.ink};--bg:${t.bg};--i:${4 + i}"><svg class="tm-ico" viewBox="0 0 20 20" aria-hidden="true">${ICON[t.icon]}</svg>${esc(t.text)}</div>`
+const doodle = (d, i) =>
+    `<div class="tm-st tm-st--doodle" data-k="${8 + i}" style="--ink:${d.ink};--bg:${d.c};--i:${8 + i}" aria-hidden="true"><svg viewBox="0 0 ${d.w} ${d.h}"><g class="tm-st__edge">${d.d}</g><g class="tm-st__face">${d.d}</g></svg></div>`
 
 function render() {
     root.innerHTML = `
@@ -90,6 +206,12 @@ function render() {
         <svg class="tm-board" aria-hidden="true"></svg>
         <p class="tm-ribbon" aria-live="polite"><span>${esc(CONTENT.reveal)}</span></p>
         ${CONTENT.pieces.map(piece).join("")}
+        <svg class="tm-defs" width="0" height="0" aria-hidden="true"><defs><radialGradient id="tm-shine"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".6" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs></svg>
+        <div class="tm-sheet">
+          ${CONTENT.pieces.map(sticker).join("")}
+          ${CONTENT.tags.map(tag).join("")}
+          ${DOODLES.map(doodle).join("")}
+        </div>
       </div>
       <p class="tm-foot">
         <button class="tm-skip" type="button">${esc(CONTENT.skip)}</button>
@@ -104,6 +226,9 @@ const stage = root.querySelector(".tm-stage")
 const board = root.querySelector(".tm-board")
 const ribbon = root.querySelector(".tm-ribbon")
 const pieces = [...root.querySelectorAll(".tm-piece")]
+const stickers = [...root.querySelectorAll(".tm-st")]
+const hint = root.closest(".ab-folder")?.querySelector(".ab-hand")
+const hintBefore = hint?.textContent
 const state = pieces.map(() => ({ x: 0, y: 0, rot: 0, scale: 1, placed: false }))
 // where each loose piece lies, out of order on purpose, and how it's tilted
 const SCATTER = [2, 0, 3, 1]
@@ -158,27 +283,95 @@ function layout() {
     pieces.forEach((_, i) => place(i, true))
     ribbon.style.left = `${origin[0] + boardSize / 2}px`
     ribbon.style.top = `${top - 10}px`
-    if (root.classList.contains("is-wall")) wall(true)
+    if (root.classList.contains("is-sheet")) sheet(true)
 }
 
-// once they've turned over, the cards spread out along the table: a row of four, or two by two on a phone
-function wall(instant) {
+/* ------------------------------ the sticker sheet ------------------------------ */
+
+// where everything is stuck down, as [x, y, tilt] centres in a design space: 1000 × 430 on a wide folder, 360 × 560 on a phone
+const SHEET = {
+    wide: {
+        w: 1000,
+        h: 410,
+        size: 1.06,
+        ribbon: [500, 30],
+        // the tags are tucked over the corners of the big stickers, the way a sheet gets crowded
+        at: [
+            [148, 216, -7],
+            [400, 236, 4],
+            [632, 220, -4],
+            [864, 234, 6],
+            [92, 350, -7],
+            [342, 358, 4],
+            [700, 362, -3],
+            [918, 360, 5],
+            [268, 72, 12],
+            [752, 66, -10],
+            [984, 118, 6],
+        ],
+    },
+    narrow: {
+        w: 360,
+        h: 560,
+        size: 0.68,
+        ribbon: [180, 22],
+        at: [
+            [92, 126, -6],
+            [264, 146, 5],
+            [94, 316, -4],
+            [264, 322, 6],
+            [96, 444, -4],
+            [256, 456, 3],
+            [112, 504, 3],
+            [258, 516, -3],
+            [190, 222, 10],
+            [342, 236, -8],
+            [22, 222, 0],
+        ],
+    },
+}
+const sticks = stickers.map(() => ({ x: 0, y: 0, rot: 0, w: 0, h: 0 }))
+
+function putSticker(k) {
+    const el = stickers[k]
+    const t = sticks[k]
+    el.style.translate = `${(t.x - t.w / 2).toFixed(1)}px ${(t.y - t.h / 2).toFixed(1)}px`
+    el.style.rotate = `${t.rot}deg`
+}
+
+// lay the sheet out: every sticker back to its own spot, and the pieces fly to the sticker they become
+function sheet(instant) {
     const W = stage.clientWidth
-    const cols = W >= 820 ? 4 : 2
-    root.classList.add("is-wall")
-    const cell = S * unit
+    const L = W >= 820 ? SHEET.wide : SHEET.narrow
+    const k = L === SHEET.wide ? clamp(Math.min(W / L.w, (innerHeight - 400) / L.h), 0.62, 1.15) : clamp(W / L.w, 0.82, 1.3)
+    const left = (W - L.w * k) / 2
+    root.classList.add("is-sheet")
+    stage.style.height = `${Math.round(L.h * k)}px`
+    stage.style.setProperty("--k", k)
+    stickers.forEach((el, i) => {
+        const t = sticks[i]
+        const [x, y, rot] = L.at[i]
+        const svg = el.querySelector("svg")
+        if (el.classList.contains("tm-st--big")) {
+            const [, , vw, vh] = svg.getAttribute("viewBox").split(" ").map(Number)
+            ;[t.w, t.h] = [vw * L.size * k, vh * L.size * k]
+        } else if (el.classList.contains("tm-st--doodle")) {
+            const [, , vw, vh] = svg.getAttribute("viewBox").split(" ").map(Number)
+            ;[t.w, t.h] = [vw * k, vh * k]
+        } else {
+            el.style.width = ""
+            ;[t.w, t.h] = [el.offsetWidth, el.offsetHeight]
+        }
+        el.style.width = `${t.w}px`
+        el.style.height = `${t.h}px`
+        Object.assign(t, { x: left + x * k, y: y * k, rot })
+        putSticker(i)
+    })
+    ribbon.style.left = `${left + L.ribbon[0] * k}px`
+    ribbon.style.top = `${L.ribbon[1] * k}px`
     const E = (S + PAD * 2) * unit
-    const gap = cols === 4 ? 22 : 12
-    const card = Math.min(290, (W - (cols === 4 ? 64 : 24) - gap * (cols - 1)) / cols)
-    const k = card / cell
-    const top = 72
-    const left = (W - card * cols - gap * (cols - 1)) / 2
-    const rows = 4 / cols
-    stage.style.height = `${Math.round(top + rows * card + (rows - 1) * gap + 40)}px`
     state.forEach((s, i) => {
-        const c = i % cols
-        const r = Math.floor(i / cols)
-        Object.assign(s, { x: left + card / 2 + c * (card + gap) - E / 2, y: top + card / 2 + r * (card + gap) - E / 2, rot: 0, scale: k })
+        Object.assign(s, { x: sticks[i].x - E / 2, y: sticks[i].y - E / 2, rot: sticks[i].rot, scale: 0.5 })
         place(i, instant)
     })
 }
@@ -318,16 +511,22 @@ function solve() {
         el.tabIndex = -1
     })
     root.querySelector(".tm-skip").hidden = true
-    const again = root.querySelector(".tm-again")
-    again.hidden = false
-    clearTimeout(wallTimer)
-    wallTimer = setTimeout(wall, reduced ? 0 : 2300)
+    root.querySelector(".tm-again").hidden = false
+    clearTimeout(sheetTimer)
+    sheetTimer = setTimeout(
+        () => {
+            sheet()
+            if (hint) hint.textContent = CONTENT.hintAfter
+        },
+        reduced ? 0 : 1250
+    )
 }
-let wallTimer = 0
+let sheetTimer = 0
 
 function scatter() {
-    clearTimeout(wallTimer)
-    root.classList.remove("is-solved", "is-wall")
+    clearTimeout(sheetTimer)
+    root.classList.remove("is-solved", "is-sheet")
+    if (hint) hint.textContent = hintBefore
     state.forEach((s, i) => {
         s.placed = false
         pieces[i].classList.remove("is-placed")
@@ -340,6 +539,92 @@ function scatter() {
     root.querySelector(".tm-again").hidden = true
     layout()
 }
+
+/* ------------------------------ playing with the stickers ------------------------------ */
+
+let stickZ = 20
+let peel = null
+// a burst of little ticks in the sticker's own ink, for a tap
+function burst(el, x, y) {
+    if (reduced) return
+    const tick = document.createElement("span")
+    tick.className = "tm-click"
+    tick.style.cssText = `left:${x}px;top:${y}px;--tick:${getComputedStyle(el).getPropertyValue("--ink")}`
+    tick.innerHTML = `<svg viewBox="-20 -20 40 40" aria-hidden="true">${[0, 45, 90, 135, 180, 225, 270, 315].map((a) => `<path d="M0 -10V-17" transform="rotate(${a})"/>`).join("")}</svg>`
+    stage.append(tick)
+    tick.addEventListener("animationend", () => tick.remove())
+}
+const replay = (el, cls) => {
+    el.classList.remove(cls)
+    void el.offsetWidth
+    el.classList.add(cls)
+}
+stickers.forEach((el, k) => {
+    const glare = el.querySelector(".tm-st__glare")
+    const box = el.querySelector("svg")?.viewBox.baseVal
+    const settle = () => {
+        el.style.transform = ""
+        glare?.setAttribute("cx", -400)
+    }
+    el.addEventListener("pointerdown", (e) => {
+        if (!root.classList.contains("is-sheet")) return
+        e.preventDefault()
+        el.setPointerCapture(e.pointerId)
+        const t = sticks[k]
+        peel = { k, sx: e.clientX, sy: e.clientY, ox: t.x, oy: t.y, lx: e.clientX, vx: 0, moved: false }
+        el.style.zIndex = ++stickZ
+        el.classList.add("is-held")
+        settle()
+    })
+    el.addEventListener("pointermove", (e) => {
+        const t = sticks[k]
+        if (peel && peel.k === k) {
+            const dx = e.clientX - peel.sx
+            const dy = e.clientY - peel.sy
+            if (Math.hypot(dx, dy) > 4) peel.moved = true
+            if (!peel.moved) return
+            peel.vx = peel.vx * 0.7 + (e.clientX - peel.lx) * 0.3
+            peel.lx = e.clientX
+            t.x = clamp(peel.ox + dx, t.w * 0.3, stage.clientWidth - t.w * 0.3)
+            t.y = clamp(peel.oy + dy, t.h * 0.3, stage.clientHeight - t.h * 0.3)
+            el.classList.add("is-instant")
+            el.style.translate = `${(t.x - t.w / 2).toFixed(1)}px ${(t.y - t.h / 2).toFixed(1)}px`
+            // it swings a little with the way you're moving it, like paper does
+            el.style.rotate = `${t.rot + clamp(peel.vx * 1.3, -16, 16)}deg`
+            return
+        }
+        if (e.pointerType !== "mouse" || reduced || !root.classList.contains("is-sheet")) return
+        // hovering: it leans toward the pointer, and the light catches it where the pointer is
+        const r = el.getBoundingClientRect()
+        const px = (e.clientX - r.left) / r.width
+        const py = (e.clientY - r.top) / r.height
+        el.style.transform = `perspective(700px) rotateX(${((0.5 - py) * 16).toFixed(1)}deg) rotateY(${((px - 0.5) * 16).toFixed(1)}deg)`
+        if (glare && box) {
+            glare.setAttribute("cx", (px * box.width).toFixed(0))
+            glare.setAttribute("cy", (py * box.height).toFixed(0))
+        }
+    })
+    const drop = (e) => {
+        if (!peel || peel.k !== k) return
+        const t = sticks[k]
+        el.classList.remove("is-held", "is-instant")
+        if (peel.moved) {
+            // stuck back down, a touch crooked
+            t.rot = clamp(t.rot + clamp(peel.vx * 0.5, -6, 6) + (Math.random() - 0.5) * 6, -14, 14)
+            putSticker(k)
+            replay(el, "is-slap")
+        } else {
+            replay(el, "is-boop")
+            const r = stage.getBoundingClientRect()
+            burst(el, e.clientX - r.left, e.clientY - r.top)
+        }
+        peel = null
+    }
+    el.addEventListener("pointerup", drop)
+    el.addEventListener("pointercancel", drop)
+    el.addEventListener("pointerleave", () => peel?.k === k || settle())
+    el.addEventListener("animationend", () => el.classList.remove("is-slap", "is-boop"))
+})
 
 root.querySelector(".tm-skip").addEventListener("click", () => {
     pieces.forEach((_, i) => state[i].placed || setTimeout(() => snapIn(i), reduced ? 0 : i * 140))

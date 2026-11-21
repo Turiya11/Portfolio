@@ -16,6 +16,7 @@ const CONTENT = {
         { year: "2025", period: "Feb — May 2025", kicker: "where data meets care", title: "UX Design Intern", org: "Encora Inc., Pune", logos: [["encora", "Encora"]], text: "Interactive biomedical data visualisations for clinical decision-making — 5 concepts across 4 data types, tested with 6 users: ~30% faster interpretation, ~20% fewer misreads.", tags: ["Data viz", "Healthcare", "Usability testing"], link: ["Read the case study", "work/encora/"] },
         { year: "2025", period: "Jun — Oct 2025", kicker: "freelance, remotely", title: "Freelance Designer", org: "IACS Youth Leadership Program", logos: [["iacs", "Indian American Community Services"]], text: "Graphic design for the Youth Leadership Program at Indian American Community Services, working remotely as a freelancer.", tags: ["Graphic design", "Freelance", "Remote"] },
         { year: "2025", period: "Studio project · 2025", kicker: "thinking in systems", title: "Dentigo", org: "B2B platform for dental clinics & labs", text: "Brought restorations, supplies and clinic–lab communication into one transparent flow to cut remakes, delays and staff workload.", tags: ["B2B", "Service design", "Web app"], link: ["Read the case study", "work/dentigo/"] },
+        { year: "2025", period: "Feb 2025", kicker: "learning across disciplines", title: "National Academic Immersion Program", org: "IIT Hyderabad · School of Design", text: "Intensive daily sessions led by faculty at the IIT Hyderabad School of Design, on the multidisciplinary nature of UX and industrial design.", tags: ["UX", "Industrial design", "Ideation"] },
         { year: "2026", period: "Academic project · 2026", kicker: "a system of support", title: "Lumi", org: "Postpartum support for mothers & families", text: "Explored how a digital experience can help mothers recognise and express postpartum emotional difficulty, while giving partners and family a clearer, more compassionate way to support her.", tags: ["User research", "Interaction design", "Maternal health"], link: ["Read the case study", "work/lumi/"] },
         { year: "2026", period: "March 2026 — now", kicker: "going end-to-end", title: "Product Design Intern", org: "SSK Technologies · 3TFlow", logos: [["ssk", "SSK Technologies"]], text: "End-to-end flows across 2000+ ITSM screens for 5 user roles — ticket assignment cut from 6 steps to 3, a Reports module, SLA tracking and a design system of 4000+ components.", tags: ["ITSM", "Design systems", "Enterprise"], link: ["Under NDA · ask me about it", "work/3tflow/"] },
     ],
@@ -55,6 +56,14 @@ const SHOTS = {
         { src: "kg-map.jpg", kind: "web" },
     ],
     Dentigo: [{ src: "dentigo-orders.png", kind: "device" }],
+    "National Academic Immersion Program": [
+        { src: "naip-ideation.jpg", kind: "photo" },
+        { src: "naip-lab.jpg", kind: "photo" },
+        { src: "naip-charminar.jpg", kind: "photo-tall" },
+        { src: "naip-print.jpg", kind: "photo-tall" },
+        { src: "naip-stage.jpg", kind: "photo" },
+        { src: "naip-cyanotype.jpg", kind: "photo" },
+    ],
     Lumi: [
         { src: "lumi-home.jpg", kind: "phone" },
         { src: "lumi-journal.jpg", kind: "phone" },
@@ -144,7 +153,7 @@ function render() {
         const list = SHOTS[title]
         if (!list) return ""
         return `<div class="jt-shots" aria-hidden="true" style="${box}">${list
-            .map((x, k) => `<img class="jt-shot jt-shot--${x.kind} jt-shot--${list.length > 1 ? "abcd"[k] : "b"}" src="assets/images/timeline/${x.src}" alt="" loading="lazy" decoding="async" />`)
+            .map((x, k) => `<img class="jt-shot jt-shot--${x.kind} jt-shot--${list.length > 1 ? "abcdef"[k] : "b"}" src="assets/images/timeline/${x.src}" alt="" loading="lazy" decoding="async" />`)
             .join("")}</div>`
     }
     const cards = CONTENT.milestones
