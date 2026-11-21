@@ -1408,6 +1408,55 @@ button {
     opacity: 1;
     transform: scale(var(--fit, 1)); /* --fit < 1 only when a card wouldn't fit the screen (journey.js) */
 }
+/* peek chip: sits on the top edge of cards that have screens, hinting there's more on hover.
+   Only for a mouse; it pulses now and then until the first peek, and tucks away while the screens are out */
+.jt-peek {
+    display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+    .jt-peek {
+        position: absolute;
+        top: -14px;
+        right: 26px;
+        z-index: 2;
+        display: grid;
+        place-items: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        color: var(--node, var(--accent));
+        color: color-mix(in srgb, var(--node) 55%, var(--ink));
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 6px 14px -6px rgba(60, 45, 130, 0.4);
+        transition:
+            opacity 0.25s ease,
+            transform 0.35s cubic-bezier(0.34, 1.42, 0.64, 1);
+    }
+    .jt-peek::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        animation: jt-beckon 3.6s ease-out 1.2s infinite;
+    }
+    .is-peeked .jt-peek::after {
+        animation: none;
+    }
+    .jt-card:hover .jt-peek {
+        opacity: 0;
+        transform: scale(0.6) translateY(6px);
+    }
+}
+@keyframes jt-beckon {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--node) 55%, transparent); }
+    50%, 100% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--node) 0%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .jt-peek::after {
+        animation: none;
+    }
+}
 /* project screens: hidden behind a card; on hover they slide out to either side with a soft spring */
 .jt-shots {
     position: absolute;
