@@ -6,7 +6,7 @@ import { butterflyArt } from "./butterflies.js?v=2"
 const CONTENT = {
     eyebrow: "about me",
     heading: "The archive",
-    intro: "I'm Turiya, a product designer in Pune. The case studies are up there. This is the rest of it: the song on repeat, the things I can't explain why I like and the paintings I've made.",
+    intro: "I'm Turiya, a product designer in Pune. The case studies are up there. This is the rest of it: what I can do for you, and the paintings I've made.",
     hint: "scroll to flip through",
     card: [
         ["Collection", "Turiya Joshi"],
@@ -65,12 +65,14 @@ const CONTENT = {
 
 // to bring the calendar back, add this folder to the list (and renumber the TJ·00n labels):
 // { id: "ab-moments", tab: "moments", no: "TJ·001", title: "Days I kept", hint: "tap a circled day", tint: "#ffb9c9" },
+// parked too, until they're ready to come back. They went between team and the wall (and the intro mentioned them:
+// "the song on repeat, the things I can't explain why I like and the paintings I've made"):
+// { id: "ab-repeat", tab: "on repeat", no: "TJ·003", title: "On repeat", hint: "drop the needle", tint: "#8f7bea" },
+// { id: "ab-things", tab: "no reason", no: "TJ·004", title: "Things I can't explain why I like", hint: "go on, poke them", tint: "#7cc2f6" },
 const FOLDERS = [
     { id: "ab-hello", tab: "hello", no: "TJ·001", title: CONTENT.hello.title, hint: "nice to meet you", tint: "#ffb9c9", titleInBody: true },
-    { id: "ab-team", tab: "team", no: "TJ·002", title: "What I bring to a team", hint: "drag each piece to the shape it fits", tint: "#b9a8ff" },
-    { id: "ab-repeat", tab: "on repeat", no: "TJ·003", title: "On repeat", hint: "drop the needle", tint: "#8f7bea" },
-    { id: "ab-things", tab: "no reason", no: "TJ·004", title: "Things I can't explain why I like", hint: "go on, poke them", tint: "#7cc2f6" },
-    { id: "ab-wall", tab: "the wall", no: "TJ·005", title: "On my wall", hint: "step closer to any of them", tint: "#ffd2a8" },
+    { id: "ab-team", tab: "team", no: "TJ·002", title: "What can I do for you", hint: "drag each piece to the shape it fits", tint: "#b9a8ff" },
+    { id: "ab-wall", tab: "the wall", no: "TJ·003", title: "On my wall", hint: "step closer to any of them", tint: "#ffd2a8" },
 ]
 
 const TAPE = ["#f5c518", "#ff9eb5", "#7cc2f6", "#c4e727", "#b9a8ff"]
@@ -553,7 +555,7 @@ if (calPage) {
     setMoment(at, true)
 }
 
-/* ------------------------------ the record player ------------------------------ */
+/* ------------------------------ the record player (parked: only wired up while its folder is in FOLDERS) ------------------------------ */
 
 const disc = root.querySelector(".ab-vinyl__disc")
 const vinyl = root.querySelector(".ab-vinyl")
@@ -671,7 +673,7 @@ function spin(now) {
 
 // grab the record: drag it round to scratch (a real song seeks with it), or just click to play / pause
 let grab = null
-vinyl.addEventListener("pointerdown", (e) => {
+vinyl?.addEventListener("pointerdown", (e) => {
     const r = vinyl.getBoundingClientRect()
     const cx = r.left + r.width / 2
     const cy = r.top + r.height / 2
@@ -679,7 +681,7 @@ vinyl.addEventListener("pointerdown", (e) => {
     vinyl.setPointerCapture(e.pointerId)
     if (!spinRaf) (lastT = 0), (spinRaf = requestAnimationFrame(spin))
 })
-vinyl.addEventListener("pointermove", (e) => {
+vinyl?.addEventListener("pointermove", (e) => {
     if (!grab) return
     const a = Math.atan2(e.clientY - grab.cy, e.clientX - grab.cx)
     let d = a - grab.last
@@ -698,13 +700,13 @@ const drop = () => {
     scratched = grab.moved >= 0.06
     grab = null
 }
-vinyl.addEventListener("pointerup", drop)
-vinyl.addEventListener("pointercancel", drop)
-vinyl.addEventListener("click", () => {
+vinyl?.addEventListener("pointerup", drop)
+vinyl?.addEventListener("pointercancel", drop)
+vinyl?.addEventListener("click", () => {
     if (!scratched) setPlaying(!playing)
     scratched = false
 })
-playBtn.addEventListener("click", () => setPlaying(!playing))
+playBtn?.addEventListener("click", () => setPlaying(!playing))
 
 // the song keeps going while you flip through the other folders; it stops when you leave the archive
 new IntersectionObserver(([e]) => !e.isIntersecting && setPlaying(false)).observe(root.querySelector(".ab-drawer"))

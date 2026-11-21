@@ -1,4 +1,4 @@
-// "What I bring to a team", folder 02 of the archive (about.js makes the folder, this fills it): a four-piece
+// "What can I do for you", folder 02 of the archive (about.js makes the folder, this fills it): a four-piece
 // jigsaw. The pieces start scattered; drag each one onto the outline it fits, and it clicks in. Once all four are in,
 // "How I contribute" is taped across the top and each piece flies off and turns into a die-cut sticker. The stickers
 // tilt toward the pointer, can be peeled off and stuck down anywhere on the folder, and wiggle when tapped.
@@ -308,6 +308,7 @@ function sheet(instant) {
         ]
         stage.style.height = `${Math.round(y0 + 150)}px`
     }
+    gliding.forEach(stopGlide) // laid out afresh: anything still sliding stops where the layout puts it
     stickers.forEach((el, i) => {
         const t = sticks[i]
         if (i < 4) {
@@ -409,13 +410,27 @@ function snapIn(i) {
     if (state.every((p) => p.placed)) solve()
 }
 
+let pieceRaf = 0
+let pieceT = 0
+function pieceStep(now) {
+    const dt = clamp((now - pieceT) / 1000, 0.001, 0.034)
+    pieceT = now
+    if (!drag) return (pieceRaf = 0)
+    const s = state[drag.i]
+    const a = reduced ? 1 : 1 - Math.exp(-FOLLOW * dt)
+    s.x += (drag.tx - s.x) * a
+    s.y += (drag.ty - s.y) * a
+    place(drag.i) // .is-dragging turns its transition off, so this lands this frame
+    pieceRaf = requestAnimationFrame(pieceStep)
+}
+
 pieces.forEach((el, i) => {
     el.addEventListener("pointerdown", (e) => {
         if (state[i].placed || root.classList.contains("is-solved")) return
         e.preventDefault()
         el.setPointerCapture(e.pointerId)
         const s = state[i]
-        drag = { i, dx: e.clientX - s.x, dy: e.clientY - s.y, moved: 0 }
+        drag = { i, dx: e.clientX - s.x, dy: e.clientY - s.y, tx: s.x, ty: s.y, moved: 0 }
         s.scale = 1.06
         s.rot = s.rot * 0.4
         el.style.zIndex = ++z
@@ -426,16 +441,20 @@ pieces.forEach((el, i) => {
         if (!drag || drag.i !== i) return
         const s = state[i]
         const E = parseFloat(stage.style.getPropertyValue("--e"))
-        s.x = clamp(e.clientX - drag.dx, -E * 0.3, stage.clientWidth - E * 0.7)
-        s.y = clamp(e.clientY - drag.dy, -E * 0.3, stage.clientHeight - E * 0.7)
+        // where it's heading; pieceStep() carries it there, a touch behind, like the stickers
+        drag.tx = clamp(e.clientX - drag.dx, -E * 0.3, stage.clientWidth - E * 0.7)
+        drag.ty = clamp(e.clientY - drag.dy, -E * 0.3, stage.clientHeight - E * 0.7)
         drag.moved++
-        place(i, true)
+        if (!pieceRaf) (pieceT = performance.now()), (pieceRaf = requestAnimationFrame(pieceStep))
     })
     const drop = () => {
         if (!drag || drag.i !== i) return
+        const s = state[i]
+        // the last bit of the way it eases into, below
+        s.x = drag.tx
+        s.y = drag.ty
         drag = null
         el.classList.remove("is-dragging")
-        const s = state[i]
         // close enough to its own spot: in it goes
         const [hx, hy] = slot(i)
         const near = (x, y) => Math.hypot(s.x - x, s.y - y) < S * unit * 0.42
@@ -481,6 +500,7 @@ let sheetTimer = 0
 
 function scatter() {
     clearTimeout(sheetTimer)
+    gliding.forEach(stopGlide)
     root.classList.remove("is-solved", "is-sheet")
     if (hint) hint.textContent = hintBefore
     state.forEach((s, i) => {
@@ -515,6 +535,90 @@ const replay = (el, cls) => {
     void el.offsetWidth
     el.classList.add(cls)
 }
+// gliding: a carried sticker trails the pointer on a soft spring, swings with its speed like paper,
+// and when let go keeps sliding until friction stops it. One loop for all of them, writing only translate and rotate
+const FOLLOW = 24 // how quickly it catches up with the pointer, per second
+const FRICTION = 4 // how quickly a thrown one slows down, per second
+const gliding = new Set()
+let glideRaf = 0
+let glideT = 0
+const bounds = (t) => [t.w * 0.3, stage.clientWidth - t.w * 0.3, t.h * 0.3, stage.clientHeight - t.h * 0.3]
+function glide(k) {
+    const t = sticks[k]
+    if (!t.g) {
+        t.g = { held: true, tx: t.x, ty: t.y, vx: 0, vy: 0, swing: 0 }
+        stickers[k].classList.add("is-instant")
+    }
+    gliding.add(k)
+    if (!glideRaf) (glideT = performance.now()), (glideRaf = requestAnimationFrame(glideStep))
+    return t.g
+}
+function glideStep(now) {
+    const dt = clamp((now - glideT) / 1000, 0.001, 0.034)
+    glideT = now
+    for (const k of gliding) {
+        const t = sticks[k]
+        const g = t.g
+        const px = t.x
+        const py = t.y
+        if (g.held) {
+            const a = reduced ? 1 : 1 - Math.exp(-FOLLOW * dt)
+            t.x += (g.tx - t.x) * a
+            t.y += (g.ty - t.y) * a
+            g.vx += ((t.x - px) / dt - g.vx) * 0.3
+            g.vy += ((t.y - py) / dt - g.vy) * 0.3
+        } else {
+            const f = Math.exp(-FRICTION * dt)
+            g.vx *= f
+            g.vy *= f
+            t.x += g.vx * dt
+            t.y += g.vy * dt
+            // it bumps softly off the edges of the folder instead of leaving it
+            const [x0, x1, y0, y1] = bounds(t)
+            if (t.x < x0 || t.x > x1) (t.x = clamp(t.x, x0, x1)), (g.vx *= -0.35)
+            if (t.y < y0 || t.y > y1) (t.y = clamp(t.y, y0, y1)), (g.vy *= -0.35)
+        }
+        g.swing += (clamp(g.vx * 0.014, -14, 14) - g.swing) * (1 - Math.exp(-9 * dt))
+        const el = stickers[k]
+        el.style.translate = `${(t.x - t.w / 2).toFixed(2)}px ${(t.y - t.h / 2).toFixed(2)}px`
+        el.style.rotate = `${(t.rot + g.swing).toFixed(2)}deg`
+        const speed = Math.hypot(g.vx, g.vy)
+        // sliding slowly over its own place, it's caught there
+        if (!g.held && t.home && speed < 500 && Math.hypot(t.x - t.home.x, t.y - t.home.y) < t.w * 0.2) home(k)
+        else if (!g.held && speed < 18 && Math.abs(g.swing) < 0.4) land(k)
+    }
+    glideRaf = gliding.size ? requestAnimationFrame(glideStep) : 0
+}
+const stopGlide = (k) => {
+    gliding.delete(k)
+    sticks[k].g = null
+    stickers[k].classList.remove("is-instant")
+}
+// came to rest somewhere loose: stuck down, a touch crooked
+function land(k) {
+    const t = sticks[k]
+    t.rot = clamp(t.rot + (t.g?.swing || 0) + (Math.random() - 0.5) * 6, -14, 14)
+    stopGlide(k)
+    if (t.home && Math.hypot(t.x - t.home.x, t.y - t.home.y) < t.w * 0.28) return home(k)
+    putSticker(k)
+    replay(stickers[k], "is-slap")
+}
+// back in its place in the chain: it clicks in, with ticks at the joins it locks into
+function home(k) {
+    const t = sticks[k]
+    stopGlide(k)
+    Object.assign(t, t.home)
+    putSticker(k)
+    replay(stickers[k], "is-slap")
+    const cell = S * unit
+    CELL.forEach(([c, r], j) => {
+        const [mc, mr] = CELL[k]
+        if (j === k || j > 3 || Math.abs(c - mc) + Math.abs(r - mr) !== 1) return
+        if (Math.hypot(sticks[j].x - sticks[j].home.x, sticks[j].y - sticks[j].home.y) > 2) return
+        setTimeout(() => burst(stickers[j], t.x + ((c - mc) * cell) / 2, t.y + ((r - mr) * cell) / 2), reduced ? 0 : 200)
+    })
+}
+
 stickers.forEach((el, k) => {
     const glare = el.querySelector(".tm-st__glare")
     const box = el.querySelector("svg")?.viewBox.baseVal
@@ -527,10 +631,12 @@ stickers.forEach((el, k) => {
         e.preventDefault()
         el.setPointerCapture(e.pointerId)
         const t = sticks[k]
-        peel = { k, sx: e.clientX, sy: e.clientY, ox: t.x, oy: t.y, lx: e.clientX, vx: 0, moved: false }
+        // caught mid-glide or picked up from rest, it starts from where it is now
+        peel = { k, sx: e.clientX, sy: e.clientY, ox: t.x, oy: t.y, moved: false }
         el.style.zIndex = ++stickZ
         el.classList.add("is-held")
         settle()
+        if (t.g) t.g.held = true
     })
     el.addEventListener("pointermove", (e) => {
         const t = sticks[k]
@@ -539,17 +645,13 @@ stickers.forEach((el, k) => {
             const dy = e.clientY - peel.sy
             if (Math.hypot(dx, dy) > 4) peel.moved = true
             if (!peel.moved) return
-            peel.vx = peel.vx * 0.7 + (e.clientX - peel.lx) * 0.3
-            peel.lx = e.clientX
-            t.x = clamp(peel.ox + dx, t.w * 0.3, stage.clientWidth - t.w * 0.3)
-            t.y = clamp(peel.oy + dy, t.h * 0.3, stage.clientHeight - t.h * 0.3)
-            el.classList.add("is-instant")
-            el.style.translate = `${(t.x - t.w / 2).toFixed(1)}px ${(t.y - t.h / 2).toFixed(1)}px`
-            // it swings a little with the way you're moving it, like paper does
-            el.style.rotate = `${t.rot + clamp(peel.vx * 1.3, -16, 16)}deg`
+            const [x0, x1, y0, y1] = bounds(t)
+            // the pointer only sets where it's heading; glide() carries it there, a touch behind
+            glide(k).tx = clamp(peel.ox + dx, x0, x1)
+            t.g.ty = clamp(peel.oy + dy, y0, y1)
             return
         }
-        if (e.pointerType !== "mouse" || reduced || !root.classList.contains("is-sheet")) return
+        if (e.pointerType !== "mouse" || reduced || !root.classList.contains("is-sheet") || t.g) return
         // hovering: it leans toward the pointer, and the light catches it where the pointer is
         const r = el.getBoundingClientRect()
         const px = (e.clientX - r.left) / r.width
@@ -563,24 +665,19 @@ stickers.forEach((el, k) => {
     const drop = (e) => {
         if (!peel || peel.k !== k) return
         const t = sticks[k]
-        el.classList.remove("is-held", "is-instant")
-        if (peel.moved && t.home && Math.hypot(t.x - t.home.x, t.y - t.home.y) < t.w * 0.28) {
-            // close to its place in the chain: it clicks back in, with ticks at the joins it locks into
-            Object.assign(t, t.home)
-            putSticker(k)
-            replay(el, "is-slap")
-            const cell = S * unit
-            CELL.forEach(([c, r], j) => {
-                const [mc, mr] = CELL[k]
-                if (j === k || j > 3 || Math.abs(c - mc) + Math.abs(r - mr) !== 1) return
-                if (Math.hypot(sticks[j].x - sticks[j].home.x, sticks[j].y - sticks[j].home.y) > 2) return
-                setTimeout(() => burst(stickers[j], t.x + ((c - mc) * cell) / 2, t.y + ((r - mr) * cell) / 2), reduced ? 0 : 200)
-            })
+        const g = t.g
+        el.classList.remove("is-held")
+        if (g) {
+            // let go: it keeps the speed it had and slides to a stop (or, flicked at its place, clicks in)
+            g.held = false
+            const v = Math.hypot(g.vx, g.vy)
+            if (reduced) g.vx = g.vy = 0
+            else if (v > 2400) (g.vx *= 2400 / v), (g.vy *= 2400 / v)
+            // let go on its place (where the pointer is, it trails a touch behind), or flicked so it would come to rest there: it clicks in
+            const near = (x, y) => t.home && Math.hypot(x - t.home.x, y - t.home.y) < t.w * 0.28
+            if (near(g.tx, g.ty) || near(t.x, t.y) || near(t.x + g.vx / FRICTION, t.y + g.vy / FRICTION)) home(k)
         } else if (peel.moved) {
-            // stuck back down loose, a touch crooked
-            t.rot = clamp(t.rot + clamp(peel.vx * 0.5, -6, 6) + (Math.random() - 0.5) * 6, -14, 14)
-            putSticker(k)
-            replay(el, "is-slap")
+            land(k)
         } else {
             replay(el, "is-boop")
             const r = stage.getBoundingClientRect()

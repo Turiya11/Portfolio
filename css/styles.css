@@ -5905,11 +5905,13 @@ button.ab-day {
     /* slapped down one after another, each with a little squash */
     animation: tmSlap 0.55s cubic-bezier(0.3, 1.5, 0.5, 1) calc(0.15s + var(--i) * 0.085s) backwards;
 }
+/* carried or sliding: team.js moves it every frame, so translate and rotate don't transition,
+   and it rides on its own layer so the shadow isn't repainted as it goes */
 .tm-st.is-instant {
     transition:
-        rotate 0.25s ease-out,
         scale 0.3s cubic-bezier(0.3, 1.6, 0.5, 1),
         filter 0.25s ease;
+    will-change: translate, rotate;
 }
 @keyframes tmSlap {
     0% {
