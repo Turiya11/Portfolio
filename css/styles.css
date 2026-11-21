@@ -1598,7 +1598,7 @@ button {
     }
     /* photos (six): a pair above, a tall pair at the sides, a pair below */
     .jt-mark.on:has(.jt-card:hover) .jt-shot--a.jt-shot--cutout {
-        transform: translate(-9%, 122%) rotate(-3deg);
+        transform: translate(-9%, 150%) rotate(-3deg);
     }
     .jt-mark.on:has(.jt-card:hover) .jt-shot--b.jt-shot--photo {
         transform: translate(58%, 330%) rotate(4deg);
