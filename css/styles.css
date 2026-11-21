@@ -1438,6 +1438,21 @@ button {
     border-width: 3px;
     border-radius: 18px;
 }
+.jt-shot--poster {
+    width: 30%;
+    border-width: 3px;
+    border-radius: 6px;
+}
+.jt-shot--c {
+    left: 0;
+    top: 18%;
+    transform: translate(24%, 6%) scale(0.82);
+}
+.jt-shot--d {
+    right: 0;
+    top: 26%;
+    transform: translate(-24%, 6%) scale(0.82);
+}
 .jt-shot--device {
     width: 82%;
     border: 0;
@@ -1475,6 +1490,21 @@ button {
     }
     .jt-mark.on:has(.jt-card:hover) .jt-shot--b {
         transform: translate(60%, 6%) rotate(6deg);
+    }
+    /* posters fan out two to a side: outer pair (a, b) further out, inner pair (c, d) tucked under */
+    .jt-mark.on:has(.jt-card:hover) .jt-shot--poster.jt-shot--a {
+        transform: translate(-128%, -14%) rotate(-11deg);
+    }
+    .jt-mark.on:has(.jt-card:hover) .jt-shot--poster.jt-shot--b {
+        transform: translate(128%, -10%) rotate(10deg);
+    }
+    .jt-mark.on:has(.jt-card:hover) .jt-shot--poster.jt-shot--c {
+        transform: translate(-88%, 30%) rotate(-4deg);
+        transition-delay: 0.1s;
+    }
+    .jt-mark.on:has(.jt-card:hover) .jt-shot--poster.jt-shot--d {
+        transform: translate(88%, 34%) rotate(5deg);
+        transition-delay: 0.14s;
     }
     /* phones are narrow, so they slide almost all the way out */
     .jt-mark.on:has(.jt-card:hover) .jt-shot--phone.jt-shot--a {

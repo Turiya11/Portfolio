@@ -57,6 +57,12 @@ const SHOTS = {
         { src: "lumi-home.jpg", kind: "phone" },
         { src: "lumi-journal.jpg", kind: "phone" },
     ],
+    "Visual Design Intern": [
+        { src: "texol-cutlery.jpg", kind: "poster" },
+        { src: "texol-ekdum.jpg", kind: "poster" },
+        { src: "texol-tea.jpg", kind: "poster" },
+        { src: "texol-soup.jpg", kind: "poster" },
+    ],
     "Product Design Intern": [
         { src: "tflow-landing.jpg", kind: "web" },
         { src: "tflow-tickets.jpg", kind: "web" },
@@ -136,7 +142,7 @@ function render() {
         const list = SHOTS[title]
         if (!list) return ""
         return `<div class="jt-shots" aria-hidden="true" style="${box}">${list
-            .map((x, k) => `<img class="jt-shot jt-shot--${x.kind} jt-shot--${list.length > 1 && k === 0 ? "a" : "b"}" src="assets/images/timeline/${x.src}" alt="" loading="lazy" decoding="async" />`)
+            .map((x, k) => `<img class="jt-shot jt-shot--${x.kind} jt-shot--${list.length > 1 ? "abcd"[k] : "b"}" src="assets/images/timeline/${x.src}" alt="" loading="lazy" decoding="async" />`)
             .join("")}</div>`
     }
     const cards = CONTENT.milestones
