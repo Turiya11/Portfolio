@@ -48,13 +48,11 @@ const ORBIT = [
 ]
 // screens that slide out from behind a card on hover (1–2 per project, small copies in assets/images/timeline).
 // kind: "web" = a browser screen, "phone" = a mobile screen, "device" = a mockup that already has its frame
-// a labelled pill on cards that have screens/photos: a stack of tiny thumbnails + "Hover for 4 photos".
-// It beckons until the first peek, then sits quietly
+// a small pill of thumbnails on cards that have screens/photos; it beckons until the first peek.
+// The card itself gives one small shake the first time it comes into view (CSS jt-shake)
 const peekFor = (list) => {
-    const kinds = list.map((x) => x.kind)
-    const noun = kinds.every((k) => ["web", "phone", "device"].includes(k)) ? "screen" : kinds.every((k) => k === "poster") ? "poster" : "photo"
     const thumbs = list.slice(0, 3).map((x) => `<img src="assets/images/timeline/${x.src}" alt="" loading="lazy" decoding="async" />`).join("")
-    return `<span class="jt-peek" aria-hidden="true"><span class="jt-peek__thumbs">${thumbs}</span><span class="jt-peek__label">Hover for ${list.length > 1 ? `${list.length} ${noun}s` : `the ${noun}`}</span></span>`
+    return `<span class="jt-peek" aria-hidden="true"><span class="jt-peek__thumbs">${thumbs}</span></span>`
 }
 const SHOTS = {
     "UX Design Intern": [
@@ -176,7 +174,7 @@ function render() {
               <div class="jt-node">’${esc(m.year.slice(-2))}</div>
               <span class="jt-stem" style="height:${gap - 8}px;${above ? `bottom:${NODE_R}px` : `top:${NODE_R}px`}"></span>
               ${shotsFor(m.title, `width:${cardW}px;left:${-cardW / 2}px;${above ? `bottom:${NODE_R + gap}px` : `top:${NODE_R + gap}px`}`)}
-              <article class="jt-card${compact ? " is-compact" : ""}" style="width:${cardW}px;left:${-cardW / 2}px;${above ? `bottom:${NODE_R + gap}px` : `top:${NODE_R + gap}px`}">
+              <article class="jt-card${compact ? " is-compact" : ""}${SHOTS[m.title] ? " has-shots" : ""}" style="width:${cardW}px;left:${-cardW / 2}px;${above ? `bottom:${NODE_R + gap}px` : `top:${NODE_R + gap}px`}">
                 ${SHOTS[m.title] ? peekFor(SHOTS[m.title]) : ""}
                 <div class="jt-card__top"><span class="jt-kicker">${esc(m.kicker)}</span><span class="jt-period">${esc(m.period)}</span></div>
                 <div class="jt-card__head">
@@ -271,6 +269,10 @@ function wirePeek() {
         if (e.pointerType !== "mouse" || !e.target.closest?.(".jt-card")?.querySelector(".jt-peek")) return
         root.classList.add("is-peeked")
         try { sessionStorage.setItem("timeline-peeked", "1") } catch {}
+    })
+    // each card shakes just once
+    root.addEventListener("animationend", (e) => {
+        if (e.animationName === "jt-shake") e.target.classList.add("shook")
     })
 }
 
