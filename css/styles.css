@@ -5849,34 +5849,59 @@ button.ab-day {
         scale: 1;
     }
 }
-/* the sticker sheet: once the puzzle is done, the pieces fly off and come back as die-cut stickers (after a sheet of design stickers) */
+/* the tape comes off when the puzzle turns over */
+.tm.is-sheet .tm-ribbon {
+    animation: tmUnstamp 0.3s ease forwards;
+}
+@keyframes tmUnstamp {
+    from {
+        opacity: 1;
+        scale: 1;
+    }
+    to {
+        opacity: 0;
+        scale: 0.9;
+    }
+}
+/* the turn-over: once the puzzle is done, the pieces turn edge-on together, and on the back is me behind my laptop */
 .tm.is-sheet .tm-piece {
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0s linear calc(0.3s + var(--i) * 0.12s);
+    transition: opacity 0s linear calc(0.3s + var(--i) * 0.04s);
 }
-/* the turn-over: each piece turns edge-on, and its sticker side comes round in its place */
 .tm.is-sheet .tm-piece__front {
-    animation: tmFlipOut 0.3s cubic-bezier(0.6, 0, 0.8, 0.4) calc(var(--i) * 0.12s) forwards;
+    animation: tmFlipOut 0.3s cubic-bezier(0.6, 0, 0.8, 0.4) calc(var(--i) * 0.04s) forwards;
 }
 @keyframes tmFlipOut {
     to {
         transform: perspective(520px) rotateY(90deg);
     }
 }
-.tm.is-sheet .tm-st--big {
-    animation: none;
-}
-.tm.is-sheet .tm-st--big > svg {
-    animation: tmFlipIn 0.34s cubic-bezier(0.2, 0.8, 0.3, 1.15) calc(0.3s + var(--i) * 0.12s) backwards;
-}
-@keyframes tmFlipIn {
-    from {
-        transform: perspective(520px) rotateY(-90deg);
-    }
-}
-.tm-defs {
+/* me and the laptop, then the lid again on its own on top: the cards come out from between the two.
+   Both turn round together, and the photo fades out at the bottom where it's cropped */
+.tm-me {
     position: absolute;
+    z-index: 1;
+    width: auto;
+    max-width: none;
+    visibility: hidden;
+    pointer-events: none;
+    transform-origin: 50% 45%;
+    -webkit-mask-image: linear-gradient(#000 78%, transparent 99%);
+    mask-image: linear-gradient(#000 78%, transparent 99%);
+}
+.tm-me--lid {
+    z-index: 3;
+}
+.tm.is-sheet .tm-me {
+    visibility: visible;
+    animation: tmTurn 0.6s cubic-bezier(0.2, 0.8, 0.3, 1.1) 0.32s backwards;
+}
+@keyframes tmTurn {
+    from {
+        opacity: 0.6;
+        transform: perspective(900px) rotateY(-90deg) scale(0.75);
+    }
 }
 .tm-sheet {
     position: absolute;
@@ -5966,70 +5991,116 @@ button.ab-day {
         transform: rotate(-2deg);
     }
 }
-.tm-st svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-}
-/* the white die-cut edge, then the coloured face on top */
-.tm-st__edge > * {
-    fill: #fff;
-    stroke: #fff;
-    stroke-width: 14px;
-    stroke-linejoin: round;
-}
-.tm-st__face > * {
-    fill: var(--bg);
-}
-.tm-st__line {
-    fill: none;
-    stroke: var(--ink);
-    stroke-width: 5px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-.tm-st__paper {
-    fill: #fff;
-}
-.tm-st__dot {
-    fill: var(--ink);
-}
-.tm-st__small,
-.tm-st__big {
+/* Liquid Glass, as in the hero: a frosted card with a bright top edge, tinted a little with its own colour.
+   The light follows the pointer across it (--gx, --gy and .is-lit, team.js) */
+.tm-glass {
+    box-sizing: border-box;
+    isolation: isolate;
     font-family: var(--sans);
-    fill: var(--ink);
-    text-anchor: middle;
+    color: #1a1a1a;
+    background:
+        radial-gradient(120% 80% at 12% 0%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 55%),
+        radial-gradient(90% 70% at 100% 100%, color-mix(in srgb, var(--c, #7cc2f6) 30%, transparent) 0%, transparent 65%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.32) 45%, rgba(255, 255, 255, 0.18) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.8),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.25),
+        inset 1px 0 0 rgba(255, 255, 255, 0.35),
+        inset -1px 0 0 rgba(255, 255, 255, 0.2),
+        inset 0 0 22px rgba(255, 255, 255, 0.22),
+        0 18px 36px rgba(40, 30, 95, 0.16),
+        0 2px 6px rgba(40, 30, 95, 0.08);
+    filter: none;
+    transition:
+        translate 0.5s cubic-bezier(0.3, 1.3, 0.5, 1),
+        rotate 0.5s cubic-bezier(0.3, 1.3, 0.5, 1),
+        scale 0.3s cubic-bezier(0.3, 1.6, 0.5, 1),
+        transform 0.25s ease-out,
+        box-shadow 0.25s ease;
 }
-.tm-st__small {
-    font-size: 14.5px;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    opacity: 0.8;
+.tm.is-sheet .tm-glass {
+    animation: none;
 }
-.tm-st__big {
-    font-weight: 800;
-    letter-spacing: -0.02em;
+.tm-glass.is-instant {
+    transition:
+        scale 0.3s cubic-bezier(0.3, 1.6, 0.5, 1),
+        box-shadow 0.25s ease;
 }
-/* where the light catches it, following the pointer */
-.tm-st__glare {
-    fill: url(#tm-shine);
-    mix-blend-mode: soft-light;
+.tm-glass::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(circle at var(--gx, 50%) var(--gy, 0%), rgba(255, 255, 255, 0.75), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
     pointer-events: none;
 }
-.tm-st--tag {
+.tm-glass.is-lit::after {
+    opacity: 1;
+}
+.tm-glass:hover,
+.tm-glass.is-held {
+    filter: none;
+    box-shadow:
+        inset 0 1.5px 0 rgba(255, 255, 255, 0.85),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.25),
+        inset 0 0 22px rgba(255, 255, 255, 0.25),
+        0 28px 48px rgba(40, 30, 95, 0.22),
+        0 4px 10px rgba(40, 30, 95, 0.1);
+}
+.tm-glass--card {
+    width: 232px;
+    padding: 14px 16px 16px;
+    border-radius: 22px;
+}
+.tm.is-narrow .tm-glass--card {
+    width: min(300px, 84%);
+}
+.tm-glass__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 9px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--ls-caps);
+    text-transform: uppercase;
+    color: var(--ink);
+}
+.tm-glass__tag i {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+    background: var(--c);
+}
+.tm-glass__title {
+    display: block;
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+.tm-glass--chip {
     display: flex;
     align-items: center;
     gap: 0.45em;
-    padding: 0.42em 0.85em 0.42em 0.7em;
+    padding: 0.5em 0.95em 0.5em 0.8em;
+    border-radius: 999px;
     white-space: nowrap;
-    font-size: calc(18px * var(--k, 1));
+    font-size: 16px;
     font-weight: 600;
     line-height: 1.2;
     color: var(--ink);
-    background: var(--bg);
-    border-radius: 0.55em;
-    box-shadow: 0 0 0 calc(4px * var(--k, 1)) #fff;
 }
 .tm-st .tm-ico {
     width: 1.15em;
@@ -6044,20 +6115,6 @@ button.ab-day {
 .tm-ico .tm-ico-dot {
     fill: currentColor;
     stroke: none;
-}
-.tm-st--big .tm-st__edge > * {
-    stroke-width: 6px;
-}
-.tm-st--big .tm-st__line {
-    stroke-width: 2.2px;
-}
-.tm-st--doodle .tm-st__edge > * {
-    stroke-width: 9px;
-}
-.tm-st--doodle .tm-st__face > * {
-    stroke: var(--ink);
-    stroke-width: 2.6px;
-    stroke-linejoin: round;
 }
 .tm-foot {
     margin: 8px auto 0;
@@ -6087,7 +6144,7 @@ button.ab-day {
         transition: none;
     }
     .tm.is-sheet .tm-st,
-    .tm.is-sheet .tm-st--big > svg,
+    .tm.is-sheet .tm-me,
     .tm.is-sheet .tm-piece__front {
         animation: none;
     }
