@@ -16,6 +16,7 @@ type Props = {
     headline: string
     accent: string
     note?: string
+    company?: { name: string; logo: string } // work projects: shown at the top of the side menu, above Brief
     nda?: boolean // shows the note as a highlighted box with a lock
     link?: { href: string; label: string }
     ratio?: number // width ÷ height of the wide videos
@@ -54,6 +55,9 @@ const CSS = `
 .cs-back{position:absolute;top:36px;left:30px;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--soft);transition:color .2s}
 .cs-back:hover{color:var(--ink)}
 .cs-rail nav{display:flex;flex-direction:column;gap:6px}
+.cs-rail.has-co{padding-top:140px}
+.cs-co{position:absolute;top:84px;left:46px;width:calc(var(--rail) - 60px);display:flex;align-items:center;gap:10px;margin:0;font-size:var(--t-small);font-weight:600;line-height:1.25;color:var(--ink)}
+.cs-co img{flex:none;width:30px;height:30px;border-radius:8px;object-fit:cover;box-shadow:0 0 0 1px rgba(30,35,60,.08),0 6px 14px -8px rgba(30,35,60,.45)}
 .cs-rail nav a{position:relative;padding:7px 0 7px 16px;font-size:var(--t-small);font-weight:400;color:var(--quiet);transition:color .2s}
 .cs-rail nav a:hover{color:var(--ink)}
 .cs-rail nav a.on{color:var(--ai);font-weight:600}
@@ -128,7 +132,7 @@ const CSS = `
 .cs-next span{flex:none;display:inline-flex;align-items:center;justify-content:center;width:clamp(48px,6vw,72px);height:clamp(48px,6vw,72px);border-radius:50%;font-size:24px}
 @media (max-width:1040px){
   .cs{--rail:0px}
-  .cs-rail nav{display:none}
+  .cs-rail nav,.cs-co{display:none}
   .cs-rail{position:static;width:auto;padding:0;display:block}
   .cs-back{position:fixed;top:24px;left:var(--gut);z-index:5;display:inline-flex;align-items:center;height:42px;padding:0 18px;border-radius:999px;border:1px solid var(--edge);background:rgba(255,255,255,.5);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
   .cs-brief{grid-template-columns:1fr}
@@ -319,10 +323,16 @@ export default function CaseStudy(p: Props) {
     return (
         <div className="cs" style={theme}>
             <style>{CSS}</style>
-            <aside className="cs-rail">
+            <aside className={p.company ? "cs-rail has-co" : "cs-rail"}>
                 <a className="cs-back" href={p.backLink}>
                     ← Back to work
                 </a>
+                {p.company ? (
+                    <p className="cs-co">
+                        <img src={p.company.logo} alt="" />
+                        {p.company.name}
+                    </p>
+                ) : null}
                 <nav aria-label="Contents">
                     {SECTIONS.filter(([id]) => (id !== "ecosystem" || p.ecosystem) && (id !== "research" || p.research) && (id !== "process" || p.process.length)).map(([id, label]) => (
                         <a key={id} href={`#${id}`} className={on === id ? "on" : ""} aria-current={on === id ? "true" : undefined}>

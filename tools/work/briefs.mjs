@@ -153,6 +153,7 @@ export const dentigo = {
 export const kg = {
     title: "KG Hub",
     meta: "UX design intern · Encora Inc. · Feb to May 2025",
+    company: { name: "Encora", logo: site("logos/encora.png") },
     headline: "From data to discovery, with biomedical visualisation powered by a knowledge graph.",
     accent: "rgb(98, 58, 200)",
     nda: true,

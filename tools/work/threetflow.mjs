@@ -15,6 +15,7 @@ export const ndaVeil = {
 export const threetflow = {
     title: "3TFlow",
     meta: "Product design intern · SSK Technologies · March 2026 to now",
+    company: { name: "SSK Technologies", logo: "../../assets/images/logos/ssk.png" },
     headline: "One place for a support team's tickets, tasks and hours, run against every client's SLA.",
     accent: "rgb(79, 82, 214)",
     nda: true,
