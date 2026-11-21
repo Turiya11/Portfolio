@@ -57,7 +57,7 @@ const SHOTS = {
     ],
     Dentigo: [{ src: "dentigo-orders.png", kind: "device" }],
     "National Academic Immersion Program": [
-        { src: "naip-ideation.jpg", kind: "photo" },
+        { src: "naip-ideation.png", kind: "cutout" },
         { src: "naip-lab.jpg", kind: "photo" },
         { src: "naip-charminar.jpg", kind: "photo-tall" },
         { src: "naip-print.jpg", kind: "photo-tall" },

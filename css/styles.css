@@ -1487,12 +1487,20 @@ button {
     border-width: 3px;
     border-radius: 18px;
 }
+.jt-shot--cutout {
+    width: 96%;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    filter: drop-shadow(0 18px 22px rgba(29, 25, 50, 0.28));
+}
 .jt-shot--photo {
-    width: 38%;
+    width: 48%;
     border-radius: 8px;
 }
 .jt-shot--photo-tall {
-    width: 22%;
+    width: 28%;
     border-width: 3px;
     border-radius: 8px;
 }
@@ -1544,6 +1552,13 @@ button {
     .jt-mark.on:has(.jt-card:hover) {
         z-index: 6; /* its screens can overlap the neighbours */
     }
+    /* and its own node: screens go over the node, the card stays on top of them */
+    .jt-mark.on:has(.jt-card:hover) .jt-shots {
+        z-index: 4;
+    }
+    .jt-mark.on:has(.jt-card:hover) .jt-card {
+        z-index: 5;
+    }
     .jt-mark.on:has(.jt-card:hover) .jt-shot {
         opacity: 1;
         transition:
@@ -1575,26 +1590,26 @@ button {
         transition-delay: 0.14s;
     }
     /* photos (six): a pair above, a tall pair at the sides, a pair below */
-    .jt-mark.on:has(.jt-card:hover) .jt-shot--a.jt-shot--photo {
-        transform: translate(-62%, -112%) rotate(-6deg);
+    .jt-mark.on:has(.jt-card:hover) .jt-shot--a.jt-shot--cutout {
+        transform: translate(-9%, 122%) rotate(-3deg);
     }
     .jt-mark.on:has(.jt-card:hover) .jt-shot--b.jt-shot--photo {
-        transform: translate(84%, -104%) rotate(5deg);
+        transform: translate(63%, -135%) rotate(5deg);
     }
     .jt-mark.on:has(.jt-card:hover) .jt-shot--c.jt-shot--photo-tall {
-        transform: translate(-118%, -4%) rotate(-5deg);
+        transform: translate(-130%, 22%) rotate(-5deg);
         transition-delay: 0.1s;
     }
     .jt-mark.on:has(.jt-card:hover) .jt-shot--d.jt-shot--photo-tall {
-        transform: translate(168%, 6%) rotate(6deg);
+        transform: translate(138%, -12%) rotate(6deg);
         transition-delay: 0.12s;
     }
     .jt-mark.on:has(.jt-card:hover) .jt-shot--e {
-        transform: translate(-58%, 96%) rotate(4deg);
+        transform: translate(-64%, -184%) rotate(-5deg);
         transition-delay: 0.16s;
     }
     .jt-mark.on:has(.jt-card:hover) .jt-shot--f {
-        transform: translate(28%, 104%) rotate(-4deg);
+        transform: translate(84%, 70%) rotate(4deg);
         transition-delay: 0.2s;
     }
     /* phones are narrow, so they slide almost all the way out */
