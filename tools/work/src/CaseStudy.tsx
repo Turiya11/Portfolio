@@ -84,6 +84,8 @@ const CSS = `
 .cs-clip video{display:block;width:100%;height:auto;object-fit:cover}
 .cs-clip.wide{max-width:calc(100vh * var(--ar))}
 .cs-clip.wide video{aspect-ratio:var(--ar)}
+.cs-clip.still{cursor:default}
+.cs-clip.still img{display:block;width:100%;height:auto;aspect-ratio:var(--ar);object-fit:cover;object-position:top}
 .cs-clip.phone{border-radius:clamp(18px,2.2vw,30px)}
 .cs-clip.phone video{aspect-ratio:618/1376}
 .cs-ctrl{position:absolute;right:12px;bottom:12px;display:flex;gap:6px;line-height:1}
@@ -140,8 +142,19 @@ const CSS = `
 }
 `
 
+// A clip can also be a still image (3TFlow, under NDA, has only public screenshots): it sits in the same frame as a video.
+function Clip(props: { clip: ClipData; cls: string; ratio?: number }) {
+    const { clip, cls, ratio } = props
+    if (!/\.(jpe?g|png|webp)$/i.test(clip.src)) return <VideoClip {...props} />
+    return (
+        <figure className={`cs-clip still ${cls}`} style={ratio ? ({ "--ar": ratio } as React.CSSProperties) : undefined}>
+            <img src={clip.src} alt={clip.label || ""} loading="lazy" decoding="async" />
+        </figure>
+    )
+}
+
 /* Plays while on screen and pauses when it scrolls away. Nothing downloads until it is close to the viewport. */
-function Clip({ clip, cls, ratio }: { clip: ClipData; cls: string; ratio?: number }) {
+function VideoClip({ clip, cls, ratio }: { clip: ClipData; cls: string; ratio?: number }) {
     const box = React.useRef<HTMLElement | null>(null)
     const video = React.useRef<HTMLVideoElement | null>(null)
     const [paused, setPaused] = React.useState(false)
@@ -303,7 +316,7 @@ export default function CaseStudy(p: Props) {
                     ← Back to work
                 </a>
                 <nav aria-label="Contents">
-                    {SECTIONS.filter(([id]) => (id !== "ecosystem" || p.ecosystem) && (id !== "research" || p.research)).map(([id, label]) => (
+                    {SECTIONS.filter(([id]) => (id !== "ecosystem" || p.ecosystem) && (id !== "research" || p.research) && (id !== "process" || p.process.length)).map(([id, label]) => (
                         <a key={id} href={`#${id}`} className={on === id ? "on" : ""} aria-current={on === id ? "true" : undefined}>
                             {label}
                         </a>
@@ -437,6 +450,7 @@ export default function CaseStudy(p: Props) {
                     </div>
                 </section>
 
+                {p.process.length ? (
                 <section className="cs-sec" id="process">
                     <p className="cs-eye">Process</p>
                     {p.story?.process ? <p className="cs-state">{p.story.process}</p> : null}
@@ -493,6 +507,7 @@ export default function CaseStudy(p: Props) {
                         ) : null}
                     </dialog>
                 </section>
+                ) : null}
 
                 <section className="cs-sec" id="reflection">
                     <p className="cs-eye">Reflection</p>

@@ -72,6 +72,7 @@ for (const p of pages) {
     </head>
     <body>
         <!-- built by tools/work/build.mjs from the Framer component ${p.file}.tsx — edit there, then rebuild -->
+${p.pre || ""}
         <div id="root"></div>
         <script type="module" src="../js/${p.slug}.js?v=${stamp}"></script>
     </body>
