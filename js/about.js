@@ -353,6 +353,25 @@ function outline(W, H, x, w, t = TAB_H, r = 26) {
     ].join(" ")
 }
 
+// the pencil line: the outline, wobbled once here. It used to be an SVG noise filter, which Safari
+// re-rendered every time a folder started to slide, so the scroll stalled and flickered
+function wobble(path, d, seed) {
+    path.setAttribute("d", d)
+    const L = path.getTotalLength()
+    const n = Math.max(60, Math.round(L / 6))
+    // whole numbers of waves around the outline, so the line meets itself where it closes
+    const a = Math.max(3, Math.round(L / 110)), b = Math.max(5, Math.round(L / 43))
+    const pts = []
+    for (let k = 0; k < n; k++) {
+        const t = (k / n) * Math.PI * 2
+        const p = path.getPointAtLength((k / n) * L)
+        const x = p.x + 0.9 * Math.sin(a * t + seed * 1.3) + 0.35 * Math.sin(b * t + seed * 2.1)
+        const y = p.y + 0.9 * Math.cos(a * t + seed * 0.7) + 0.35 * Math.sin(b * t + 1 + seed)
+        pts.push(`${x.toFixed(1)} ${y.toFixed(1)}`)
+    }
+    path.setAttribute("d", `M${pts.join("L")}Z`)
+}
+
 function layoutDrawer() {
     const vh = innerHeight
     const mobile = innerWidth < 900
@@ -374,7 +393,8 @@ function layoutDrawer() {
         svg.setAttribute("width", W)
         svg.setAttribute("height", H)
         svg.setAttribute("viewBox", `0 0 ${W} ${H}`)
-        svg.querySelectorAll("path").forEach((p) => p.setAttribute("d", d))
+        svg.querySelector(".ab-edge").setAttribute("d", d)
+        wobble(svg.querySelector(".ab-ink"), d, i)
         anchors[i].style.scrollMarginTop = `${STICK}px` // a tab always lands on the top of its folder
     })
     onScroll()

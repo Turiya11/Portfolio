@@ -3748,7 +3748,7 @@ button {
     stroke: var(--pencil);
     stroke-width: 1.3;
     stroke-linecap: round;
-    filter: url(#ab-pencil);
+    stroke-linejoin: round;
 }
 .ab-tab {
     position: absolute;
