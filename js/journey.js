@@ -56,6 +56,12 @@ const SHOTS = {
         { src: "kg-map.jpg", kind: "web" },
     ],
     Dentigo: [{ src: "dentigo-orders.png", kind: "device" }],
+    "HCI, critical thinking & SEL": [
+        { src: "hci-campus.jpg", kind: "snap" },
+        { src: "hci-workshop.jpg", kind: "snap" },
+        { src: "hci-badge.jpg", kind: "snap" },
+        { src: "hci-idc.jpg", kind: "snap" },
+    ],
     "National Academic Immersion Program": [
         { src: "naip-ideation.png", kind: "cutout" },
         { src: "naip-lab.jpg", kind: "photo" },

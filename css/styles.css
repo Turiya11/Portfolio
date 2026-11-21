@@ -1499,6 +1499,11 @@ button {
     width: 48%;
     border-radius: 8px;
 }
+/* snapshots (IndiaHCI): four photos, two up and two down on either side */
+.jt-shot--snap {
+    width: 40%;
+    border-radius: 8px;
+}
 /* the one to look at: the mic moment, a size up and on top of its neighbours */
 .jt-shot--photo-lead {
     width: 46%;
@@ -1594,6 +1599,20 @@ button {
     }
     .jt-mark.on:has(.jt-card:hover) .jt-shot--poster.jt-shot--d {
         transform: translate(88%, 34%) rotate(5deg);
+        transition-delay: 0.14s;
+    }
+    .jt-mark.on:has(.jt-card:hover) .jt-shot--snap.jt-shot--a {
+        transform: translate(-96%, -42%) rotate(-7deg);
+    }
+    .jt-mark.on:has(.jt-card:hover) .jt-shot--snap.jt-shot--b {
+        transform: translate(96%, -38%) rotate(6deg);
+    }
+    .jt-mark.on:has(.jt-card:hover) .jt-shot--snap.jt-shot--c {
+        transform: translate(-84%, 60%) rotate(-3deg);
+        transition-delay: 0.1s;
+    }
+    .jt-mark.on:has(.jt-card:hover) .jt-shot--snap.jt-shot--d {
+        transform: translate(84%, 64%) rotate(4deg);
         transition-delay: 0.14s;
     }
     /* photos (six): a pair above, a tall pair at the sides, a pair below */
