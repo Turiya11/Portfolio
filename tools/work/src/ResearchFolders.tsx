@@ -1,5 +1,6 @@
 // Research: a row of folders. Each opens a scrollable modal with the data behind it.
 // A folder's content is a list of blocks; see the Block type for what each one draws.
+// Any text can mark a key point as ==like this==: it shows bold, and a highlighter sweeps over it shortly after it scrolls into view.
 import * as React from "react"
 import Avatar, { type Face } from "./Avatar"
 
@@ -21,7 +22,7 @@ export type Block = {
     p?: string // one short paragraph
     stats?: { n: string; l: string }[]
     cards?: { t: string; items: string[] }[]
-    table?: { head: string[]; rows: string[][] }
+    table?: { head: string[]; rows: string[][]; hl?: number; tag?: string } // hl: a row to pick out, tag: a badge on it
     image?: { src: string; alt: string; caption?: string }
     quote?: string
     note?: string
@@ -56,112 +57,297 @@ const CSS = `
 .rf-modal::backdrop{background:rgba(25,25,55,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 @keyframes rf-in{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
 .rf-head{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px clamp(18px,3vw,32px);border-bottom:1px solid rgba(30,35,60,.1)}
-.rf-head h3{margin:0;font-size:var(--t-h2);font-weight:600;letter-spacing:var(--ls-h2);line-height:1.15}
-.rf-x{flex:none;width:40px;height:40px;border:0;border-radius:50%;background:rgba(30,35,60,.08);color:var(--ink);font-size:19px;line-height:1;cursor:pointer}
-.rf-x:hover{background:rgba(30,35,60,.15)}
-.rf-x:disabled{opacity:.35;cursor:default}
-.rf-head h3{flex:1;min-width:0}
-.rf-count{flex:none;font-size:var(--t-small);font-weight:500;color:var(--quiet)}
+.rf-head h3{flex:1;min-width:0;margin:0;font-size:var(--t-h2);font-weight:600;letter-spacing:var(--ls-h2);line-height:1.15}
+.rf-x{flex:none;width:40px;height:40px;border:0;border-radius:50%;background:rgba(30,35,60,.08);color:var(--ink);font-size:19px;line-height:1;cursor:pointer;transition:background .2s,transform .2s}
+.rf-x:hover{background:rgba(30,35,60,.15);transform:rotate(90deg)}
 .rf-foot{flex:none;display:flex;justify-content:space-between;gap:12px;padding:12px clamp(18px,3vw,32px) 14px;border-top:1px solid rgba(30,35,60,.1)}
-.rf-step{display:flex;flex-direction:column;gap:2px;max-width:48%;min-width:0;padding:10px 16px;border:0;border-radius:14px;background:rgba(30,35,60,.05);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:background .2s}
-.rf-step:hover{background:rgba(30,35,60,.1)}
-.rf-step small{font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--ai)}
+.rf-step{display:flex;flex-direction:column;gap:2px;max-width:48%;min-width:0;padding:10px 16px;border:0;border-radius:14px;background:rgba(30,35,60,.05);color:var(--ink);font:inherit;text-align:left;cursor:pointer;transition:background .2s,transform .2s}
+.rf-step:hover{background:color-mix(in srgb,var(--ai) 12%,#fff)}
+.rf-step:hover small{transform:translateX(-3px)}
+.rf-step.next:hover small{transform:translateX(3px)}
+.rf-step small{font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--ai);transition:transform .2s}
 .rf-step b{font-size:var(--t-small);font-weight:600;line-height:1.35}
 .rf-step.next{margin-left:auto;align-items:flex-end;text-align:right}
 .rf-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:clamp(18px,3vw,32px);display:flex;flex-direction:column;gap:18px}
 .rf-body:focus{outline:none}
 .rf-body > *{flex-shrink:0}
-.rf-body h4{margin:12px 0 -6px;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--ai)}
+/* blocks rise in as they scroll into view (only once the script is watching, so nothing is ever stuck hidden) */
+.rf-go .rf-rv{transition:opacity .5s ease,transform .6s cubic-bezier(.2,.9,.25,1);transition-delay:var(--d,0s)}
+.rf-go .rf-rv:not(.in){opacity:0;transform:translateY(14px)}
+.rf-go .rf-cards.rf-rv .rf-card{transition:opacity .45s ease,transform .55s cubic-bezier(.2,.9,.25,1);transition-delay:calc(var(--d,0s) + var(--i,0) * 70ms)}
+.rf-go .rf-cards.rf-rv:not(.in) .rf-card{opacity:0;transform:translateY(10px)}
+.rf-body h4{display:flex;align-items:center;gap:10px;margin:12px 0 -6px;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--ai)}
+.rf-body h4:before{content:'';flex:none;width:18px;height:2px;border-radius:2px;background:currentColor}
 .rf-body > h4:first-child{margin-top:0}
 .rf-p{margin:0;font-size:var(--t-body);font-weight:400;line-height:1.5;color:var(--soft)}
-.rf-quote{margin:0;padding:18px 22px;border-radius:16px;background:#fdecef;font-size:var(--t-h3);font-weight:600;letter-spacing:var(--ls-h3);line-height:1.25}
-.rf-note{margin:0;padding:12px 16px;border-radius:12px;background:rgba(30,35,60,.06);font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--soft)}
+/* the highlighter: bold straight away, then the marker sweeps across */
+mark.rf-hl{padding:0 .12em;margin:0 -.04em;border-radius:.25em;font-weight:600;color:var(--ink);background:linear-gradient(100deg,rgba(255,224,102,.0) 0,rgba(255,224,102,.85) .4em,rgba(255,214,79,.8) 100%) no-repeat 0 62%/0% 74%;-webkit-box-decoration-break:clone;box-decoration-break:clone;transition:background-size .9s cubic-bezier(.6,.05,.25,1);transition-delay:var(--hd,.6s)}
+mark.rf-hl.on{background-size:100% 74%}
+.rf-quote{position:relative;margin:0;padding:22px 26px 22px 70px;border-radius:18px;background:linear-gradient(120deg,color-mix(in srgb,var(--ai) 11%,#fff),#fdecef);font-size:var(--t-h3);font-weight:600;letter-spacing:var(--ls-h3);line-height:1.3;color:var(--ink);overflow:hidden}
+.rf-quote:before{content:'\\201C';position:absolute;left:18px;top:2px;font:700 76px/1 Georgia,serif;color:var(--ai);opacity:.55}
+.rf-note{display:flex;gap:10px;align-items:flex-start;margin:0;padding:12px 16px;border-radius:12px;background:rgba(30,35,60,.05);font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--soft)}
+.rf-note:before{content:'i';flex:none;display:grid;place-items:center;width:18px;height:18px;margin-top:2px;border-radius:50%;background:color-mix(in srgb,var(--ai) 16%,#fff);color:var(--ai);font:700 11px/1 Georgia,serif}
 .rf-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-.rf-stats div{padding:16px;border-radius:14px;background:#fff;box-shadow:0 0 0 1px rgba(30,35,60,.07)}
-.rf-stats b{display:block;font-size:var(--t-h2);font-weight:600;letter-spacing:var(--ls-h2);line-height:1.15;color:var(--ai)}
-.rf-stats span{display:block;margin-top:6px;font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--soft)}
+.rf-stat{position:relative;padding:18px;border-radius:16px;background:linear-gradient(160deg,#fff 40%,color-mix(in srgb,var(--ai) 9%,#fff));box-shadow:0 0 0 1px rgba(30,35,60,.07);overflow:hidden;transition:transform .25s,box-shadow .25s}
+.rf-stat:hover{transform:translateY(-2px);box-shadow:0 0 0 1px color-mix(in srgb,var(--ai) 30%,transparent),0 14px 26px -18px color-mix(in srgb,var(--ai) 70%,transparent)}
+.rf-stat b{display:block;font-size:clamp(28px,3.2vw,40px);font-weight:600;letter-spacing:var(--ls-h2);line-height:1.05;color:var(--ai);font-variant-numeric:tabular-nums}
+.rf-stat span{display:block;margin-top:8px;font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--soft)}
 .rf-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
-.rf-card{padding:16px 18px;border-radius:14px;background:#fff;box-shadow:0 0 0 1px rgba(30,35,60,.07)}
-.rf-card b{display:block;margin-bottom:8px;font-size:var(--t-body);font-weight:600;line-height:1.25}
-.rf-card ul,.rf-p-col ul{margin:0;padding:0 0 0 17px;display:flex;flex-direction:column;gap:5px;font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--soft)}
-.rf-tablewrap{overflow-x:auto;border-radius:14px;box-shadow:0 0 0 1px rgba(30,35,60,.09)}
+.rf-card{position:relative;padding:18px 18px 16px;border-radius:16px;background:#fff;box-shadow:0 0 0 1px rgba(30,35,60,.07);overflow:hidden;transition:transform .25s,box-shadow .25s}
+.rf-card:before{content:'';position:absolute;left:0;top:0;right:0;height:4px;background:linear-gradient(90deg,var(--c1),var(--c2))}
+.rf-card:hover{transform:translateY(-3px);box-shadow:0 0 0 1px rgba(30,35,60,.09),0 18px 30px -22px rgba(30,35,60,.45)}
+.rf-card:nth-child(5n+1){--c1:#ff9fbb;--c2:#a98bff}
+.rf-card:nth-child(5n+2){--c1:#7cc4ff;--c2:#5fd8b4}
+.rf-card:nth-child(5n+3){--c1:#ffd24d;--c2:#ff9a6b}
+.rf-card:nth-child(5n+4){--c1:#b8a2ff;--c2:#ff8fbf}
+.rf-card:nth-child(5n+5){--c1:#86d97a;--c2:#63b4ee}
+.rf-card b{display:block;margin-bottom:10px;font-size:var(--t-body);font-weight:600;line-height:1.25}
+.rf-card ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--soft)}
+.rf-card li{position:relative;padding-left:16px}
+.rf-card li:before{content:'';position:absolute;left:1px;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--c2)}
+.rf-tablewrap{overflow-x:auto;border-radius:16px;box-shadow:0 0 0 1px rgba(30,35,60,.09)}
 .rf-table{width:100%;min-width:640px;border-collapse:collapse;background:#fff;font-size:var(--t-small);font-weight:400;line-height:1.5}
 .rf-table th{padding:11px 14px;text-align:left;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--quiet);background:rgba(30,35,60,.04)}
-.rf-table td{padding:12px 14px;vertical-align:top;border-top:1px solid rgba(30,35,60,.08);color:var(--soft)}
+.rf-table td{padding:12px 14px;vertical-align:top;border-top:1px solid rgba(30,35,60,.08);color:var(--soft);transition:background .2s}
+.rf-table tbody tr:hover td{background:rgba(30,35,60,.025)}
 .rf-table td:first-child{font-weight:600;color:var(--ink)}
+.rf-table tr.rf-pick td{background:color-mix(in srgb,var(--ai) 9%,#fff);color:var(--ink);border-top-color:color-mix(in srgb,var(--ai) 30%,transparent)}
+.rf-table tr.rf-pick + tr td{border-top-color:color-mix(in srgb,var(--ai) 30%,transparent)}
+.rf-table tr.rf-pick td:first-child{box-shadow:inset 4px 0 0 var(--ai);color:var(--ai)}
+.rf-table tr.rf-pick:hover td{background:color-mix(in srgb,var(--ai) 13%,#fff)}
+.rf-tag{display:inline-block;margin:0 0 0 8px;padding:2px 9px;border-radius:999px;background:var(--ai);color:#fff;font-size:11px;font-weight:600;letter-spacing:.04em;line-height:1.6;vertical-align:1px;white-space:nowrap}
+.rf-dots{display:inline-flex;gap:4px;vertical-align:-1px}
+.rf-dots i{width:11px;height:11px;border-radius:50%;background:rgba(30,35,60,.12)}
+.rf-dots i.f{background:color-mix(in srgb,var(--ai) 55%,#5b5470)}
+.rf-pick .rf-dots{gap:7px}
+.rf-pick .rf-dots i.f{background:var(--ai);box-shadow:0 0 0 3px color-mix(in srgb,var(--ai) 18%,transparent)}
+.rf-meter{display:flex;align-items:center;gap:10px;min-width:130px}
+.rf-meter span{flex:1;height:8px;border-radius:99px;background:rgba(30,35,60,.08);overflow:hidden}
+.rf-meter span i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,color-mix(in srgb,var(--ai) 55%,#fff),var(--ai));transition:width 1s cubic-bezier(.2,.9,.25,1) .2s}
+.rf-meter.on span i{width:var(--v)}
+.rf-meter b{flex:none;min-width:3ch;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
 .rf-img{margin:0;display:flex;flex-direction:column;gap:8px}
-.rf-img a{display:block;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(30,35,60,.08)}
-.rf-img img{display:block;width:100%;height:auto}
+.rf-img a{display:block;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(30,35,60,.08)}
+.rf-img img{display:block;width:100%;height:auto;transition:transform .5s cubic-bezier(.2,.9,.25,1)}
+.rf-img a:hover img{transform:scale(1.015)}
 .rf-img figcaption{font-size:var(--t-small);font-weight:400;color:var(--quiet)}
-.rf-person{padding:clamp(16px,2vw,24px);border-radius:18px;background:#fff;box-shadow:0 0 0 1px rgba(30,35,60,.07);display:flex;flex-direction:column;gap:14px}
-.rf-p-top{display:flex;align-items:center;gap:clamp(14px,1.8vw,20px)}
+/* persona: who they are on the left, and tabs for what they need on the right */
+.rf-person{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.4fr);border-radius:22px;background:#fff;box-shadow:0 0 0 1px rgba(30,35,60,.07),0 22px 40px -32px rgba(30,35,60,.5);overflow:hidden}
+.rf-p-who{position:relative;display:flex;flex-direction:column;gap:14px;padding:clamp(18px,2.2vw,28px);background:linear-gradient(165deg,color-mix(in srgb,var(--ai) 12%,#fff),#fbf7f2)}
+.rf-p-top{display:flex;align-items:center;gap:clamp(12px,1.6vw,18px)}
 .rf-faces{flex:none;display:flex}
-.rf-faces .av{display:block;width:clamp(64px,7vw,84px);height:auto;border-radius:50%;box-shadow:0 0 0 3px #fff,0 8px 18px -10px rgba(30,35,60,.45)}
-.rf-faces .av + .av{margin-left:-16px}
-.rf-p-id{display:flex;flex-direction:column;gap:6px;min-width:0}
-.rf-p-id b{font-size:var(--t-h3);font-weight:600;letter-spacing:var(--ls-h3);line-height:1.25}
-.rf-p-id b small{display:block;margin-top:4px;font-size:var(--t-small);font-weight:500;color:var(--ai)}
-.rf-p-id span{font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--quiet)}
-.rf-person blockquote{margin:0;padding-left:14px;border-left:3px solid var(--a);font-size:var(--t-body);font-weight:500;line-height:1.3}
-.rf-traits{display:flex;flex-wrap:wrap;gap:6px}
-.rf-traits i{padding:4px 11px;border-radius:999px;background:rgba(30,35,60,.06);font-size:var(--t-label);font-weight:500;font-style:normal;color:var(--soft)}
-.rf-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
-.rf-p-col p{margin:0 0 7px;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--quiet)}
+.rf-faces .av{display:block;width:clamp(68px,7.4vw,92px);height:auto;border-radius:50%;box-shadow:0 0 0 4px #fff,0 10px 22px -12px rgba(30,35,60,.5);transition:transform .45s cubic-bezier(.3,1.6,.5,1)}
+.rf-faces .av + .av{margin-left:-18px}
+.rf-person:hover .rf-faces .av{transform:translateY(-3px) rotate(-5deg)}
+.rf-person:hover .rf-faces .av + .av{transform:translateY(-3px) rotate(5deg)}
+.rf-p-id{display:flex;flex-direction:column;gap:4px;min-width:0}
+.rf-p-id b{font-size:var(--t-h3);font-weight:600;letter-spacing:var(--ls-h3);line-height:1.2}
+.rf-p-id em{align-self:flex-start;padding:3px 10px;border-radius:9px;background:var(--ai);color:#fff;font-size:12px;font-weight:600;font-style:normal;line-height:1.5}
+.rf-p-id span{margin-top:2px;font-size:var(--t-small);font-weight:400;line-height:1.45;color:var(--quiet)}
+.rf-bubble{position:relative;margin:4px 0 0;padding:14px 16px;border-radius:16px;background:#fff;font-size:var(--t-body);font-weight:500;line-height:1.35;color:var(--ink);box-shadow:0 10px 24px -18px rgba(30,35,60,.5)}
+.rf-bubble:before{content:'';position:absolute;left:30px;top:-7px;width:14px;height:14px;background:#fff;transform:rotate(45deg);border-radius:3px 0 0 0}
+.rf-traits{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.rf-traits i{padding:4px 11px;border-radius:999px;background:rgba(255,255,255,.85);box-shadow:0 0 0 1px rgba(30,35,60,.08);font-size:var(--t-label);font-weight:500;font-style:normal;color:var(--soft);transition:transform .2s,background .2s}
+.rf-traits i:hover{transform:translateY(-2px);background:#fff}
+.rf-p-what{display:flex;flex-direction:column;gap:14px;min-width:0;padding:clamp(18px,2.2vw,28px)}
+.rf-tabs{position:relative;display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(30,35,60,.06);overflow-x:auto;scrollbar-width:none}
+.rf-tabs::-webkit-scrollbar{display:none}
+.rf-tabs-pill{position:absolute;top:4px;bottom:4px;left:0;width:var(--w,0);transform:translateX(var(--x,0));border-radius:999px;background:#fff;box-shadow:0 2px 8px -3px rgba(30,35,60,.35);transition:transform .45s cubic-bezier(.3,1.35,.5,1),width .45s cubic-bezier(.3,1.35,.5,1);pointer-events:none}
+.rf-tab-b{position:relative;z-index:1;flex:none;display:flex;align-items:center;gap:6px;padding:8px 14px;border:0;border-radius:999px;background:none;color:var(--quiet);font:inherit;font-size:var(--t-small);font-weight:600;white-space:nowrap;cursor:pointer;transition:color .2s}
+.rf-tab-b:hover{color:var(--ink)}
+.rf-tab-b[aria-selected=true]{color:var(--ink)}
+.rf-tab-b i{min-width:20px;padding:0 6px;border-radius:99px;background:rgba(30,35,60,.08);font-size:11px;font-style:normal;line-height:18px;text-align:center;transition:background .2s,color .2s}
+.rf-tab-b[aria-selected=true] i{background:var(--k);color:#fff}
+.rf-tab-b:focus-visible{outline:2px solid var(--ai);outline-offset:1px}
+.rf-panel{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.rf-panel li{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:color-mix(in srgb,var(--k) 7%,#fff);font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--soft);animation:rf-item .45s cubic-bezier(.2,.9,.25,1) both;animation-delay:calc(var(--i) * 60ms)}
+.rf-panel li:before{content:'';flex:none;width:8px;height:8px;margin-top:.5em;border-radius:50%;background:var(--k);box-shadow:0 0 0 4px color-mix(in srgb,var(--k) 18%,transparent)}
+@keyframes rf-item{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+.rf-person[data-one] .rf-tabs{display:none}
 @media (max-width:760px){
-  .rf-count,.rf-head .rf-nav{display:none}
   .rf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .rf-modal{width:100vw;max-height:100dvh;height:100dvh;border-radius:0}
+  .rf-person{grid-template-columns:1fr}
+  .rf-quote{padding-left:56px}
+  .rf-quote:before{left:14px;font-size:60px}
 }
 @media (max-width:440px){.rf-grid{grid-template-columns:1fr}.rf-folder{min-height:112px}}
-@media (prefers-reduced-motion:reduce){.rf-wrap,.rf-paper,.rf-folder{transition:none}.rf-modal[open]{animation:none}}
+@media (prefers-reduced-motion:reduce){
+  .rf-wrap,.rf-paper,.rf-folder,.rf-card,.rf-stat,.rf-tabs-pill,.rf-x,.rf-faces .av{transition:none}
+  .rf-modal[open],.rf-panel li{animation:none}
+  mark.rf-hl,.rf-meter span i{transition:none}
+}
 `
 
+// ==key point== → a highlighted, bold run
+function rich(s: string): React.ReactNode {
+    if (!s.includes("==")) return s
+    return s.split(/==(.+?)==/g).map((x, i) =>
+        i % 2 ? (
+            <mark className="rf-hl" key={i}>
+                {x}
+            </mark>
+        ) : (
+            x
+        ),
+    )
+}
+
+// table cells: "●●○" draws as dots, "83%" as a bar, anything else as text
+function cell(c: string): React.ReactNode {
+    if (/^[●○]+$/.test(c)) {
+        const full = [...c].filter((x) => x === "●").length
+        return (
+            <span className="rf-dots" role="img" aria-label={`${full} of ${c.length}`}>
+                {[...c].map((x, i) => (
+                    <i key={i} className={x === "●" ? "f" : undefined} />
+                ))}
+            </span>
+        )
+    }
+    if (/^\d{1,3}%$/.test(c))
+        return (
+            <span className="rf-meter" style={{ "--v": c } as React.CSSProperties}>
+                <span aria-hidden="true">
+                    <i />
+                </span>
+                <b>{c}</b>
+            </span>
+        )
+    return rich(c)
+}
+
+// colour for each kind of persona list
+const kind = (t: string) =>
+    /pain|frustr|break/i.test(t) ? "#e8607a" : /goal/i.test(t) ? "var(--ai)" : /need/i.test(t) ? "#2ba58a" : /feel/i.test(t) ? "#e79a2f" : /say|think/i.test(t) ? "#4f8fe0" : "#7a7f93"
+
 function PersonaCard({ p }: { p: Persona }) {
-    const col = (t: string, items?: string[]) =>
-        items?.length ? (
-            <div className="rf-p-col" key={t}>
-                <p>{t}</p>
-                <ul>
-                    {items.map((x) => (
-                        <li key={x}>{x}</li>
-                    ))}
-                </ul>
-            </div>
-        ) : null
+    const groups = (
+        [
+            ["Family background", p.background],
+            ["Pain points", p.pain],
+            ["Goals", p.goals],
+            ["Needs", p.needs],
+            ...(p.columns ?? []).map((c) => [c.t, c.items] as const),
+        ] as (readonly [string, string[] | undefined])[]
+    ).filter((g): g is readonly [string, string[]] => !!g[1]?.length)
+    const [tab, setTab] = React.useState(0)
+    const id = React.useId()
+    const bar = React.useRef<HTMLDivElement | null>(null)
+    const btns = React.useRef<(HTMLButtonElement | null)[]>([])
+
+    // the white pill glides to the chosen tab
+    React.useLayoutEffect(() => {
+        const place = () => {
+            const b = btns.current[tab]
+            if (!b || !bar.current) return
+            bar.current.style.setProperty("--x", b.offsetLeft + "px")
+            bar.current.style.setProperty("--w", b.offsetWidth + "px")
+        }
+        place()
+        window.addEventListener("resize", place)
+        return () => window.removeEventListener("resize", place)
+    }, [tab])
+
+    // the first tab's highlights wait to scroll into view; a tab opened later sweeps its own in
+    const panel = React.useRef<HTMLUListElement | null>(null)
+    const first = React.useRef(true)
+    React.useEffect(() => {
+        if (first.current) {
+            first.current = false
+            return
+        }
+        const marks = panel.current?.querySelectorAll<HTMLElement>("mark.rf-hl") ?? []
+        const raf = requestAnimationFrame(() =>
+            marks.forEach((m, i) => {
+                m.style.setProperty("--hd", 0.45 + i * 0.3 + "s")
+                m.classList.add("on")
+            }),
+        )
+        return () => cancelAnimationFrame(raf)
+    }, [tab])
+
+    const pick = (i: number, focus?: boolean) => {
+        setTab(i)
+        const b = btns.current[i]
+        if (focus) b?.focus()
+        b?.scrollIntoView({ block: "nearest", inline: "nearest" })
+    }
     const faces = p.face ? ([] as Face[]).concat(p.face) : []
+    const g = groups[tab]
     return (
-        <article className="rf-person">
-            <div className="rf-p-top">
-                {faces.length ? (
-                    <span className="rf-faces">
-                        {faces.map((f, i) => (
-                            <Avatar key={i} face={f} size={84} />
-                        ))}
-                    </span>
-                ) : null}
-                <div className="rf-p-id">
-                    <b>
-                        {p.name}
-                        <small>{p.role}</small>
-                    </b>
-                    {p.meta ? <span>{p.meta}</span> : null}
+        <article className="rf-person" data-one={groups.length < 2 ? "" : undefined}>
+            <div className="rf-p-who">
+                <div className="rf-p-top">
+                    {faces.length ? (
+                        <span className="rf-faces">
+                            {faces.map((f, i) => (
+                                <Avatar key={i} face={f} size={92} />
+                            ))}
+                        </span>
+                    ) : null}
+                    <div className="rf-p-id">
+                        <b>{p.name}</b>
+                        <em>{p.role}</em>
+                        {p.meta ? <span>{p.meta}</span> : null}
+                    </div>
                 </div>
+                {p.quote ? <blockquote className="rf-bubble">{rich(p.quote)}</blockquote> : null}
+                {p.traits?.length ? (
+                    <div className="rf-traits">
+                        {p.traits.map((t) => (
+                            <i key={t}>{t}</i>
+                        ))}
+                    </div>
+                ) : null}
             </div>
-            {p.quote ? <blockquote>{p.quote}</blockquote> : null}
-            {p.traits?.length ? (
-                <div className="rf-traits">
-                    {p.traits.map((t) => (
-                        <i key={t}>{t}</i>
-                    ))}
+            {g ? (
+                <div className="rf-p-what">
+                    <div
+                        className="rf-tabs"
+                        role="tablist"
+                        aria-label={`About ${p.name}`}
+                        ref={bar}
+                        onKeyDown={(e) => {
+                            const n = groups.length
+                            const to = e.key === "ArrowRight" ? (tab + 1) % n : e.key === "ArrowLeft" ? (tab - 1 + n) % n : e.key === "Home" ? 0 : e.key === "End" ? n - 1 : -1
+                            if (to < 0) return
+                            e.preventDefault()
+                            e.stopPropagation() // arrows here move between tabs, not folders
+                            pick(to, true)
+                        }}
+                    >
+                        <span className="rf-tabs-pill" aria-hidden="true" />
+                        {groups.map(([t, items], i) => (
+                            <button
+                                key={t}
+                                type="button"
+                                role="tab"
+                                className="rf-tab-b"
+                                id={`${id}-t${i}`}
+                                aria-selected={i === tab}
+                                aria-controls={`${id}-p`}
+                                tabIndex={i === tab ? 0 : -1}
+                                ref={(el) => {
+                                    btns.current[i] = el
+                                }}
+                                style={{ "--k": kind(t) } as React.CSSProperties}
+                                onClick={() => pick(i)}
+                            >
+                                {t}
+                                <i>{items.length}</i>
+                            </button>
+                        ))}
+                    </div>
+                    <ul ref={panel} className="rf-panel" role="tabpanel" id={`${id}-p`} aria-labelledby={`${id}-t${tab}`} key={tab} style={{ "--k": kind(g[0]) } as React.CSSProperties}>
+                        {g[1].map((x, i) => (
+                            <li key={x} style={{ "--i": i } as React.CSSProperties}>
+                                <span>{rich(x)}</span>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             ) : null}
-            <div className="rf-cols">
-                {col("Family background", p.background)}
-                {col("Pain points", p.pain)}
-                {col("Goals", p.goals)}
-                {col("Needs", p.needs)}
-                {p.columns?.map((c) => col(c.t, c.items))}
-            </div>
         </article>
     )
 }
@@ -171,27 +357,27 @@ function Blocks({ blocks }: { blocks: Block[] }) {
         <>
             {blocks.map((b, i) => (
                 <React.Fragment key={i}>
-                    {b.h ? <h4>{b.h}</h4> : null}
-                    {b.p ? <p className="rf-p">{b.p}</p> : null}
-                    {b.quote ? <p className="rf-quote">{b.quote}</p> : null}
+                    {b.h ? <h4 className="rf-rv">{b.h}</h4> : null}
+                    {b.p ? <p className="rf-p rf-rv">{rich(b.p)}</p> : null}
+                    {b.quote ? <p className="rf-quote rf-rv">{rich(b.quote)}</p> : null}
                     {b.stats ? (
-                        <div className="rf-stats">
+                        <div className="rf-stats rf-rv">
                             {b.stats.map((s) => (
-                                <div key={s.l}>
-                                    <b>{s.n}</b>
-                                    <span>{s.l}</span>
+                                <div className="rf-stat" key={s.l}>
+                                    <b data-n={s.n}>{s.n}</b>
+                                    <span>{rich(s.l)}</span>
                                 </div>
                             ))}
                         </div>
                     ) : null}
                     {b.cards ? (
-                        <div className="rf-cards">
-                            {b.cards.map((c) => (
-                                <div className="rf-card" key={c.t}>
+                        <div className="rf-cards rf-rv">
+                            {b.cards.map((c, n) => (
+                                <div className="rf-card" key={c.t} style={{ "--i": n } as React.CSSProperties}>
                                     <b>{c.t}</b>
                                     <ul>
                                         {c.items.map((x) => (
-                                            <li key={x}>{x}</li>
+                                            <li key={x}>{rich(x)}</li>
                                         ))}
                                     </ul>
                                 </div>
@@ -199,7 +385,7 @@ function Blocks({ blocks }: { blocks: Block[] }) {
                         </div>
                     ) : null}
                     {b.table ? (
-                        <div className="rf-tablewrap" tabIndex={0} role="region" aria-label="Table">
+                        <div className="rf-tablewrap rf-rv" tabIndex={0} role="region" aria-label="Table">
                             <table className="rf-table">
                                 <thead>
                                     <tr>
@@ -211,10 +397,13 @@ function Blocks({ blocks }: { blocks: Block[] }) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {b.table.rows.map((r) => (
-                                        <tr key={r[0]}>
+                                    {b.table.rows.map((r, k) => (
+                                        <tr key={r[0]} className={k === b.table!.hl ? "rf-pick" : undefined}>
                                             {r.map((c, n) => (
-                                                <td key={n}>{c}</td>
+                                                <td key={n}>
+                                                    {cell(c)}
+                                                    {n === 0 && k === b.table!.hl && b.table!.tag ? <span className="rf-tag">{b.table!.tag}</span> : null}
+                                                </td>
                                             ))}
                                         </tr>
                                     ))}
@@ -223,19 +412,48 @@ function Blocks({ blocks }: { blocks: Block[] }) {
                         </div>
                     ) : null}
                     {b.image ? (
-                        <figure className="rf-img">
+                        <figure className="rf-img rf-rv">
                             <a href={b.image.src} target="_blank" rel="noreferrer">
                                 <img src={b.image.src} alt={b.image.alt} loading="lazy" decoding="async" />
                             </a>
                             {b.image.caption ? <figcaption>{b.image.caption}</figcaption> : null}
                         </figure>
                     ) : null}
-                    {b.persona ? <PersonaCard p={b.persona} /> : null}
-                    {b.note ? <p className="rf-note">{b.note}</p> : null}
+                    {b.persona ? (
+                        <div className="rf-rv">
+                            <PersonaCard p={b.persona} />
+                        </div>
+                    ) : null}
+                    {b.note ? <p className="rf-note rf-rv">{rich(b.note)}</p> : null}
                 </React.Fragment>
             ))}
         </>
     )
+}
+
+// counts a stat such as "46", "~30%" or "1,196" up from zero
+function countUp(el: HTMLElement) {
+    const s = el.dataset.n || ""
+    const m = s.match(/^(\D*)(\d[\d,]*(?:\.\d+)?)(.*)$/)
+    if (!m) return
+    const [, pre, num, post] = m
+    const end = parseFloat(num.replace(/,/g, ""))
+    const dec = (num.split(".")[1] || "").length
+    const comma = num.includes(",")
+    const t0 = performance.now()
+    const dur = 900
+    const fmt = (v: number) => {
+        const x = v.toFixed(dec)
+        return comma ? Number(x).toLocaleString("en-US", { minimumFractionDigits: dec }) : x
+    }
+    const step = (t: number) => {
+        const k = Math.min(1, (t - t0) / dur)
+        const e = 1 - Math.pow(1 - k, 3)
+        el.textContent = pre + fmt(end * e) + post
+        if (k < 1) requestAnimationFrame(step)
+        else el.textContent = s
+    }
+    requestAnimationFrame(step)
 }
 
 export default function ResearchFolders({ folders }: { folders: Folder[] }) {
@@ -256,6 +474,45 @@ export default function ResearchFolders({ folders }: { folders: Folder[] }) {
         html.style.overflow = "hidden"
         return () => {
             html.style.overflow = before
+        }
+    }, [open])
+
+    // as content scrolls into view: blocks rise in, numbers count up, bars fill, and highlights sweep in one after another
+    React.useLayoutEffect(() => {
+        const root = body.current
+        if (!root || open === null) return
+        const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        const marks = root.querySelectorAll<HTMLElement>("mark.rf-hl, .rf-meter")
+        if (still || !("IntersectionObserver" in window)) {
+            marks.forEach((m) => m.classList.add("on"))
+            return
+        }
+        root.classList.add("rf-go")
+        const io = new IntersectionObserver(
+            (entries) => {
+                let rv = 0
+                let hl = 0
+                for (const e of entries) {
+                    if (!e.isIntersecting) continue
+                    const el = e.target as HTMLElement
+                    io.unobserve(el)
+                    if (el.classList.contains("rf-rv")) {
+                        el.style.setProperty("--d", Math.min(rv++, 5) * 0.07 + "s")
+                        el.classList.add("in")
+                        el.querySelectorAll<HTMLElement>("[data-n]").forEach((n) => setTimeout(() => countUp(n), 150))
+                    } else {
+                        el.style.setProperty("--hd", 0.6 + Math.min(hl++, 6) * 0.35 + "s")
+                        el.classList.add("on")
+                    }
+                }
+            },
+            { root, threshold: 0.15 },
+        )
+        root.querySelectorAll(".rf-rv").forEach((el) => io.observe(el))
+        marks.forEach((el) => io.observe(el))
+        return () => {
+            io.disconnect()
+            root.classList.remove("rf-go")
         }
     }, [open])
 
@@ -308,21 +565,12 @@ export default function ResearchFolders({ folders }: { folders: Folder[] }) {
                     <>
                         <header className="rf-head">
                             <h3 id="rf-title">{f.title}</h3>
-                            <small className="rf-count">
-                                {(open ?? 0) + 1} / {folders.length}
-                            </small>
-                            <button type="button" className="rf-x rf-nav" aria-label="Previous folder" disabled={!prev} onClick={() => go(-1)}>
-                                ‹
-                            </button>
-                            <button type="button" className="rf-x rf-nav" aria-label="Next folder" disabled={!next} onClick={() => go(1)}>
-                                ›
-                            </button>
                             <button type="button" className="rf-x" aria-label="Close" onClick={close}>
                                 ✕
                             </button>
                         </header>
                         <div className="rf-body" ref={body} tabIndex={0}>
-                            <Blocks blocks={f.blocks} />
+                            <Blocks key={open} blocks={f.blocks} />
                         </div>
                         <footer className="rf-foot">
                             {prev ? (

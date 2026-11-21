@@ -12,9 +12,9 @@ const aarav = {
     traits: ["Curious", "Creative", "New to headsets", "Plays in short bursts"],
     goals: ["Make something that surprises them", "Start playing without reading a manual", "Show a parent what they made"],
     columns: [
-        { t: "Frustrations", items: ["Controllers and buttons to learn", "Drawings that look “wrong”", "Flat drawings that do nothing"] },
+        { t: "Frustrations", items: ["Controllers and buttons to learn", "==Drawings that look “wrong”==", "Flat drawings that do nothing"] },
         { t: "Behaviours", items: ["Looks around more than at targets", "Skips long text", "Tries things with their hands first"] },
-        { t: "Needs", items: ["Point, touch and grab", "An instant, magical result", "A way to start again with no penalty"] },
+        { t: "Needs", items: ["Point, touch and grab", "==An instant, magical result==", "A way to start again with no penalty"] },
     ],
 }
 
@@ -39,11 +39,11 @@ const folders = [
                         ["Radu, 2016 · Georgia Tech", "Children's AR selection skills shift around age 7; speed and posture change with age", "One big, forgiving touch target per step"],
                         ["Meta age policy · via Mixed News", "Minimum age 10, with parent-managed accounts for ages 10 to 12", "Aimed at 12+, with a parent present"],
                         ["Mixed News · expert guidance", "No long-term studies on VR and children's developing vision; use it in moderation, with time limits", "Short play bursts, single-player, no forced walking"],
-                        ["Lowenfeld & Brittain", "Around ages 11 to 14, children judge drawings by how realistic they look and grow self-critical; many decide they can't draw", "No fail state: any doodle comes alive, however it looks"],
-                        ["Ryan & Deci, 2000", "Motivation lasts when people feel autonomy, competence and relatedness", "Free drawing, an instant result, and a character to play with"],
+                        ["Lowenfeld & Brittain", "Around ages 11 to 14, children judge drawings by how realistic they look and grow self-critical; ==many decide they can't draw==", "No fail state: ==any doodle comes alive, however it looks=="],
+                        ["Ryan & Deci, 2000", "Motivation lasts when people feel ==autonomy, competence and relatedness==", "Free drawing, an instant result, and a character to play with"],
                         ["Common Sense Media & Stanford, 2018", "VR can provoke responses similar to real experiences; the report suggests time limits and a safe space to play", "Passthrough keeps the real room in view, and the board sits at table height"],
                         ["Stanford VHIL & Sesame Workshop, 2017", "Characters in VR can influence young children more than characters on TV or a computer", "A friendly character that follows, fetches and never scolds"],
-                        ["Meta health and safety", "New users should take a break at least every 30 minutes; parents should limit children's time", "The whole loop takes about 2.5 minutes"],
+                        ["Meta health and safety", "New users should take a break at least every 30 minutes; parents should limit children's time", "==The whole loop takes about 2.5 minutes=="],
                     ],
                 },
             },
@@ -58,8 +58,8 @@ const folders = [
                 table: {
                     head: ["Pain point", "Need", "Design response"],
                     rows: [
-                        ["Controllers and buttons are hard for young kids", "Natural gestures: point, touch, grab", "Bare-hand touch and pinch"],
-                        ["Flat drawings give no payoff or surprise", "An instant, magical result when drawing ends", "The drawing wakes up as a 3D character, then a portal opens"],
+                        ["Controllers and buttons are hard for young kids", "Natural gestures: point, touch, grab", "==Bare-hand touch and pinch=="],
+                        ["Flat drawings give no payoff or surprise", "An instant, magical result when drawing ends", "==The drawing wakes up as a 3D character==, then a portal opens"],
                         ["Fear of getting it wrong stops kids trying", "Make drawing more fun", "Free drawing, an eraser and a one-touch reset"],
                     ],
                 },
@@ -77,13 +77,13 @@ const folders = [
         title: "Key insights",
         hint: "Three principles",
         blocks: [
-            { quote: "How might we turn the familiar act of drawing into an immersive experience where children can create, meet and physically interact with their own 3D creations?" },
+            { quote: "How might we turn the familiar act of drawing into an immersive experience where children can ==create, meet and physically interact with their own 3D creations==?" },
             {
                 h: "Three principles",
                 cards: [
-                    { t: "Bare-hand input", items: ["No controllers to learn", "Touch, pinch and grab"] },
+                    { t: "Bare-hand input", items: ["==No controllers to learn==", "Touch, pinch and grab"] },
                     { t: "Instant magic", items: ["The drawing becomes 3D the moment it's finished", "Then the room becomes a meadow"] },
-                    { t: "No fail state", items: ["Free drawing and an easy reset", "Any doodle comes alive"] },
+                    { t: "No fail state", items: ["Free drawing and an easy reset", "==Any doodle comes alive=="] },
                 ],
             },
             {
@@ -96,7 +96,7 @@ const folders = [
                         ["Two-hand pinch to lift the character", "It feels like holding a pet"],
                         ["Release speed becomes the throw; hands together to catch", "Throwing and catching the way you already do"],
                         ["A ring on the board that shrinks as the finger gets close", "A virtual surface gives no touch feedback"],
-                        ["Short coaching pills at the moment of action", "Nine steps to read before the fun starts, and young children skip text"],
+                        ["Short coaching pills at the moment of action", "Nine steps to read before the fun starts, and ==young children skip text=="],
                         ["Canvas at table height, tilted toward the child", "Arm fatigue and neck strain"],
                     ],
                 },
@@ -126,7 +126,7 @@ const folders = [
         title: "System mapping",
         hint: "States, space and the people around",
         blocks: [
-            { p: "Everything runs in one WebXR session on Meta Quest 3, so the child never waits for a loading screen between steps." },
+            { p: "Everything runs in one WebXR session on Meta Quest 3, so ==the child never waits for a loading screen between steps==." },
             {
                 image: {
                     src: img("system.svg"),

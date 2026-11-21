@@ -7,12 +7,12 @@ const neha = {
     role: "The Silent Struggler · mother",
     face: { skin: "#d9a07a", hair: "long", hairColor: "#24170f", bg: "#f3ddd3", top: "#e98aa5", earrings: true },
     meta: "32 · first-time mother, 10 weeks postpartum · working professional, Pune",
-    quote: "“If I say I'm struggling, they'll think I'm a bad mother.”",
+    quote: "“If I say I'm struggling, ==they'll think I'm a bad mother.==”",
     traits: ["Emotionally withdrawn", "Internalises stress", "Avoids confrontation", "High guilt orientation"],
     background: ["Husband: caring, but avoids “heavy conversations”", "In-laws: live together, traditional, expect her to manage household and baby", "Family mindset: “Good mothers adjust and don't complain”"],
-    pain: ["No safe space to express emotions", "Fear of judgment or criticism", "Physical exhaustion with no relief", "Fear of being seen as a “weak mother”", "Exhaustion without validation"],
+    pain: ["==No safe space to express emotions==", "Fear of judgment or criticism", "Physical exhaustion with no relief", "Fear of being seen as a “weak mother”", "Exhaustion without validation"],
     goals: ["Express feelings without consequences", "Feel understood without being labelled", "Feel emotionally safe and heard", "Reduce internal guilt", "Get support without confrontation"],
-    needs: ["Private, stigma-free support channels", "Anonymous screening tools", "Language to articulate feelings safely", "Indirect, non-verbal ways to communicate distress", "Family sensitisation to emotional needs"],
+    needs: ["==Private, stigma-free support channels==", "Anonymous screening tools", "Language to articulate feelings safely", "Indirect, non-verbal ways to communicate distress", "Family sensitisation to emotional needs"],
 }
 
 const rohan = {
@@ -20,12 +20,12 @@ const rohan = {
     role: "The Hyper-Responsible Fixer · partner",
     face: { skin: "#c98c62", hair: "short", hairColor: "#1d1410", bg: "#9fb1db", top: "#fbfbfd", glasses: true, beard: "stubble" },
     meta: "34 · first-time father · product manager, Pune",
-    quote: "“I need to fix this for her.”",
+    quote: "“==I need to fix this for her.==”",
     traits: ["Problem solver", "Stressed", "Suppresses own emotion", "Anxious", "Constant research", "Helpless seeing his wife"],
     background: ["No nearby family support", "Wife was independent before pregnancy", "Sudden role shift: caregiver and provider"],
-    pain: ["Feels helpless watching his wife suffer", "Doesn't know how to talk about it", "Scared of pushing her toward a breakdown", "Misinterprets PPD as a “mood problem”", "Fear of “losing control” of the situation", "No support system for his own stress"],
+    pain: ["Feels helpless watching his wife suffer", "==Doesn't know how to talk about it==", "Scared of pushing her toward a breakdown", "Misinterprets PPD as a “mood problem”", "Fear of “losing control” of the situation", "No support system for his own stress"],
     goals: ["Understand what his wife is going through", "Know exactly how and when to intervene", "Feel less alone in this experience"],
-    needs: ["Clear guidance: what to do and what not to do", "Early warning signs explained simply", "Scripts for starting difficult conversations", "Space to process his own fear and guilt", "Reassurance that this is manageable"],
+    needs: ["Clear guidance: what to do and what not to do", "Early warning signs explained simply", "==Scripts for starting difficult conversations==", "Space to process his own fear and guilt", "Reassurance that this is manageable"],
 }
 
 const sarita = {
@@ -38,10 +38,10 @@ const sarita = {
     meta: "Retired · Nagpur · call daily and travel often to stay with their son's family",
     quote: "“In our time, nobody went to doctors for sadness. You just prayed and kept going.”",
     traits: ["Care and concern", "Emotionally withdrawn", "Internalise stress", "Avoid confrontation"],
-    background: ["Raised 2 children without outside help", "Believe strong women push through difficulties", "Often say “I went through the same thing”", "Mean well, but dismiss her without intending to"],
+    background: ["Raised 2 children without outside help", "Believe strong women push through difficulties", "Often say “I went through the same thing”", "Mean well, but ==dismiss her without intending to=="],
     pain: ["Don't understand why she “isn't coping”", "Feel excluded from their daughter-in-law's care", "Fear the stigma of mental illness in the family", "Get conflicting information from their son and her"],
     goals: ["Be seen as helpful, respected elders", "See their son's family happy and healthy", "Understand the “new-generation” experience"],
-    needs: ["Stigma-free, culturally sensitive PPD education", "A simple guide to helpful and harmful behaviours", "Reassurance that seeking help is strength"],
+    needs: ["Stigma-free, culturally sensitive PPD education", "A simple guide to helpful and harmful behaviours", "==Reassurance that seeking help is strength=="],
 }
 
 export const lumiResearch = [
@@ -69,9 +69,9 @@ export const lumiResearch = [
             { image: { src: img("synthesis-3"), alt: "Research notes on social support quality and its protective effects", caption: "Social support quality and its protective effects" } },
             {
                 cards: [
-                    { t: "Self-efficacy and help-seeking", items: ["Mothers may recognise symptoms but still don't seek help", "Mothers doubt their ability to cope, care for the baby and seek help", "Poor prioritisation of self-care"] },
-                    { t: "Isolation and family dynamics", items: ["Low perceived support is strongly linked to PPD", "Maternal mental health is co-created by the family system", "Unequal caregiving burden and poor communication patterns"] },
-                    { t: "Culture and literacy", items: ["Cultural normalisation of suffering", "Low mental-health literacy in families", "Emotional invalidation: “this is normal, deal with it”"] },
+                    { t: "Self-efficacy and help-seeking", items: ["Mothers may recognise symptoms but ==still don't seek help==", "Mothers doubt their ability to cope, care for the baby and seek help", "Poor prioritisation of self-care"] },
+                    { t: "Isolation and family dynamics", items: ["==Low perceived support is strongly linked to PPD==", "Maternal mental health is co-created by the family system", "Unequal caregiving burden and poor communication patterns"] },
+                    { t: "Culture and literacy", items: ["Cultural normalisation of suffering", "==Low mental-health literacy in families==", "Emotional invalidation: “this is normal, deal with it”"] },
                 ],
             },
             { note: "Personas and quotes elsewhere on this page are research syntheses, not individual participants." },
@@ -94,7 +94,7 @@ export const lumiResearch = [
                 table: {
                     head: ["Stage", "What goes wrong"],
                     rows: [
-                        ["“This is just baby blues”", "No distinction between baby blues and PPD · early signals dismissed · over-normalisation by family"],
+                        ["“This is just baby blues”", "No distinction between baby blues and PPD · ==early signals dismissed== · over-normalisation by family"],
                         ["“Something feels off”", "Conflicting information, internet against family · no shared understanding of severity · mother lacks validation"],
                         ["Conflict triangle", "Misaligned mental models · mother unheard · conflict between father and family · stigma around diagnosis"],
                         ["Delayed intervention", "No clear decision-making pathway · delay in professional help · no coordinated support · worsening symptoms"],
@@ -109,14 +109,14 @@ export const lumiResearch = [
         title: "Key insights",
         hint: "The invisible emotional burden",
         blocks: [
-            { quote: "The problem isn't absence of support. It's absence of emotional understanding." },
+            { quote: "The problem isn't absence of support. ==It's absence of emotional understanding.==" },
             {
                 h: "The invisible emotional burden",
                 cards: [
                     { t: "Emotional symptoms", items: ["Intrusive thoughts, emotional flatness and disconnection from the baby", "Crying without triggers brings no relief, with persistent chest heaviness", "Diagnosis brings validation, but many cases remain undiagnosed"] },
                     { t: "EPDS screening problems", items: ["False alarms from normal maternal guilt and hormonal changes", "Misses modern stressors like work anxiety and emotional numbness", "No validated alternatives, despite a thin evidence base"] },
-                    { t: "System failures", items: ["Assumes mothers recognise symptoms and willingly report them", "Excludes family from screening despite their motivational role", "No clinical follow-up when results indicate problems"] },
-                    { t: "Family impact", items: ["Affects the whole family, including partners who develop secondary depression", "Infants experience developmental delays and bonding disruption", "Drains clinic resources while raising maternal anxiety"] },
+                    { t: "System failures", items: ["Assumes mothers recognise symptoms and willingly report them", "==Excludes family from screening== despite their motivational role", "No clinical follow-up when results indicate problems"] },
+                    { t: "Family impact", items: ["Affects the whole family, including ==partners who develop secondary depression==", "Infants experience developmental delays and bonding disruption", "Drains clinic resources while raising maternal anxiety"] },
                 ],
             },
             {
@@ -126,7 +126,7 @@ export const lumiResearch = [
                     rows: [
                         ["Mothers hesitate to express distress", "Safe ways to express feelings without fear of judgement or labelling"],
                         ["Families miss emotional warning signs", "A shared understanding of symptoms, and ways to recognise distress without dismissing it"],
-                        ["Emotional support often comes too late", "Reduce the gap between noticing and acting, including when and how to seek professional help"],
+                        ["Emotional support often comes too late", "==Reduce the gap between noticing and acting==, including when and how to seek professional help"],
                     ],
                 },
             },
@@ -143,8 +143,8 @@ export const lumiResearch = [
                 table: {
                     head: ["Alternative", "What it offers", "Where it falls short", "What Lumi does instead"],
                     rows: [
-                        ["EPDS screening", "The main tool for early detection of PPD", "False alarms from normal guilt · misses work stress and numbness · excludes the family · no follow-up", "Gentle check-ins that point to people, not a verdict"],
-                        ["Paternal depression scales", "13 instruments identified for fathers", "The most reliable scale still lacks full validation for fathers · partners invisible in screening", "A companion mode that supports the partner too"],
+                        ["EPDS screening", "The main tool for early detection of PPD", "False alarms from normal guilt · misses work stress and numbness · excludes the family · no follow-up", "==Gentle check-ins that point to people, not a verdict=="],
+                        ["Paternal depression scales", "13 instruments identified for fathers", "The most reliable scale still lacks full validation for fathers · ==partners invisible in screening==", "A companion mode that supports the partner too"],
                         ["Searching online", "Instant, private answers", "Conflicting information and overload · generic advice · no sense of severity", "Clear, situation-based guidance on what to do and say"],
                         ["Family advice", "Lived experience and daily presence", "“This is normal” dismisses distress · stigma · pushback against doctors", "Non-clinical awareness cards for the wider family"],
                         ["Periodic healthcare visits", "OB-GYN, midwife or GP expertise", "Only periodic contact · help is often sought late", "Daily support, with a clear route to a professional"],
@@ -158,14 +158,14 @@ export const lumiResearch = [
         title: "System mapping",
         hint: "Same home, different experiences",
         blocks: [
-            { quote: "Shared disconnect. Same home, different experiences." },
+            { quote: "Shared disconnect. ==Same home, different experiences.==" },
             { image: { src: img("system-map"), alt: "System map of the mother, father, in-laws, newborn and healthcare provider, with the breakdowns between them", caption: "The people around a new mother, and where communication breaks down" } },
             {
                 h: "What the map shows",
                 cards: [
                     { t: "Barriers to recognition", items: ["Stigma", "Low mental-health literacy", "No guidance"] },
                     { t: "Breakdowns between people", items: ["Father and mother: no clear communication", "Mother to family: limited sharing, for fear of judgement", "Family to mother: indifference in behaviour", "Mother to provider: periodic contact, help sought late"] },
-                    { t: "Outcome", items: ["Delayed detection", "Worse outcomes", "Bonding and care affected, with a shared caregiving load"] },
+                    { t: "Outcome", items: ["==Delayed detection==", "Worse outcomes", "Bonding and care affected, with a shared caregiving load"] },
                 ],
             },
         ],

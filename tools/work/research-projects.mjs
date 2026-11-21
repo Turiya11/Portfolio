@@ -22,8 +22,8 @@ export const dentigoResearch = [
             {
                 h: "What the secondary research showed",
                 cards: [
-                    { t: "How work happens", items: ["Practices rely on calls, paper slips and emails for orders, which leads to miscommunication", "Manual tracking makes real-time case status hard to know, causing delays and follow-ups"] },
-                    { t: "What it costs", items: ["Inefficient workflows and poor coordination cause bottlenecks, longer turnaround times and costly remakes", "Many clinics use generic tools or websites that lack dental-specific data"] },
+                    { t: "How work happens", items: ["Practices rely on calls, paper slips and emails for orders, which ==leads to miscommunication==", "Manual tracking makes real-time case status hard to know, causing delays and follow-ups"] },
+                    { t: "What it costs", items: ["Inefficient workflows and poor coordination cause bottlenecks, ==longer turnaround times and costly remakes==", "Many clinics use generic tools or websites that lack dental-specific data"] },
                     { t: "What could help", items: ["Cloud-based systems improve visibility, errors and scheduling in clinics and labs", "Dental procurement platforms save cost and time, especially for smaller clinics and labs"] },
                 ],
             },
@@ -36,8 +36,8 @@ export const dentigoResearch = [
             {
                 h: "The biggest problems",
                 cards: [
-                    { t: "No single source of case status", items: ["Real-time status is hard to know", "Delays and constant follow-up calls"] },
-                    { t: "Everything hangs on one contact", items: ["Clinics depend on a main technician at the lab", "When that person is unavailable, the case stalls"] },
+                    { t: "No single source of case status", items: ["==Real-time status is hard to know==", "Delays and constant follow-up calls"] },
+                    { t: "Everything hangs on one contact", items: ["Clinics depend on a main technician at the lab", "When that person is unavailable, ==the case stalls=="] },
                     { t: "Finding a trusted lab is hard", items: ["New dentists have no network of technicians", "Pricing, ratings and specialisations are hard to compare"] },
                 ],
             },
@@ -46,7 +46,7 @@ export const dentigoResearch = [
                 table: {
                     head: ["Between", "What is exchanged", "What goes wrong"],
                     rows: [
-                        ["Dentist → lab", "Case requirements, shade, photos, scans and deadlines", "Instructions arrive incomplete, so technicians call back and remakes follow"],
+                        ["Dentist → lab", "Case requirements, shade, photos, scans and deadlines", "Instructions arrive incomplete, so technicians call back and ==remakes follow=="],
                         ["Lab → clinic", "Progress, delivery dates and changes", "No shared status, so clinics chase updates and reschedule patients"],
                         ["Pickups and delivery", "Collection times and handing over finished work", "Collections run late, and cases stall when the one contact is away"],
                     ],
@@ -65,14 +65,14 @@ export const dentigoResearch = [
         title: "Key insights",
         hint: "From evidence to opportunity",
         blocks: [
-            { quote: "Clinics and labs run on fragmented, manual workflows, and small miscommunications turn into remakes and delays." },
+            { quote: "Clinics and labs run on fragmented, manual workflows, and ==small miscommunications turn into remakes and delays==." },
             {
                 table: {
                     head: ["What we found", "What it means", "Design opportunity"],
                     rows: [
                         ["Practices order through calls, paper slips and emails", "Order details get lost between people and channels", "Structured orders, with photos, shade and files on the case"],
-                        ["Manual tracking hides real-time status", "Clinics chase updates and reschedule patients", "Order tracking as simple as tracking a parcel"],
-                        ["Dentists asked for ratings, reviews and price transparency", "Trust decides which lab gets the work", "Lab discovery and side-by-side comparison"],
+                        ["Manual tracking hides real-time status", "Clinics chase updates and reschedule patients", "==Order tracking as simple as tracking a parcel=="],
+                        ["Dentists asked for ratings, reviews and price transparency", "==Trust decides which lab gets the work==", "Lab discovery and side-by-side comparison"],
                         ["Miscommunication about design, shade or fit causes repeat work", "Visual information is hardest to share by text or phone", "Annotate directly on 3D models or images"],
                     ],
                 },
@@ -104,7 +104,7 @@ export const dentigoResearch = [
                 table: {
                     head: ["Alternative", "What it offers", "Where it falls short", "What Dentigo does instead"],
                     rows: [
-                        ["Phone calls", "Fast, direct contact with the lab", "Details get lost · depends on one contact · constant follow-ups", "One thread per case, in unified case chat"],
+                        ["Phone calls", "Fast, direct contact with the lab", "Details get lost · depends on one contact · constant follow-ups", "==One thread per case==, in unified case chat"],
                         ["WhatsApp and email", "Easy sharing of photos and notes", "Several chats per case · nothing tied to the order · relies on memory", "Files, shade and notes attached to the order"],
                         ["Paper slips", "Familiar, needs no setup", "Incomplete instructions · no visibility once sent", "A structured form, with clear turnaround times"],
                         ["Generic tools and websites", "Available and low effort", "Lack dental-specific data · limit standardisation and quality", "Built around dental cases, labs and materials"],
@@ -119,7 +119,7 @@ export const dentigoResearch = [
         title: "System mapping",
         hint: "Who touches a single crown",
         blocks: [
-            { p: "A single crown passes through several hands, so the problem is coordination across people, not one screen." },
+            { p: "A single crown passes through several hands, so ==the problem is coordination across people, not one screen==." },
             { image: { src: fr("Pr71ZCPIuMfJe9KqjzeAJzZOqE"), alt: "System map of the patient, receptionist, dentist, assistant and their actions", caption: "System map: who does what around a case" } },
             { image: { src: fr("600AM7vuVugdK4bghpSttVSms"), alt: "Stakeholder map of interest and influence", caption: "Stakeholder map: interest and influence" } },
             { image: { src: fr("r0TJpemDNu7JEjdSuoO3EFpcXH8"), alt: "Core workflow from sourcing to payment", caption: "Core workflow: sourcing, ordering, production, delivery, verification, payment" } },
@@ -135,11 +135,11 @@ export const dentigoResearch = [
                     role: "Dentist",
                     face: { skin: "#c98c62", hair: "bun", hairColor: "#2a1a14", bg: "#f0b3c4", top: "#8fa3cf", coat: true, earrings: true },
                     meta: "45 · general dentistry, specialising in prosthodontics · 2 assistants and a receptionist",
-                    quote: "“My reputation is built on the final fit. Every remake costs me chair time and patient trust.”",
+                    quote: "“My reputation is built on the final fit. ==Every remake costs me chair time and patient trust.==”",
                     traits: ["Budget conscious", "Tech savvy"],
                     columns: [
-                        { t: "Goals", items: ["A unified view of all her lab cases", "A perfect fit on the first try", "Fewer costly remakes and less wasted chair time"] },
-                        { t: "Frustrations", items: ["Juggles chats and calls to track different cases", "Has to remember which lab has which patient's case", "Reschedules appointments because of unpredictable lab delays"] },
+                        { t: "Goals", items: ["A unified view of all her lab cases", "==A perfect fit on the first try==", "Fewer costly remakes and less wasted chair time"] },
+                        { t: "Frustrations", items: ["Juggles chats and calls to track different cases", "Has to remember which lab has which patient's case", "Reschedules appointments because of ==unpredictable lab delays=="] },
                         { t: "Says", items: ["“I want to deliver perfect-fitting dentures with fewer adjustments.”", "“This shade is slightly off. Please send a clear photo next time.”"] },
                         { t: "Thinks", items: ["“Why do I have to personally remember all of this?”", "“This 20-minute adjustment just cost me a new patient slot.”"] },
                         { t: "Feels", items: ["Overwhelmed by the mental load", "Frustrated by delays and corrections", "Relieved after successful first-time fits"] },
@@ -153,11 +153,11 @@ export const dentigoResearch = [
                     role: "Lab technician",
                     face: { skin: "#a86b45", hair: "short", hairColor: "#1d1410", bg: "#f3ddd3", top: "#7f9bd1", beard: "full" },
                     meta: "32 · independent dental lab · custom dentures and ceramic restorations",
-                    quote: "“I can create a perfect crown, but I need clear instructions and good photos.”",
+                    quote: "“I can create a perfect crown, but ==I need clear instructions and good photos.==”",
                     traits: ["Budget conscious", "Tech savvy"],
                     columns: [
                         { t: "Goals", items: ["Prosthetics that fit with zero adjustments", "A predictable workflow with fewer remakes"] },
-                        { t: "Frustrations", items: ["Incomplete instructions force remakes", "Frequent calls from clinics for status updates", "Orders spread across WhatsApp, email and calls"] },
+                        { t: "Frustrations", items: ["==Incomplete instructions force remakes==", "Frequent calls from clinics for status updates", "Orders spread across WhatsApp, email and calls"] },
                         { t: "Says", items: ["“Dentists often send unclear instructions and rush orders.”", "“Matching shades and shapes without photos is difficult.”"] },
                         { t: "Thinks", items: ["Many cases have incomplete details", "Time pressure from urgent jobs impacts quality", "Transparency could reduce waste"] },
                         { t: "Feels", items: ["Apprehensive about incomplete instructions", "Stressed by rushed demands", "Proud when cases need no revisions"] },
@@ -200,7 +200,7 @@ export const kgResearch = [
                         ["AI credibility", "Regulators ask for defined context, documented data provenance and human oversight", "Research question and context travel with every query; insights store linked sources"],
                         ["Knowledge graphs as a trust layer", "Teams connect literature, trials and omics, and need to see how sources differ", "Compare graphs shows shared and unique entities"],
                         ["Multi-marker biomarkers", "Work favours panels and pathways over single markers", "A path finder with hop limits and evidence per relation"],
-                        ["Independent validation", "Findings need replication and review before they inform decisions", "Source counts, comments and review status. No invented confidence scores"],
+                        ["Independent validation", "Findings need replication and review before they inform decisions", "Source counts, comments and review status. ==No invented confidence scores=="],
                         ["Real-world data", "Evidence arrives from more places, in varied quality", "Teams choose sources and minimum evidence thresholds"],
                         ["Cross-team work", "Discovery runs across organisations and functions", "Projects with roles, presence, threaded comments and sharing"],
                     ],
@@ -216,7 +216,7 @@ export const kgResearch = [
             {
                 h: "Consolidated from the journey maps",
                 cards: [
-                    { t: "Pre-clinical phase", items: ["Interpreting large datasets and turning them into clear hypotheses", "No integrated platform for visualisation and analysis", "Identifying, validating and integrating biomarkers", "Saving searches and sessions to come back to"] },
+                    { t: "Pre-clinical phase", items: ["Interpreting large datasets and turning them into clear hypotheses", "==No integrated platform for visualisation and analysis==", "Identifying, validating and integrating biomarkers", "Saving searches and sessions to come back to"] },
                     { t: "Clinical phase", items: ["Balancing research with admin and collaboration", "Integrating the latest scientific literature into analysis", "Summarising results and data outputs"] },
                 ],
             },
@@ -228,7 +228,7 @@ export const kgResearch = [
                         ["Discovery", "Accessing and integrating diverse datasets · keeping up with literature"],
                         ["Preclinical research", "Integrating across platforms · finding biomarkers with clinical relevance"],
                         ["Translational research", "Biomarker expression varies across populations · regulatory hurdles"],
-                        ["Clinical operations", "Maintaining data continuity · disconnected systems slow real-time decisions"],
+                        ["Clinical operations", "Maintaining data continuity · ==disconnected systems slow real-time decisions=="],
                         ["Clinical execution", "Real-time integration creates data silos and delays trial decisions"],
                         ["Data-driven insights", "Multi-modal data slows decisions · preclinical and clinical gaps create inconsistencies"],
                     ],
@@ -240,14 +240,14 @@ export const kgResearch = [
         title: "Key insights",
         hint: "From evidence to opportunity",
         blocks: [
-            { quote: "Researchers have the data, but no single place to see how it connects." },
+            { quote: "Researchers have the data, but ==no single place to see how it connects==." },
             {
                 table: {
                     head: ["What we found", "What it means", "Design opportunity"],
                     rows: [
-                        ["Leading platforms offer semantic search, live graphs, curation and notifications", "Semantic search and live graphs are expected, not extras", "A search-first home, with graph creation one step away"],
+                        ["Leading platforms offer semantic search, live graphs, curation and notifications", "Semantic search and live graphs are ==expected, not extras==", "A search-first home, with graph creation one step away"],
                         ["General graph tools miss curation, collaboration and multi-omics", "They miss what biomedical teams need", "Pathways, entities and comparisons built for biomedicine"],
-                        ["Several tools lack uploads, onboarding, exports and notifications", "Interaction basics decide whether researchers adopt a tool", "Uploads, exports, comments and notifications from the start"],
+                        ["Several tools lack uploads, onboarding, exports and notifications", "==Interaction basics decide whether researchers adopt a tool==", "Uploads, exports, comments and notifications from the start"],
                     ],
                 },
             },
@@ -269,7 +269,7 @@ export const kgResearch = [
                 table: {
                     head: ["Platforms", "Where they stand", "What it meant for KG Hub"],
                     rows: [
-                        ["Data4Cure, BioCypher, Graphster, Ontotext, Stardog, Qiagen", "Lead on semantic search, knowledge graphs, customisable pipelines, curation and real-time notifications", "These are the baseline, so search comes first"],
+                        ["Data4Cure, BioCypher, Graphster, Ontotext, Stardog, Qiagen", "Lead on semantic search, knowledge graphs, customisable pipelines, curation and real-time notifications", "These are the baseline, so ==search comes first=="],
                         ["Neo4j", "Major gaps in semantic integration, curation, collaboration and biomedical features like multi-omics and target discovery", "Build features specifically for biomedicine"],
                         ["EmBiology, GlyGen, NIH", "Lack interaction tools such as uploads and onboarding, visual exports and notifications", "Treat interaction basics as part of the core"],
                     ],
@@ -284,7 +284,7 @@ export const kgResearch = [
             {
                 cards: [
                     { t: "Who is involved", items: ["Clinical researchers", "Translational scientists", "Pharma R&D teams", "Clinicians", "Domain experts"] },
-                    { t: "Why it matters", items: ["Patient, genetic and trial data reveal patterns for diagnosis and treatment", "The value only appears when the data is connected"] },
+                    { t: "Why it matters", items: ["Patient, genetic and trial data reveal patterns for diagnosis and treatment", "==The value only appears when the data is connected=="] },
                 ],
             },
             { image: { src: fr("C2GzI43bQ1qPDtSYKoWgWzxfaQQ"), alt: "Knowledge graph linking genes, drugs, diseases and side effects", caption: "The knowledge graph: genes, drugs, diseases and side effects" } },
@@ -305,7 +305,7 @@ export const kgResearch = [
                     columns: [
                         { t: "Needs", items: ["Interpret large datasets and form clear hypotheses", "One platform for visualisation and analysis", "Identify and validate biomarkers", "Save searches and sessions"] },
                         { t: "Does", items: ["Validates targets and analyses multi-omics data", "Builds biomarker strategy", "Analyses trial data and makes go/no-go decisions"] },
-                        { t: "Pain points", items: ["Diverse datasets that are hard to integrate", "Disconnected data that slows decisions", "Multi-modal data that slows decision-making"] },
+                        { t: "Pain points", items: ["Diverse datasets that are hard to integrate", "==Disconnected data that slows decisions==", "Multi-modal data that slows decision-making"] },
                     ],
                 },
             },
@@ -318,7 +318,7 @@ export const kgResearch = [
                     columns: [
                         { t: "Needs", items: ["Summarise results and outputs quickly", "Integrate the latest literature into analysis", "Collaborate with the wider team", "Spend less time on admin"] },
                         { t: "Does", items: ["Reviews literature and early data", "Refines patient selection and biomarker strategy", "Interprets early human data"] },
-                        { t: "Pain points", items: ["An overwhelming number of compounds", "Animal models with limited translatability", "Conflicting or inconclusive biomarker data"] },
+                        { t: "Pain points", items: ["An overwhelming number of compounds", "Animal models with limited translatability", "==Conflicting or inconclusive biomarker data=="] },
                     ],
                 },
             },
@@ -360,17 +360,16 @@ export const pipResearch = [
                 cards: [
                     { t: "From the survey", items: ["“A long list gives me anxiety. Reduce it.”", "“i don't like 35,000 reminders also popping on my phone or around me”", "“I hate it when I tend to do everything at once because if I don't then I'll forget about it”"] },
                     { t: "From the interviews", items: ["“...someone who is actually checking in, have you done it.”", "“Too many things going on, no time to jot down.”"] },
-                    { t: "From the experiment", items: ["Colour became a task-level anchor for 3 of 4 participants", "The task survived; time and details did not"] },
+                    { t: "From the experiment", items: ["==Colour became a task-level anchor== for 3 of 4 participants", "The task survived; time and details did not"] },
                 ],
             },
             {
                 h: "Secondary research",
                 cards: [
-                    { t: "Published studies", items: ["Diary studies suggest 50 to 70% of everyday memory failures are prospective memory failures", "Gilbert (2015): four online experiments (N = 1,196). Setting external reminders improved performance on delayed intentions", "Altmann & Trafton (2004): resumption lag was about 3.8 s against 1.9 s uninterrupted, and cues just before an interruption reduced it", "Risko & Gilbert (2016) and Gilbert et al. (2023): reviews of cognitive and intention offloading"] },
+                    { t: "Published studies", items: ["Diary studies suggest ==50 to 70% of everyday memory failures== are prospective memory failures", "Gilbert (2015): four online experiments (N = 1,196). ==Setting external reminders improved performance== on delayed intentions", "Altmann & Trafton (2004): resumption lag was about 3.8 s against 1.9 s uninterrupted, and cues just before an interruption reduced it", "Risko & Gilbert (2016) and Gilbert et al. (2023): reviews of cognitive and intention offloading"] },
                     { t: "Online community scan", items: ["Eight Reddit threads", "“List blindness”: forgetting the list exists", "Snoozing called “the killer”", "New tools stop working after a few weeks"] },
                 ],
             },
-            { note: "Study samples are small and the findings are preliminary." },
         ],
     },
     {
@@ -380,10 +379,10 @@ export const pipResearch = [
             {
                 h: "Seven themes from the research",
                 cards: [
-                    { t: "A · Many parallel intentions", items: ["42 / 46 (91%) often or almost every day have multiple things to remember"] },
+                    { t: "A · Many parallel intentions", items: ["==42 / 46 (91%)== often or almost every day have multiple things to remember"] },
                     { t: "B · Fragmented storage", items: ["8 overlapping approaches: memory 33, WhatsApp to self 23, notes apps 19", "A participant still forgets despite multiple systems"] },
-                    { t: "C · Capture doesn't guarantee retrieval", items: ["43 / 46 (93%) say something they wanted to remember slips their mind"] },
-                    { t: "D · Context can prompt recall", items: ["Related object 83%, someone mentioning it 72%, a place 17%", "Someone close seemed to speed up one participant's recall"] },
+                    { t: "C · Capture doesn't guarantee retrieval", items: ["==43 / 46 (93%)== say something they wanted to remember slips their mind"] },
+                    { t: "D · Context can prompt recall", items: ["==Related object 83%==, someone mentioning it 72%, a place 17%", "Someone close seemed to speed up one participant's recall"] },
                     { t: "E · Reminder fatigue and effort", items: ["“i don't like 35,000 reminders”", "“A long list gives me anxiety.”"] },
                     { t: "F · Fear of forgetting changes behaviour", items: ["“I wish I did the task then and there so that I won't need to remember (forget) later.”"] },
                     { t: "G · Dependable retrieval contexts", items: ["“I would write them down in a place where I know I would remember to check”"] },
@@ -398,7 +397,7 @@ export const pipResearch = [
                         ["Capture", "Slower than a WhatsApp message to self"],
                         ["Contextualise", "Forms at the moment of capture"],
                         ["Park", "Doubt that it is really saved"],
-                        ["Resurface", "An alert mid-task gets swiped away"],
+                        ["Resurface", "==An alert mid-task gets swiped away=="],
                         ["Retrieve", "Cannot recall why she saved it"],
                         ["Act or continue", "Repeated snoozes feel like nagging"],
                     ],
@@ -410,14 +409,14 @@ export const pipResearch = [
         title: "Key insights",
         hint: "Gist survives, details fade",
         blocks: [
-            { quote: "Gist survives, details fade. A related object or a person is the strongest cue." },
+            { quote: "Gist survives, details fade. ==A related object or a person is the strongest cue.==" },
             {
                 table: {
                     head: ["Insight", "What we observed", "What it means", "Design opportunity"],
                     rows: [
-                        ["Saving is not recalling", "43 / 46 say things slip, even with systems", "Retrieval, not storage, is the gap", "Act at retrieval. Point to one thing"],
+                        ["Saving is not recalling", "43 / 46 say things slip, even with systems", "==Retrieval, not storage, is the gap==", "Act at retrieval. Point to one thing"],
                         ["Gist first, detail on tap", "Related object cues 38 / 46. Colour anchored 3 of 4", "Gist survives; detail fades", "A visual anchor with a short title"],
-                        ["A person is the cue, not an alarm", "A person cues 33 / 46. Interviewees rely on one", "A check-in is not an alarm", "A friend with Done / Not now"],
+                        ["A person is the cue, not an alarm", "A person cues 33 / 46. Interviewees rely on one", "==A check-in is not an alarm==", "A friend with Done / Not now"],
                         ["Overload blocks both ends", "“35,000 reminders”. “A long list gives me anxiety.”", "Too many cues harm recall", "One quiet cue. Capture in seconds"],
                     ],
                 },
@@ -425,7 +424,7 @@ export const pipResearch = [
             {
                 h: "Eight design requirements",
                 cards: [
-                    { t: "What to bring back", items: ["One cue, not a list", "Protect the middle", "Visual identity, gist first", "Anchor to something in view"] },
+                    { t: "What to bring back", items: ["==One cue, not a list==", "Protect the middle", "Visual identity, gist first", "Anchor to something in view"] },
                     { t: "How to behave", items: ["A check-in, not an alarm", "Capture in seconds", "Done or not now, without judgement", "Surface what students already trust"] },
                 ],
             },
@@ -435,14 +434,14 @@ export const pipResearch = [
         title: "Competitive analysis",
         hint: "What students rely on today",
         blocks: [
-            { p: "Students don't lack tools. They layer eight overlapping approaches, so this compares those, then the six concepts weighed against them." },
+            { p: "Students don't lack tools. ==They layer eight overlapping approaches==, so this compares those, then the six concepts weighed against them." },
             {
                 table: {
                     head: ["Alternative", "What it offers", "Where it falls short", "What Pip does instead"],
                     rows: [
                         ["Memory alone", "Used by 33 of 46, with no effort", "43 of 46 say things slip anyway", "Gives a thought somewhere to go, in seconds"],
                         ["WhatsApp to self", "Used by 23 of 46, and very fast", "Saved isn't remembered · buried in chat", "Park is just as quick, and the thought stays visible"],
-                        ["Notes apps", "Used by 19 of 46, and always to hand", "Looking at notes or a list cues only 35%", "A visual orb with a short title, not a list"],
+                        ["Notes apps", "Used by 19 of 46, and always to hand", "Looking at notes or a list ==cues only 35%==", "A visual orb with a short title, not a list"],
                         ["Lists and notebooks", "Everything in one known place", "“List blindness” · long lists cause anxiety", "One thought at a time"],
                         ["Alarms and reminders", "Fires at a set time", "Swiped away mid-task · snoozing “the killer”", "A check-in, with “Not now” always allowed"],
                         ["Family and friends", "A person mentioning it cues 72%", "Depends on someone being there", "A companion that asks “Done or Not now?”"],
@@ -453,8 +452,10 @@ export const pipResearch = [
                 h: "Six directions, Pip compared",
                 table: {
                     head: ["Concept", "Idea", "Right moment", "Low reminder load", "Easy to test"],
+                    hl: 0,
+                    tag: "Chosen",
                     rows: [
-                        ["Pip (MR), lead", "A friend that checks in", "●●●", "●●●", "●●●"],
+                        ["Pip (MR)", "A friend that checks in", "●●●", "●●●", "●●●"],
                         ["Check-in Buddy", "A chat check-in", "●●●", "●●○", "●●●"],
                         ["Colour Anchor", "A colour that follows you", "●●○", "●●●", "●●●"],
                         ["Park-it Pebble", "A token for a thought", "●●○", "●●●", "●●○"],
@@ -483,7 +484,7 @@ export const pipResearch = [
                     head: ["Step", "When", "What she does", "How Pip responds"],
                     rows: [
                         ["1 · Idea emerges", "In the moment", "Has a thought on the bus, in a lecture or while browsing", "Open Pip in one tap"],
-                        ["2 · Capture", "Seconds", "Types or speaks one line", "Park saves instantly, no extra fields"],
+                        ["2 · Capture", "Seconds", "Types or speaks one line", "==Park saves instantly==, no extra fields"],
                         ["3 · Contextualise", "Optional", "Adds what she was doing and the next small step", "Everything beyond the thought is optional"],
                         ["4 · Park", "Moments later", "Watches the thought become an orb around Pip", "Orb with letter and title; persists after closing"],
                         ["5 · Resurface", "Hours to days", "Gets a reminder, or opens her orbit herself", "Quiet cue at the chosen time; revisit any time"],
@@ -512,7 +513,7 @@ export const pipResearch = [
                     name: "Anaya",
                     role: "Systems Builder",
                     face: { skin: "#d9a07a", hair: "long", hairColor: "#2a1a14", bg: "#f0b3c4", top: "#8fa3cf" },
-                    quote: "“... needs someone who is actually checking in.”",
+                    quote: "“... ==needs someone who is actually checking in==.”",
                     traits: ["Notes app", "WhatsApp to self", "Her mother"],
                     columns: [
                         { t: "Goal", items: ["Never lose something that matters, and keep a sense of control"] },
@@ -530,7 +531,7 @@ export const pipResearch = [
                     traits: ["Notes app", "WhatsApp to self", "Someone calling"],
                     columns: [
                         { t: "Goal", items: ["Keep every project moving without dropping the recurring commitments"] },
-                        { t: "Pain points", items: ["Loses track of which stage each project is at", "A morning routine task gets half-forgotten"] },
+                        { t: "Pain points", items: ["==Loses track of which stage each project is at==", "A morning routine task gets half-forgotten"] },
                         { t: "Where it breaks", items: ["Fixed-time posts missed while driving"] },
                     ],
                 },
@@ -544,7 +545,7 @@ export const pipResearch = [
                     traits: ["Avoids lists", "Does it now"],
                     columns: [
                         { t: "Goal", items: ["Keep the list short and the head clear"] },
-                        { t: "Pain points", items: ["Feels anxious after looking at long lists", "Gets overwhelmed"] },
+                        { t: "Pain points", items: ["==Feels anxious after looking at long lists==", "Gets overwhelmed"] },
                         { t: "Where it breaks", items: ["The effort of capture"] },
                     ],
                 },

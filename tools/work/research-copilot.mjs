@@ -10,13 +10,13 @@ const nadia = {
     role: "The long-haul highway driver",
     face: { skin: "#e3a982", hair: "bob", hairColor: "#3a2418", bg: "#a9d8ea", top: "#e98aa5", shades: true },
     meta: "34 · product manager · a 3–4 hour highway run, two or three times a month, often after a full day of work",
-    quote: "“Notice before I do, and tell me kindly.”",
+    quote: "“==Notice before I do, and tell me kindly.==”",
     traits: ["Electric car", "Driver assistance", "Camera facing her"],
     goals: ["Arrive alert and unhurried", "Keep driver assist without being nagged", "Know early when to stop"],
     columns: [
-        { t: "Frustrations", items: ["Warnings that come late, then repeat", "Not sure the camera can see her with sunglasses on", "Road stress builds with nothing to release it"] },
+        { t: "Frustrations", items: ["==Warnings that come late, then repeat==", "Not sure the camera can see her with sunglasses on", "Road stress builds with nothing to release it"] },
         { t: "Behaviours", items: ["Pushes on when tired", "Silences alerts that nag", "Trusts one fix: stopping"] },
-        { t: "Needs from the co-pilot", items: ["Early, gentle, graded cues", "Glanceable, no reading at speed", "Says what it can and cannot see", "Footage stays in the car"] },
+        { t: "Needs from the co-pilot", items: ["==Early, gentle, graded cues==", "Glanceable, no reading at speed", "Says what it can and cannot see", "Footage stays in the car"] },
     ],
 }
 
@@ -38,10 +38,10 @@ const folders = [
                 table: {
                     head: ["Figure", "What it means", "Source"],
                     rows: [
-                        ["7% · 21%", "Of all crashes, and of fatal crashes, involve driver fatigue", "AAA, via arXiv 2401.10213"],
+                        ["7% · 21%", "Of all crashes, and of fatal crashes, ==involve driver fatigue==", "AAA, via arXiv 2401.10213"],
                         ["Jul 2024", "Drowsiness and attention warning became mandatory on all new EU registrations", "EU General Safety Regulation, via Seeing Machines"],
                         ["2 s · 12 s", "Maximum single glance, and total glance time away from the road", "US DOT / NHTSA visual-manual guideline"],
-                        ["3 of 6", "Cars tested had driver-monitoring alerts likely to be switched off", "Fleet News / What Car?"],
+                        ["3 of 6", "Cars tested had driver-monitoring alerts ==likely to be switched off==", "Fleet News / What Car?"],
                         ["25 vs 2", "Euro NCAP 2026 gives driver engagement up to 25 points; the 2023 rules gave 2 for monitoring", "Euro NCAP 2026, via Smart Eye"],
                         ["Shorter", "Reaction times with ambient displays, with no rise in workload", "Leeds Lightband study, AutoUI ’21"],
                     ],
@@ -58,7 +58,7 @@ const folders = [
                 table: {
                     head: ["What goes wrong", "The evidence"],
                     rows: [
-                        ["Warnings arrive late", "Near-misses come before any alert (r/IBEW, r/ADHD)"],
+                        ["Warnings arrive late", "==Near-misses come before any alert== (r/IBEW, r/ADHD)"],
                         ["Alerts nag, then get switched off", "Beeps repeat; 3 of 6 cars' alerts likely to be turned off"],
                         ["Drivers doubt the sensing", "Sunglasses, smudges and sensitivity (r/TeslaLounge, r/cybertruck)"],
                         ["Stress is invisible", "Anger builds with nothing to release it (r/delhi, r/melbourne)"],
@@ -69,9 +69,9 @@ const folders = [
             {
                 h: "What drivers said",
                 cards: [
-                    { t: "Drivers fight sleep alone", items: ["They use improvised tricks, with nothing in the car helping"] },
+                    { t: "Drivers fight sleep alone", items: ["They use improvised tricks, with ==nothing in the car helping=="] },
                     { t: "Tiredness shows up as near-misses", items: ["The warning signs come before any alert does"] },
-                    { t: "The fix they trust is stopping", items: ["So the co-pilot should make a rest stop easy to say yes to"] },
+                    { t: "The fix they trust is stopping", items: ["So the co-pilot should ==make a rest stop easy to say yes to=="] },
                 ],
             },
         ],
@@ -80,14 +80,14 @@ const folders = [
         title: "Key insights",
         hint: "Five problems, five design moves",
         blocks: [
-            { quote: "Fatigue is spotted late. Alerts that nag get switched off. Drivers want help they can trust, not a scolding." },
+            { quote: "Fatigue is spotted late. ==Alerts that nag get switched off.== Drivers want help they can trust, not a scolding." },
             {
                 table: {
                     head: ["Problem", "Design move", "How"],
                     rows: [
-                        ["Warnings arrive late", "Show state early and quietly", "Colour at the edge of vision, not words in the centre"],
+                        ["Warnings arrive late", "Show state early and quietly", "==Colour at the edge of vision, not words in the centre=="],
                         ["Alerts nag", "Escalate in steps with persistence", "Each cue earns attention; the loudest is rare"],
-                        ["Drivers doubt the sensing", "Say what the car can and cannot see", "A grey “sensing limited” state, never a silent guess"],
+                        ["Drivers doubt the sensing", "Say what the car can and cannot see", "A grey “sensing limited” state, ==never a silent guess=="],
                         ["Stress is invisible", "Treat stress as a state too", "Respond with cabin light and sound, not a scolding"],
                         ["Screens compete with the road", "Keep decisions off the road", "One-tap answers; make stopping easy to accept"],
                     ],
@@ -97,7 +97,7 @@ const folders = [
                 h: "How might we",
                 cards: [
                     { t: "Sense and adapt", items: ["Detect early drowsiness or stress with nothing new to operate", "Change light, sound and voice so the driver calms or wakes", "Learn each driver's own baseline"] },
-                    { t: "Earn trust", items: ["Step in without sounding judgemental", "Make the reading visible and explainable", "Keep camera and biometric data on the car", "Avoid false alarms"] },
+                    { t: "Earn trust", items: ["Step in without sounding judgemental", "Make the reading visible and explainable", "==Keep camera and biometric data on the car==", "Avoid false alarms"] },
                     { t: "Stay out of the way", items: ["Accept help with one word or one glance", "Make drowsiness and stress legible in a glance", "Respond with one press from the wheel"] },
                 ],
             },
@@ -106,7 +106,7 @@ const folders = [
                 table: {
                     head: ["Decision", "Because", "Trade-off"],
                     rows: [
-                        ["Show state as heat at the screen edge", "Peripheral colour needs no glance", "Less precise than text, so a word and an icon sit beside it"],
+                        ["Show state as heat at the screen edge", "==Peripheral colour needs no glance==", "Less precise than text, so a word and an icon sit beside it"],
                         ["Colour, word and icon for every state", "Colour alone isn't reliable in every light", "More elements per state"],
                         ["Escalate by persistence, with two sensors agreeing", "Alerts get switched off, and false alarms add stress", "The first cue can come a little later"],
                         ["Show a grey “sensing limited” state", "Owners doubt the camera with sunglasses or a smudge", "Admitting limits can feel weaker"],
@@ -130,7 +130,7 @@ const folders = [
                         ["What it detects", "Attention; reportedly also yawns, blinks, leaning", "Attention on the road", "Drowsiness, short repeated glances, phone use, impairment", "Fatigue, stress, distraction, and when sensing is limited"],
                         ["How it warns", "Beeps and on-screen nags", "Wheel light bar (GM); cluster alerts (Ford)", "Warnings required", "Edge heat map, wheel haptics, voice"],
                         ["Escalation", "Strikes after repeated nags (owner reports)", "Not reviewed in depth", "Escalating warnings, then intervention or safe stop", "Graded by persistence; ends with a rest-stop offer"],
-                        ["Stress and state", "Not addressed in public descriptions", "Not addressed in public descriptions", "Not in scope", "Yes: the cabin eases tension"],
+                        ["Stress and state", "Not addressed in public descriptions", "Not addressed in public descriptions", "Not in scope", "Yes: ==the cabin eases tension=="],
                     ],
                 },
             },
@@ -148,8 +148,8 @@ const folders = [
             {
                 cards: [
                     { t: "The fatigue spiral", items: ["Tired drivers misjudge themselves and keep going"] },
-                    { t: "The early cue", items: ["A cue that arrives early breaks the spiral"] },
-                    { t: "When nagging backfires", items: ["Annoying alerts get switched off, so quiet, graded cues are the lever"] },
+                    { t: "The early cue", items: ["==A cue that arrives early breaks the spiral=="] },
+                    { t: "When nagging backfires", items: ["Annoying alerts get switched off, so ==quiet, graded cues are the lever=="] },
                 ],
             },
         ],
