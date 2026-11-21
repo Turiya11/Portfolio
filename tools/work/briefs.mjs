@@ -227,7 +227,6 @@ export const pip = {
     meta: "UX research · Mixed Reality interaction design · 2026 · Academic research",
     headline: pipSource.ovHeadline,
     accent: "rgb(104, 62, 214)",
-    note: pipSource.ovNote,
     ratio: 16 / 9,
     hero: { ...clip("pip-mr", "Pip Focus Mode on Meta Quest: grabbing an orb, dropping it into the ring and opening the thinking board"), title: "An MR experience" },
     brief: {
