@@ -48,8 +48,14 @@ const ORBIT = [
 ]
 // screens that slide out from behind a card on hover (1–2 per project, small copies in assets/images/timeline).
 // kind: "web" = a browser screen, "phone" = a mobile screen, "device" = a mockup that already has its frame
-// a small chip on cards that have screens: it beckons until the first peek, then sits quietly
-const PEEK = `<span class="jt-peek" aria-hidden="true"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8v11a2 2 0 0 0 2 2h11"/><rect x="7" y="3" width="14" height="14" rx="2"/><circle cx="11.5" cy="7.5" r="1.3"/><path d="m21 13-3.2-3.2a1.5 1.5 0 0 0-2.1 0L9.5 16"/></svg></span>`
+// a labelled pill on cards that have screens/photos: a stack of tiny thumbnails + "Hover for 4 photos".
+// It beckons until the first peek, then sits quietly
+const peekFor = (list) => {
+    const kinds = list.map((x) => x.kind)
+    const noun = kinds.every((k) => ["web", "phone", "device"].includes(k)) ? "screen" : kinds.every((k) => k === "poster") ? "poster" : "photo"
+    const thumbs = list.slice(0, 3).map((x) => `<img src="assets/images/timeline/${x.src}" alt="" loading="lazy" decoding="async" />`).join("")
+    return `<span class="jt-peek" aria-hidden="true"><span class="jt-peek__thumbs">${thumbs}</span><span class="jt-peek__label">Hover for ${list.length > 1 ? `${list.length} ${noun}s` : `the ${noun}`}</span></span>`
+}
 const SHOTS = {
     "UX Design Intern": [
         { src: "kg-query.jpg", kind: "web" },
@@ -171,7 +177,7 @@ function render() {
               <span class="jt-stem" style="height:${gap - 8}px;${above ? `bottom:${NODE_R}px` : `top:${NODE_R}px`}"></span>
               ${shotsFor(m.title, `width:${cardW}px;left:${-cardW / 2}px;${above ? `bottom:${NODE_R + gap}px` : `top:${NODE_R + gap}px`}`)}
               <article class="jt-card${compact ? " is-compact" : ""}" style="width:${cardW}px;left:${-cardW / 2}px;${above ? `bottom:${NODE_R + gap}px` : `top:${NODE_R + gap}px`}">
-                ${SHOTS[m.title] ? PEEK : ""}
+                ${SHOTS[m.title] ? peekFor(SHOTS[m.title]) : ""}
                 <div class="jt-card__top"><span class="jt-kicker">${esc(m.kicker)}</span><span class="jt-period">${esc(m.period)}</span></div>
                 <div class="jt-card__head">
                   ${m.logos?.length === 1 ? logo(m.logos[0]) : ""}
