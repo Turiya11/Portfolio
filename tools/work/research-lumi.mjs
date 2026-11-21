@@ -185,6 +185,7 @@ export const lumiEcosystem = {
         {
             role: "Mother",
             mark: "N",
+            face: neha.face,
             tagline: "Neha, the silent struggler. Something is wrong, but she can't say it.",
             wants: "To be understood without being labelled.",
             stuck: "No safe space to say how she feels.",
@@ -199,6 +200,7 @@ export const lumiEcosystem = {
         {
             role: "Partner",
             mark: "R",
+            face: rohan.face,
             tagline: "Rohan, the hyper-responsible fixer. He wants to help but feels unsure.",
             wants: "To know exactly how and when to step in.",
             stuck: "Not knowing how to talk about it.",
@@ -213,6 +215,7 @@ export const lumiEcosystem = {
         {
             role: "In-laws",
             mark: "S",
+            face: sarita.face,
             tagline: "Sarita & Mohan, the well-meaning minimizers. They believe she'll be fine.",
             wants: "To help, and to be respected for it.",
             stuck: "The stigma of mental illness in the family.",

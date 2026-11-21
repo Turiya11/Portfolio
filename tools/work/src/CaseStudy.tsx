@@ -5,6 +5,7 @@ import * as React from "react"
 import StickyWall, { type StickyGroup } from "./StickyWall"
 import JourneyMap, { type Persona } from "./JourneyMap"
 import ResearchFolders, { type Folder } from "./ResearchFolders"
+import Build, { type Step, type Shot } from "./Build"
 
 type ClipData = { src: string; poster?: string; label?: string; sound?: boolean; ratio?: number }
 type Did = { lead: string; text: string; clips: ClipData[]; phones?: boolean }
@@ -26,6 +27,7 @@ type Props = {
     story?: { did?: string; process?: string; reflection?: string } // the line that carries the reader from one section to the next
     didNote?: string
     why?: { title: string; statement: string; points: { label: string; text: string }[] } // why this medium, shown before the work
+    build?: Step[] // sketches, lo-fi, style guide and UI elements, shown in What I did before the final screens
     did: Did[]
     process: { label: string; image: string }[]
     reflection: { label: string; text: string }[]
@@ -244,6 +246,12 @@ export default function CaseStudy(p: Props) {
     const [on, setOn] = React.useState("")
     // process images open in a pop-up instead of a new tab
     const [shot, setShot] = React.useState<number | null>(null)
+    const procShots: Shot[] = p.process.map((s) => ({ src: s.image, label: s.label }))
+    const [shots, setShots] = React.useState<Shot[]>(procShots)
+    const open = (l: Shot[], i: number) => {
+        setShots(l)
+        setShot(i)
+    }
     const lb = React.useRef<HTMLDialogElement | null>(null)
     const lbBody = React.useRef<HTMLDivElement | null>(null)
     const lbPointer = React.useRef(false)
@@ -255,7 +263,7 @@ export default function CaseStudy(p: Props) {
     const [sharp, setSharp] = React.useState<number | null>(null) // which pop-up image has its full size loaded
     React.useEffect(() => {
         if (shot === null) return
-        const src = p.process[shot].image
+        const src = shots[shot].src
         if (thumb(src) === src) return setSharp(shot)
         // the thumbnail is already cached, so it shows at once and the full image replaces it; Safari would otherwise open a thin, empty pop-up
         const im = new Image()
@@ -265,7 +273,7 @@ export default function CaseStudy(p: Props) {
             im.onload = null
         }
     }, [shot])
-    const step = (d: number) => setShot((i) => (i === null ? i : Math.min(p.process.length - 1, Math.max(0, i + d))))
+    const step = (d: number) => setShot((i) => (i === null ? i : Math.min(shots.length - 1, Math.max(0, i + d))))
 
     React.useEffect(() => {
         const d = lb.current
@@ -426,6 +434,7 @@ export default function CaseStudy(p: Props) {
                             </div>
                         </div>
                     ) : null}
+                    {p.build?.length ? <Build steps={p.build} onOpen={open} /> : null}
                     {p.didNote ? <p className="cs-small">{p.didNote}</p> : null}
                     <div className="cs-did">
                         {p.did.map((d) => (
@@ -456,7 +465,7 @@ export default function CaseStudy(p: Props) {
                     {p.story?.process ? <p className="cs-state">{p.story.process}</p> : null}
                     <div className="cs-proc">
                         {p.process.map((s, i) => (
-                            <button type="button" key={s.label} aria-haspopup="dialog" onClick={() => setShot(i)}>
+                            <button type="button" key={s.label} aria-haspopup="dialog" onClick={() => open(procShots, i)}>
                                 <span className="cs-thumb">
                                     {/* Framer serves a small copy for the thumbnail; the pop-up shows the full image */}
                                     <img src={thumb(s.image)} alt={s.label} loading="lazy" decoding="async" />
@@ -465,49 +474,50 @@ export default function CaseStudy(p: Props) {
                             </button>
                         ))}
                     </div>
-                    <dialog
-                        className="cs-lb"
-                        ref={lb}
-                        aria-labelledby="cs-lb-t"
-                        onClose={() => {
-                            if (lb.current?.open) return // a quick click on the next thumbnail may have reopened it already
-                            setShot(null)
-                            if (lbPointer.current) (document.activeElement as HTMLElement | null)?.blur?.() // closed with the mouse: no ring left on the thumbnail
-                            lbPointer.current = false
-                        }}
-                        onClick={(e) => {
-                            if (e.target === lb.current) closeLb() // a click on the backdrop lands on the dialog itself
-                        }}
-                        onKeyDown={(e) => {
-                            if (e.key === "ArrowRight") step(1)
-                            if (e.key === "ArrowLeft") step(-1)
-                        }}
-                    >
-                        {shot !== null ? (
-                            <>
-                                <header className="cs-lb-head">
-                                    <h3 id="cs-lb-t">{p.process[shot].label}</h3>
-                                    <small>
-                                        {shot + 1} / {p.process.length}
-                                    </small>
-                                    <button type="button" className="cs-lb-btn" aria-label="Previous image" disabled={shot === 0} onClick={() => step(-1)}>
-                                        ‹
-                                    </button>
-                                    <button type="button" className="cs-lb-btn" aria-label="Next image" disabled={shot === p.process.length - 1} onClick={() => step(1)}>
-                                        ›
-                                    </button>
-                                    <button type="button" className="cs-lb-btn" aria-label="Close" onClick={closeLb}>
-                                        ✕
-                                    </button>
-                                </header>
-                                <div className="cs-lb-body" ref={lbBody} tabIndex={0}>
-                                    <img src={sharp === shot ? p.process[shot].image : thumb(p.process[shot].image)} alt={p.process[shot].label} />
-                                </div>
-                            </>
-                        ) : null}
-                    </dialog>
                 </section>
                 ) : null}
+
+                <dialog
+                    className="cs-lb"
+                    ref={lb}
+                    aria-labelledby="cs-lb-t"
+                    onClose={() => {
+                        if (lb.current?.open) return // a quick click on the next thumbnail may have reopened it already
+                        setShot(null)
+                        if (lbPointer.current) (document.activeElement as HTMLElement | null)?.blur?.() // closed with the mouse: no ring left on the thumbnail
+                        lbPointer.current = false
+                    }}
+                    onClick={(e) => {
+                        if (e.target === lb.current) closeLb() // a click on the backdrop lands on the dialog itself
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === "ArrowRight") step(1)
+                        if (e.key === "ArrowLeft") step(-1)
+                    }}
+                >
+                    {shot !== null ? (
+                        <>
+                            <header className="cs-lb-head">
+                                <h3 id="cs-lb-t">{shots[shot].label}</h3>
+                                <small>
+                                    {shot + 1} / {shots.length}
+                                </small>
+                                <button type="button" className="cs-lb-btn" aria-label="Previous image" disabled={shot === 0} onClick={() => step(-1)}>
+                                    ‹
+                                </button>
+                                <button type="button" className="cs-lb-btn" aria-label="Next image" disabled={shot === shots.length - 1} onClick={() => step(1)}>
+                                    ›
+                                </button>
+                                <button type="button" className="cs-lb-btn" aria-label="Close" onClick={closeLb}>
+                                    ✕
+                                </button>
+                            </header>
+                            <div className="cs-lb-body" ref={lbBody} tabIndex={0}>
+                                <img src={sharp === shot ? shots[shot].src : thumb(shots[shot].src)} alt={shots[shot].label} />
+                            </div>
+                        </>
+                    ) : null}
+                </dialog>
 
                 <section className="cs-sec" id="reflection">
                     <p className="cs-eye">Reflection</p>

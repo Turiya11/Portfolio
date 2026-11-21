@@ -169,6 +169,7 @@ const ecosystem = {
         {
             role: "Nadia Rao",
             mark: "NR",
+            face: nadia.face,
             tagline: "The long-haul highway driver, often setting off after a full day of work.",
             wants: "To know early when to stop.",
             stuck: "Warnings that come late, then repeat.",
@@ -228,12 +229,9 @@ export const copilot = {
         { lead: "After parking, the trip explains itself:", text: "a heat map shows when alertness dipped.", clips: [clip("cp-trip", "Reviewing the trip heat map by signal", CENTRE)] },
     ],
     process: [
-        { label: "Sketches: where state shows up", image: img("sketches.png") },
-        { label: "Sketches: camera, wheel, escalation", image: img("sketches2.png") },
-        { label: "Nine wireframes", image: img("initial.png") },
-        { label: "Heuristic usability map", image: img("usability.png") },
-        { label: "UI style guide", image: img("style.png") },
-        { label: "Alert-type heat-map library", image: img("library.jpg") },
+        { label: "System map", image: img("system.png") },
+        { label: "Where nobody plays yet", image: img("gap.png") },
+        { label: "Causal loops of driver fatigue", image: img("loop.png") },
     ],
     reflection: [
         { label: "What I expect", text: "Graded cues get dismissed less often than one loud alert, and a rest-stop offer is accepted more than a plain warning. These are hypotheses, not results." },

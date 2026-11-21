@@ -4,8 +4,8 @@
 import * as React from "react"
 import Avatar, { type Face } from "./Avatar"
 
-export type Phase = { name: string; does: string; pain: string; hub: string; emoji?: string; feel?: string; level?: number }
-export type Persona = { role: string; mark?: string; face?: Face; tagline: string; wants: string; stuck: string; phases: Phase[] }
+export type Phase = { name: string; does: string; pain?: string; hub?: string; emoji?: string; feel?: string; level?: number }
+export type Persona = { role: string; mark?: string; face?: Face | Face[]; tagline: string; wants: string; stuck: string; phases: Phase[] }
 
 const CSS = `
 .jm{display:flex;flex-direction:column;gap:16px}
@@ -18,6 +18,9 @@ const CSS = `
 .jm-person[aria-pressed=false] .jm-who i{background:rgba(70,80,100,.5)}
 .jm-who .av{flex:none;display:block;width:64px;height:64px;border-radius:50%;box-shadow:0 0 0 3px #fff,0 10px 20px -12px rgba(30,35,60,.55);transition:transform .45s cubic-bezier(.3,1.6,.5,1),filter .3s}
 .jm-person[aria-pressed=false] .jm-who .av{filter:saturate(.35)}
+.jm-who > .jm-faces{flex:none;display:flex}
+.jm-faces .av + .av{margin-left:-20px}
+.jm-person:hover .jm-who .av + .av{transform:translateY(-2px) rotate(5deg)}
 .jm-person:hover .jm-who .av{transform:translateY(-2px) rotate(-5deg);filter:none}
 .jm-who b{display:block;font-size:var(--t-h3);font-weight:600;letter-spacing:var(--ls-h3);line-height:1.25}
 .jm-who > span{display:block}
@@ -95,7 +98,15 @@ export default function JourneyMap({ personas, hubLabel = "KG Hub" }: { personas
                 {personas.map((x, i) => (
                     <button type="button" className="jm-person" key={x.role} aria-pressed={i === active} onClick={() => setActive(i)}>
                         <span className="jm-who">
-                            {x.face ? <Avatar face={x.face} size={64} /> : <i aria-hidden="true">{x.mark || initials(x.role)}</i>}
+                            {x.face ? (
+                                <span className="jm-faces">
+                                    {([] as Face[]).concat(x.face).map((f, k) => (
+                                        <Avatar key={k} face={f} size={64} />
+                                    ))}
+                                </span>
+                            ) : (
+                                <i aria-hidden="true">{x.mark || initials(x.role)}</i>
+                            )}
                             <span>
                                 <b>{x.role}</b>
                                 <span>{x.tagline}</span>
@@ -170,22 +181,18 @@ export default function JourneyMap({ personas, hubLabel = "KG Hub" }: { personas
                             </p>
                         ))}
                     </div>
-                    <div className="jm-row">
-                        <p className="jm-lane">Stuck on</p>
-                        {p.phases.map((s) => (
-                            <p className="jm-pain" key={s.name}>
-                                {s.pain}
-                            </p>
-                        ))}
-                    </div>
-                    <div className="jm-row">
-                        <p className="jm-lane">{hubLabel}</p>
-                        {p.phases.map((s) => (
-                            <p className="jm-hub" key={s.name}>
-                                {s.hub}
-                            </p>
-                        ))}
-                    </div>
+                    {p.phases.some((s) => s.pain) ? (
+                        <div className="jm-row">
+                            <p className="jm-lane">Stuck on</p>
+                            {p.phases.map((s) => (s.pain ? <p className="jm-pain" key={s.name}>{s.pain}</p> : <span key={s.name} />))}
+                        </div>
+                    ) : null}
+                    {p.phases.some((s) => s.hub) ? (
+                        <div className="jm-row">
+                            <p className="jm-lane">{hubLabel}</p>
+                            {p.phases.map((s) => (s.hub ? <p className="jm-hub" key={s.name}>{s.hub}</p> : <span key={s.name} />))}
+                        </div>
+                    ) : null}
                 </div>
             </div>
         </div>

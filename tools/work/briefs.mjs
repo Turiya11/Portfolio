@@ -3,7 +3,7 @@
 // Research sticky notes come from content.mjs. Numbers are only the ones the projects actually produced.
 import { dentigo as dentigoSource, encora as kgSource, pip as pipSource, lumiStickies } from "./content.mjs"
 import { lumiResearch, lumiEcosystem } from "./research-lumi.mjs"
-import { dentigoResearch, kgResearch, kgFaces, pipResearch } from "./research-projects.mjs"
+import { dentigoResearch, kgResearch, kgFaces, pipResearch, poojaFace, meherFace } from "./research-projects.mjs"
 
 const clip = (id, label) => ({ src: `../../assets/video/work/${id}.mp4`, poster: `../../assets/video/work/${id}.jpg`, label })
 const fr = (id, ext = "png") => `https://framerusercontent.com/images/${id}.${ext}`
@@ -67,11 +67,7 @@ export const lumi = {
     ],
     process: [
         { label: "MVP features", image: site("lumi/research/mvp.png") },
-        { label: "Storyboard: 3AM, alone", image: fr("RtBHy475FWRwisQWQLgLNhsSkqU") },
-        { label: "Storyboard: Lumi notices the pattern", image: fr("fLjlXF6wH4pwFW4EvhjNjKLzd4I") },
-        { label: "Storyboard: family understanding begins", image: fr("wijwbxWPIqKdDPTgOe1iqki4vg") },
         { label: "Information architecture", image: site("lumi/research/ia.png") },
-        { label: "Lo-fi wireframes", image: site("lumi/research/lofi.png") },
     ],
     reflection: [
         { label: "What shaped it", text: "A private journal beside opt-in check-ins, and a pattern notice that points to people, not a condition." },
@@ -105,6 +101,28 @@ export const dentigo = {
         stickiesTitle: dentigoSource.stickiesTitle,
         stickies: dentigoSource.stickies,
     },
+    // from the project's journey map of a dentist (stages, activities, experience); the feature row is where Dentigo steps in
+    ecosystem: {
+        statement: "One restoration passes through six stages, and the dentist feels every handoff.",
+        hubLabel: "Dentigo",
+        personas: [
+            {
+                role: "Dr. Pooja Sharma",
+                face: poojaFace,
+                tagline: "A dentist specialising in prosthodontics, with two assistants and a receptionist.",
+                wants: "A perfect fit on the first try.",
+                stuck: "Unpredictable lab delays, and remakes that cost chair time.",
+                phases: [
+                    { name: "Consultation", does: "Examines the patient and discusses their needs.", feel: "Confident", level: 0.22 },
+                    { name: "Case specification", does: "Shares the case, calls the lab and explains what she needs.", feel: "Anxious, hopeful", level: 0.55, hub: "Guided order form" },
+                    { name: "Lab collaboration", does: "Clarifies details and answers the lab's questions.", feel: "Frustrated", level: 0.78, hub: "One-tap messaging" },
+                    { name: "Fitting and delivery", does: "Fits the prosthetic and notices issues.", feel: "Disappointed, stressed", level: 0.92, hub: "Scan review before approval" },
+                    { name: "Adjustment and follow-up", does: "Books a repeat appointment and updates the lab.", feel: "Determined, apologetic", level: 0.6, hub: "Tracking with an ETA" },
+                    { name: "Case closed", does: "Delivers the final piece and records the outcome.", feel: "Relieved, proud", level: 0.18 },
+                ],
+            },
+        ],
+    },
     story: {
         did: "So I designed one place for the whole case. Here it is, in the order a dentist would use it.",
         process: "The work behind those screens.",
@@ -122,8 +140,6 @@ export const dentigo = {
     process: [
         { label: "Stakeholder map", image: fr("600AM7vuVugdK4bghpSttVSms") },
         { label: "Core workflow", image: fr("r0TJpemDNu7JEjdSuoO3EFpcXH8") },
-        { label: "Storyboard: a complex crown", image: fr("uXPJgRLEWSqCP4qHKmhIWdup4Ek") },
-        { label: "Storyboard: a new clinic", image: fr("V01SGxeBv0uyPg1sregW9INR50o") },
         { label: "Sitemap", image: fr("ImQHPo0mCnfM7uKxW0FLOqViNU") },
         { label: "User flow: place an order", image: fr("a6jnaF4nBxwKrkxtFkJlS9sMVg") },
     ],
@@ -216,6 +232,9 @@ export const kg = {
         { label: "Knowledge graph", image: fr("C2GzI43bQ1qPDtSYKoWgWzxfaQQ") },
         { label: "Information architecture", image: fr("8J9dvoXJdUEIx0PFRbvU8jg4Zo") },
         { label: "Flow map", image: site("kg/flow.jpg") },
+        { label: "Version 1, graph-first: dashboard", image: site("kg/build/lo-dash.jpg") },
+        { label: "Version 1, graph-first: knowledge graph", image: site("kg/build/lo-graph.jpg") },
+        { label: "Version 1, graph-first: data table", image: site("kg/build/lo-table.jpg") },
     ],
     reflection: [
         { label: "Evidence first", text: "Evidence belongs at the point of investigation, so every relation links back to its sources." },
@@ -248,6 +267,29 @@ export const pip = {
         stickiesTitle: pipSource.stickiesTitle,
         stickies: pipSource.stickies,
     },
+    // from the research's end-to-end journey board (stages, actions, pain points, Pip's part); feelings are the board's hypotheses, rated −2 to +2
+    ecosystem: {
+        statement: "The whole life of a thought, from the moment it appears to the moment she acts on it. The feelings are hypotheses to test.",
+        hubLabel: "Pip",
+        personas: [
+            {
+                role: "Meher",
+                face: meherFace,
+                tagline: "A multi-project juggler, with ideas arriving in lectures, on the commute and mid-task.",
+                wants: "To park a thought fast and trust that it comes back.",
+                stuck: "Capturing in a busy moment, and being interrupted when it resurfaces.",
+                phases: [
+                    { name: "Idea emerges", does: "Notices a thought in a lecture or on the commute.", feel: "Excited, a little anxious", level: 0.25, pain: "Hands are busy and the thought is fleeting", hub: "A widget or shortcut" },
+                    { name: "Capture", does: "Opens Pip and types or records one line.", feel: "Hurried", level: 0.5, pain: "An AR camera is slower than WhatsApp", hub: "Text or voice capture" },
+                    { name: "Contextualise", does: "Optionally picks a project, label or date.", feel: "Irritated if forced", level: 0.75, pain: "Forms feel like admin", hub: "Suggests the project, all optional" },
+                    { name: "Park", does: "Goes back to her task.", feel: "Relieved", level: 0.05, pain: "If she doesn't trust it, it stays in her head", hub: "The idea sits in her space" },
+                    { name: "Resurface", does: "Gets a cue, or opens Pip herself.", feel: "Interrupted, maybe guilty", level: 0.75, pain: "Arrives mid-task and gets swiped away", hub: "Appears at a chosen moment" },
+                    { name: "Retrieve", does: "Recognises Pip and recalls the thought.", feel: "An aha, or frustration", level: 0.45, pain: "Knows the character, loses the meaning", hub: "Colour and a short gist" },
+                    { name: "Act or continue", does: "Develops it, snoozes it or archives it.", feel: "Satisfied, or guilty", level: 0.5, pain: "Repeated snoozing becomes a nag", hub: "Done, Not now, Archive" },
+                ],
+            },
+        ],
+    },
     story: {
         did: "So I designed Pip, a companion that brings back one thought at a time.",
         process: "The work behind Pip.",
@@ -262,11 +304,9 @@ export const pip = {
             { label: "One thought at a time", text: "In the clutter experiment, a busy screen made it harder to take in what mattered. Focus Mode moves into a fully virtual space, so only the chosen thought is left." },
         ],
     },
-    didNote: "The first three are walkthroughs of the sketches and design screens. The rest are recorded from the working prototypes: Three.js with WebXR, and Meta Quest with hand tracking.",
+    didNote: "The first is a walkthrough of the hi-fi screens. The rest are recorded from the working prototypes: Three.js with WebXR, and Meta Quest with hand tracking.",
     did: [
-        { lead: "I started by sketching Pip in VR:", text: "where Pip lives in the room, how you grab a thought without a screen, and how resurfacing stays gentle.", clips: [clip("pip-sketches", "Moving through the VR exploration sketches")] },
-        { lead: "Next, the structure:", text: "capture, the orbit, the card and the MR check-in, as mobile flows.", clips: [clip("pip-lofi", "Moving through the lo-fi wireframes")] },
-        { lead: "Then the full flow:", text: "seven steps, from choosing your Pip to parking a new thought.", clips: [clip("pip-final", "Moving through the hi-fi flow")] },
+        { lead: "First, the full flow:", text: "seven steps, from choosing your Pip to parking a new thought.", clips: [clip("pip-final", "Moving through the hi-fi flow")] },
         { lead: "You park a thought in seconds:", text: "type it and move on, without organising it.", clips: [clip("pip-capture", "Parking a thought in the web prototype")] },
         { lead: "Pip appears in the room,", text: "with your thoughts orbiting as glowing orbs.", clips: [clip("pip-step-in", "Pip in mixed reality (passthrough) on Meta Quest")] },
         { lead: "You pick one to focus on:", text: "grab an orb and drop it into the ring, and everything else dims.", clips: [clip("pip-ring", "Dropping an orb into the ring with hand tracking")] },

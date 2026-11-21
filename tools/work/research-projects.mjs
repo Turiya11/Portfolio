@@ -7,6 +7,10 @@ const site = (p) => `../../assets/images/${p}`
 
 /* ------------------------------ Dentigo ------------------------------ */
 
+// shared by the research folders and the user journeys on the pages
+export const poojaFace = { skin: "#c98c62", hair: "bun", hairColor: "#2a1a14", bg: "#f0b3c4", top: "#8fa3cf", coat: true, earrings: true }
+export const meherFace = { skin: "#c08058", hair: "bangs", hairColor: "#24170f", bg: "#d9c8f2", top: "#8b6fd8", earrings: true }
+
 export const dentigoResearch = [
     {
         title: "Primary & secondary research data",
@@ -133,7 +137,7 @@ export const dentigoResearch = [
                 persona: {
                     name: "Dr. Pooja Sharma",
                     role: "Dentist",
-                    face: { skin: "#c98c62", hair: "bun", hairColor: "#2a1a14", bg: "#f0b3c4", top: "#8fa3cf", coat: true, earrings: true },
+                    face: poojaFace,
                     meta: "45 · general dentistry, specialising in prosthodontics · 2 assistants and a receptionist",
                     quote: "“My reputation is built on the final fit. ==Every remake costs me chair time and patient trust.==”",
                     traits: ["Budget conscious", "Tech savvy"],

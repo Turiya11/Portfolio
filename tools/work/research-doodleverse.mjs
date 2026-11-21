@@ -179,6 +179,7 @@ const ecosystem = {
         {
             role: "Aarav, 12",
             mark: "A",
+            face: aarav.face,
             tagline: "New to headsets, curious, plays in short bursts.",
             wants: "To make something that surprises them.",
             stuck: "Buttons to learn, long instructions, and drawings that look wrong.",
@@ -249,9 +250,6 @@ export const doodleverse = {
         { label: "Design process", image: img("slide-05.jpg") },
         { label: "Core user flow", image: img("slide-06.jpg") },
         { label: "Input and trigger mechanics", image: img("slide-07.jpg") },
-        { label: "Affordances and signifiers", image: img("slide-08.jpg") },
-        { label: "Neon glowing ink", image: img("slide-11.jpg") },
-        { label: "From a long panel to pills", image: img("slide-12.jpg") },
     ],
     reflection: [
         { label: "Test with children", text: "Five or more children aged 12+, with a parent present, watching where they hesitate: the first touch, the wand circle, two-hand pickup and the exit." },
