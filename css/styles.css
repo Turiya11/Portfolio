@@ -1499,6 +1499,13 @@ button {
     width: 48%;
     border-radius: 8px;
 }
+/* the one to look at: the mic moment, a size up and on top of its neighbours */
+.jt-shot--photo-lead {
+    width: 46%;
+    z-index: 1;
+    border-width: 5px;
+    border-radius: 10px;
+}
 .jt-shot--photo-tall {
     width: 28%;
     border-width: 3px;
@@ -1605,7 +1612,7 @@ button {
         transition-delay: 0.12s;
     }
     .jt-mark.on:has(.jt-card:hover) .jt-shot--e {
-        transform: translate(-64%, -184%) rotate(-5deg);
+        transform: translate(-90%, -122%) rotate(-4deg);
         transition-delay: 0.16s;
     }
     .jt-mark.on:has(.jt-card:hover) .jt-shot--f {

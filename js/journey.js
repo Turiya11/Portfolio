@@ -61,7 +61,7 @@ const SHOTS = {
         { src: "naip-lab.jpg", kind: "photo" },
         { src: "naip-charminar.jpg", kind: "photo-tall" },
         { src: "naip-print.jpg", kind: "photo-tall" },
-        { src: "naip-stage.jpg", kind: "photo" },
+        { src: "naip-stage.jpg", kind: "photo-lead" },
         { src: "naip-cyanotype.jpg", kind: "photo" },
     ],
     Lumi: [
