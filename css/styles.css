@@ -5807,9 +5807,27 @@ button.ab-day {
 .tm.is-sheet .tm-piece {
     opacity: 0;
     pointer-events: none;
-    transition:
-        transform 0.6s cubic-bezier(0.5, 0, 0.3, 1),
-        opacity 0.35s ease 0.25s;
+    transition: opacity 0s linear calc(0.3s + var(--i) * 0.12s);
+}
+/* the turn-over: each piece turns edge-on, and its sticker side comes round in its place */
+.tm.is-sheet .tm-piece__front {
+    animation: tmFlipOut 0.3s cubic-bezier(0.6, 0, 0.8, 0.4) calc(var(--i) * 0.12s) forwards;
+}
+@keyframes tmFlipOut {
+    to {
+        transform: perspective(520px) rotateY(90deg);
+    }
+}
+.tm.is-sheet .tm-st--big {
+    animation: none;
+}
+.tm.is-sheet .tm-st--big > svg {
+    animation: tmFlipIn 0.34s cubic-bezier(0.2, 0.8, 0.3, 1.15) calc(0.3s + var(--i) * 0.12s) backwards;
+}
+@keyframes tmFlipIn {
+    from {
+        transform: perspective(520px) rotateY(-90deg);
+    }
 }
 .tm-defs {
     position: absolute;
@@ -5929,41 +5947,14 @@ button.ab-day {
 .tm-st__dot {
     fill: var(--ink);
 }
-/* the toggle's knob, switched on, wearing the swirl face */
-.tm-st__knob {
-    fill: var(--bg);
-    stroke: var(--ink);
-    stroke-width: 4px;
-}
-/* the jigsaw faces, redrawn on the stickers in the same thin dark doodle line */
-.tm-st__doodle {
-    fill: none;
-    stroke: #1d1932;
-    stroke-width: 2.2px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    vector-effect: non-scaling-stroke;
-}
-.tm-st__doodle * {
-    vector-effect: non-scaling-stroke;
-}
-.tm-st__doodle .tm-dot {
-    fill: #1d1932;
-    stroke: none;
-}
-.tm-st__ring,
 .tm-st__small,
 .tm-st__big {
     font-family: var(--sans);
     fill: var(--ink);
     text-anchor: middle;
 }
-.tm-st__ring {
-    font-weight: 800;
-    letter-spacing: 0.12em;
-}
 .tm-st__small {
-    font-size: 13.5px;
+    font-size: 14.5px;
     font-weight: 800;
     letter-spacing: 0.14em;
     opacity: 0.8;
@@ -6006,6 +5997,12 @@ button.ab-day {
     fill: currentColor;
     stroke: none;
 }
+.tm-st--big .tm-st__edge > * {
+    stroke-width: 6px;
+}
+.tm-st--big .tm-st__line {
+    stroke-width: 2.2px;
+}
 .tm-st--doodle .tm-st__edge > * {
     stroke-width: 9px;
 }
@@ -6041,7 +6038,9 @@ button.ab-day {
     .tm-st {
         transition: none;
     }
-    .tm.is-sheet .tm-st {
+    .tm.is-sheet .tm-st,
+    .tm.is-sheet .tm-st--big > svg,
+    .tm.is-sheet .tm-piece__front {
         animation: none;
     }
     .tm.is-solved .tm-ribbon {

@@ -7,7 +7,7 @@ const CONTENT = {
     skip: "or just show me",
     reveal: "How I contribute",
     again: "mix them up again",
-    hintAfter: "they're stickers now, move them around",
+    hintAfter: "now they're stickers. pull them apart",
     pieces: [
         { label: "Research", title: "Understanding people", color: "#8f7bea", texture: "dots", face: "curls" },
         { label: "Business requirements", title: "Connecting user needs with business goals", color: "#ff9eb5", texture: "scribble", face: "glasses" },
@@ -88,88 +88,61 @@ const piece = (p, i) => {
 
 /* ------------------------------ the stickers: line drawings on pastel, with a thick white die-cut edge ------------------------------ */
 
-// each one: its viewBox size, the die-cut outline, and what's drawn on it. Text is SVG so it can follow a curve.
+// the other side of each puzzle piece: the same outline (EDGES), the same 100-unit cell, flipped over in place and
+// printed as a sticker. Each piece has one socket biting into it, so each drawing keeps clear of its own socket.
 const INK = ["#4a37b0", "#b02d63", "#1d5ea6", "#9a5b00"]
 const BG = ["#e6e0ff", "#ffdbe4", "#d9eeff", "#fff1b8"]
-const big = (lines, y, size) => lines.map((l, k) => `<text class="tm-st__big" x="50%" y="${y + k * size * 1.12}" font-size="${size}">${esc(l)}</text>`).join("")
-const small = (t, y) => `<text class="tm-st__small" x="50%" y="${y}">${esc(t.toUpperCase())}</text>`
-// the puzzle piece's own doodle face, carried over onto its sticker
-const face = (i, x, y, k) => `<g class="tm-st__doodle" transform="translate(${x} ${y}) scale(${k})">${FACE[CONTENT.pieces[i].face]}</g>`
-const STICKERS = [
-    {
-        // a round badge: the words run round the edge, a magnifying glass finds a smiling face
-        w: 240,
-        h: 240,
-        outline: `<circle cx="120" cy="120" r="106"/>`,
-        art: (i) => `
-          <path id="tm-arc-a" d="M36 120a84 84 0 0 1 168 0" fill="none"/>
-          <path id="tm-arc-b" d="M26 120a94 94 0 0 0 188 0" fill="none"/>
-          <text class="tm-st__ring" font-size="17"><textPath href="#tm-arc-a" startOffset="50%">UNDERSTANDING PEOPLE</textPath></text>
-          <text class="tm-st__ring" font-size="14.5"><textPath href="#tm-arc-b" startOffset="50%">✦ RESEARCH ✦</textPath></text>
+const SPAD = PAD + 6 // the knobs, plus room for the white edge
+const big = (lines, y, size) => lines.map((l, k) => `<text class="tm-st__big" x="50" y="${y + k * size * 1.1}" font-size="${size}">${esc(l)}</text>`).join("")
+const small = (t, y, size = 5.6) => `<text class="tm-st__small" x="50" y="${y}" style="font-size:${size}px">${esc(t.toUpperCase())}</text>`
+const ART = [
+    // research (socket at the bottom): a magnifying glass, with a glint
+    () => `${small("Research", 14, 6.4)}
           <g class="tm-st__line">
-            <circle cx="112" cy="112" r="33" class="tm-st__paper"/>
-            <path d="M136 137l24 24" stroke-width="11"/>
+            <circle cx="47" cy="30" r="9" class="tm-st__paper"/>
+            <path d="M53.5 36.5l7 7" stroke-width="4"/>
+            <path d="M42.5 28.500a5.500 5.500 0 0 1 4.500-3.800"/>
+            <path d="M35 21l-3-3M39.500 18.500l-1-4M33 26l-4-1"/>
           </g>
-          ${face(i, 72, 64, 0.8)}`,
-    },
-    {
-        // a ticket: a dashed bridge carries a heart (what people need) over to a chart (what the business needs)
-        w: 276,
-        h: 222,
-        outline: `<rect x="12" y="12" width="252" height="198" rx="30"/>`,
-        art: (i) => `
-          ${small("Business requirements", 46)}
+          ${big(["Understanding", "people"], 55, 10.5)}`,
+    // business requirements (socket on the left): a dotted bridge from a heart to a chart
+    () => `${small("Business requirements", 14, 5.4)}
           <g class="tm-st__line">
-            <path d="M70 120c-23-14-25-33-12-37 6-2 11 2 12 7 1-5 6-9 12-7 13 4 11 23-12 37z" class="tm-st__paper"/>
-            <path d="M90 82q46-44 92-2" stroke-dasharray="1 9" stroke-width="5"/>
-            <path d="M170 74l13 7-4-14"/>
-            <path d="M184 76v40h50"/>
+            <path d="M48 52c-7-4-8-10-4-11.500 2-.5 3.500.5 4 2 .5-1.500 2-2.500 4-2 4 1.500 3 7.500-4 11.500z" class="tm-st__paper"/>
+            <path d="M55 39q10-11 20 0" stroke-dasharray=".5 3.400"/>
+            <path d="M72.500 36.500l3 3 .4-4"/>
+            <path d="M78 38v14h12"/>
           </g>
-          ${face(i, 42.5, 72, 0.55)}
-          <rect x="192" y="100" width="9" height="16" rx="2" class="tm-st__dot"/>
-          <rect x="206" y="90" width="9" height="26" rx="2" class="tm-st__dot"/>
-          <rect x="220" y="78" width="9" height="38" rx="2" class="tm-st__dot"/>
-          ${big(["Connecting user needs", "with business goals"], 162, 20)}`,
-    },
-    {
-        // an arch: the name curves over the top, and an eye sits in the middle of everything it's connected to
-        w: 224,
-        h: 256,
-        outline: `<path d="M18 116a94 94 0 0 1 188 0v108a18 18 0 0 1-18 18H36a18 18 0 0 1-18-18z"/>`,
-        art: (i) => `
-          <path id="tm-arc-c" d="M40 116a72 72 0 0 1 144 0" fill="none"/>
-          <text class="tm-st__ring" font-size="14"><textPath href="#tm-arc-c" startOffset="50%">SYSTEMS THINKING</textPath></text>
+          <rect x="80.500" y="46" width="2.400" height="5" rx=".6" class="tm-st__dot"/>
+          <rect x="84" y="42.500" width="2.400" height="8.500" rx=".6" class="tm-st__dot"/>
+          <rect x="87.500" y="38.500" width="2.400" height="12.500" rx=".6" class="tm-st__dot"/>
+          ${big(["Connecting user", "needs with", "business goals"], 78, 8.6)}`,
+    // systems thinking (socket on the right): an eye in the middle of everything it's connected to
+    () => `${small("Systems thinking", 14, 6.2)}
           <g class="tm-st__line">
-            <path d="M112 124L64 108M112 124l46-20M112 124l-34 34M112 124l36 34M112 124V78" />
-            <path d="M64 108l14 50M158 104l-10 54M64 108l48-30 46 26" stroke-dasharray="1 7" stroke-width="3.5"/>
-            <circle cx="64" cy="108" r="8" class="tm-st__paper"/><circle cx="158" cy="104" r="8" class="tm-st__paper"/>
-            <circle cx="78" cy="158" r="8" class="tm-st__paper"/><circle cx="148" cy="158" r="8" class="tm-st__paper"/>
-            <circle cx="112" cy="78" r="8" class="tm-st__paper"/>
-            <circle cx="112" cy="124" r="19" class="tm-st__paper"/>
+            <path d="M36 42l-15-6M36 42l15-6M36 42l-11 12M36 42l11 12M36 42V25"/>
+            <path d="M21 36l4 18M51 36l-4 18M21 36l15-11 15 11" stroke-dasharray=".5 2.800" stroke-width="1.600"/>
+            <circle cx="21" cy="36" r="3" class="tm-st__paper"/><circle cx="51" cy="36" r="3" class="tm-st__paper"/>
+            <circle cx="25" cy="54" r="3" class="tm-st__paper"/><circle cx="47" cy="54" r="3" class="tm-st__paper"/>
+            <circle cx="36" cy="25" r="3" class="tm-st__paper"/>
+            <path d="M28 42q8-7 16 0q-8 7-16 0z" class="tm-st__paper"/>
           </g>
-          ${face(i, 83, 92, 0.6)}
-          ${big(["Seeing the", "bigger picture"], 200, 21)}`,
-    },
-    {
-        // a rounded square: a happy toggle, switched on, with the pointer that just clicked it
-        w: 262,
-        h: 232,
-        outline: `<rect x="12" y="12" width="238" height="208" rx="38"/>`,
-        art: (i) => `
-          ${small("Interaction design", 46)}
+          <circle cx="36" cy="42" r="2.100" class="tm-st__dot"/>
+          ${big(["Seeing the", "bigger picture"], 80, 10)}`,
+    // interaction design (socket at the top): a toggle, switched on, and the pointer that just clicked it
+    () => `${small("Interaction design", 40, 6)}
           <g class="tm-st__line">
-            <rect x="64" y="64" width="108" height="50" rx="25" class="tm-st__paper"/>
+            <rect x="34" y="47" width="30" height="14" rx="7" class="tm-st__paper"/>
+            <path d="M39.500 54h5" opacity=".45"/>
           </g>
-          <circle cx="147" cy="89" r="17" class="tm-st__knob"/>
-          ${face(i, 119.5, 55, 0.55)}
-          <g class="tm-st__line">
-            <path d="M83 89h18" stroke-width="3.5" opacity=".45"/>
-            <path d="M170 104v38l10-10 9 17 8-4-9-16h15z" class="tm-st__paper" stroke-width="4"/>
-            <path d="M160 102l-9-6M165 95l-3-10M172 97l4-9"/>
+          <circle cx="57" cy="54" r="5" class="tm-st__dot"/>
+          <g class="tm-st__line" stroke-width="1.500">
+            <path d="M61 57v11l3-3 2.500 5 2.200-1.100-2.500-4.900h4.500z" class="tm-st__paper"/>
+            <path d="M58 56l-3-2M60 52.500l-.8-3M63 53.500l1.400-2.600"/>
           </g>
-          ${big(["Making things", "feel intuitive"], 170, 23)}`,
-    },
+          ${big(["Making things", "feel intuitive"], 80, 10)}`,
 ]
+
 // little drawn icons for the tags
 const ICON = {
     ask: `<circle cx="10" cy="10" r="8"/><path d="M7.5 7.6c.3-1.6 1.4-2.400 2.700-2.400 1.500 0 2.600 1 2.600 2.300 0 2.200-2.800 2-2.800 4.300"/><circle cx="10" cy="14.6" r=".9" class="tm-ico-dot"/>`,
@@ -185,13 +158,13 @@ const DOODLES = [
 ]
 
 const sticker = (p, i) => {
-    const st = STICKERS[i]
+    const d = shape(EDGES[i])
     return `<div class="tm-st tm-st--big" data-k="${i}" style="--ink:${INK[i]};--bg:${BG[i]};--i:${i}" role="img" aria-label="${esc(p.label)}: ${esc(p.title)}">
-        <svg viewBox="0 0 ${st.w} ${st.h}" aria-hidden="true">
-          <defs><clipPath id="tm-cut${i}">${st.outline}</clipPath></defs>
-          <g class="tm-st__edge">${st.outline}</g>
-          <g class="tm-st__face">${st.outline}</g>
-          <g clip-path="url(#tm-cut${i})">${st.art(i)}<circle class="tm-st__glare" cx="-200" cy="-200" r="${st.w * 0.55}"/></g>
+        <svg viewBox="${-SPAD} ${-SPAD} ${S + SPAD * 2} ${S + SPAD * 2}" aria-hidden="true">
+          <defs><clipPath id="tm-cut${i}"><path d="${d}"/></clipPath></defs>
+          <g class="tm-st__edge"><path d="${d}"/></g>
+          <g class="tm-st__face"><path d="${d}"/></g>
+          <g clip-path="url(#tm-cut${i})">${ART[i]()}<circle class="tm-st__glare" cx="-400" cy="-400" r="60"/></g>
         </svg>
       </div>`
 }
@@ -288,49 +261,20 @@ function layout() {
 
 /* ------------------------------ the sticker sheet ------------------------------ */
 
-// where everything is stuck down, as [x, y, tilt] centres in a design space: 1000 × 430 on a wide folder, 360 × 560 on a phone
-const SHEET = {
-    wide: {
-        w: 1000,
-        h: 410,
-        size: 1.06,
-        ribbon: [500, 30],
-        // the tags are tucked over the corners of the big stickers, the way a sheet gets crowded
-        at: [
-            [148, 216, -7],
-            [400, 236, 4],
-            [632, 220, -4],
-            [864, 234, 6],
-            [92, 350, -7],
-            [342, 358, 4],
-            [676, 364, -3],
-            [906, 362, 5],
-            [268, 72, 12],
-            [752, 66, -10],
-            [984, 118, 6],
-        ],
-    },
-    narrow: {
-        w: 360,
-        h: 610,
-        size: 0.68,
-        ribbon: [180, 22],
-        at: [
-            [92, 126, -6],
-            [264, 146, 5],
-            [94, 316, -4],
-            [264, 322, 6],
-            [96, 444, -4],
-            [256, 456, 3],
-            [84, 512, 3],
-            [214, 566, -3],
-            [190, 222, 10],
-            [342, 236, -8],
-            [22, 222, 0],
-        ],
-    },
+// once it's solved the puzzle turns over where it lies, so the stickers sit exactly where the pieces were.
+// The tags and doodles lie loose around it: [x, y, tilt], x and y counted in piece cells from the board's top-left corner.
+const LOOSE = {
+    wide: [
+        [-0.62, 0.42, -6],
+        [2.7, 0.62, 5],
+        [-0.72, 1.45, 4],
+        [2.85, 1.58, -4],
+        [-0.95, -0.05, 12],
+        [2.38, -0.08, -10],
+        [2.32, 2.12, 6],
+    ],
 }
-const sticks = stickers.map(() => ({ x: 0, y: 0, rot: 0, w: 0, h: 0 }))
+const sticks = stickers.map(() => ({ x: 0, y: 0, rot: 0, w: 0, h: 0, home: null }))
 
 function putSticker(k) {
     const el = stickers[k]
@@ -339,40 +283,52 @@ function putSticker(k) {
     el.style.rotate = `${t.rot}deg`
 }
 
-// lay the sheet out: every sticker back to its own spot, and the pieces fly to the sticker they become
+// lay the sheet out: the four stickers exactly over the solved puzzle, everything else around it
 function sheet(instant) {
     const W = stage.clientWidth
-    const L = W >= 820 ? SHEET.wide : SHEET.narrow
-    const k = L === SHEET.wide ? clamp(Math.min(W / L.w, (innerHeight - 400) / L.h), 0.62, 1.15) : clamp(W / L.w, 0.82, 1.3)
-    const left = (W - L.w * k) / 2
+    const wide = W >= 820
+    const cell = S * unit
+    const [ox, oy] = origin
     root.classList.add("is-sheet")
-    stage.style.height = `${Math.round(L.h * k)}px`
-    stage.style.setProperty("--k", k)
+    stage.style.setProperty("--k", wide ? 1 : 0.85)
+    // the tape moves up off the stickers so their labels show
+    ribbon.style.top = `${oy - 30}px`
+    let narrowSpots = null
+    if (!wide) {
+        // on a phone the tags line up under the board, where the loose pieces lay
+        const y0 = oy + 2 * cell + PAD * unit + 34
+        narrowSpots = [
+            [W * 0.28, y0, -4],
+            [W * 0.72, y0 + 8, 3],
+            [W * 0.26, y0 + 56, 3],
+            [W * 0.62, y0 + 104, -3],
+            [W - 24, oy - 6, -8],
+            [W * 0.9, y0 + 60, 10],
+            [22, y0 + 110, 0],
+        ]
+        stage.style.height = `${Math.round(y0 + 150)}px`
+    }
     stickers.forEach((el, i) => {
         const t = sticks[i]
-        const [x, y, rot] = L.at[i]
-        const svg = el.querySelector("svg")
-        if (el.classList.contains("tm-st--big")) {
-            const [, , vw, vh] = svg.getAttribute("viewBox").split(" ").map(Number)
-            ;[t.w, t.h] = [vw * L.size * k, vh * L.size * k]
-        } else if (el.classList.contains("tm-st--doodle")) {
-            const [, , vw, vh] = svg.getAttribute("viewBox").split(" ").map(Number)
-            ;[t.w, t.h] = [vw * k, vh * k]
+        if (i < 4) {
+            t.w = t.h = (cell * (S + SPAD * 2)) / S
+            Object.assign(t, { x: ox + (CELL[i][0] + 0.5) * cell, y: oy + (CELL[i][1] + 0.5) * cell, rot: 0 })
+            t.home = { x: t.x, y: t.y, rot: 0 }
         } else {
-            el.style.width = ""
-            ;[t.w, t.h] = [el.offsetWidth, el.offsetHeight]
+            const [x, y, rot] = wide ? [ox + LOOSE.wide[i - 4][0] * cell, oy + LOOSE.wide[i - 4][1] * cell, LOOSE.wide[i - 4][2]] : narrowSpots[i - 4]
+            if (el.classList.contains("tm-st--doodle")) {
+                const [, , vw, vh] = el.querySelector("svg").getAttribute("viewBox").split(" ").map(Number)
+                ;[t.w, t.h] = [vw, vh]
+            } else {
+                el.style.width = el.style.height = ""
+                ;[t.w, t.h] = [el.offsetWidth, el.offsetHeight]
+            }
+            Object.assign(t, { x, y, rot })
         }
         el.style.width = `${t.w}px`
         el.style.height = `${t.h}px`
-        Object.assign(t, { x: left + x * k, y: y * k, rot })
+        el.style.zIndex = ""
         putSticker(i)
-    })
-    ribbon.style.left = `${left + L.ribbon[0] * k}px`
-    ribbon.style.top = `${L.ribbon[1] * k}px`
-    const E = (S + PAD * 2) * unit
-    state.forEach((s, i) => {
-        Object.assign(s, { x: sticks[i].x - E / 2, y: sticks[i].y - E / 2, rot: sticks[i].rot, scale: 0.5 })
-        place(i, instant)
     })
 }
 
@@ -608,8 +564,20 @@ stickers.forEach((el, k) => {
         if (!peel || peel.k !== k) return
         const t = sticks[k]
         el.classList.remove("is-held", "is-instant")
-        if (peel.moved) {
-            // stuck back down, a touch crooked
+        if (peel.moved && t.home && Math.hypot(t.x - t.home.x, t.y - t.home.y) < t.w * 0.28) {
+            // close to its place in the chain: it clicks back in, with ticks at the joins it locks into
+            Object.assign(t, t.home)
+            putSticker(k)
+            replay(el, "is-slap")
+            const cell = S * unit
+            CELL.forEach(([c, r], j) => {
+                const [mc, mr] = CELL[k]
+                if (j === k || j > 3 || Math.abs(c - mc) + Math.abs(r - mr) !== 1) return
+                if (Math.hypot(sticks[j].x - sticks[j].home.x, sticks[j].y - sticks[j].home.y) > 2) return
+                setTimeout(() => burst(stickers[j], t.x + ((c - mc) * cell) / 2, t.y + ((r - mr) * cell) / 2), reduced ? 0 : 200)
+            })
+        } else if (peel.moved) {
+            // stuck back down loose, a touch crooked
             t.rot = clamp(t.rot + clamp(peel.vx * 0.5, -6, 6) + (Math.random() - 0.5) * 6, -14, 14)
             putSticker(k)
             replay(el, "is-slap")
