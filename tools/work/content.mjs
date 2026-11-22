@@ -253,12 +253,12 @@ export const pip = {
     team: "",
     tools: "Three.js, WebXR, Meta Immersive Web SDK, FigJam",
     scope: "Survey (n = 46), 18 interviews, a clutter and colour-cue experiment, an online community scan, six concepts and two working AR prototypes",
-    status: "Two working AR prototypes, on the web and on Meta Quest. Not yet tested with users.",
+    status: "Two working AR prototypes, on the web and on Meta Quest.",
     ovHeadline: "A space to park your thoughts, and a friend who brings them back.",
     ovLead: "Pip is an AR companion that helps design students offload intentions and return to them at the right moment. Thoughts become glowing orbs around a friendly astronaut, and one at a time can be pulled into Focus Mode and broken into a first step.",
     ovChallenge:
         "College students aged 18 to 25 in India struggle to remember and act on everyday intentions at the right time, as competing responsibilities and fragmented storage make retrieval difficult. Existing reminders can add to the overload instead of bringing back what matters.",
-    ovNote: "Academic research project. Study samples are small and the findings are preliminary; the prototypes have not been tested with users yet.",
+    ovNote: "Academic research project. Study samples are small and the findings are preliminary.",
     heroVideo: "../../assets/video/pip-focus-grab.mp4", // Pip Focus Mode on Meta Quest, from grabbing an orb
     heroPoster: local("pip/ar-pip.jpg"),
     heroAutoplay: true,

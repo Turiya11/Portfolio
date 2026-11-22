@@ -92,7 +92,6 @@ export const dentigo = {
             { n: "5", l: "user flows" },
             { n: "9", l: "hi-fi screens" },
         ],
-        impactNote: "A concept. Whether it reduces remakes is still untested.",
     },
     research: { statement: "First, I had to see how a case really moves between clinic and lab.", folders: dentigoResearch },
     understanding: {
@@ -145,7 +144,6 @@ export const dentigo = {
     ],
     reflection: [
         { label: "What it taught me", text: "The problem is coordination across people, not one screen." },
-        { label: "Still untested", text: "Whether structured orders reduce remakes, and whether comparison builds enough trust to switch labs." },
         { label: "What I'd do next", text: "Put the flows in front of real clinics and labs, and check the fit with how they work today." },
     ],
 }
@@ -259,7 +257,6 @@ export const pip = {
             { n: "18", l: "interviews" },
             { n: "2", l: "working MR prototypes" },
         ],
-        impactNote: "Not yet tested with users.",
     },
     research: { statement: "First, I had to find out where intentions get lost.", folders: pipResearch },
     understanding: {
