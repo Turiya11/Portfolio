@@ -29,7 +29,6 @@ export const methods = {
             could: "Reduce the gap between noticing and acting, for the mother and the people around her.",
             did: "A gentle daily check-in that notices a pattern over days and sends the partner a quiet signal.",
         },
-        limits: ["Personas and quotes are research syntheses, not individual participants.", "Lumi is a design concept. It does not diagnose or replace professional care, and it has not been clinically validated."],
     },
 
     dentigo: {
@@ -57,7 +56,6 @@ export const methods = {
             could: "Make tracking a case as simple as tracking a parcel.",
             did: "A dashboard with live case status and one chat thread per case, shared by the clinic and the lab.",
         },
-        limits: ["Sample sizes weren't recorded, so this page doesn't quote any.", "Dentigo is an academic concept. Labs, ratings, prices and orders in the screens are sample data."],
     },
 
     encora: {
@@ -86,7 +84,6 @@ export const methods = {
             could: "Put the sources on every relation, and let teams compare two graphs directly.",
             did: "Compare graphs, with source counts on each relation. In testing, interpretation was about 30% faster.",
         },
-        limits: ["Shared under an NDA with Encora: names are changed and sensitive details are left out.", "Dot votes came from the team, so they set priorities rather than prove a user need.", "Six users is one round of testing, so the percentages are indicative."],
     },
 
     pip: {
@@ -115,7 +112,6 @@ export const methods = {
             could: "Act at the moment of retrieval, and point to one thing anchored to something in view.",
             did: "Orbs with a letter and a short title that resurface one thought at a time, in mixed reality.",
         },
-        limits: ["The survey and interviews are college students in India, aged 18–25, so the findings speak for that group.", "The experiment had 4 participants: it points to a pattern rather than proving one."],
     },
 
     copilot: {
@@ -144,7 +140,6 @@ export const methods = {
             could: "Show the driver's state early and quietly, and escalate only when it matters.",
             did: "Colour at the edge of vision first; a wheel pulse, voice and a rest-stop offer only at peak fatigue.",
         },
-        limits: ["Driver voices are public posts, quoted as written, not interviews.", "A concept built on secondary research, standards and published human-factors studies."],
     },
 
     doodleverse: {
@@ -172,7 +167,6 @@ export const methods = {
             could: "Take away the fail state.",
             did: "Any doodle comes alive as a 3D character, however it looks, and the room becomes its meadow.",
         },
-        limits: ["Secondary research only. The persona is a composite of the target player, not a participant.", "Aimed at 12+ with a parent present, following Meta's age policy."],
     },
 
     "3tflow": {
@@ -203,6 +197,5 @@ export const methods = {
             could: "Put the context in one place, and tell high priority from high impact.",
             did: "One queue routed by category and contract, with the SLA time left on every ticket.",
         },
-        limits: ["Under NDA: internal screens, client names and data are left out.", "Market figures come from vendor surveys, and are labelled as such.", "Competitor ratings are my reading of public product information in 2026."],
     },
 }

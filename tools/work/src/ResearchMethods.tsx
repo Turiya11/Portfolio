@@ -1,7 +1,7 @@
 // Research methods, drawn in the site's hand-made language (all text in the sans; no handwriting here): index cards taped to the dotted board, a whiteboard sketch of
 // where each method sits (after Nielsen Norman Group's attitudinal/behavioural and qualitative/quantitative axes), the
-// sensemaking steps as sticky notes along a hand-drawn path (Pirolli & Card's foraging and sensemaking loops), one finding
-// followed from evidence to design, and the limits on a lined note. Content is per project in tools/work/methods.mjs.
+// sensemaking steps as sticky notes along a hand-drawn path (Pirolli & Card's foraging and sensemaking loops), and one finding
+// followed from evidence to design. Content is per project in tools/work/methods.mjs.
 import * as React from "react"
 
 export type Method = {
@@ -20,7 +20,6 @@ export type Methods = {
     forage: Step[] // gather and filter
     sense: Step[] // structure and decide
     chain: { saw: string; means: string; could: string; did: string }
-    limits: string[]
 }
 
 const INK = "#3b3f55"
@@ -355,13 +354,6 @@ const CSS = `
 .rm-link.last .rm-sticky{background:var(--ai)!important;color:#fff;box-shadow:0 18px 30px -18px rgba(60,40,150,.7)}
 .rm-chain .rm-arrow{align-self:center;margin:30px 2px 0}
 .rm-star{position:absolute;top:-14px;right:-10px;width:34px;height:34px;color:#f2b632}
-/* limits */
-.rm-limits{position:relative;max-width:640px;margin:6px 0 0 4px;padding:30px 28px 22px 58px;border-radius:3px;background-color:#fffefa;
-  background-image:linear-gradient(90deg,transparent 40px,rgba(230,90,90,.35) 40px,rgba(230,90,90,.35) 41.5px,transparent 41.5px),repeating-linear-gradient(transparent 0 29px,rgba(80,110,200,.18) 29px 30px);
-  background-position:0 0,0 24px;box-shadow:0 1px 1px rgba(0,0,0,.05),0 14px 24px -14px rgba(0,0,0,.3);transform:rotate(-.6deg)}
-.rm-limits .rm-tape{left:70px;background:${TAPE.Secondary}}
-.rm-limits p{margin:0 0 4px;font-size:var(--t-body);font-weight:600;line-height:30px;color:var(--ink)}
-.rm-limits ul{margin:0;padding:0 0 0 18px;font-size:var(--t-body);font-weight:400;line-height:30px;color:var(--soft)}
 @media (max-width:1100px){.rm-kit{grid-template-columns:1fr}.rm-sketch{position:static;max-width:460px}}
 @media (max-width:860px){
   .rm-path,.rm-chain{flex-direction:column;align-items:stretch}
@@ -624,15 +616,6 @@ export default function ResearchMethods({ m }: { m: Methods }) {
                 </ol>
             </div>
 
-            <div className="rm-limits">
-                <span className="rm-tape" aria-hidden="true" />
-                <p>Limits</p>
-                <ul>
-                    {m.limits.map((l) => (
-                        <li key={l}>{l}</li>
-                    ))}
-                </ul>
-            </div>
         </div>
     )
 }
