@@ -119,6 +119,29 @@ function render(m) {
 }
 
 const maps = {
+    "3tflow/system-map.svg": {
+        accent: "#4f52d6",
+        title: "3TFlow",
+        sub: "Web platform · one ticket, from request to invoice",
+        loop: ["Raise", "Route", "Resolve", "Review"],
+        edges: ["guided intake", "queue by category\nand contract", "close, or escalate\nto L2 / L3", "feedback and\nSLA reports"],
+        loopName: "The ticket loop",
+        strip: ["Incident · service request · change in one place · SLA clock on every ticket", "Gold 15 min / 4 h · Silver 1 h / 8 h · Bronze 4 h / 24 h · every change audited"],
+        left: [
+            { letter: "E", color: "#d3e8ff", title: "End user", sub: "raises the ticket", bullets: ["Picks what kind of help", "Gives context once", "Sees real status", "Confirms the fix, or reopens"] },
+            { letter: "A", color: "#ffe2a8", title: "Support agent", sub: "L1, escalates to L2 / L3", bullets: ["Works one queue", "Context in one panel", "Logs hours on the task"] },
+        ],
+        right: [
+            { title: "Org admin", sub: "the client side", bullets: ["Routes to the right team", "Watches SLAs, can't edit them", "Approves or asks for terms", "Sees the root-cause board"] },
+            { title: "Support partner", sub: "serves many client orgs", bullets: ["Sets contracts and SLA tiers", "Assigns teams per client", "Bills from timesheets"] },
+        ],
+        a: { l1in: "ticket,\ncontext", l1out: "status,\nclosure", l2: "replies and updates", l2up: true, r1in: "routing,\nSLAs", r1out: "breach\nwarnings", r2in: "contracts,\nSLA tiers" },
+        bottom: [
+            { title: "The contract", verb: "feeds it", lines: ["SLA tier from each client's contract", "P4 requests on a separate contract", "Timesheets tied to billing"] },
+            { title: "The rules", verb: "limits it", lines: ["Only client orgs get an SLA", "Plans gate modules", "Every important change audited"] },
+            { title: "The research", verb: "shapes it", lines: ["ITIL learnt first", "Six tools compared", "Three personas, 70+ HMWs"] },
+        ],
+    },
     "kg/system-map.svg": {
         accent: "#6f3fd1",
         title: "KG Hub",

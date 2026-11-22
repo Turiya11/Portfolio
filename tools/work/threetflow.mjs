@@ -1,6 +1,8 @@
-// 3TFlow: under an NDA with SSK Technologies. Everything here is either already public on https://3tflow.com
-// (the landing page and the three product screens it shows) or the headline numbers from the earlier NDA page.
-// No internal screens, research or flows. The screens are stills, so they sit in the same frames as the other pages' videos.
+// 3TFlow: under an NDA with SSK Technologies. The screens are the ones public on https://3tflow.com
+// (the landing page and the three product screens it shows), with the headline numbers from the earlier NDA page.
+// The research is Turiya's own synthesis from the internship deck (research-threetflow.mjs): no internal screens, client names or data.
+// The screens are stills, so they sit in the same frames as the other pages' videos.
+import { threetflowResearch, threetflowEcosystem } from "./research-threetflow.mjs"
 const img = (n) => `../../assets/images/3tflow/${n}`
 const still = (n, label, ratio) => ({ src: img(n), label, ratio })
 
@@ -19,7 +21,7 @@ export const threetflow = {
     headline: "One place for a support team's tickets, tasks and hours, run against every client's SLA.",
     accent: "rgb(79, 82, 214)",
     nda: true,
-    note: "This project is under an NDA with SSK Technologies. The screens on this page are the ones already public on 3tflow.com. Happy to walk through the work at itsturiyajoshi11@gmail.com.",
+    note: "This project is under an NDA with SSK Technologies. The screens on this page are the ones already public on 3tflow.com, and the research is shown as my synthesis, without client data. Happy to walk through the work at itsturiyajoshi11@gmail.com.",
     ratio: 1321 / 728,
     hero: { ...still("landing.jpg", "The 3TFlow landing page: “Three touchpoints. Infinite flow.”, with tickets in open, in progress and review states", 1440 / 740), title: "Live at 3tflow.com", link: "https://3tflow.com" },
     brief: {
@@ -32,9 +34,11 @@ export const threetflow = {
         ],
         impactNote: "The product is live, with a Reports module and SLA tracking.",
     },
+    research: { statement: "First, I had to learn how a support ticket really lives and dies.", folders: threetflowResearch },
+    ecosystem: threetflowEcosystem,
     understanding: {
         quote: "Closing one ticket took five tools, and nobody could see the SLA clock.",
-        method: "From the product's public story. The research behind it stays under the NDA.",
+        method: "ITIL desk research, a competitive audit of six tools, stakeholder sessions and an audit of the old form, synthesised by role.",
         stickiesTitle: "What support teams were dealing with",
         stickies: [
             { label: "Scattered tools", notes: ["Requests spread across inboxes and chat threads", "Spreadsheets as the tracker", "Five tools to close one ticket"] },
@@ -65,6 +69,7 @@ export const threetflow = {
     reflection: [
         { label: "Designing at scale", text: "Across 2000+ screens, the design system had to carry most of the decisions. It grew to 4000+ components." },
         { label: "Fewer steps", text: "Assigning a ticket went from 6 steps to 3." },
-        { label: "Under NDA", text: "The flows, research and decisions are private. I'm happy to walk through them on a call." },
+        { label: "Learn the domain first", text: "ITIL turned vague asks into rules. Every screen after that was a business decision." },
+        { label: "Under NDA", text: "The internal flows and screens are private. I'm happy to walk through them on a call." },
     ],
 }

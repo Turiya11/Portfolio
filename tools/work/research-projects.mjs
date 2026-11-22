@@ -493,7 +493,6 @@ export const pipResearch = [
                     ],
                 },
             },
-            { note: "Scores are first-pass judgements to prompt discussion, not validated scores. Named apps were not compared." },
         ],
     },
     {

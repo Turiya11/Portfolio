@@ -6,6 +6,7 @@ import StickyWall, { type StickyGroup } from "./StickyWall"
 import JourneyMap, { type Persona } from "./JourneyMap"
 import ResearchFolders, { type Folder } from "./ResearchFolders"
 import Build, { type Step, type Shot } from "./Build"
+import ResearchMethods, { type Methods } from "./ResearchMethods"
 
 type ClipData = { src: string; poster?: string; label?: string; sound?: boolean; ratio?: number }
 type Did = { lead: string; text: string; clips: ClipData[]; phones?: boolean }
@@ -23,6 +24,7 @@ type Props = {
     hero: ClipData & { phone?: boolean; ratio?: number; title?: string; link?: string }
     brief: { context: string; background: string; impact: { n: string; l: string }[]; impactNote?: string }
     understanding: { quote: string; method: string; stickiesTitle?: string; stickies: StickyGroup[] }
+    methods?: Methods // research methods and sensemaking, shown before the research folders
     research?: { statement: string; folders: Folder[] }
     ecosystem?: { statement: string; hubLabel?: string; personas: Persona[] }
     story?: { did?: string; process?: string; reflection?: string } // the line that carries the reader from one section to the next
@@ -37,7 +39,8 @@ type Props = {
 
 const SECTIONS = [
     ["brief", "Brief"],
-    ["research", "Research"], // research and ecosystem: only on pages that have them
+    ["methods", "Methods"], // methods, research and ecosystem: only on pages that have them
+    ["research", "Research"],
     ["understanding", "Understanding"],
     ["ecosystem", "Ecosystem"],
     ["did", "What I did"],
@@ -340,7 +343,7 @@ export default function CaseStudy(p: Props) {
                     </p>
                 ) : null}
                 <nav aria-label="Contents">
-                    {SECTIONS.filter(([id]) => (id !== "ecosystem" || p.ecosystem) && (id !== "research" || p.research) && (id !== "process" || p.process.length)).map(([id, label]) => (
+                    {SECTIONS.filter(([id]) => (id !== "ecosystem" || p.ecosystem) && (id !== "methods" || p.methods) && (id !== "research" || p.research) && (id !== "process" || p.process.length)).map(([id, label]) => (
                         <a key={id} href={`#${id}`} className={on === id ? "on" : ""} aria-current={on === id ? "true" : undefined}>
                             {label}
                         </a>
@@ -416,6 +419,14 @@ export default function CaseStudy(p: Props) {
                         </p>
                     ) : null}
                 </section>
+
+                {p.methods ? (
+                    <section className="cs-sec" id="methods">
+                        <p className="cs-eye">Research methods</p>
+                        <p className="cs-state">{p.methods.statement}</p>
+                        <ResearchMethods m={p.methods} />
+                    </section>
+                ) : null}
 
                 {p.research ? (
                     <section className="cs-sec" id="research">
