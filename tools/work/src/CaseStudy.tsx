@@ -20,7 +20,7 @@ type Props = {
     nda?: boolean // shows the note as a highlighted box with a lock
     link?: { href: string; label: string }
     ratio?: number // width ÷ height of the wide videos
-    hero: ClipData & { phone?: boolean; ratio?: number; title?: string }
+    hero: ClipData & { phone?: boolean; ratio?: number; title?: string; link?: string }
     brief: { context: string; background: string; impact: { n: string; l: string }[]; impactNote?: string }
     understanding: { quote: string; method: string; stickiesTitle?: string; stickies: StickyGroup[] }
     research?: { statement: string; folders: Folder[] }
@@ -73,6 +73,13 @@ const CSS = `
 .cs-eye{margin:0;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--quiet)}
 .cs-state{margin:0;font-size:var(--t-h2);font-weight:600;letter-spacing:var(--ls-h2);line-height:1.15}
 .cs-state b{color:var(--ai);font-weight:600}
+.cs .cs-live{align-self:flex-start;display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 26px 0 22px;border-radius:999px;background:var(--ai);color:#fff;font-size:var(--t-body);font-weight:600;text-decoration:none;box-shadow:0 14px 30px -16px var(--ai);transition:transform .2s,box-shadow .2s}
+.cs-live:hover{transform:translateY(-2px);box-shadow:0 20px 36px -16px var(--ai)}
+.cs-live:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.cs-live i{width:9px;height:9px;border-radius:50%;background:#7ee2a8;box-shadow:0 0 0 4px rgba(126,226,168,.28)}
+.cs-live span{font-size:1.1em;transition:transform .2s}
+.cs-live:hover span{transform:translate(2px,-2px)}
+.cs-live .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .cs-small{margin:0;font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--soft)}
 .cs-small a{text-decoration:underline;text-underline-offset:3px}
 .cs-nda{display:flex;align-items:flex-start;gap:14px;margin:0;padding:clamp(16px,1.8vw,22px) clamp(18px,2.2vw,28px);border-radius:18px;background:var(--ai);color:#fff;font-size:var(--t-body);font-weight:600;line-height:1.5;box-shadow:0 18px 36px -22px rgba(60,40,150,.6)}
@@ -351,7 +358,14 @@ export default function CaseStudy(p: Props) {
                 ) : (
                     <header className="cs-top">
                         {heading}
-                        {p.hero.title ? (
+                        {p.hero.link ? (
+                            <a className="cs-live" href={p.hero.link} target="_blank" rel="noopener noreferrer">
+                                <i aria-hidden="true" />
+                                {p.hero.title}
+                                <span aria-hidden="true">↗</span>
+                                <em className="sr">(opens in a new tab)</em>
+                            </a>
+                        ) : p.hero.title ? (
                             <p className="cs-state">
                                 <b>{p.hero.title}</b>
                             </p>

@@ -21,7 +21,7 @@ export const threetflow = {
     nda: true,
     note: "This project is under an NDA with SSK Technologies. The screens on this page are the ones already public on 3tflow.com. Happy to walk through the work at itsturiyajoshi11@gmail.com.",
     ratio: 1321 / 728,
-    hero: { ...still("landing.jpg", "The 3TFlow landing page: “Three touchpoints. Infinite flow.”, with tickets in open, in progress and review states", 1440 / 740), title: "Live at 3tflow.com" },
+    hero: { ...still("landing.jpg", "The 3TFlow landing page: “Three touchpoints. Infinite flow.”, with tickets in open, in progress and review states", 1440 / 740), title: "Live at 3tflow.com", link: "https://3tflow.com" },
     brief: {
         context: "My internship at SSK Technologies, designing an IT service management platform end to end for 5 user roles.",
         background: "Support teams closed one ticket across spreadsheets, chat and several other tools. SLAs slipped quietly, and status was chased by hand.",
