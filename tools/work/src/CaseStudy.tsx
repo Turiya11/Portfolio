@@ -73,12 +73,11 @@ const CSS = `
 .cs-eye{margin:0;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--quiet)}
 .cs-state{margin:0;font-size:var(--t-h2);font-weight:600;letter-spacing:var(--ls-h2);line-height:1.15}
 .cs-state b{color:var(--ai);font-weight:600}
-.cs .cs-live{align-self:flex-start;display:inline-flex;align-items:center;gap:12px;height:56px;padding:0 26px 0 22px;border-radius:999px;background:var(--ai);color:#fff;font-size:var(--t-body);font-weight:600;text-decoration:none;box-shadow:0 14px 30px -16px var(--ai);transition:transform .2s,box-shadow .2s}
-.cs-live:hover{transform:translateY(-2px);box-shadow:0 20px 36px -16px var(--ai)}
-.cs-live:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-.cs-live i{width:9px;height:9px;border-radius:50%;background:#7ee2a8;box-shadow:0 0 0 4px rgba(126,226,168,.28)}
-.cs-live span{font-size:1.1em;transition:transform .2s}
-.cs-live:hover span{transform:translate(2px,-2px)}
+.cs .cs-live{align-self:flex-start;display:inline-flex;align-items:center;gap:9px;height:44px;padding:0 20px 0 16px;border-radius:999px;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.45);backdrop-filter:blur(14px) saturate(150%);-webkit-backdrop-filter:blur(14px) saturate(150%);box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 18px 36px -24px rgba(60,70,170,.3);color:var(--ai);font-size:var(--t-small);font-weight:600;text-decoration:none;transition:background .25s ease,gap .25s ease}
+.cs .cs-live:hover,.cs .cs-live:focus-visible{background:rgba(255,255,255,.8);gap:12px}
+.cs-live:focus-visible{outline:2px solid var(--ai);outline-offset:3px}
+.cs-live i{width:7px;height:7px;border-radius:50%;background:#34c75a;box-shadow:0 0 0 3px rgba(52,199,90,.18)}
+.cs-live span{font-size:1.05em}
 .cs-live .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .cs-small{margin:0;font-size:var(--t-small);font-weight:400;line-height:1.5;color:var(--soft)}
 .cs-small a{text-decoration:underline;text-underline-offset:3px}
