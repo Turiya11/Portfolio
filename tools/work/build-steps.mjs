@@ -333,9 +333,9 @@ export const pipBuild = [
     },
     {
         tag: "Style guide",
-        lead: "Then a cosmic dark UI:",
-        text: "deep purples, glowing accents and Montserrat, so the phone app feels like the night sky Pip floats in.",
-        wide: { ...shot(pp("design-system.jpg"), "Design system: cosmic dark UI in Montserrat"), crop: true },
+        lead: "Then a calm, deep-space system",
+        text: "that carries from the phone to the headset: deep purples, soft glows and one typeface, Montserrat.",
+        pipStyle: "../../assets/models/pip.glb",
     },
     {
         tag: "UI elements",

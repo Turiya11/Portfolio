@@ -7,6 +7,7 @@ import JourneyMap, { type Persona } from "./JourneyMap"
 import ResearchFolders, { type Folder } from "./ResearchFolders"
 import Build, { type Step, type Shot } from "./Build"
 import ResearchMethods, { type Methods } from "./ResearchMethods"
+import GapBridge, { type Gaps } from "./GapBridge"
 
 type ClipData = { src: string; poster?: string; label?: string; sound?: boolean; ratio?: number }
 type Did = { lead: string; text: string; clips: ClipData[]; phones?: boolean }
@@ -34,6 +35,7 @@ type Props = {
     did: Did[]
     process: { label: string; image: string }[]
     reflection: { label: string; text: string }[]
+    gaps?: Gaps // the detailed reflection: each gap, what was designed, how it closes it
     next: { title: string; link: string }
 }
 
@@ -134,6 +136,7 @@ const CSS = `
 .cs-proc small{font-size:var(--t-small);font-weight:500;color:var(--soft)}
 .cs-why{display:flex;flex-direction:column;gap:clamp(16px,1.8vw,24px);padding:clamp(8px,1.4vw,20px) 0 clamp(16px,2vw,28px)}
 .cs-why > .cs-eye{color:var(--ai)}
+.cs-refl-h{margin:clamp(14px,2vw,26px) 0 0;font-size:var(--t-h3);font-weight:600;letter-spacing:var(--ls-h3)}
 .cs-refl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .cs-next{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:clamp(24px,3vw,40px) clamp(24px,3.4vw,48px);border-radius:28px}
 .cs-next small{display:block;font-size:var(--t-label);font-weight:600;letter-spacing:var(--ls-caps);text-transform:uppercase}
@@ -555,7 +558,8 @@ export default function CaseStudy(p: Props) {
 
                 <section className="cs-sec" id="reflection">
                     <p className="cs-eye">Reflection</p>
-                    {p.story?.reflection ? <p className="cs-state">{p.story.reflection}</p> : null}
+                    {p.gaps ? <GapBridge g={p.gaps} /> : null}
+                    {p.story?.reflection ? (p.gaps ? <h3 className="cs-refl-h">{p.story.reflection}</h3> : <p className="cs-state">{p.story.reflection}</p>) : null}
                     <div className="cs-refl">
                         {p.reflection.map((r) => (
                             <div className="cs-card" key={r.label}>

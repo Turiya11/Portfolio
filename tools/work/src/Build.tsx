@@ -2,6 +2,7 @@
 // Sketches scroll sideways, lo-fi screens and boards sit full width, and a style guide is drawn live (real swatches, real type) when the project's tokens are known.
 // Every image opens in the page's pop-up, through onOpen.
 import * as React from "react"
+import PipStyle from "./PipStyle"
 
 export type Shot = { src: string; label: string; clear?: boolean; span?: boolean } // span: takes the whole row of a grid // clear: a cut-out with a transparent background, shown without a card behind it
 export type StyleGuide = {
@@ -18,6 +19,7 @@ export type Step = {
     grid?: Shot[] // two or three across, for UI elements
     wide?: Shot & { crop?: boolean } // one board, full width; crop keeps a very tall board to one screen
     style?: StyleGuide
+    pipStyle?: string // Pip's live design system board; the value is the 3D model to show
 }
 
 const CSS = `
@@ -241,6 +243,7 @@ export default function Build({ steps, onOpen }: { steps: Step[]; onOpen: (l: Sh
                             </div>
                         ) : null}
                         {s.style ? <Style g={s.style} /> : null}
+                        {s.pipStyle ? <PipStyle model={s.pipStyle} /> : null}
                     </div>
                 )
             )}
