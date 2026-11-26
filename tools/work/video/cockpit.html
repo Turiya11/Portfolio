@@ -57,24 +57,22 @@
                         { t: 3.2, cam: [836, 470, 1], tag: "Eyes-free by design", cap: "Nothing has to be read to be noticed, or looked at to be answered.", fx: [] },
                     ],
                 },
-                // the high-alert scenario: the real hi-fi screens (shots/copilot/cl-critical.png, ce-drowsy.png) mapped onto the car's own
-                // cluster and centre display in perspective, the rim flashing 3–4 times a second, a warning shape within 5° of the road
+                // the high-alert scenario, on the realistic critical-state mockup (shots/copilot/emergency.jpg): the rim flashing
+                // 3–4 times a second, the dashboard strip pulsing, then the screen, the driver-state panel, the hazards and the hands
                 "cp-emergency": {
-                    img: "shots/copilot/cockpit.jpg",
-                    dim: 0.82,
+                    img: "shots/copilot/emergency.jpg",
                     layers: [
-                        ["screen", "shots/copilot/cl-critical.png", 1760, 660, [60, 0, 1640, 660], [[671, 504], [822, 500], [672, 568], [824, 562]], 0.6],
-                        ["screen", "shots/copilot/ce-drowsy.png", 1280, 800, [30, 20, 1220, 760], [[102, 502], [503, 472], [104, 696], [537, 649]], 1.0],
-                        ["flash", 790, 408, 200, 44, "#ff3b4e", 0.3],
-                        ["hud", 650, 346, 0, 0, "#ff3b4e", 0.8],
+                        ["flash", 1002, 384, 230, 40, "#ff3b4e", 0.2],
+                        ["strip", [[0, 776], [380, 750], [768, 722]], 0, 0, 0, "#ff3b4e", 0.2],
                     ],
                     beats: [
                         { t: 3.6, cam: [836, 470, 1], tag: "High alert", cap: "Eyes have been closing for longer, and it hasn't eased. The co-pilot moves to its highest level.", fx: [] },
-                        { t: 4.4, cam: [700, 410, 1.7], tag: "Head-up and rim", cap: "A red warning shape sits within 5° of the road, and the rim flashes 3–4 times a second. Shape first, words second.", fx: [] },
-                        { t: 4.4, cam: [748, 535, 2.3], tag: "Cluster", cap: "The cluster switches to one instruction, Pull over now, readable in a single glance.", fx: [] },
-                        { t: 4.6, cam: [322, 585, 1.95], tag: "Centre display", cap: "The centre screen offers a single decision: the next rest stop, 4 km away, about 6 minutes.", fx: [["box", 331, 628, 92, 30, "#ff3b4e", 2.2]] },
-                        { t: 4.6, cam: [800, 590, 1.6], tag: "Hands on the wheel", cap: "The wheel pulses under both hands. One press on Accept, or a double squeeze, starts the route without letting go.", fx: [["wave", 632, 548, 70, 70, "#ff3b4e", 0.3], ["wave", 948, 512, 70, 70, "#ff3b4e", 0.3], ["press", 722, 637, 46, 46, "#ffffff", 2.2]] },
-                        { t: 3.6, cam: [836, 470, 1], tag: "Eyes forward", cap: "Every step of the alert is seen at the edge of vision or felt in the hands. The driver never has to hunt for it.", fx: [] },
+                        { t: 4.4, cam: [1000, 430, 2.0], tag: "Rim light", cap: "The top of the rim flashes 3–4 times a second, right at the edge of vision.", fx: [] },
+                        { t: 4.6, cam: [430, 540, 1.9], tag: "One instruction", cap: "Pull over now, readable in a single glance. Hazards on, speed assist active.", fx: [["box", 428, 545, 250, 56, "#ff3b4e", 0.3], ["pulse", 426, 500, 34, 34, "#ff3b4e", 1.0]] },
+                        { t: 4.6, cam: [632, 545, 2.4], tag: "Why it's sure", cap: "Eyes closed for 1.6 s, three yawns and a light grip, at 93% confidence.", fx: [["box", 632, 545, 192, 148, "#ff3b4e", 0.3]] },
+                        { t: 4.4, cam: [430, 770, 1.7], tag: "Hazards and cabin", cap: "The hazard lights come on, and the dashboard strip carries the same red rhythm.", fx: [["pulse", 468, 805, 56, 56, "#ff3b4e", 0.3]] },
+                        { t: 4.6, cam: [1020, 590, 1.55], tag: "Hands on the wheel", cap: "The wheel pulses under both hands, and the thumb keys answer the prompt without letting go.", fx: [["wave", 800, 560, 80, 80, "#ff3b4e", 0.3], ["wave", 1240, 560, 80, 80, "#ff3b4e", 0.3]] },
+                        { t: 3.6, cam: [836, 470, 1], tag: "Eyes forward", cap: "Light, rhythm and touch carry the alert, so the driver never has to look for it.", fx: [] },
                     ],
                 },
             }
@@ -102,6 +100,11 @@
                     const [, x, y, w, h, c] = L
                     const on = Math.sin(lt * 2 * Math.PI * 3.5) > -0.2 ? 1 : 0.25 // about 3.5 flashes a second
                     return `<div class="fx glow" style="left:${x - w / 2}px;top:${y - h}px;width:${w}px;height:${h * 2}px;--c:${c};opacity:${a * on};filter:blur(5px)"></div>`
+                }
+                if (L[0] === "strip") {
+                    const pts = L[1], c = L[5]
+                    const on = Math.sin(lt * 2 * Math.PI * 3.5) > -0.2 ? 1 : 0.3
+                    return `<svg class="fx" style="left:0;top:0;overflow:visible" width="1672" height="941"><polyline points="${pts.map((p) => p.join(",")).join(" ")}" fill="none" stroke="${c}" stroke-width="7" stroke-linecap="round" opacity="${a * on * 0.85}" style="filter:blur(3px) drop-shadow(0 0 10px ${c})"/></svg>`
                 }
                 if (L[0] === "hud") {
                     const [, x, y, , , c] = L
