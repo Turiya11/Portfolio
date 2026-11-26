@@ -95,6 +95,46 @@
                         { t: 3.8, cam: [836, 470, 1], tag: "Eyes forward", cap: "One press on Accept takes the break: guidance to the nearest safe stop follows. The driver never has to look for it.", fx: [] },
                     ],
                 },
+                // the calm nudges, on the hi-fi boards S3 and S4 (shots/copilot/s3-drowsy.png, s4-tense.png, 2004 × 1179, from Figma)
+                "cp-nudge-drowsy": {
+                    img: "shots/copilot/s3-drowsy.png", w: 2004, h: 1179, tagColor: "#ffc21f",
+                    beats: [
+                        { t: 3.4, cam: [1002, 590, 1], tag: "Drowsy: the co-pilot steps in", cap: "Tiredness is building, but nothing flashes yet. The co-pilot nudges first.", fx: [["bar", 122, 1880, 1022, "#ffc21f", 0.3]] },
+                        { t: 5.0, cam: [590, 590, 1.65], tag: "A place to stop", cap: "It finds the nearest rest stop: Hillview Rest Area, 2.4 km away, with coffee and restrooms.", fx: [["route", [[242, 848], [242, 740], [625, 740], [625, 560], [945, 560], [945, 378]], "#ffc21f", 0.3, 2.6], ["box", 775, 451, 312, 96, "#ffc21f", 2.8]] },
+                        { t: 4.6, cam: [1540, 420, 1.75], tag: "One gentle question", cap: "You look tired. Want me to take you there? The voice asks once, then waits.", fx: [] },
+                        { t: 4.8, cam: [1540, 610, 1.85], tag: "Why I am asking", cap: "The reason sits one line away: the eyes are closing more, and the heart rate has dropped.", fx: [["box", 1540, 600, 652, 152, "#ffc21f", 0.4]] },
+                        { t: 4.8, cam: [1440, 770, 1.75], tag: "Two equal answers", cap: "Take me or Not now: on the screen, in one word, or with the Accept and Later keys on the wheel.", fx: [["press", 1325, 747, 200, 96, "#ffffff", 0.8]] },
+                        { t: 3.6, cam: [1002, 590, 1], tag: "Cabin light", cap: "The cabin light turns cooler and brighter while the offer stands. No alarm, no repeat nagging.", fx: [["bar", 122, 1880, 1022, "#ffc21f", 0.2]] },
+                    ],
+                },
+                "cp-nudge-tense": {
+                    img: "shots/copilot/s4-tense.png", w: 2004, h: 1179, tagColor: "#b79cff",
+                    beats: [
+                        { t: 3.4, cam: [1002, 590, 1], tag: "Rising stress: a calm-down moment", cap: "Traffic is heavy and stress is rising. Instead of a warning, the co-pilot offers calm.", fx: [["breath", 622, 577, 145, 0, "#a98bf5", 0.2]] },
+                        { t: 5.8, cam: [622, 577, 1.55], tag: "Breathe with the light", cap: "A breathing ring paces the driver, and the rim and cabin light pulse at the same slow pace.", fx: [["breath", 622, 577, 145, 0, "#a98bf5", 0]] },
+                        { t: 4.4, cam: [420, 800, 1.9], tag: "Stress rising", cap: "Grip and heart rate show the stress building, so the offer arrives before it boils over.", fx: [["breath", 622, 577, 145, 0, "#a98bf5", 0], ["box", 300, 820, 340, 130, "#a98bf5", 0.4]] },
+                        { t: 4.6, cam: [1540, 470, 1.75], tag: "One offer", cap: "Traffic is heavy. Want calmer music? It eases the music and holds calls while the driver breathes.", fx: [] },
+                        { t: 4.6, cam: [1400, 670, 1.9], tag: "Yes, or not now", cap: "One tap, one word or one key says yes. Calls and pings wait until the moment passes.", fx: [["press", 1292, 642, 136, 96, "#ffffff", 0.8]] },
+                        { t: 3.6, cam: [1002, 590, 1], tag: "Cabin light", cap: "The cabin light softens and dims. Nothing here asks the driver to look away for long.", fx: [["breath", 622, 577, 145, 0, "#a98bf5", 0], ["bar", 122, 1880, 1022, "#a98bf5", 0.2]] },
+                    ],
+                },
+                // the wheel, board by board: S1 sensing, S9 grip pads, S10 thumb actions (shots/copilot/s1-sensing.png, s9-grip.png,
+                // s10-thumb.png, each 1684 × 1255, from Figma), side by side so the camera slides from one to the next
+                "cp-wheel-boards": {
+                    parts: [["shots/copilot/s1-sensing.png", 0, 0], ["shots/copilot/s9-grip.png", 1744, 0], ["shots/copilot/s10-thumb.png", 3488, 0]],
+                    w: 5172, h: 1255, fit: 900 / 1255, tagColor: "#2fd6c0",
+                    beats: [
+                        { t: 3.8, cam: [842, 628, 1], tag: "S1 · Steering wheel sensing", cap: "The wheel itself senses: grip pads read the hands, and a rim light shows the driver's state.", fx: [["breathe", 842, 420, 620, 150, "#ffc21f", 0.2]] },
+                        { t: 4.8, cam: [600, 760, 1.25], tag: "Rim colour", cap: "The rim colour follows the state: alert and steady, tense and rising, drowsy with heavy eyes. It is read at the edge of vision.", fx: [["box", 218, 1003, 212, 50, "#2fd6c0", 0.4], ["box", 450, 1003, 212, 50, "#a98bf5", 1.4], ["box", 720, 1003, 288, 50, "#ffc21f", 2.4]] },
+                        { t: 4.6, cam: [2586, 628, 1], tag: "S9 · Grip zones and sensor pads", cap: "Pads sit where hands naturally rest, and are wide enough that any hand position still reads.", fx: [["pulse", 2318, 655, 80, 80, "#2fd6c0", 0.4], ["pulse", 2854, 655, 80, 80, "#2fd6c0", 0.9]] },
+                        { t: 4.4, cam: [2586, 640, 1.35], tag: "Two signals", cap: "Both hands give two signals, so one loose hand still shows. The orange marks are the thumb zones.", fx: [["press", 2354, 590, 60, 44, "#ff9a3c", 0.4], ["press", 2817, 590, 60, 44, "#ff9a3c", 1.2]] },
+                        { t: 4.2, cam: [4330, 628, 1], tag: "S10 · Thumb actions on the wheel", cap: "Three keys you can tell apart by touch: a mic key, a round Accept and a flat Later.", fx: [] },
+                        { t: 4.4, cam: [4440, 640, 1.6], tag: "Accept · round, big", cap: "The right thumb presses once to confirm the rest-stop route.", fx: [["press", 4520, 572, 128, 128, "#ffffff", 0.6]] },
+                        { t: 5.0, cam: [4330, 660, 1.45], tag: "Later · flat key, or say it", cap: "Later dismisses the prompt for now and is never penalised. Or press the voice key and say Yes or Later.", fx: [["press", 4519, 739, 128, 56, "#ffffff", 0.5], ["press", 4140, 572, 86, 86, "#ffffff", 2.3]] },
+                        { t: 4.6, cam: [4330, 830, 1.4], tag: "Squeeze twice", cap: "Squeezing both grips twice acknowledges an alert, without looking or speaking.", fx: [["wave", 4150, 880, 110, 110, "#2fd6c0", 0.4], ["wave", 4512, 880, 110, 110, "#2fd6c0", 0.4]] },
+                        { t: 3.6, cam: [4330, 628, 1], tag: "Eyes on the road", cap: "Every answer lives under the thumbs or in the grip, so the driver never has to look down.", fx: [] },
+                    ],
+                },
             }
             const MOVE = 1.3
             // CSS matrix3d that maps a w×h box onto four points (top-left, top-right, bottom-left, bottom-right)
@@ -144,9 +184,22 @@
                 cap.style.display = dots.style.display = card ? "none" : ""
                 S = SCENES[id.replace(/-card$/, "")]
                 const img = document.getElementById("img")
-                img.src = S.img
+                W = S.w || 1672
+                H = S.h || 941
+                FIT = S.fit || Math.max(1600 / W, 900 / H)
+                // a scene can lay several boards out in a row (parts: [src, x, y]); the camera slides between them
+                world.querySelectorAll(".part").forEach((n) => n.remove())
+                img.style.display = S.parts ? "none" : ""
+                if (S.parts) {
+                    for (const [src, x, y] of S.parts) world.insertAdjacentHTML("beforeend", `<img class="part" src="${src}" style="position:absolute;left:${x}px;top:${y}px;width:auto;height:auto;border-radius:18px">`)
+                    await Promise.all([...world.querySelectorAll(".part")].map((n) => n.decode()))
+                }
+                world.style.width = img.style.width = W + "px"
+                world.style.height = img.style.height = H + "px"
+                cap.querySelector("small").style.color = S.tagColor || ""
+                if (!S.parts) img.src = S.img
                 img.style.filter = S.dim ? `brightness(${S.dim}) saturate(0.9)` : ""
-                await img.decode()
+                if (!S.parts) await img.decode()
                 await document.fonts.ready
                 starts = []
                 total = 0
@@ -156,7 +209,7 @@
                 return total
             }
 
-            const FIT = 1600 / 1672
+            let W = 1672, H = 941, FIT = 1600 / 1672
             function camAt(t) {
                 let i = starts.findLastIndex((s) => s <= t)
                 if (i < 0) i = 0
@@ -169,6 +222,38 @@
             }
 
             function fxEl(f, local) {
+                if (f[0] === "route") {
+                    // the way to the stop: a trail draws along the route, with a dot travelling on it
+                    const [, pts, c, delay, dur] = f
+                    const lt = local - delay
+                    if (lt < 0) return ""
+                    const segs = pts.slice(1).map((q, i) => Math.hypot(q[0] - pts[i][0], q[1] - pts[i][1]))
+                    const total = segs.reduce((a, b) => a + b, 0)
+                    let d = total * ease(Math.min(1, lt / dur)), x = pts[0][0], y = pts[0][1], done = [pts[0]]
+                    for (let i = 0; i < segs.length; i++) {
+                        if (d >= segs[i]) { d -= segs[i]; done.push(pts[i + 1]); x = pts[i + 1][0]; y = pts[i + 1][1] }
+                        else { const k = d / segs[i]; x = pts[i][0] + (pts[i + 1][0] - pts[i][0]) * k; y = pts[i][1] + (pts[i + 1][1] - pts[i][1]) * k; done.push([x, y]); break }
+                    }
+                    return `<svg class="fx" style="left:0;top:0;overflow:visible" width="${W}" height="${H}"><polyline points="${done.map((q) => q.join(",")).join(" ")}" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity=".75" style="filter:drop-shadow(0 0 10px ${c})"/><circle cx="${x}" cy="${y}" r="13" fill="#fff" style="filter:drop-shadow(0 0 12px ${c})"/><circle cx="${x}" cy="${y}" r="6" fill="${c}"/></svg>`
+                }
+                if (f[0] === "breath") {
+                    // breathing pace: the ring swells and settles about every 5 s, with a soft wave going out each time
+                    const [, x, y, r, , c, delay] = f
+                    const lt = Math.max(0, local - delay) + 1000
+                    const ph = 0.5 - 0.5 * Math.cos((lt * 2 * Math.PI) / 5)
+                    const k = 0.92 + 0.14 * ph
+                    let out = `<div class="fx" style="left:${x - r}px;top:${y - r}px;width:${r * 2}px;height:${r * 2}px;border-radius:50%;transform:scale(${k});box-shadow:0 0 ${40 + 50 * ph}px ${10 + 16 * ph}px color-mix(in srgb, ${c} 55%, transparent);opacity:.85"></div>`
+                    const w = ((lt % 5) / 5)
+                    out += `<div class="fx" style="left:${x - r}px;top:${y - r}px;width:${r * 2}px;height:${r * 2}px;border-radius:50%;border:2px solid ${c};transform:scale(${1 + w * 0.95});opacity:${(1 - w) * 0.5}"></div>`
+                    return out
+                }
+                if (f[0] === "bar") {
+                    const [, x1, x2, y, c, delay] = f
+                    const lt = local - delay
+                    if (lt < 0) return ""
+                    const a = Math.min(1, lt / 0.6) * (0.55 + 0.45 * (0.5 - 0.5 * Math.cos((lt * 2 * Math.PI) / 3)))
+                    return `<div class="fx" style="left:${x1}px;top:${y - 6}px;width:${x2 - x1}px;height:12px;border-radius:12px;background:${c};opacity:${a};filter:blur(6px);box-shadow:0 0 30px 8px ${c}"></div>`
+                }
                 if (f[0] === "cone") {
                     const [, ex, ey, tx, ty, half, c, delay] = f
                     const lt = local - delay
@@ -223,11 +308,12 @@
                     return `<svg class="fx" style="left:${x - w / 2}px;top:${y - h}px;overflow:visible" width="${w}" height="${h + 20}" viewBox="0 0 ${w} ${h + 20}"><path d="M4 ${h} Q ${w / 2} ${-h * 0.6} ${w - 4} ${h}" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="${1 - p}" style="filter:drop-shadow(0 0 8px ${c})"/></svg>`
                 }
                 if (kind === "press") {
-                    // a press: the key ring dips, then a ripple spreads
-                    let out = `<div class="fx ring" style="${st(x - w / 2, y - h / 2, w, h, `opacity:${fadeIn};transform:scale(${lt < 0.25 ? 1 - lt * 0.5 : 0.88 + Math.min(0.12, (lt - 0.25) * 0.4)})`)}"></div>`
+                    // a press: the key ring dips, then a ripple spreads (rounded like the button when it is wide)
+                    const br = w / h > 1.4 ? "border-radius:22px;" : ""
+                    let out = `<div class="fx ring" style="${st(x - w / 2, y - h / 2, w, h, `${br}opacity:${fadeIn};transform:scale(${lt < 0.25 ? 1 - lt * 0.5 : 0.88 + Math.min(0.12, (lt - 0.25) * 0.4)})`)}"></div>`
                     for (const k of [0, 0.35]) {
                         const r = (lt - k) % 1.6
-                        if (r > 0 && r < 1.1) out += `<div class="fx ring" style="${st(x - w / 2, y - h / 2, w, h, `opacity:${(1 - r / 1.1) * 0.8};transform:scale(${1 + r * 1.4})`)}"></div>`
+                        if (r > 0 && r < 1.1) out += `<div class="fx ring" style="${st(x - w / 2, y - h / 2, w, h, `${br}opacity:${(1 - r / 1.1) * 0.8};transform:scale(${1 + r * (br ? 0.35 : 1.4)})`)}"></div>`
                     }
                     return out
                 }
@@ -247,8 +333,8 @@
                 const s = FIT * c.z
                 // keep the camera inside the photo, so no black edge ever shows
                 const hw = 800 / s, hh = 450 / s
-                c.x = Math.min(1672 - hw, Math.max(hw, c.x))
-                c.y = Math.min(941 - hh, Math.max(hh, c.y))
+                c.x = Math.min(W - hw, Math.max(hw, c.x))
+                c.y = Math.min(H - hh, Math.max(hh, c.y))
                 world.style.transform = `translate(${800 - c.x * s}px, ${450 - c.y * s}px) scale(${s})`
                 const b = S.beats[c.i], local = t - starts[c.i]
                 world.querySelectorAll(".fx").forEach((n) => n.remove())

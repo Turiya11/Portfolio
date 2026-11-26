@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url"
 
 const here = (p) => fileURLToPath(new URL(p, import.meta.url))
 const FPS = 30
-const ids = ["cp-cockpit", "cp-ergonomics", "cp-emergency", "cp-cockpit-card"].filter((i) => !process.argv[2] || i === process.argv[2])
+const ids = ["cp-cockpit", "cp-ergonomics", "cp-emergency", "cp-nudge-drowsy", "cp-nudge-tense", "cp-wheel-boards", "cp-cockpit-card"].filter((i) => !process.argv[2] || i === process.argv[2])
 const outDir = here("../../../assets/video/work/")
 if (!existsSync(here(".encode"))) execFileSync("swiftc", ["-O", here("encode.swift"), "-o", here(".encode")], { stdio: "inherit" })
 
