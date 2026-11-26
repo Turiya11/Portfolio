@@ -30,7 +30,7 @@ type Props = {
     ecosystem?: { statement: string; hubLabel?: string; personas: Persona[] }
     story?: { did?: string; process?: string; reflection?: string } // the line that carries the reader from one section to the next
     didNote?: string
-    why?: { title: string; statement: string; points: { label: string; text: string }[] } // why this medium, shown before the work
+    why?: { title: string; statement: string; points: { label: string; text: string }[]; clip?: ClipData & { ratio?: number } } // why this medium, shown before the work; clip: a demo under the points
     build?: Step[] // sketches, lo-fi, style guide and UI elements, shown in What I did before the final screens
     did: Did[]
     process: { label: string; image: string }[]
@@ -469,6 +469,7 @@ export default function CaseStudy(p: Props) {
                                     </div>
                                 ))}
                             </div>
+                            {p.why.clip ? <Clip clip={p.why.clip} cls="wide" ratio={p.why.clip.ratio || p.ratio} /> : null}
                         </div>
                     ) : null}
                     {p.build?.length ? <Build steps={p.build} onOpen={open} /> : null}

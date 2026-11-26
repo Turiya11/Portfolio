@@ -1,0 +1,209 @@
+<!doctype html>
+<!-- Dev-only: the Co-Pilot cockpit demos. A slow camera over the realistic mockups (shots/copilot/cockpit.jpg and
+     ergonomics.jpg, 1672 × 941), with highlights drawn on top and a caption per beat. cockpit.mjs captures it frame by frame.
+     Every number in the captions comes from the Glance and reach zones and Interaction ergonomics boards in the Figma file. -->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600&display=swap" />
+        <style>
+            html, body { margin: 0; overflow: hidden; background: #0b0d12; font-family: "Mona Sans", system-ui, sans-serif; }
+            #view { position: relative; width: 1600px; height: 900px; overflow: hidden; }
+            #world { position: absolute; left: 0; top: 0; width: 1672px; height: 941px; transform-origin: 0 0; }
+            #world img { position: absolute; left: 0; top: 0; width: 1672px; height: 941px; }
+            .fx { position: absolute; pointer-events: none; }
+            .ring { border-radius: 50%; border: 2.5px solid var(--c); box-shadow: 0 0 18px var(--c); }
+            .glow { border-radius: 50%; background: radial-gradient(circle, var(--c) 0, transparent 70%); mix-blend-mode: screen; }
+            .box { border-radius: 14px; border: 2.5px solid var(--c); box-shadow: 0 0 22px var(--c), inset 0 0 14px color-mix(in srgb, var(--c) 40%, transparent); }
+            #cap { position: absolute; left: 48px; bottom: 44px; max-width: 760px; display: flex; flex-direction: column; gap: 8px; padding: 18px 22px 20px; border-radius: 18px;
+                   background: rgba(12, 14, 20, 0.62); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.14); color: #fff; }
+            #cap small { font-size: 14px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #ffb547; }
+            #cap b { font-size: 27px; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; }
+            #dots { position: absolute; right: 48px; bottom: 52px; display: flex; gap: 8px; }
+            #dots i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.35); }
+            #dots i.on { background: #ffb547; }
+        </style>
+    </head>
+    <body>
+        <div id="view">
+            <div id="world"><img id="img" /></div>
+            <div id="cap"><small></small><b></b></div>
+            <div id="dots"></div>
+        </div>
+        <script>
+            const AMBER = "#ffb547", TEAL = "#29e0c0"
+            // beats: camera [cx, cy, zoom] held from t0 to t1 (the move into it eases over the first `move` seconds),
+            // a caption, and effects: [kind, x, y, w, h, colour, delay] drawn in image pixels
+            const SCENES = {
+                "cp-cockpit": {
+                    img: "shots/copilot/cockpit.jpg",
+                    beats: [
+                        { t: 3.2, cam: [836, 470, 1], tag: "On the Pune–Bangalore highway", cap: "The co-pilot lives where the driver already looks and holds: the road, the cluster and the wheel.", fx: [] },
+                        { t: 4.2, cam: [770, 430, 1.75], tag: "Rim light", cap: "Driver state glows at the top of the rim, in peripheral vision. No glance needed.", fx: [["breathe", 790, 408, 190, 40, AMBER, 0.4]] },
+                        { t: 4.2, cam: [800, 560, 1.6], tag: "Grip sensing", cap: "Grip zones on the rim read heart rate and skin conductance. Either hand is enough.", fx: [["pulse", 632, 548, 70, 70, TEAL, 0.3], ["pulse", 948, 512, 70, 70, TEAL, 0.9], ["pulse", 988, 652, 60, 60, TEAL, 1.5]] },
+                        { t: 4.2, cam: [748, 548, 2.1], tag: "Cluster", cap: "State sits within 15° of the road view: one glance of 1.5 s or less, as icon plus a short label.", fx: [["box", 784, 543, 92, 70, TEAL, 0.4]] },
+                        { t: 4.2, cam: [830, 625, 1.8], tag: "Thumb keys", cap: "Accept and Later sit under the thumbs, so a prompt is answered without looking away.", fx: [["press", 722, 637, 46, 46, TEAL, 0.6], ["press", 941, 602, 46, 46, TEAL, 2.0]] },
+                        { t: 3.4, cam: [836, 470, 1], tag: "Eyes forward, hands on", cap: "Every cue is read in the periphery or felt in the hands, never only in a menu.", fx: [["breathe", 790, 408, 190, 40, AMBER, 0.2]] },
+                    ],
+                },
+                "cp-ergonomics": {
+                    img: "shots/copilot/ergonomics.jpg",
+                    beats: [
+                        { t: 3, cam: [836, 470, 1], tag: "Car and wheel ergonomics", cap: "One driver, three views: what they see, what they press, and what the wheel feels.", fx: [] },
+                        { t: 4.6, cam: [1000, 210, 1.75], tag: "Driver eye view", cap: "The critical cue sits within 5° of the road. A single glance is designed to stay under 1.5 s.", fx: [["box", 1013, 136, 236, 48, AMBER, 0.4], ["pulse", 1013, 20, 40, 40, AMBER, 1.4]] },
+                        { t: 4.2, cam: [1030, 300, 1.9], tag: "Cluster viewing zone", cap: "Key driving info and alerts stay within 15° of the line of sight, under 30° down.", fx: [["arc", 1012, 268, 360, 60, AMBER, 0.3], ["box", 1066, 350, 96, 70, AMBER, 1.2]] },
+                        { t: 4.6, cam: [420, 712, 1.85], tag: "Steering wheel interaction", cap: "Accept is convex, Later is concave and ridged: different place, shape and feel, under the thumbs.", fx: [["press", 210, 731, 64, 64, AMBER, 0.5], ["press", 627, 731, 64, 64, AMBER, 2.2]] },
+                        { t: 4.6, cam: [1250, 715, 1.85], tag: "Steering wheel sensing", cap: "Grip zones at about 8–11 and 1–4 o'clock sense passively. Haptics stay subtle and escalate.", fx: [["pulse", 1072, 672, 80, 80, AMBER, 0.3], ["pulse", 1480, 672, 80, 80, AMBER, 0.8], ["wave", 1096, 806, 60, 60, AMBER, 1.6], ["wave", 1462, 806, 60, 60, AMBER, 1.6]] },
+                        { t: 3.2, cam: [836, 470, 1], tag: "Eyes-free by design", cap: "Nothing has to be read to be noticed, or looked at to be answered.", fx: [] },
+                    ],
+                },
+                // the high-alert scenario: the real hi-fi screens (shots/copilot/cl-critical.png, ce-drowsy.png) mapped onto the car's own
+                // cluster and centre display in perspective, the rim flashing 3–4 times a second, a warning shape within 5° of the road
+                "cp-emergency": {
+                    img: "shots/copilot/cockpit.jpg",
+                    dim: 0.82,
+                    layers: [
+                        ["screen", "shots/copilot/cl-critical.png", 1760, 660, [60, 0, 1640, 660], [[671, 504], [822, 500], [672, 568], [824, 562]], 0.6],
+                        ["screen", "shots/copilot/ce-drowsy.png", 1280, 800, [30, 20, 1220, 760], [[102, 502], [503, 472], [104, 696], [537, 649]], 1.0],
+                        ["flash", 790, 408, 200, 44, "#ff3b4e", 0.3],
+                        ["hud", 650, 346, 0, 0, "#ff3b4e", 0.8],
+                    ],
+                    beats: [
+                        { t: 3.6, cam: [836, 470, 1], tag: "High alert", cap: "Eyes have been closing for longer, and it hasn't eased. The co-pilot moves to its highest level.", fx: [] },
+                        { t: 4.4, cam: [700, 410, 1.7], tag: "Head-up and rim", cap: "A red warning shape sits within 5° of the road, and the rim flashes 3–4 times a second. Shape first, words second.", fx: [] },
+                        { t: 4.4, cam: [748, 535, 2.3], tag: "Cluster", cap: "The cluster switches to one instruction, Pull over now, readable in a single glance.", fx: [] },
+                        { t: 4.6, cam: [322, 585, 1.95], tag: "Centre display", cap: "The centre screen offers a single decision: the next rest stop, 4 km away, about 6 minutes.", fx: [["box", 331, 628, 92, 30, "#ff3b4e", 2.2]] },
+                        { t: 4.6, cam: [800, 590, 1.6], tag: "Hands on the wheel", cap: "The wheel pulses under both hands. One press on Accept, or a double squeeze, starts the route without letting go.", fx: [["wave", 632, 548, 70, 70, "#ff3b4e", 0.3], ["wave", 948, 512, 70, 70, "#ff3b4e", 0.3], ["press", 722, 637, 46, 46, "#ffffff", 2.2]] },
+                        { t: 3.6, cam: [836, 470, 1], tag: "Eyes forward", cap: "Every step of the alert is seen at the edge of vision or felt in the hands. The driver never has to hunt for it.", fx: [] },
+                    ],
+                },
+            }
+            const MOVE = 1.3
+            // CSS matrix3d that maps a w×h box onto four points (top-left, top-right, bottom-left, bottom-right)
+            const adj = (m) => [m[4] * m[8] - m[5] * m[7], m[2] * m[7] - m[1] * m[8], m[1] * m[5] - m[2] * m[4], m[5] * m[6] - m[3] * m[8], m[0] * m[8] - m[2] * m[6], m[2] * m[3] - m[0] * m[5], m[3] * m[7] - m[4] * m[6], m[1] * m[6] - m[0] * m[7], m[0] * m[4] - m[1] * m[3]]
+            const mm = (a, b) => { const c = []; for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) { let s = 0; for (let k = 0; k < 3; k++) s += a[3 * i + k] * b[3 * k + j]; c[3 * i + j] = s } return c }
+            const mv = (m, v) => [m[0] * v[0] + m[1] * v[1] + m[2] * v[2], m[3] * v[0] + m[4] * v[1] + m[5] * v[2], m[6] * v[0] + m[7] * v[1] + m[8] * v[2]]
+            const basis = (p) => { const m = [p[0][0], p[1][0], p[2][0], p[0][1], p[1][1], p[2][1], 1, 1, 1]; const v = mv(adj(m), [p[3][0], p[3][1], 1]); return mm(m, [v[0], 0, 0, 0, v[1], 0, 0, 0, v[2]]) }
+            function quad(w, h, q) {
+                const t = mm(basis([q[0], q[1], q[2], q[3]]), adj(basis([[0, 0], [w, 0], [0, h], [w, h]])))
+                for (let i = 0; i < 9; i++) t[i] /= t[8]
+                return `matrix3d(${t[0]},${t[3]},0,${t[6]},${t[1]},${t[4]},0,${t[7]},0,0,1,0,${t[2]},${t[5]},0,${t[8]})`
+            }
+            function layerEl(L, t) {
+                const lt = t - L[L.length - 1]
+                if (lt < 0) return ""
+                const a = Math.min(1, lt / 0.5)
+                if (L[0] === "screen") {
+                    const [, src, iw, ih, crop, q] = L
+                    const [cx, cy, cw, ch] = crop
+                    return `<div class="fx" style="left:0;top:0;width:${cw}px;height:${ch}px;transform-origin:0 0;transform:${quad(cw, ch, q)};opacity:${a};background:url(${src}) ${-cx}px ${-cy}px/${iw}px ${ih}px no-repeat;border-radius:10px;box-shadow:0 0 60px rgba(255,59,78,.35)"></div>`
+                }
+                if (L[0] === "flash") {
+                    const [, x, y, w, h, c] = L
+                    const on = Math.sin(lt * 2 * Math.PI * 3.5) > -0.2 ? 1 : 0.25 // about 3.5 flashes a second
+                    return `<div class="fx glow" style="left:${x - w / 2}px;top:${y - h}px;width:${w}px;height:${h * 2}px;--c:${c};opacity:${a * on};filter:blur(5px)"></div>`
+                }
+                if (L[0] === "hud") {
+                    const [, x, y, , , c] = L
+                    const pulse = 0.75 + 0.25 * Math.sin(lt * 2 * Math.PI * 1.2)
+                    return `<div class="fx" style="left:${x - 52}px;top:${y - 26}px;width:104px;height:52px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;background:rgba(40,6,10,.35);border:2px solid ${c};box-shadow:0 0 22px ${c};opacity:${a * pulse};color:#fff;font:600 13px/1 'Mona Sans',sans-serif"><svg width="22" height="20" viewBox="0 0 24 22"><path d="M12 2 23 20H1Z" fill="${c}"/><path d="M12 8v6M12 16.5v1" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>Pull over</div>`
+                }
+                return ""
+            }
+            const ease = (p) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2)
+            const lerp = (a, b, p) => a + (b - a) * p
+            let S, starts, total
+            const world = document.getElementById("world"), cap = document.getElementById("cap"), dots = document.getElementById("dots")
+
+            // "<id>-card": the same film with no caption or dots, for the home page card, which crops the sides
+            window.loadScene = async (id) => {
+                const card = id.endsWith("-card")
+                cap.style.display = dots.style.display = card ? "none" : ""
+                S = SCENES[id.replace(/-card$/, "")]
+                const img = document.getElementById("img")
+                img.src = S.img
+                img.style.filter = S.dim ? `brightness(${S.dim}) saturate(0.9)` : ""
+                await img.decode()
+                await document.fonts.ready
+                starts = []
+                total = 0
+                for (const b of S.beats) { starts.push(total); total += b.t }
+                dots.innerHTML = S.beats.map(() => "<i></i>").join("")
+                seek(0)
+                return total
+            }
+
+            const FIT = 1600 / 1672
+            function camAt(t) {
+                let i = starts.findLastIndex((s) => s <= t)
+                if (i < 0) i = 0
+                const b = S.beats[i], prev = S.beats[Math.max(0, i - 1)]
+                const p = i === 0 ? 1 : ease(Math.min(1, (t - starts[i]) / MOVE))
+                // a slow drift while holding, so the shot never freezes
+                const hold = (t - starts[i]) / b.t
+                const z = lerp(prev.cam[2], b.cam[2], p) * (1 + 0.025 * hold)
+                return { i, x: lerp(prev.cam[0], b.cam[0], p), y: lerp(prev.cam[1], b.cam[1], p), z }
+            }
+
+            function fxEl(f, local) {
+                const [kind, x, y, w, h, c, delay] = f
+                const lt = local - delay
+                if (lt < 0) return ""
+                const fadeIn = Math.min(1, lt / 0.4)
+                const st = (left, top, ww, hh, extra = "") => `left:${left}px;top:${top}px;width:${ww}px;height:${hh}px;--c:${c};${extra}`
+                if (kind === "breathe") {
+                    // about 10–12 breaths a minute: one every ~5.5 s, sped up a little so it reads on video
+                    const a = 0.35 + 0.65 * (0.5 - 0.5 * Math.cos(lt * 2 * Math.PI / 2.6))
+                    return `<div class="fx glow" style="${st(x - w / 2, y - h, w, h * 2, `opacity:${fadeIn * a};filter:blur(6px)`)}"></div>`
+                }
+                if (kind === "pulse") {
+                    const a = 0.5 + 0.5 * Math.sin(lt * 2 * Math.PI / 1.4)
+                    return `<div class="fx glow" style="${st(x - w, y - h, w * 2, h * 2, `opacity:${fadeIn * (0.45 + 0.4 * a)}`)}"></div>` + `<div class="fx ring" style="${st(x - w / 2, y - h / 2, w, h, `opacity:${fadeIn * 0.9}`)}"></div>`
+                }
+                if (kind === "box") {
+                    const a = 0.6 + 0.4 * Math.sin(lt * 2 * Math.PI / 1.6)
+                    return `<div class="fx box" style="${st(x - w / 2, y - h / 2, w, h, `opacity:${fadeIn * a}`)}"></div>`
+                }
+                if (kind === "arc") {
+                    const p = Math.min(1, lt / 1.2)
+                    return `<svg class="fx" style="left:${x - w / 2}px;top:${y - h}px;overflow:visible" width="${w}" height="${h + 20}" viewBox="0 0 ${w} ${h + 20}"><path d="M4 ${h} Q ${w / 2} ${-h * 0.6} ${w - 4} ${h}" fill="none" stroke="${c}" stroke-width="4" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="${1 - p}" style="filter:drop-shadow(0 0 8px ${c})"/></svg>`
+                }
+                if (kind === "press") {
+                    // a press: the key ring dips, then a ripple spreads
+                    let out = `<div class="fx ring" style="${st(x - w / 2, y - h / 2, w, h, `opacity:${fadeIn};transform:scale(${lt < 0.25 ? 1 - lt * 0.5 : 0.88 + Math.min(0.12, (lt - 0.25) * 0.4)})`)}"></div>`
+                    for (const k of [0, 0.35]) {
+                        const r = (lt - k) % 1.6
+                        if (r > 0 && r < 1.1) out += `<div class="fx ring" style="${st(x - w / 2, y - h / 2, w, h, `opacity:${(1 - r / 1.1) * 0.8};transform:scale(${1 + r * 1.4})`)}"></div>`
+                    }
+                    return out
+                }
+                if (kind === "wave") {
+                    let out = ""
+                    for (const k of [0, 0.45, 0.9]) {
+                        const r = (lt - k) % 1.35
+                        if (r > 0) out += `<div class="fx ring" style="${st(x - w / 2, y - h / 2, w, h, `opacity:${fadeIn * (1 - r / 1.35) * 0.85};transform:scale(${0.6 + r * 1.1})`)}"></div>`
+                    }
+                    return out
+                }
+                return ""
+            }
+
+            window.seek = (t) => {
+                const c = camAt(t)
+                const s = FIT * c.z
+                world.style.transform = `translate(${800 - c.x * s}px, ${450 - c.y * s}px) scale(${s})`
+                const b = S.beats[c.i], local = t - starts[c.i]
+                world.querySelectorAll(".fx").forEach((n) => n.remove())
+                const after = Math.max(0, local - (c.i ? MOVE * 0.6 : 0))
+                world.insertAdjacentHTML("beforeend", (S.layers || []).map((L) => layerEl(L, t)).join("") + b.fx.map((f) => fxEl(f, after)).join(""))
+                cap.querySelector("small").textContent = b.tag
+                cap.querySelector("b").textContent = b.cap
+                // the caption fades between beats
+                const out = b.t - local, a = Math.min(1, local / 0.45, out / 0.35)
+                cap.style.opacity = Math.max(0, a)
+                cap.style.transform = `translateY(${(1 - Math.min(1, local / 0.45)) * 10}px)`
+                ;[...dots.children].forEach((d, k) => d.classList.toggle("on", k === c.i))
+            }
+        </script>
+    </body>
+</html>

@@ -187,13 +187,13 @@ const ecosystem = {
 
 export const copilot = {
     title: "Adaptive Emotional AI Co-Pilot",
-    meta: "UX/UI design · Independent concept · Automotive",
-    headline: "A driver-monitoring experience that notices fatigue and stress early, and answers with calm instead of alarms.",
+    meta: "Automotive HMI · Car and steering wheel ergonomics · Independent concept",
+    headline: "A co-pilot designed around the driver's eyes and hands: it notices fatigue early, and speaks through light, touch and a single glance.",
     accent: "rgb(10, 128, 112)",
     ratio: CENTRE,
     hero: { ...clip("cp-hero", "The driver display moving from clear to stress, drowsy and critical", CLUSTER), ratio: CLUSTER },
     brief: {
-        context: "A concept for the car's own screens: an infrared cabin camera and grip sensors in the wheel feed one calm, colour-coded read-out of how the driver is doing.",
+        context: "A concept for the car itself: an infrared cabin camera and grip sensors in the steering wheel feed a calm read-out, placed where the eyes and hands already are.",
         background: "Fatigue and stress look alike from the outside. Today's monitoring scolds, so drivers silence it.",
         impact: [
             { n: "13", l: "public driver posts read" },
@@ -215,11 +215,20 @@ export const copilot = {
     },
     ecosystem,
     story: {
-        did: "So I designed a co-pilot that stays calm, and steps up only as tiredness or stress persists. Here it is across a drive.",
+        did: "So I designed a co-pilot that stays calm, steps up only as tiredness or stress persists, and fits the driver's eyes and hands.",
         process: "The work behind those screens.",
         reflection: "What I expect, and how I'd find out.",
     },
-    didNote: "Prototype walkthroughs of the real screens, with sample data.",
+    why: {
+        title: "Designed around the driver's body",
+        statement: "In a car the body sets the rules: eyes stay on the road and hands stay on the wheel, so every cue has a glance budget and a reach zone.",
+        points: [
+            { label: "Where the eyes can go", text: "The critical cue sits within 5° of the road. The cluster sits within 15° of the line of sight, readable in one glance of 1.5 s or less (NHTSA allows 2 s)." },
+            { label: "What the thumbs can reach", text: "Accept and Later sit in the thumb zone of a gripped rim. They differ in place, shape and feel: convex to accept, concave and ridged to defer." },
+            { label: "What the hands already feel", text: "Grip zones at about 8–11 and 1–4 o'clock sense passively, and either hand is enough: only 6–25% of drivers hold the wheel symmetrically. Haptics stay subtle and escalate." },
+        ],
+    },
+    didNote: "Prototype walkthroughs of the real screens with sample data, then the same design in realistic cockpit mockups.",
     did: [
         { lead: "Early on, it stays quiet:", text: "the word and confidence lead, and heat rises from the screen edge.", clips: [clip("cp-states", "The cluster moving from clear to stress, then undoing the cabin change", CLUSTER)] },
         { lead: "It says what it can and cannot see:", text: "heat sits on the signal source, and a grey state admits its limits.", clips: [clip("cp-faces", "Heat maps for each state on two stock portraits", 1880 / 780)] },
@@ -227,8 +236,13 @@ export const copilot = {
         { lead: "Then it asks one question:", text: "the map stays first until a decision is needed.", clips: [clip("cp-centre", "The centre display moving from the map to a rest-stop question", CENTRE)] },
         { lead: "The driver answers without looking:", text: "keys you can tell apart by touch, right on the wheel.", clips: [clip("cp-wheel", "Steering wheel light and thumb controls", 1.6)] },
         { lead: "After parking, the trip explains itself:", text: "a heat map shows when alertness dipped.", clips: [clip("cp-trip", "Reviewing the trip heat map by signal", CENTRE)] },
+        { lead: "Then I put it in a real car:", text: "a realistic cockpit on a highway drive, from the rim light and grip zones to the cluster and the thumb keys.", clips: [clip("cp-cockpit", "Realistic cockpit mockup: the rim light, grip zones, cluster state and thumb keys, one at a time", 16 / 9)] },
+        { lead: "The car and wheel ergonomics behind it:", text: "where the eyes can go, what the thumbs press and what the wheel feels.", clips: [clip("cp-ergonomics", "Car and steering wheel ergonomics: the driver eye view with 5° and 15° zones, the Accept and Later thumb keys, and grip sensing with haptic feedback", 16 / 9)] },
+        { lead: "And when it's an emergency:", text: "the high-alert state reaches the head-up cue, the rim, the cluster, the centre screen and the wheel at once, and asks for one decision.", clips: [clip("cp-emergency", "High-alert scenario in the realistic cockpit: a red warning shape, the rim flashing, Pull over now on the cluster, the rest-stop offer on the centre screen and Accept pressed on the wheel", 16 / 9)] },
     ],
     process: [
+        { label: "Glance and reach zones", image: img("glance-zones.jpg") },
+        { label: "Interaction ergonomics table", image: img("ergonomics-table.jpg") },
         { label: "System map", image: img("system-map.svg") },
         { label: "Where nobody plays yet", image: img("gap.png") },
         { label: "Causal loops of driver fatigue", image: img("loop.png") },

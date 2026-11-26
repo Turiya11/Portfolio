@@ -37,12 +37,12 @@ const SELECTED = [
         meta: "Independent concept · Automotive",
         title: "Adaptive Emotional AI Co-Pilot",
         domain: "auto",
-        text: "A driver-monitoring experience that notices fatigue and stress early, and answers with calm instead of alarms.",
-        tags: ["Automotive", "HMI", "AI"],
+        text: "A driver co-pilot designed around the car and the steering wheel: it notices fatigue early, and speaks through light, touch and a single glance.",
+        tags: ["Automotive", "HMI", "Ergonomics"],
         href: "work/copilot/",
         wide: true,
-        video: "assets/video/work/cp-centre.mp4", // the centre display fits this card's shape without cropping the UI
-        poster: "assets/video/work/cp-centre.jpg",
+        video: "assets/video/work/cp-cockpit-card.mp4", // the realistic cockpit mockup, without captions (the card crops the sides)
+        poster: "assets/video/work/cp-cockpit-card.jpg",
     },
     {
         meta: "2026 - Academic research",
