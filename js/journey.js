@@ -18,6 +18,7 @@ const CONTENT = {
         { year: "2025", period: "Studio project · 2025", kicker: "thinking in systems", title: "Dentigo", org: "B2B platform for dental clinics & labs", text: "Brought restorations, supplies and clinic–lab communication into one transparent flow to cut remakes, delays and staff workload.", tags: ["B2B", "Service design", "Web app"], link: ["Read the case study", "work/dentigo/"] },
         { year: "2025", period: "Feb 2025", kicker: "learning across disciplines", title: "National Academic Immersion Program", org: "IIT Hyderabad · School of Design", text: "Intensive daily sessions led by faculty at the IIT Hyderabad School of Design, on the multidisciplinary nature of UX and industrial design.", tags: ["UX", "Industrial design", "Ideation"] },
         { year: "2026", period: "Academic project · 2026", kicker: "a system of support", title: "Lumi", org: "Postpartum support for mothers & families", text: "Explored how a digital experience can help mothers recognise and express postpartum emotional difficulty, while giving partners and family a clearer, more compassionate way to support her.", tags: ["User research", "Interaction design", "Maternal health"], link: ["Read the case study", "work/lumi/"] },
+        { year: "2026", period: "Design XPO · 2026", kicker: "exploring human factors & ergonomics", title: "AI Co-Pilot", org: "MIT-WPU Design XPO '26 · Automobile Pavilion", text: "Designed an in-car AI co-pilot that senses driver fatigue and stress through an IR camera, for the Automobile Pavilion at Design XPO '26. I kept going with it afterwards as a passion project.", tags: ["Human factors", "Ergonomics", "Automotive HMI"], link: ["Read the case study", "work/copilot/"] },
         { year: "2026", period: "March 2026 — now", kicker: "going end-to-end", title: "Product Design Intern", org: "SSK Technologies · 3TFlow", logos: [["ssk", "SSK Technologies"]], text: "End-to-end flows across 2000+ ITSM screens for 5 user roles — ticket assignment cut from 6 steps to 3, a Reports module, SLA tracking and a design system of 4000+ components.", tags: ["ITSM", "Design systems", "Enterprise"], link: ["Under NDA · ask me about it", "work/3tflow/"] },
     ],
     finale: { label: "Today", year: "2026", connector: "and now I'm an", title: "End-to-end product & interaction designer", text: "I make intentional design choices for the small moments that make an experience better.", cta: ["See my work", "#work"] },
@@ -83,6 +84,12 @@ const SHOTS = {
         { src: "texol-ekdum.jpg", kind: "poster" },
         { src: "texol-tea.jpg", kind: "poster" },
         { src: "texol-soup.jpg", kind: "poster" },
+    ],
+    "AI Co-Pilot": [
+        { src: "copilot-cabin.jpg", kind: "snap" },
+        { src: "copilot-cluster.jpg", kind: "snap" },
+        { src: "copilot-sketch.jpg", kind: "snap" },
+        { src: "copilot-stress.jpg", kind: "snap" },
     ],
     "Product Design Intern": [
         { src: "tflow-landing.jpg", kind: "web" },
