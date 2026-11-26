@@ -118,6 +118,70 @@ const folders = [
         ],
     },
     {
+        title: "Car and wheel ergonomics",
+        hint: "Screen map, glance zones, ergonomics",
+        blocks: [
+            { p: "The standards, human-factors numbers and sketches, synthesised into three boards: what shows where at each level, how long each zone may hold the eyes, and how every interface is reached. India is right-hand drive, so every layout is mirrored for RHD." },
+            {
+                h: "Screen map: what shows where, at each level",
+                p: "Rows are surfaces, columns are escalation levels. Sensing is always on: the IR camera and the wheel grip pads read continuously, the camera leads on drowsiness and the wheel corroborates. ==Two signals must agree before L2==, and everything is processed on the car, with no video stored.",
+                table: {
+                    head: ["Surface", "Monitor · L0", "Nudge · L1", "Suggest · L2", "Assist · L3–L4"],
+                    rows: [
+                        ["Wheel rim", "Steady state colour at low brightness", "Colour shifts slowly over about 10 s", "Slow pulse at a breathing pace", "Pulse at higher brightness. Orients only, ==never the sole alert=="],
+                        ["Instrument cluster", "Vitals chip only", "Chip names the state", "Banner: one message, one action", "Banner stays until answered; edge heat in the periphery"],
+                        ["HUD and periphery", "Speed and navigation only", "Small state dot", "One line, four words at most", "Same line, plus a direction cue towards the stop"],
+                        ["Centre display", "Navigation as normal; monitoring view and settings at rest", "No change", "Co-pilot card with the reason and two equal actions", "Full-width guidance to the nearest safe stop"],
+                        ["Wheel keys and squeeze", "Idle", "Idle", "Accept (round) and Later (flat) live; double squeeze acknowledges", "Same keys; ==Later snoozes, never penalised=="],
+                        ["Voice and sound", "Silent", "Music eases in tempo and volume, after asking", "Speaks once, then waits for Yes or Later", "One short repeat if unanswered, then silent; calls and media lowered"],
+                    ],
+                },
+            },
+            { note: "The ladder is a design proposal: no source publishes escalation thresholds or persistence times." },
+            {
+                h: "Glance and reach zones",
+                stats: [
+                    { n: "1.5 s", l: "single-glance ceiling designed to (NHTSA allows 2 s)" },
+                    { n: "8 s", l: "total task time (JAMA); NHTSA allows 12 s" },
+                    { n: "3.5 s", l: "EU distraction warning trips at this gaze below 30° (50 km/h+)" },
+                    { n: "17.5 mm", l: "touch target floor; 20–24 mm for frequent actions" },
+                    { n: "20 arcmin", l: "default text size; 16 for time-critical, icons 41+" },
+                    { n: "2 steps", l: "maximum menu depth; physical keys for the basics" },
+                ],
+            },
+            {
+                cards: [
+                    { t: "Eyes forward · within 5° of the road", items: ["0 deliberate glances; orienting only", "Peripheral response 1.3–1.9 s; ==shapes are read faster than text==", "Rim light and HUD edge cue never carry a warning alone", "Flash 3–4 Hz for urgency; avoid 60–120 a minute, which reads as an indicator"] },
+                    { t: "Cluster · within 15° of sight, under 30° down", items: ["One glance of 1.5 s or less; full status in 2 glances", "Colour + icon + a label of 3–4 words", "Contrast 7:1 target, never under 3:1", "At 700 mm eye distance, 20 arcmin is a 4.1 mm cap height"] },
+                    { t: "Centre display · driver's left in RHD", items: ["Glance 1.5 s, hard ceiling 2 s, task 8 s", "No scrolling or text entry while driving", "Settings beyond toggles only when parked", "Expose warning style, volume and privacy, ==not detection sensitivity=="] },
+                    { t: "Hands on the wheel · rim grip and thumb zone", items: ["0 s eyes off: physical Accept and Later keys that differ in place, shape and feel", "Grip zones about 8–11 and 1–4 o'clock, either hand enough", "==Symmetric two-hand grip: only 6–25% of drivers==", "Rim ECG usable 45.62% of drive time: corroborate, never trigger"] },
+                    { t: "Voice · cabin-wide, dedicated button", items: ["One short offer, answerable by one word", "No repeat for 15 minutes at L2", "Workload 1.88–4.14 of 5, depending on task and errors", "Always an equal non-voice path"] },
+                ],
+            },
+            {
+                h: "Interaction ergonomics table",
+                table: {
+                    head: ["Interface", "Reach zone", "Glance budget", "Modality and levels", "Numbers to design to"],
+                    rows: [
+                        ["Rim grip sensing", "On the rim, about 8–11 and 1–4 o'clock, rotating with the wheel; either hand enough", "0 s, passive", "Capacitive, 3–4 electrodes · L0–L2 input, corroborating only", "One hand 33–40%+ of driving; hands-off warning at latest 15 s (UN R79)"],
+                        ["Rim light", "Low peripheral field; hands may cover the upper arc", "0 deliberate glances; response 1.3–1.9 s", "Luminance, position, rhythm, ==never colour alone== · L0–L2, with L3", "Flash 3–4 Hz; breathing pulse about 10–12 a minute"],
+                        ["Cluster vitals chip", "Within 15° of sight, under 30° down; critical state within 5°", "One glance 1.2–1.5 s; full status in 2", "Icon + 3–4 word label, 4 info units · L0 state to L3 message", "Text 20 arcmin; state icon 86 arcmin; contrast 7:1"],
+                        ["HUD critical and edge cue", "About 5° off and 5° below the line of sight, mirrored for RHD", "Shorter than the cluster; counts toward the 8 s task", "Shape or symbol first, text slowest · L3–L4", "Shape response 1.3–1.5 s against 1.9 s for text"],
+                        ["Centre display prompts", "Driver's left, within 30° down, reachable by the left hand", "1.5 s a glance, 2 s ceiling, 8 s task", "Visual card + wheel-key response; no scroll, no text entry · L2, never L4", "Touch 17.5 mm floor; 2 menu steps at most"],
+                        ["Wheel thumb keys", "Thumb zone from a gripped rim; test P5 female and P95 male", "0 s eyes; feedback within 0.25 s", "Physical keys that differ in place, shape and feel · L2–L3", "P95 fingertip 22 mm; keycap 15 mm+"],
+                        ["Squeeze gesture", "Rim, either hand", "0 s", "Pressure or grip pattern · confirm only, while a prompt is open", "Calibrated per-driver threshold"],
+                        ["IR driver camera", "In or behind the cluster; a covered camera must say so", "None, passive", "NIR, 30 fps+, 1 MP+ · source for L1–L4", "Occlusion alert within 10 s; clear sunglasses must work"],
+                        ["Voice", "Cabin-wide, dedicated button", "About 0 s eyes", "One short offer, one-word answer · L2–L4", "One prompt, no repeat for 15 min"],
+                    ],
+                },
+            },
+            { note: "Status of every number is tracked on the boards: V sourced, C calculated, A a design assumption, U unverified. Thumb-key size, travel and force, squeeze force and glow efficacy are still unverified." },
+            { h: "The boards", image: { src: img("screen-map.jpg"), alt: "Screen map board: six surfaces across four escalation levels, from Monitor to Assist", caption: "Screen map: what shows where, at each level" } },
+            { image: { src: img("glance-zones.jpg"), alt: "Glance and reach zones board: six budgets and five zones from eyes forward to voice", caption: "Glance and reach zones" } },
+            { image: { src: img("ergonomics-table.jpg"), alt: "Interaction ergonomics table: one row per interface with reach zone, glance budget, modality, levels, numbers and evidence", caption: "Interaction ergonomics table" } },
+        ],
+    },
+    {
         title: "Competitive analysis",
         hint: "Tesla, GM, Ford, Euro NCAP 2026",
         blocks: [
@@ -237,12 +301,10 @@ export const copilot = {
         { lead: "The driver answers without looking:", text: "keys you can tell apart by touch, right on the wheel.", clips: [clip("cp-wheel", "Steering wheel light and thumb controls", 1.6)] },
         { lead: "After parking, the trip explains itself:", text: "a heat map shows when alertness dipped.", clips: [clip("cp-trip", "Reviewing the trip heat map by signal", CENTRE)] },
         { lead: "Then I put it in a real car:", text: "a realistic cockpit on a highway drive, from the rim light and grip zones to the cluster and the thumb keys.", clips: [clip("cp-cockpit", "Realistic cockpit mockup: the rim light, grip zones, cluster state and thumb keys, one at a time", 16 / 9)] },
-        { lead: "The car and wheel ergonomics behind it:", text: "where the eyes can go, what the thumbs press and what the wheel feels.", clips: [clip("cp-ergonomics", "Car and steering wheel ergonomics: the driver eye view with 5° and 15° zones, the Accept and Later thumb keys, and grip sensing with haptic feedback", 16 / 9)] },
-        { lead: "And when it's an emergency:", text: "the rim flashes, the screen gives one instruction and shows why, the hazards come on, and the wheel pulses under both hands.", clips: [clip("cp-emergency", "High-alert scenario in the realistic cockpit: the rim flashing red, Pull over now with the driver-state panel, the hazard lights and the dashboard strip, and both hands on the wheel", 16 / 9)] },
+        { lead: "The car and wheel ergonomics behind it:", text: "where the eyes can go, what the thumbs press and what the wheel feels.", clips: [clip("cp-ergonomics", "Car and steering wheel ergonomics on the same cockpit: the 5° and 15° glance zones, the Accept and Later thumb keys, grip sensing with haptics, and the driving posture", 16 / 9)] },
+        { lead: "And when it's an emergency:", text: "the rim flashes, the cluster and the centre screen offer one decision, the camera shows why, and the wheel pulses under both hands.", clips: [clip("cp-emergency", "High-alert scenario in the realistic cockpit: the rim flashing red, Take a break on the cluster, Driver Fatigue Detected with Take a break and Later on the centre screen, the camera view, and both hands on the wheel", 16 / 9)] },
     ],
     process: [
-        { label: "Glance and reach zones", image: img("glance-zones.jpg") },
-        { label: "Interaction ergonomics table", image: img("ergonomics-table.jpg") },
         { label: "System map", image: img("system-map.svg") },
         { label: "Where nobody plays yet", image: img("gap.png") },
         { label: "Causal loops of driver fatigue", image: img("loop.png") },
