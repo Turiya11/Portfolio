@@ -118,7 +118,7 @@ export const methods = {
         statement: "I built the case from crash data, the rules and drivers' own words.",
         used: [
             { name: "Crash and fatigue data", src: "Secondary", kind: "Quantitative", n: "AAA, via arXiv", asked: "How big is the problem?", x: 0.86, y: 0.62 },
-            { name: "Standards and regulation review", src: "Secondary", kind: "Qualitative", n: "EU GSR, NHTSA guidelines, Euro NCAP 2026", asked: "What must a driver-monitoring system do, and what will be scored?", x: 0.42, y: 0.36 },
+            { name: "Standards and regulation review", src: "Secondary", kind: "Qualitative", n: "EU safety rules, US glance guidelines, Euro NCAP 2026", asked: "What must a driver-monitoring system do, and what will be scored?", x: 0.42, y: 0.36 },
             { name: "Human factors literature", src: "Secondary", kind: "Mixed", n: "Glance limits, ambient displays, grip and reach", asked: "How much attention can a warning take from the road?", x: 0.66, y: 0.78 },
             { name: "Public driver discussions", src: "Secondary", kind: "Qualitative", n: "13 posts, quoted as written", asked: "How do drivers fight tiredness, and how do they feel about alerts?", x: 0.14, y: 0.3 },
             { name: "Competitive analysis", src: "Secondary", kind: "Qualitative", n: "Tesla, GM Super Cruise, Ford BlueCruise", asked: "How does driver monitoring work today, and where does it stop?", x: 0.3, y: 0.6 },
@@ -130,14 +130,14 @@ export const methods = {
         ],
         sense: [
             { step: "Problem to design move", did: "Each problem answered with one move and how it works.", out: "Five problems, five design moves" },
-            { step: "How Might We", did: "Questions grouped into sense and adapt, earn trust, and stay out of the way.", out: "Keep camera and biometric data on the car" },
+            { step: "How Might We", did: "Questions grouped into sense and adapt, earn trust, and stay out of the way.", out: "Keep camera and body data in the car" },
             { step: "Gap map", did: "Competitors placed by what they sense and how they warn.", out: "Nobody yet senses state and warns calmly" },
-            { step: "Decisions and trade-offs", did: "Each decision written with its reason and what it costs.", out: "Escalate in steps; the loudest cue is rare" },
+            { step: "Decisions and trade-offs", did: "Each decision written with its reason and what it costs.", out: "Step up slowly; the loudest cue is rare" },
         ],
         chain: {
             saw: "Near-misses come before any alert does, and in 3 of 6 cars tested the alerts were likely to be switched off.",
             means: "Fatigue is spotted late, and alerts that nag get turned off.",
-            could: "Show the driver's state early and quietly, and escalate only when it matters.",
+            could: "Show the driver's state early and quietly, and step up only when it matters.",
             did: "Colour at the edge of vision first; a wheel pulse, voice and a rest-stop offer only at peak fatigue.",
         },
     },

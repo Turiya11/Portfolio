@@ -118,7 +118,7 @@ export const gaps = {
             {
                 gap: "Alerts nag, then get switched off.",
                 seen: "In 3 of 6 cars tested, the alerts were likely to be turned off.",
-                fix: "Cues that escalate in steps, where the loudest one is rare.",
+                fix: "Cues that step up slowly, where the loudest one is rare.",
                 how: "Each cue earns its attention, so there's less reason to silence the system.",
             },
             {
